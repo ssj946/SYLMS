@@ -8,12 +8,15 @@
 			<div class="row">
 				<div class="col">
 					<div class="p-2">
-						<i class="bi bi-telephone-inbound-fill"></i> +82-1234-1234
+						<a href="${pageContext.request.contextPath}/" title="로고"><img src="${pageContext.request.contextPath}/resources/images/syuniv_logo.png" style="height:50px"></a>
 					</div>
 				</div>
 				<div class="col">
 					<div class="d-flex justify-content-end">
 						<c:if test="${empty sessionScope.member}">
+							<div class="p-2">
+								<a href="javascript:dialogLogin();" title="로그인"><i class="bi bi-lock"></i></a>
+							</div>
 							<div class="p-2">
 								<a href="javascript:dialogLogin();" title="로그인"><i class="bi bi-lock"></i></a>
 							</div>

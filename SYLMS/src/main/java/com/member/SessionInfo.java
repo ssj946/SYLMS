@@ -3,6 +3,7 @@ package com.member;
 public class SessionInfo {
 	private String userId;
 	private String userName;
+	private String college;
 	private int userRoll;
 	
 	public String getUserId() {
@@ -16,6 +17,13 @@ public class SessionInfo {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	
+	public String getCollege() {
+		return college;
+	}
+	public void setCollege(String college) {
+		this.college = college;
 	}
 	public int getUserRoll() {
 		return userRoll;

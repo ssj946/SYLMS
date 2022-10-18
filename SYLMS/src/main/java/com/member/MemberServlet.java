@@ -61,10 +61,10 @@ public class MemberServlet extends MyServlet {
 			return;
 		}
 
-		String userId = req.getParameter("userId");
-		String userPwd = req.getParameter("userPwd");
+		String Id = req.getParameter("userId");
+		String Pwd = req.getParameter("userPwd");
 
-		MemberDTO dto = dao.loginMember(userId, userPwd);
+		MemberDTO dto = dao.loginMember(Id, Pwd);
 		if (dto != null) {
 			// 로그인 성공 : 로그인정보를 서버에 저장
 			// 세션의 유지시간을 20분설정(기본 30분)
@@ -72,8 +72,8 @@ public class MemberServlet extends MyServlet {
 
 			// 세션에 저장할 내용
 			SessionInfo info = new SessionInfo();
-			info.setUserId(dto.getUserId());
-			info.setUserName(dto.getUserName());
+			info.setUserId(dto.getId());
+			info.setUserName(dto.getName());
 
 			// 세션에 member이라는 이름으로 저장
 			session.setAttribute("member", info);

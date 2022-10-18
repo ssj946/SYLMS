@@ -10,32 +10,33 @@ import com.util.DBConn;
 public class MemberDAO {
 	private Connection conn = DBConn.getConnection();
 	
-	public MemberDTO loginMember(String userId, String userPwd) {
+	public MemberDTO loginMember(String Id, String Pwd) {
 		MemberDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		StringBuilder sb = new StringBuilder();
+		String sql="";
 		
 		try {
-			sb.append(" SELECT userId, userName, userPwd, register_date, modify_date ");
-			sb.append(" FROM member1");
-			sb.append(" WHERE userId = ? AND userPwd = ? AND enabled = 1");
+			sql="SELECT id, pwd, name, tel, email, TO_CHAR(birth,'YYYY-MM-DD') birth "
+					+ " FROM account"
+					+ " WHERE id = ? AND pwd = ?";
+
 			
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, userId);
-			pstmt.setString(2, userPwd);
+			pstmt.setString(1, Id);
+			pstmt.setString(2, Pwd);
 			
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
 				dto = new MemberDTO();
-				
-				dto.setUserId(rs.getString("userId"));
-				dto.setUserPwd(rs.getString("userPwd"));
-				dto.setUserName(rs.getString("userName"));
-				dto.setRegister_date(rs.getString("register_date"));
-				dto.setModify_date(rs.getString("modify_date"));
+				dto.setId(rs.getString("id"));
+				dto.setPwd(rs.getString("pwd"));
+				dto.setName(rs.getString("name"));
+				dto.setTel(rs.getString("tel"));
+				dto.setEmail(rs.getString("email"));
+				dto.setBirth(rs.getString("birth"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
