@@ -15,7 +15,7 @@
 					<div class="d-flex justify-content-end">
 						<c:if test="${empty sessionScope.member}">
 							<div class="p-2">
-								<a href="javascript:dialogLogin();" title="로그인"><i class="bi bi-lock"></i></a>
+								<a href="#" title="마이페이지"><i class="bi bi-person"></i>기계공학과 김철수</a>
 							</div>
 							<div class="p-2">
 								<a href="javascript:dialogLogin();" title="로그인"><i class="bi bi-lock"></i></a>
