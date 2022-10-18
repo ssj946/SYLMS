@@ -7,16 +7,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>spring</title>
+<title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
-
 <style type="text/css">
 .body-container {
 	max-width: 800px;
 }
+main{
+margin:100px auto;
+}
 </style>
-
 </head>
+
 <body>
 
 <header>
@@ -24,18 +26,89 @@
 </header>
 	
 <main>
-	<div class="container">
-		<div class="body-container">	
-			<div class="d-grid">
-				메인 화면 입니다.
+<section>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xl-10 col-lg-9 col-md-8 ms-auto">
+				<div class="row pt-md-5 mt-md-3 mb-5">
+					<div class="col-sm-6 p-2">
+						<div class="card">
+							<div class="card-body">
+								<div class="d-flex justify-content-between">
+									<i class="fas fa-shopping-cart fa-3x text-warning"></i>
+									<div class="text-right text-secondary">
+									<h5>Sales</h5>
+									<h3>$135,000</h3>
+									</div>
+								</div>
+							</div>	
+							<div class="card-footer text-secondary">
+								<i class="fas fa-sync mr-3"></i>
+								<span>Updated Now</span>
+							</div>	
+						</div>
+					</div>
+					
+					<div class="col-sm-6 p-2">
+						<div class="card">
+							<div class="card-body">
+								<div class="d-flex justify-content-between">
+									<i class="fas fa-shopping-cart fa-3x text-warning"></i>
+									<div class="text-right text-secondary">
+									<h5>Sales</h5>
+									<h3>$135,000</h3>
+									</div>
+								</div>
+							</div>	
+							<div class="card-footer text-secondary">
+								<i class="fas fa-sync mr-3"></i>
+								<span>Updated Now</span>
+							</div>	
+						</div>
+					</div>
+					
+					<div class="col-sm-6 p-2">
+						<div class="card">
+							<div class="card-body">
+								<div class="d-flex justify-content-between">
+									<i class="fas fa-shopping-cart fa-3x text-warning"></i>
+									<div class="text-right text-secondary">
+									<h5>Sales</h5>
+									<h3>$135,000</h3>
+									</div>
+								</div>
+							</div>	
+							<div class="card-footer text-secondary">
+								<i class="fas fa-sync mr-3"></i>
+								<span>Updated Now</span>
+							</div>	
+						</div>
+					</div>
+					
+					<div class="col-sm-6 p-2">
+						<div class="card">
+							<div class="card-body">
+								<div class="d-flex justify-content-between">
+									<i class="fas fa-shopping-cart fa-3x text-warning"></i>
+									<div class="text-right text-secondary">
+									<h5>Sales</h5>
+									<h3>$135,000</h3>
+									</div>
+								</div>
+							</div>	
+							<div class="card-footer text-secondary">
+								<i class="fas fa-sync mr-3"></i>
+								<span>Updated Now</span>
+							</div>	
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
+	
+	</section>
 </main>
-
-<footer>
-	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
-</footer>
 
 <jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
 </body>
