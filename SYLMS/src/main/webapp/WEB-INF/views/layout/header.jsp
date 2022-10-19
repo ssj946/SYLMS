@@ -4,13 +4,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <nav class="navbar navbar-expand-md navbar-light">
-	<button class="navbar-toggler ms-auto mb-2 bg-light" type="button" data-toggle="collapse" data-target="#sidebar">
+	<button class="navbar-toggler ms-auto mb-2 bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggle-icon"></span>
 	</button>
-		<div class="container-fluid">
+	<div class="collapse navbar-collapse" id="sidebar">
+	<div class="container-fluid">
 			<div class="row">
 			<!-- 사이드바 -->
-			<div class="col-xl-2 col-lg-3 col-md-4 sidebar fixed-top">
+			<div class="col-xl-2 col-lg-3 col-md-4 sidebar fixed-top" >
 				<a href="${pageContext.request.contextPath}/" title="로고" class="navbar-brand text-white text-center d-block mx-auto py-3 mb-4 bottom-border"><img src="${pageContext.request.contextPath}/resources/images/syuniv_logo.png" style="height: 40px"></a>
 				<div class="bottom-border pb-3 text-center">
 				<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="" width="50" class="rounded-circle mr-3">&nbsp;
@@ -33,30 +34,31 @@
 					</li>
 				</ul>
 			</div>
-			
+			</div>
+			</div>
 			<!-- 사이드바 끝 -->
 			<!-- 상단 바 -->
 			<div class="col-xl-10 col-lg-9 col-md-8 ms-auto bg-dark py-1 fixed-top">
 				<div class="row align-items-center">
-					<div class="col-md-4">
+					<div class="col-xl-3 col-lg-3 col-md-3">
 						<h4 class="text-light text-uppercase mb-0">DashBoard</h4>
 					</div>
-					<div class="col-md-4">
+					<div class="col-xl-6 col-lg-5 col-md-4">
 						&nbsp;
 					</div>
 					
-					<div class="col-md-4">
-					<ul class="navbar-nav">
+					<div class="col-xl-3 col-lg-4 col-md-5">
+					<ul class="navbar-nav ms-auto">
 						<c:if test="${empty sessionScope.member}">
-							<li class="nav-item icon-parent ms-auto"><a href="${pageContext.request.contextPath}/member/member.do" title="회원가입" class="nav-link">&nbsp;<i class="fas fa-user-plus text-muted fa-lg"></i>&nbsp;</a></li>
-							<li class="nav-item icon-parent ms-auto"><a href="javascript:dialogLogin();" title="로그인" class="nav-link">&nbsp;<i class="fas fa-sign-in-alt text-muted fa-lg"></i>&nbsp;</a></li>
+							<li class="nav-item icon-parent"><a href="${pageContext.request.contextPath}/member/member.do" title="회원가입" class="nav-link">&nbsp;<i class="fas fa-user-plus text-muted fa-lg"></i>&nbsp;</a></li>
+							<li class="nav-item ms-auto"><a href="javascript:dialogLogin();" title="로그인" class="nav-link">&nbsp;<i class="fas fa-sign-in-alt text-muted fa-lg"></i>&nbsp;</a></li>
 						</c:if>
 						
 						<c:if test="${not empty sessionScope.member}">
 							<c:if test="${sessionScope.member.userId == 'admin'}">
 							<li class="nav-item icon-parent"> <a href="#" title="관리자" class="nav-link"><i class="fas fa-gear text-muted fa-lg"></i></a></li>
 							</c:if>
-							<li class="nav-item icon-parent"><a href="#" title="마이페이지" class="nav-link"><i class="fas fa-camera text-muted fa-lg">&nbsp;</i> 기계공학과 김철수</a>&nbsp;</li>
+							<li class="nav-item icon-parent"><a href="#" title="마이페이지" class="nav-link"><i class="fas fa-user text-muted fa-lg">&nbsp;</i></a></li>
 							<li class="nav-item icon-parent"><a href="#" title="메세지" class="nav-link"><i class="fas fa-comments text-muted fa-lg">&nbsp;</i></a>&nbsp;</li>
 							<li class="nav-item icon-parent"><a href="#" title="알림" class="nav-link">&nbsp;<i class="fas fa-bell text-muted fa-lg"></i>&nbsp;</a></li>
 							<li class="nav-item ms-auto"><a href="${pageContext.request.contextPath}/member/logout.do" title="로그아웃" class="nav-link">&nbsp;<i class="fas fa-sign-out-alt text-danger fa-lg"></i>&nbsp;</a></li>
@@ -64,7 +66,6 @@
 					</ul>
 					</div>
 				</div>
-			</div>
 			</div>
 			</div>
 			<!-- 상단바 끝 -->
