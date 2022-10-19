@@ -3,45 +3,48 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<nav class="navbar navbar-expand-md navbar-light">
-	<button class="navbar-toggler ms-auto mb-2 bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggle-icon"></span>
+<nav class="navbar navbar-expand-md navbar-light ">
+	<button class="navbar-toggler nav-button mb-2 bg-light ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+		<i class="fas fa-list"></i>
 	</button>
-	<div class="collapse navbar-collapse" id="sidebar">
+	<div class="collapse  navbar-collapse" id="sidebar">
 	<div class="container-fluid">
 			<div class="row">
 			<!-- 사이드바 -->
 			<div class="col-xl-2 col-lg-3 col-md-4 sidebar fixed-top" >
-				<a href="${pageContext.request.contextPath}/" title="로고" class="navbar-brand text-white text-center d-block mx-auto py-3 mb-4 bottom-border"><img src="${pageContext.request.contextPath}/resources/images/syuniv_logo.png" style="height: 40px"></a>
+				<a href="${pageContext.request.contextPath}/" title="로고" class="navbar-brand text-white text-center d-block mx-auto py-3 mb-4 bottom-border"><img src="${pageContext.request.contextPath}/resources/images/syuniv_logo.png" style="height: 75px"></a>
 				<div class="bottom-border pb-3 text-center">
 				<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="" width="50" class="rounded-circle mr-3">&nbsp;
 				<a href="#" class="text-white">기계공학과 김철수</a></div>
-				<ul class="navbar-nav flex-column mt-4">
+				<ul class="nav navbar-nav flex-column mt-4">
 					<li class="nav-item">
-						<a href="#" class="nav-link text-white p-3 mb-2 current"> <i class="fas fa-home text-white fa-lg mr-3"></i>&nbsp;대쉬 보드</a>
+						<a href="${pageContext.request.contextPath}/" class="nav-link text-white p-3 mb-2 current"> <i class="fas fa-home text-white fa-lg mr-3"></i>&nbsp;대쉬 보드</a>
 					</li>
 					<li class="nav-item">
-						<a href="#" class="nav-link text-white p-3 mb-2 current"> &nbsp;<i class="fas fa-user text-white fa-lg mr-3"></i>&nbsp;마이 페이지</a>
+						<a href="#" class="nav-link text-white p-3 mb-2 current dropdown-toggle" data-toggle="dropdown"> <i class="fas fa-address-card text-white fa-lg mr-3"></i>&nbsp;마이 페이지</a>
+						<ul class="dropdown-menu">
+							<li><a href="#">submenu1</a></li>
+							<li><a href="#">submenu2</a></li>
+						</ul>
 					</li>
 					<li class="nav-item">
-						<a href="#" class="nav-link text-white p-3 mb-2 current"> <i class="fas fa-home text-white fa-lg mr-3"></i>&nbsp;DashBoard</a>
+						<a href="#" class="nav-link text-white p-3 mb-2 current"> <i class="fas fa-chalkboard text-white fa-lg mr-3"></i>&nbsp;강의실</a>
 					</li>
 					<li class="nav-item">
-						<a href="#" class="nav-link text-white p-3 mb-2 current"> <i class="fas fa-home text-white fa-lg mr-3"></i>&nbsp;DashBoard</a>
-					</li>
-					<li class="nav-item">
-						<a href="#" class="nav-link text-white p-3 mb-2 current"> <i class="fas fa-home text-white fa-lg mr-3"></i>&nbsp;DashBoard</a>
+						<a href="#" class="nav-link text-white p-3 mb-2 current"> <i class="fas fa-poo text-white fa-lg mr-3"></i>&nbsp;커뮤니티</a>
 					</li>
 				</ul>
 			</div>
 			</div>
 			</div>
+			</div>
 			<!-- 사이드바 끝 -->
 			<!-- 상단 바 -->
+			<div class="collapse navbar-collapse" id="topbar">
 			<div class="col-xl-10 col-lg-9 col-md-8 ms-auto bg-dark py-1 fixed-top">
 				<div class="row align-items-center">
 					<div class="col-xl-3 col-lg-3 col-md-3">
-						<h4 class="text-light text-uppercase mb-0">DashBoard</h4>
+						<h4 class="text-light text-uppercase mb-0">&nbsp;DashBoard</h4>
 					</div>
 					<div class="col-xl-6 col-lg-5 col-md-4">
 						&nbsp;
