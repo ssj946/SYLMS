@@ -80,17 +80,3 @@ textarea:focus, input:focus {
 	border-radius: 7px;
 	box-shadow: 2px 5px 10px #111;
 }
-
-.icon-parent{
-	position: relative;
-}
-.icon-bullet::after{
-	content:"";
-	position: absolute;
-	top: 7px;
-	left:15px;
-	height: 12px;
-	width:12px;
-	background-color: #f44336;
-	border-radius: 50%;
-}

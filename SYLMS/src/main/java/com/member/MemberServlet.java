@@ -102,7 +102,7 @@ public class MemberServlet extends MyServlet {
 		session.invalidate();
 
 		// 루트로 리다이렉트
-		resp.sendRedirect(cp + "/");
+		resp.sendRedirect(cp + "/member/login.do");
 	}
 
 	protected void memberForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

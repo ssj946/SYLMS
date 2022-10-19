@@ -14,7 +14,7 @@
 	max-width: 800px;
 }
 main{
-	margin-top: 20px;
+margin-top:1.8rem;
 }
 </style>
 </head>
