@@ -13,19 +13,46 @@
 						<a href="${pageContext.request.contextPath}/" class="nav-link text-white p-3 mb-2 current"> <i class="fas fa-home text-white fa-lg mr-3"></i>&nbsp;대쉬 보드</a>
 					</li>
 					<li class="nav-item dropdown">
-						<a class="nav-link text-white p-3 mb-2 current dropdown-toggle" href="#" id="sidebar_mypage" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <i class="fas fa-address-card text-white fa-lg mr-3"></i>&nbsp;마이 페이지</a>
-						<ul class="dropdown-menu" aria-labeledby="sidebar_mypage">
-							<li><a href="#" class="nav-link text-black p-3 mb-2 current">개인정보수정</a></li>
-							<li><a href="#" class="nav-link text-black p-3 mb-2 current">올린파일함</a></li>
-							<li><a href="#" class="nav-link text-black p-3 mb-2 current">수강과목</a></li>
-							<li><a href="#" class="nav-link text-black p-3 mb-2 current">조교신청</a></li>
+						<button class="nav-link text-white p-3 mb-2 current navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#side_mypage" aria-controls="side_mypage" aria-expanded="false" aria-label="Toggle navigation">
+						 <i class="fas fa-address-card text-white fa-lg mr-3"></i>&nbsp;마이 페이지
+						</button>
+						<div class="collapse navbar-collapse" id="side_mypage" >
+						<ul class="text-none">
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">개인정보수정</a></li>
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">올린파일함</a></li>
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">수강과목</a></li>
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">조교신청</a></li>
 						</ul>
+						</div>
 					</li>
 					<li class="nav-item">
-						<a href="#" class="nav-link text-white p-3 mb-2 current"> <i class="fas fa-chalkboard text-white fa-lg mr-3"></i>&nbsp;강의실</a>
+						<button class="nav-link text-white p-3 mb-2 current navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#side_lecture" aria-controls="side_lecture" aria-expanded="false" aria-label="Toggle navigation"> 
+						<i class="fas fa-chalkboard text-white fa-lg mr-3"></i>&nbsp;강의실
+						</button>
+						<div class="collapse navbar-collapse" id="side_lecture" >
+						<ul class="text-none">
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">과목1</a></li>
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">과목2</a></li>
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">과목3</a></li>
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">과목4</a></li>
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">과목5</a></li>
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">과목6</a></li>
+						</ul>
+						</div>
 					</li>
 					<li class="nav-item">
-						<a href="#" class="nav-link text-white p-3 mb-2 current"> <i class="fas fa-poo text-white fa-lg mr-3"></i>&nbsp;커뮤니티</a>
+						<button class="nav-link text-white p-3 mb-2 current navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#side_community" aria-controls="side_community" aria-expanded="false" aria-label="Toggle navigation">
+						 <i class="fas fa-poo text-white fa-lg mr-3"></i>&nbsp;커뮤니티
+						 </button>
+						 <div class="collapse navbar-collapse" id="side_community" >
+						<ul class="text-none">
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">공지사항</a></li>
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">학과 홈페이지</a></li>
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">익명게시판</a></li>
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">취업ㆍ진로게시판</a></li>
+							<li><a href="#" class="nav-link text-white p-3 mb-2 current">동아리ㆍ학회</a></li>
+						</ul>
+						</div>
 					</li>
 				</ul>
 			</div>
