@@ -7,7 +7,7 @@ ul{
 list-style: none;
 }
 </style>
-<!-- 사이드바 -->
+<!-- 왼쪽 사이드바 -->
 			<div class="col-xl-2 col-lg-3 col-md-4 sidebar">
 				<div>
 					<p class="text-white">&nbsp;</p>
@@ -69,3 +69,4 @@ list-style: none;
 					</li>
 				</ul>
 			</div>
+<!-- 왼쪽 사이드바 끝 -->

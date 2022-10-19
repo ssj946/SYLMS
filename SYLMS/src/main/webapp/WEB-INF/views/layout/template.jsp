@@ -10,12 +10,7 @@
 <title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 <style type="text/css">
-.body-container {
-	max-width: 800px;
-}
-main{
-	margin-top: 20px;
-}
+
 </style>
 </head>
 
@@ -29,8 +24,9 @@ main{
 <section>
 	<div class="container-fluid">
 		<div class="row">
-<jsp:include page="/WEB-INF/views/layout/sidebar.jsp"/>
-			<div class="col-xl-10 col-lg-9 col-md-8 ms-auto">
+		<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp"/>
+
+			<div class="col-xl-8 col-lg-6 col-md-6">
 				<div class="row pt-md-5 mt-md-3 mb-5">
 					<div class="col-xl-3 col-sm-6 p-2">
 						<div class="card">
@@ -105,9 +101,9 @@ main{
 					</div>
 				</div>
 			</div>
+			<jsp:include page="/WEB-INF/views/layout/r_sidebar.jsp"/>
+			</div>
 		</div>
-	</div>
-	
 	</section>
 </main>
 
