@@ -13,6 +13,10 @@
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.2.0/css/all.css">
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+</style>
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/util-jquery.js"></script>
 
