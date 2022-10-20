@@ -10,7 +10,6 @@
 <title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 <style type="text/css">
-
 </style>
 </head>
 
@@ -22,92 +21,43 @@
 	
 <main>
 <section>
-	<div class="container-fluid">
+	<div class="container-fluid pt-1">
 		<div class="row">
+		<!-- 왼쪽 사이드바 자리 -->
 		<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp"/>
-
+		<!-- 본문 -->
 			<div class="col-xl-8 col-lg-6 col-md-6">
-				<div class="row pt-md-5 mt-md-3 mb-5">
-					<div class="col-xl-3 col-sm-6 p-2">
-						<div class="card">
-							<div class="card-body">
-								<div class="d-flex justify-content-between">
-									<i class="fas fa-shopping-cart fa-3x text-warning"></i>
-									<div class="text-right text-secondary">
-									<h5>Sales</h5>
-									<h3>$135,000</h3>
-									</div>
-								</div>
-							</div>	
-							<div class="card-footer text-secondary">
-								<i class="fas fa-sync mr-3"></i>
-								<span>Updated Now</span>
-							</div>	
-						</div>
-					</div>
-					
-					<div class="col-xl-3 col-sm-6 p-2">
-						<div class="card">
-							<div class="card-body">
-								<div class="d-flex justify-content-between">
-									<i class="fas fa-shopping-cart fa-3x text-warning"></i>
-									<div class="text-right text-secondary">
-									<h5>Sales</h5>
-									<h3>$135,000</h3>
-									</div>
-								</div>
-							</div>	
-							<div class="card-footer text-secondary">
-								<i class="fas fa-sync mr-3"></i>
-								<span>Updated Now</span>
-							</div>	
-						</div>
-					</div>
-					
-					<div class="col-xl-3 col-sm-6 p-2">
-						<div class="card">
-							<div class="card-body">
-								<div class="d-flex justify-content-between">
-									<i class="fas fa-shopping-cart fa-3x text-warning"></i>
-									<div class="text-right text-secondary">
-									<h5>Sales</h5>
-									<h3>$135,000</h3>
-									</div>
-								</div>
-							</div>	
-							<div class="card-footer text-secondary">
-								<i class="fas fa-sync mr-3"></i>
-								<span>Updated Now</span>
-							</div>	
-						</div>
-					</div>
-					
-					<div class="col-xl-3 col-sm-6 p-2">
-						<div class="card">
-							<div class="card-body">
-								<div class="d-flex justify-content-between">
-									<i class="fas fa-shopping-cart fa-3x text-warning"></i>
-									<div class="text-right text-secondary">
-									<h5>Sales</h5>
-									<h3>$135,000</h3>
-									</div>
-								</div>
-							</div>	
-							<div class="card-footer text-secondary">
-								<i class="fas fa-sync mr-3"></i>
-								<span>Updated Now</span>
-							</div>	
-						</div>
-					</div>
+			<div class="pt-3 mt-3 mb-5 ms-3">
+			<div class="card pt-2 pb-2 ps-2 pe-2">
+				<div class="accordion" id="lecture_all">
+				  <div class="accordion-item">
+				    <h2 class="accordion-header" id="lecture">
+				      <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#lecture_list" aria-expanded="true" aria-controls="lecture_list">
+				        전체 강의 보기
+				      </button>
+				    </h2>
+				    <div id="lecture_list" class="accordion-collapse collapse show" aria-labelledby="lecture" data-bs-parent="#lecture_all">
+				      <div class="accordion-body">
+				        <ul class="list-group list-group-flush group-item-action active" aria-current="true">
+						   <li class="list-group-item list-group-item-action"><a href="#">과목</a></li>
+						   <li class="list-group-item list-group-item-action"><a href="#">과목</a></li>
+						   <li class="list-group-item list-group-item-action"><a href="#">과목</a></li>
+						</ul>
+				      </div>
+				    </div>
+				  </div>
 				</div>
 			</div>
+			</div>
+		</div>
+			<!-- 본문 끝 -->
+			<!-- 오른쪽 사이드바 자리 -->
 			<jsp:include page="/WEB-INF/views/layout/r_sidebar.jsp"/>
 			</div>
 		</div>
 	
 	</section>
 </main>
-
 <jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
 </body>
 </html>
