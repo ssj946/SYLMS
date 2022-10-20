@@ -30,9 +30,9 @@
 		<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
 		<!-- 본문 -->
 
-			<!-- 본문 끝 -->
+		<!-- 본문 끝 -->
 			
-			</div>
+		</div>
 		</div>
 	
 	</section>

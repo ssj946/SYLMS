@@ -35,19 +35,7 @@ list-style: none;
 			</div>
 		</li>
 		<li class="nav-item">
-			<button class="nav-link text-white p-3 mb-2 current navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#side_lecture" aria-controls="side_lecture" aria-expanded="false" aria-label="Toggle navigation"> 
-			<i class="fas fa-chalkboard text-white fa-lg mr-3"></i>&nbsp;강의실
-			</button>
-			<div class="collapse navbar-collapse" id="side_lecture" >
-			<ul>
-				<li><a href="#" class="nav-link text-white p-3 mb-2 current">과목1</a></li>
-				<li><a href="#" class="nav-link text-white p-3 mb-2 current">과목2</a></li>
-				<li><a href="#" class="nav-link text-white p-3 mb-2 current">과목3</a></li>
-				<li><a href="#" class="nav-link text-white p-3 mb-2 current">과목4</a></li>
-				<li><a href="#" class="nav-link text-white p-3 mb-2 current">과목5</a></li>
-				<li><a href="#" class="nav-link text-white p-3 mb-2 current">과목6</a></li>
-			</ul>
-			</div>
+			<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/main.do"><i class="fas fa-chalkboard text-white fa-lg mr-3"></i>&nbsp;강의실</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link text-white p-3 mb-2 current" href="#">
