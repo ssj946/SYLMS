@@ -8,7 +8,6 @@ list-style: none;
 }
 </style>
 <!-- 왼쪽 사이드바 -->
-<div class="col-xl-2 col-lg-3 col-md-4 sidebar pt-1">
 	<div class="card mt-3 pt-4 ps-2 pe-2">
 		<img src="${pageContext.request.contextPath}/resources/images/syuniv_logo.png" class="card-img-top">
 		<div class="card-body text-center">	
@@ -41,5 +40,4 @@ list-style: none;
 			 </a>
 		</li>
 	</ul>
-</div>
 <!-- 왼쪽 사이드바 끝 -->

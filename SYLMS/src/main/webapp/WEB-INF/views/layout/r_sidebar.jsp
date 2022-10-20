@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!-- 오른쪽 사이드바  -->
-<div class="col-xl-2 col-lg-3 col-md-3 ms-auto">
+
 <div class="row ms-1 me-1 pt-3 mt-3 mb-5 gap-3">
 	
 	<div class="card pt-2 pb-2 ">
@@ -42,5 +42,5 @@
 	
 	
 </div>
-</div>
+
 	<!-- 오른쪽 사이드바 끝 -->
