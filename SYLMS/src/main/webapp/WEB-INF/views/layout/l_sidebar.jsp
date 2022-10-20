@@ -11,9 +11,7 @@ list-style: none;
 <div class="col-xl-2 col-lg-3 col-md-4 sidebar pt-1">
 	<div class="card mt-3 pt-4 ps-2 pe-2">
 		<img src="${pageContext.request.contextPath}/resources/images/syuniv_logo.png" class="card-img-top">
-		<div class="card-body text-center">
-			<h5 class="	card-title">기계자동차공학과</h5>
-			<h3 class="	card-title">김철수</h3>	
+		<div class="card-body text-center">	
 		</div>
 	</div>
 		
