@@ -4,8 +4,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div class="container-fluid">
 	<div class="row">
+	<div class="col-xl-2 col-lg-3 col-md-4 bg-black pt-1">
+	</div>
 		<div class="col-xl-10 col-lg-9 col-md-8 ms-auto">
-			<div class="row"> 
+		<nav>
 				<ul>
 				    <li><a href="#">SPRING 정책 및 약관</a></li>
 				    <li>&middot;</li>
@@ -21,7 +23,7 @@
 				    <li>&middot;</li>
 				    <li>© SPRING Corp.</li>
 				</ul>
-			</div>
+				</nav>
 		</div>
 	</div>
 </div>

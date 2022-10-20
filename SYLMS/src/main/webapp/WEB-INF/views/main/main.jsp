@@ -21,13 +21,14 @@
 	
 <main>
 <section>
-	<div class="container-fluid pt-1">
+	<div class="container-fluid">
+		<div class="row">&nbsp;</div>
 		<div class="row">
 		<!-- 왼쪽 사이드바 자리 -->
 		<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp"/>
 		<!-- 본문 -->
 			<div class="col-xl-8 col-lg-6 col-md-6">
-			<div class="pt-3 mt-3 mb-5 ms-3">
+			<div class="row ms-3 me-1 pt-3 mt-3 mb-5 gap-3">
 			<div class="card pt-2 pb-2 ps-2 pe-2">
 				<div class="accordion" id="lecture_all">
 				  <div class="accordion-item">
