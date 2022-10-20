@@ -2,14 +2,22 @@
 <%@ page trimDirectiveWhitespaces ="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="icon" href="data:;base64,iVBORw0KGgo=">
-</head>
-<body>
+<!-- 왼쪽 사이드바 -->	
+	<ul class="nav navbar-nav flex-column mt-3 text-center">
+		<li class="nav-item">
+			<a href="${pageContext.request.contextPath}/" class="nav-link text-white p-3 mb-2 current"><i class="fas fa-home text-white fa-lg mr-3"></i></a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link text-white p-3 mb-2 current"><i class="fas fa-address-card text-white fa-lg mr-3"></i></a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/main.do"><i class="fas fa-chalkboard text-white fa-lg mr-3"></i></a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link text-white p-3 mb-2 current" href="#">
+			 <i class="fas fa-poo text-white fa-lg mr-3"></i>
+			 </a>
+		</li>
+	</ul>
 
-</body>
-</html>
+<!-- 왼쪽 사이드바 끝 -->

@@ -24,14 +24,29 @@
 	<div class="container-fluid">
 		<div class="row">&nbsp;</div>
 		<div class="row">
-		<!-- brief 사이드바 자리 -->
-		<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
-		<!-- 강의 사이드바 자리 -->
-		<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
-		<!-- 본문 -->
-
-		<!-- 본문 끝 -->
+			<div class="col-lg-1 sidebar">
+			<!-- brief 사이드바 자리 -->
+			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
+			</div>
+			<div class="col-lg-11 ms-auto">
+			<div class="row">
+			<!-- classroom header 자리 -->
+			<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
+			</div>
+				<div class="row">
+				<!-- 강의 사이드바 자리 -->
+				<div class="col-lg-3 sidebar">
+				<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
+				</div>
+				<!-- 본문 -->
+				<div class="col-lg-9 ms-auto">
+				asd
+				</div>
+				<!-- 본문 끝 -->
+				</div>
+			</div>
 			
+				
 		</div>
 		</div>
 	
