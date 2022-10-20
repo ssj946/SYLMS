@@ -12,9 +12,6 @@
 		<li class="nav-item">
 		  <a class="nav-link active" aria-current="true" href="#">학사공지</a>
 		</li>
-		<li class="nav-item">
-		  <a class="nav-link" href="#">더보기</a>
-		</li>
 		</ul>
 		</div>
 		
@@ -68,7 +65,7 @@
 		
 		<ul class="list-group list-group-flush list-group-numbered list-group-item-action active" aria-current="true">
 		   <li class="list-group-item list-group-item-action"><a href="#">피드백1</a></li>
-		   <li class="list-group-item list-group-item-action"><a href="#">피드백2</a></li>
+		   <li class="list-group-item list-group-item-action"><a href="#">글자가 길어지면 어떻게 될까요?</a></li>
 		   <li class="list-group-item list-group-item-action"><a href="#">피드백3</a></li>
 		</ul>
 	</div>
