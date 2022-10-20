@@ -12,9 +12,6 @@
 		<li class="nav-item">
 		  <a class="nav-link active" aria-current="true" href="#">학사공지</a>
 		</li>
-		<li class="nav-item">
-		  <a class="nav-link" href="#">더보기</a>
-		</li>
 		</ul>
 		</div>
 		
