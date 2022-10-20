@@ -6,21 +6,7 @@
 	<div class="row">
 		<div class="col-xl-10 col-lg-9 col-md-8 ms-auto">
 			<div class="row"> 
-				<ul>
-				    <li><a href="#">SPRING 정책 및 약관</a></li>
-				    <li>&middot;</li>
-				    <li><a href="#">회사소개</a></li>
-				    <li>&middot;</li>
-				    <li><a href="#">제휴제안</a></li>
-				    <li>&middot;</li>
-				    <li><a href="#">이용약관</a></li>
-				    <li>&middot;</li>
-				    <li><a href="#">개인정보취급방침</a></li>
-				    <li>&middot;</li>
-				    <li><a href="#">고객센터</a></li>
-				    <li>&middot;</li>
-				    <li>© SPRING Corp.</li>
-				</ul>
+				
 			</div>
 		</div>
 	</div>
