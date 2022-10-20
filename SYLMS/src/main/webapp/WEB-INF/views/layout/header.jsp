@@ -133,12 +133,6 @@
 	                    	</div>
 	                    </form>
 	                    <hr class="mt-3">
-	                    <div>
-	                        <p class="form-control-plaintext mb-0">
-	                        	아직 회원이 아니세요 ?
-	                        	<a href="${pageContext.request.contextPath}/member/member.do" class="text-decoration-none">회원가입</a>
-	                        </p>
-	                    </div>
 	                </div>
 	        
 				</div>
