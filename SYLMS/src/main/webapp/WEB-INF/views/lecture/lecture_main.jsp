@@ -10,6 +10,9 @@
 <title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 <style type="text/css">
+ul{
+list-style: none;
+}
 </style>
 </head>
 
@@ -33,81 +36,77 @@
 			<!-- classroom header 자리 -->
 			<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
 			</div>
-				<div class="row">
-				<!-- 강의 사이드바 자리 -->
-				<div class="col-lg-3 sidebar">
-				<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
-				</div>
-				<!-- 본문 -->
-				<div class="col-lg-9 ms-auto gap-3">
-					<div class="card">
-						<div class="card-header">
-						  진도현황
-						</div>
-						<div class="card-body m-auto">
-						<ul class="list-group list-group-horizontal">
-							<li><a class="dropdown-item" href="#">1주차</a></li>
-							<li><a class="dropdown-item" href="#">2주차</a></li>
-							<li><a class="dropdown-item" href="#">3주차</a></li>
-							<li><a class="dropdown-item" href="#">4주차</a></li>
-							<li><a class="dropdown-item" href="#">5주차</a></li>
-							<li><a class="dropdown-item" href="#">6주차</a></li>
-							<li><a class="dropdown-item" href="#">7주차</a></li>
-							<li><a class="dropdown-item" href="#">8주차</a></li>
-							<li><a class="dropdown-item" href="#">9주차</a></li>
-							<li><a class="dropdown-item" href="#">10주차</a></li>
-							<li><a class="dropdown-item" href="#">11주차</a></li>
-							<li><a class="dropdown-item" href="#">12주차</a></li>
-							<li><a class="dropdown-item" href="#">13주차</a></li>
-							<li><a class="dropdown-item" href="#">14주차</a></li>
-							<li><a class="dropdown-item" href="#">15주차</a></li>
-							<li><a class="dropdown-item" href="#">16주차</a></li>
-						</ul>
-						</div>
-					</div>
-					<div class="card">
-						<div class="row">
-						<div class="card-header">
-						  
-						<div class="dropdown col ms-auto">
-						주차 별 학습활동
-						<button class="btn btn-secondary dropdown-toggle" type="button" id="weekly_btn" data-bs-toggle="dropdown" aria-expanded="false">
-						  전체
-						</button>
-							<ul class="dropdown-menu" aria-labelledby="weekly_btn">
-							<li><a class="dropdown-item" href="#">1주차</a></li>
-							<li><a class="dropdown-item" href="#">2주차</a></li>
-							<li><a class="dropdown-item" href="#">3주차</a></li>
-							<li><a class="dropdown-item" href="#">4주차</a></li>
-							<li><a class="dropdown-item" href="#">5주차</a></li>
-							<li><a class="dropdown-item" href="#">6주차</a></li>
-							<li><a class="dropdown-item" href="#">7주차</a></li>
-							<li><a class="dropdown-item" href="#">8주차</a></li>
-							<li><a class="dropdown-item" href="#">9주차</a></li>
-							<li><a class="dropdown-item" href="#">10주차</a></li>
-							<li><a class="dropdown-item" href="#">11주차</a></li>
-							<li><a class="dropdown-item" href="#">12주차</a></li>
-							<li><a class="dropdown-item" href="#">13주차</a></li>
-							<li><a class="dropdown-item" href="#">14주차</a></li>
-							<li><a class="dropdown-item" href="#">15주차</a></li>
-							<li><a class="dropdown-item" href="#">16주차</a></li>
-							</ul>
-							</div>
-						</div>
-						</div>
-						 <div class="card-body">
-						    
-						</div>
-					</div>
-				</div>
-				</div>
-				<!-- 본문 끝 -->
-				</div>
+			<div class="row">
+			<!-- 강의 사이드바 자리 -->
+			<div class="col-lg-2 sidebar">
+			<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
 			</div>
 			
+			<!-- 본문 -->
+			<div class="col-lg-10 gap-3">
+				<div class="ms-1 me-1 pt-3 mt-3 mb-5">
+					<div class="card mb-3">
+					  <div class="card-header fw-bold fs-6">
+					    강좌 개요
+					  </div>
+					  <div class="card-body m-auto">
+					    <ul class="list-group list-group-horizontal text-center">
+					    <li><ul>
+					    <li class="list-group-item"><a href="#"><i class="fas fa-microphone fa-3x"></i></a></li>
+					    <li class="list-group-item">강의공지</li>
+					    </ul></li>
+					    <li><ul>
+					    <li class="list-group-item"><a href="#"><i class="fas fa-clipboard-question fa-3x"></i></a></li>
+					    <li class="list-group-item">질의응답</li>
+					    </ul></li>
+					    
+					    <li><ul>
+					    <li class="list-group-item"><a href="#"><i class="fas fa-pen fa-3x"></i></a></li>
+					    <li class="list-group-item">이번주 강의</li>
+					    </ul></li>
+					    
+					    <li><ul>
+					    <li class="list-group-item"><a href="#"><i class="fas fa-calendar fa-3x"></i></a></li>
+					    <li class="list-group-item">주차별 학습활동</li>
+					    </ul></li>
+					    
+					    <li><ul>
+					    <li class="list-group-item"><a href="#"><i class="fas fa-map fa-3x"></i></a></li>
+					    <li class="list-group-item">강의계획서</li>
+					    </ul></li>
+						</ul>
+					  </div>
+					</div>
+					
+					<div class="card mb-3">
+					  <div class="card-header fw-bold fs-6">
+					    <i class="fas fa-pen fa-lg"></i>&nbsp;이번주 강의
+					  </div>
+					  <div class="card-body">
+					    <h5 class="card-title">Special title treatment</h5>
+					    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+					    <a href="#" class="btn btn-primary">Go somewhere</a>
+					  </div>
+					</div>
+					
+					<div class="card mb-3">
+					  <div class="card-header fw-bold fs-6">
+					    <i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동
+					  </div>
+					  <div class="card-body">
+					    <h5 class="card-title">Special title treatment</h5>
+					    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+					    <a href="#" class="btn btn-primary">Go somewhere</a>
+					  </div>
+					</div>
+				</div>
+			<!-- 본문 끝 -->
+			</div>
+			</div>
 				
+				</div>
+			</div>
 		</div>
-		
 	
 	</section>
 </main>

@@ -2,7 +2,7 @@
 <%@ page trimDirectiveWhitespaces ="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!-- 왼쪽 사이드바 -->	
+<!-- brief 사이드바 -->	
 	<ul class="nav navbar-nav flex-column mt-3 text-center">
 		<li class="nav-item">
 			<a href="${pageContext.request.contextPath}/" class="nav-link text-white p-3 mb-2 current"><i class="fas fa-home text-white fa-lg mr-3"></i></a>
@@ -20,4 +20,4 @@
 		</li>
 	</ul>
 
-<!-- 왼쪽 사이드바 끝 -->
+<!-- brief 사이드바 끝 -->
