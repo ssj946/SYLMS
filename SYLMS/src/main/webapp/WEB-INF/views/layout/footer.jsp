@@ -7,6 +7,11 @@
 	<div class="col-xl-2 col-lg-3 col-md-4 bg-black pt-1">
 	</div>
 		<div class="col-xl-10 col-lg-9 col-md-8 ms-auto">
+<<<<<<< HEAD
+			<div class="row"> 
+				
+			</div>
+=======
 		<nav>
 				<ul>
 				    <li><a href="#">SPRING 정책 및 약관</a></li>
@@ -24,6 +29,7 @@
 				    <li>© SPRING Corp.</li>
 				</ul>
 				</nav>
+>>>>>>> branch 'main' of https://github.com/ssj946/SYLMS.git
 		</div>
 	</div>
 </div>
