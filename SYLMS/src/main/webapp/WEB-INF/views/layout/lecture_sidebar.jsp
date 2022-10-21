@@ -14,7 +14,7 @@
 				<div class="collapse navbar-collapse" id="lec_info" >
 				<ul>
 					<li class="nav-item">
-						<a class="nav-link text-white p-3 mb-2 current" href="#">
+						<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/syllabus.do">
 						 <i class="fas fa-map text-white fa-lg mr-3"></i>&nbsp;수업계획서
 						 </a>
 					</li>	
@@ -23,7 +23,7 @@
 		</li>
 		
 		<li class="nav-item">
-		<a class="nav-link text-white p-3 mb-2 current" href="#" ><i class="fas fa-microphone text-white fa-lg mr-3"></i>&nbsp;공지사항</a>
+		<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/notice.do" ><i class="fas fa-microphone text-white fa-lg mr-3"></i>&nbsp;공지사항</a>
 		</li>
 		
 		<li class="nav-item dropdown">
@@ -33,7 +33,7 @@
 				<div class="collapse navbar-collapse" id="lec_attend" >
 				<ul>
 					<li class="nav-item">
-						<a class="nav-link text-white p-3 mb-2 current" href="#">
+						<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/attend.do">
 						 <i class="fas fa-hand text-white fa-lg mr-3"></i>&nbsp;출석조회
 						 </a>
 					</li>
@@ -54,13 +54,13 @@
 				<div class="collapse navbar-collapse" id="lec_assign" >
 				<ul>
 					<li class="nav-item">
-						<a class="nav-link text-white p-3 mb-2 current" href="#">
+						<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/assignment.do">
 						 <i class="fas fa-pen-ruler text-white fa-lg mr-3"></i>&nbsp;과제게시판
 						 </a>
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link text-white p-3 mb-2 current" href="#">
+						<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/exam.do">
 						 <i class="fas fa-fire text-white fa-lg mr-3"></i>&nbsp;시험성적
 						 </a>
 					</li>		
@@ -75,19 +75,19 @@
 				<div class="collapse navbar-collapse" id="lec_community" >
 				<ul>
 					<li class="nav-item">
-						<a class="nav-link text-white p-3 mb-2 current" href="#">
+						<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/qna.do">
 						 <i class="fas fa-clipboard-question text-white fa-lg mr-3"></i>&nbsp;질의응답
 						 </a>
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link text-white p-3 mb-2 current" href="#">
+						<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/general.do">
 						 <i class="fas fa-poo text-white fa-lg mr-3"></i>&nbsp;자유게시판
 						 </a>
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link text-white p-3 mb-2 current" href="#">
+						<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/debate.do">
 						 <i class="fas fa-comments text-white fa-lg mr-3"></i>&nbsp;토론게시판
 						 </a>
 					</li>		

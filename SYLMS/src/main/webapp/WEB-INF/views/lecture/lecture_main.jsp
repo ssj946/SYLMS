@@ -25,7 +25,7 @@ list-style: none;
 <main>
 <section>
 	<div class="container-fluid">
-		<div class="row" style="line-height: 1.8rem">&nbsp;</div>
+		<div class="row" style="line-height: 1.5rem">&nbsp;</div>
 		<div class="row">
 			<div class="col-lg-1 sidebar" >
 			<!-- brief 사이드바 자리 -->
