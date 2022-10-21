@@ -5,7 +5,7 @@
 <!-- 강의실 사이드바 -->		
 	<ul class="nav navbar-nav flex-column mt-3">
 		<li class="nav-item">
-			<a href="${pageContext.request.contextPath}/" class="nav-link text-white p-3 mb-2 current"> <i class="fas fa-home text-white fa-lg mr-3"></i>&nbsp;대쉬 보드</a>
+			<a href="${pageContext.request.contextPath}/lecture/classroom.do" class="nav-link text-white p-3 mb-2 current"> <i class="fas fa-home text-white fa-lg mr-3"></i>&nbsp;강의실 홈</a>
 		</li>
 		<li class="nav-item dropdown">
 			<button class="nav-link text-white p-3 mb-2 current navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#lec_info" aria-controls="lec_info" aria-expanded="false" aria-label="Toggle navigation">
