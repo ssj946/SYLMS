@@ -25,9 +25,9 @@ list-style: none;
 <main>
 <section>
 	<div class="container-fluid">
-		<div class="row">&nbsp;</div>
+		<div class="row" style="line-height: 1.8rem">&nbsp;</div>
 		<div class="row">
-			<div class="col-lg-1 sidebar">
+			<div class="col-lg-1 sidebar" >
 			<!-- brief 사이드바 자리 -->
 			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
 			</div>
@@ -38,12 +38,12 @@ list-style: none;
 			</div>
 			<div class="row">
 			<!-- 강의 사이드바 자리 -->
-			<div class="col-lg-2 sidebar">
+			<div class="col-lg-2 sidebar" style="box-shadow: none; height: 150vh;">
 			<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
 			</div>
 			
 			<!-- 본문 -->
-			<div class="col-lg-10 gap-3">
+			<div class="col-lg-10 gap-3 ms-auto">
 				<div class="ms-1 me-1 pt-3 mt-3 mb-5">
 					<div class="card mb-3">
 					  <div class="card-header fw-bold fs-6">
@@ -91,6 +91,17 @@ list-style: none;
 					
 					<div class="card mb-3">
 					  <div class="card-header fw-bold fs-6">
+					    <i class="fas fa-clipboard-question fa-lg"></i>&nbsp;질의 응답
+					  </div>
+					  <div class="card-body">
+					    <h5 class="card-title">Special title treatment</h5>
+					    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+					    <a href="#" class="btn btn-primary">Go somewhere</a>
+					  </div>
+					</div>
+					
+					<div class="card mb-3">
+					  <div class="card-header fw-bold fs-6">
 					    <i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동
 					  </div>
 					  <div class="card-body">
@@ -99,10 +110,12 @@ list-style: none;
 					    <a href="#" class="btn btn-primary">Go somewhere</a>
 					  </div>
 					</div>
+					
 				</div>
 			<!-- 본문 끝 -->
 			</div>
 			</div>
+
 				
 				</div>
 			</div>

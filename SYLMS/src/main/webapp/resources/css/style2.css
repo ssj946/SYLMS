@@ -65,10 +65,10 @@ textarea:focus, input:focus {
 	outline: none;
 }
 .sidebar{
-	height: 200vh;
+	height:100vh;
 	background:  linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.9));
 	background-position: center;
-	background-repeat: repeat-y;
+	background-repeat: no-repeat;
 	background-size: cover;
 	box-shadow: 5px 7px 25px #999;
 }
