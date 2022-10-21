@@ -25,7 +25,7 @@
 
 		<div class="row">&nbsp;</div>
 		<div class="row">
-			<div class="col-xl-2 col-lg-3 col-md-4 sidebar pt-1">
+			<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1">
 			<!-- 왼쪽 사이드바 자리 -->
 			<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp"/>
 			</div>

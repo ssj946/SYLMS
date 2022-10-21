@@ -64,14 +64,7 @@ a:hover, a:active{ text-decoration: underline; cursor: pointer; color: #F28011; 
 textarea:focus, input:focus {
 	outline: none;
 }
-.sidebar{
-	height:100vh;
-	background:  linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.9));
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	box-shadow: 5px 7px 25px #999;
-}
+
 .current:hover{
 	background-color:#f44336;
 	border-radius: 7px;

@@ -27,7 +27,7 @@ list-style: none;
 	<div class="container-fluid">
 		<div class="row" style="line-height: 1.5rem">&nbsp;</div>
 		<div class="row">
-			<div class="col-lg-1 sidebar" >
+			<div class="col-lg-1 bg-dark bg-gradient" >
 			<!-- brief 사이드바 자리 -->
 			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
 			</div>
@@ -38,7 +38,7 @@ list-style: none;
 			</div>
 			<div class="row">
 			<!-- 강의 사이드바 자리 -->
-			<div class="col-lg-2 sidebar" style="box-shadow: none; height: 150vh;">
+			<div class="col-lg-2 bg-dark bg-gradient" style="box-shadow: none; height: 150vh;">
 			<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
 			</div>
 			
@@ -46,7 +46,7 @@ list-style: none;
 			<div class="col-lg-10 gap-3 ms-auto">
 				<div class="ms-1 me-1 pt-3 mt-3 mb-5">
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6">
+					  <div class="card-header fw-bold fs-6 bg-primary bg-gradient text-white">
 					    강좌 개요
 					  </div>
 					  <div class="card-body m-auto">
@@ -79,8 +79,8 @@ list-style: none;
 					</div>
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6">
-					    <i class="fas fa-pen fa-lg"></i>&nbsp;이번주 강의
+					  <div class="card-header fw-bold fs-6 bg-primary bg-gradient text-white">
+					    <i class="fas fa-pen fa-lg bg-primary"></i>&nbsp;이번주 강의
 					  </div>
 					  <div class="card-body">
 					    <h5 class="card-title">Special title treatment</h5>
@@ -90,7 +90,7 @@ list-style: none;
 					</div>
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6">
+					  <div class="card-header fw-bold fs-6 bg-primary bg-gradient text-white">
 					    <i class="fas fa-clipboard-question fa-lg"></i>&nbsp;질의 응답
 					  </div>
 					  <div class="card-body">
@@ -101,7 +101,7 @@ list-style: none;
 					</div>
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6">
+					  <div class="card-header fw-bold fs-6 bg-primary bg-gradient text-white">
 					    <i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동
 					  </div>
 					  <div class="card-body">
