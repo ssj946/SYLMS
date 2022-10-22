@@ -11,6 +11,34 @@ public class MessegeDAO {
 	private Connection conn = DBConn.getConnection();
 	
 	
+	public void sendMessege(MessegeDTO dto) throws SQLException{
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = "INSERT INTO messege(messegeCode, content, sendDate, readDate, sendId, receiveId) "
+					+ " VALUES (messege_seq.NEXTVAL, ?, SYSDATE, SYSDATE, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getContent());
+			pstmt.setString(2, dto.getSendId());
+			pstmt.setString(3, dto.getReceiveId());
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+		}
+	}
+	
+	
 	// 데이터 개수
 		public int dataCount() {
 			int result = 0;

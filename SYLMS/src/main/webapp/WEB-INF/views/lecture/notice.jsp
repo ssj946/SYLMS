@@ -27,7 +27,7 @@ list-style: none;
 	<div class="container-fluid">
 		<div class="row" style="line-height: 1.5rem">&nbsp;</div>
 		<div class="row">
-			<div class="col-lg-1 sidebar" >
+			<div class="col-lg-1 bg-dark bg-gradient" >
 			<!-- brief 사이드바 자리 -->
 			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
 			</div>
@@ -38,7 +38,7 @@ list-style: none;
 			</div>
 			<div class="row">
 			<!-- 강의 사이드바 자리 -->
-			<div class="col-lg-2 sidebar" style="box-shadow: none; height: 150vh;">
+			<div class="col-lg-2 bg-dark bg-gradient" style="box-shadow: none; height: 150vh;">
 			<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
 			</div>
 			
