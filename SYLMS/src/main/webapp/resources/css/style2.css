@@ -70,3 +70,6 @@ textarea:focus, input:focus {
 	border-radius: 7px;
 	box-shadow: 2px 5px 10px #111;
 }
+.bg-navy{
+	background-color: #0064CD;
+}
