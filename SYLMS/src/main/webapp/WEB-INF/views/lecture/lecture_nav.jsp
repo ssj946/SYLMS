@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -49,12 +49,11 @@
 												<ul
 													class="list-group list-group-flush group-item-action active"
 													aria-current="true">
+													<c:forEach var="dto" items="${list}" varStatus="status">
 													<li class="list-group-item list-group-item-action"><a
-														href="#">과목</a></li>
-													<li class="list-group-item list-group-item-action"><a
-														href="#">과목</a></li>
-													<li class="list-group-item list-group-item-action"><a
-														href="#">과목</a></li>
+														href="${pageContext.request.contextPath}/lecture/classroom.do?subjectNo=${dto.subjectNo}">${dto.subjectName}</a>	
+													</li>
+													</c:forEach>
 												</ul>
 											</div>
 										</div>

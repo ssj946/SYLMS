@@ -1,12 +1,15 @@
 package com.lecture;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.member.SessionInfo;
 import com.util.MyServlet;
 
 @WebServlet("/lecture/*")
@@ -18,10 +21,18 @@ public class LectureServlet extends MyServlet {
 		req.setCharacterEncoding("utf-8");
 
 		String uri = req.getRequestURI();
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		if(info==null) {
+			forward(req,resp,"/WEB-INF/views/member/login.jsp");
+			return;
+		}
 
 		// uri에 따른 작업 구분
 		if (uri.indexOf("main.do") != -1) {
-			lectureRoomForm(req, resp);
+			lectureNavForm(req, resp);
 		} else if (uri.indexOf("classroom.do") != -1) {
 			classroomForm(req, resp);
 		} else if (uri.indexOf("assignment.do") != -1) {
@@ -43,15 +54,31 @@ public class LectureServlet extends MyServlet {
 		}
 	}
 
-	protected void lectureRoomForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void lectureNavForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 강의실 메인화면
-		String path = "/WEB-INF/views/lecture/lecture_main.jsp";
+		LectureDAO dao= new LectureDAO();
+		List<LectureDTO> list= null;
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		try {
+			list= dao.registerSubject(info.getUserId());
+			
+			req.setAttribute("list", list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		String path = "/WEB-INF/views/lecture/lecture_nav.jsp";
 		forward(req, resp, path);
 	}
 	
 	protected void classroomForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 강의실
-		String path = "/WEB-INF/views/lecture/classroom.jsp";
+		String path = "/WEB-INF/views/lecture/lecture_main.jsp";
 		forward(req, resp, path);
 	}
 	

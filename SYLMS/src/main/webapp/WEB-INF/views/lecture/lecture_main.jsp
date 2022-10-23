@@ -14,6 +14,31 @@ ul{
 list-style: none;
 }
 </style>
+
+<script type="text/javascript">
+$(function(){
+	let w=$(".resultLayout").children(".card").length+1;
+	
+	$(".week_plus_btn").click(function(){
+		$(".resultLayout").append('<div class="card mb-2"><h5 class="card-header">'+w+'주차</h5><div class="card-body"> 내용을 입력하세요</div></div>');
+		w++;
+	});	
+	
+	$(".week_del_btn").click(function(){
+		$(".resultLayout").children(".card").last().remove();
+		w--;
+	});	
+	
+	$(".content_plus_btn").click(function(){
+		$(".resultLayout").children(".card").last().children(".card-body").empty();
+		$(".resultLayout").children(".card").last().children(".card-body").append('<textarea></textarea>');
+	});	
+	
+	$(".content_del_btn").click(function(){
+		
+	});	
+});
+</script>
 </head>
 
 <body>
@@ -104,8 +129,13 @@ list-style: none;
 					    <i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동
 					  </div>
 					  <div class="card-body">
-					    <h5 class="card-title">Special title treatment</h5>
-					    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+					    <div class="resultLayout"></div>
+					    <div class="btn-group ms-auto" role="group" aria-label="Basic mixed styles example">
+						  <button type="button" class="btn btn-outline-primary week_plus_btn">주차 추가</button>
+						  <button type="button" class="btn btn-outline-danger week_del_btn">주차 삭제</button>
+						  <button type="button" class="btn btn-outline-primary content_plus_btn">내용 추가</button>
+						  <button type="button" class="btn btn-outline-danger content_del_btn">내용 삭제</button>
+						</div>
 					  </div>
 					</div>
 					
