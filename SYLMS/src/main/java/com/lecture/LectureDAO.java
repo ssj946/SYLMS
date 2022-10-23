@@ -67,6 +67,35 @@ public class LectureDAO {
 		return list;
 		
 	}
+	
+	public LectureDTO readSubject(String subjectNo) throws SQLException{
+		
+		PreparedStatement pstmt= null;
+		String sql;
+		ResultSet rs=null;
+		LectureDTO dto = new LectureDTO();
+		try {
+			sql= "SELECT s.id, name, subjectname, credit, TO_CHAR(syear,'YYYY')syear, semester FROM subject s "
+					+ " JOIN account a ON a.id=s.id "
+					+ " WHERE subjectNo= ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, subjectNo);
+			rs= pstmt.executeQuery();
+			if(rs.next()) {
+				dto.setProfessorname(rs.getString("name"));
+				dto.setSubjectName(rs.getString("subjectname"));
+				dto.setCredit(Integer.parseInt(rs.getString("credit")));
+				dto.setSemester(Integer.parseInt(rs.getString("semester")));
+				dto.setSyear(Integer.parseInt(rs.getString("syear")));
+			}
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return dto; 
+	}
 
 }
 

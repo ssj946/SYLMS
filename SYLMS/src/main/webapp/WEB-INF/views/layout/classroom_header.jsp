@@ -2,34 +2,9 @@
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-
-<style type="text/css">
-    .container {
-    	padding-left: 90px;
-	    line-height: 250px;
-   		width: 100%;
-    	height: 250px;
-		background: #eee;
-    	text-align: left;
-	}
-	.card-img { width: 90px; height: 90px;}
-	
-	.professor{
-	font-weight: 900;
-	font-size: 25px;
-}
-</style>
-	</head>
-	<body>
-    	<div class="container">
-    		<div class="professor">
-    		<img src="${pageContext.request.contextPath}/resources/images/profile.png" class="card-img">
-    		김정권교수
-    		</div>
-		</div>
-	</body>
-</html>
+ 		<div class="m-auto text-center card pt-2">
+	 		<h6 class="text-start">&nbsp;&nbsp;${syear}년도 ${semester}학기</h6>
+	 		<h1 class="fw-bold">${subjectName}</h1>
+	 		<h5><i class="fas fa-chalkboard-user fa-lg"></i> ${professorName} 교수님</h5>
+	 		<br>
+ 		</div>

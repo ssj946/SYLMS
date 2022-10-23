@@ -57,7 +57,7 @@ $(function(){
 			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
 			</div>
 			<div class="col-lg-11 ms-auto">
-			<div class="row">
+			<div class="row p-4">
 			<!-- classroom header 자리 -->
 			<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
 			</div>
