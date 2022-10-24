@@ -20,7 +20,7 @@ $(function(){
 	let w=$(".resultLayout").children(".card").length+1;
 	
 	$(".week_plus_btn").click(function(){
-		$(".resultLayout").append('<div class="card mb-2"><h5 class="card-header">'+w+'주차</h5><div class="card-body"> 내용을 입력하세요</div></div>');
+		$(".resultLayout").append('<div class="card mb-2"><h5 class="card-header">'+w+'주차</h5><div class="card-body">  <textarea class="form-control" rows="3"></textarea></div></div>');
 		w++;
 	});	
 	
@@ -30,12 +30,11 @@ $(function(){
 	});	
 	
 	$(".content_plus_btn").click(function(){
-		$(".resultLayout").children(".card").last().children(".card-body").empty();
-		$(".resultLayout").children(".card").last().children(".card-body").append('<textarea></textarea>');
+		$(".resultLayout").children(".card").last().children(".card-body").append('<br><textarea class="form-control" row="3"></textarea>');
 	});	
 	
 	$(".content_del_btn").click(function(){
-		
+		$(".resultLayout").children(".card").last().children(".card-body").children("textarea").last().remove();
 	});	
 });
 </script>
@@ -130,7 +129,7 @@ $(function(){
 					  </div>
 					  <div class="card-body">
 					    <div class="resultLayout"></div>
-					    <div class="btn-group ms-auto" role="group" aria-label="Basic mixed styles example">
+					    <div class="btn-group ms-auto " role="group" aria-label="Basic mixed styles example">
 						  <button type="button" class="btn btn-outline-primary week_plus_btn">주차 추가</button>
 						  <button type="button" class="btn btn-outline-danger week_del_btn">주차 삭제</button>
 						  <button type="button" class="btn btn-outline-primary content_plus_btn">내용 추가</button>

@@ -58,14 +58,16 @@ public class LectureServlet extends MyServlet {
 		// 강의실 메인화면
 		LectureDAO dao= new LectureDAO();
 		List<LectureDTO> list= null;
+		List<LectureDTO> hlist= null;
 		
 		HttpSession session =req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
 		try {
 			list= dao.registerSubject(info.getUserId());
-			
+			hlist= dao.registerHistory(info.getUserId());
 			req.setAttribute("list", list);
+			req.setAttribute("hlist", hlist);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
