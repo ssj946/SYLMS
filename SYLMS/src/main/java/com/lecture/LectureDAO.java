@@ -83,7 +83,9 @@ public class LectureDAO {
 					+ " ON s.subjectNo=r.subjectNo "
 					+ " JOIN account a "
 					+ " ON a.id=studentcode "
-					+ " WHERE STUDENTcode = ?";
+					+ " WHERE STUDENTcode = ? "
+					+ " ORDER BY syear, semester ";
+
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1,studentcode);
 			
