@@ -54,12 +54,12 @@
 													<th>학기</th>												
 												</tr>
 													<c:forEach var="dto" items="${list}" varStatus="status">
-												<tr class="text-center">													
-													<td><a href="${pageContext.request.contextPath}/lecture/classroom.do?subjectNo=${dto.subjectNo}">${dto.subjectName}</a>
-													<td>${dto.credit}</td>
-													<td>${dto.syear}</td>
-													<td>${dto.semester}</td>
-												</tr>
+														<tr class="text-center">													
+															<td><a href="${pageContext.request.contextPath}/lecture/classroom.do?subjectNo=${dto.subjectNo}">${dto.subjectName}</a>
+															<td>${dto.credit}</td>
+															<td>${dto.syear}</td>
+															<td>${dto.semester}</td>
+														</tr>
 													</c:forEach>
 												</table>
 											</div>

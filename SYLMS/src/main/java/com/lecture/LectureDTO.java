@@ -9,6 +9,59 @@ private String studentcode;
 private int semester;
 private String studentname;
 private String professorname;
+
+private String bbsNum;
+private String title;
+private String content;
+private String reg_date;
+private String hitCount;
+
+private String week;
+private String part;
+
+
+public String getWeek() {
+	return week;
+}
+public void setWeek(String week) {
+	this.week = week;
+}
+public String getPart() {
+	return part;
+}
+public void setPart(String part) {
+	this.part = part;
+}
+public String getBbsNum() {
+	return bbsNum;
+}
+public void setBbsNum(String bbsNum) {
+	this.bbsNum = bbsNum;
+}
+public String getTitle() {
+	return title;
+}
+public void setTitle(String title) {
+	this.title = title;
+}
+public String getContent() {
+	return content;
+}
+public void setContent(String content) {
+	this.content = content;
+}
+public String getReg_date() {
+	return reg_date;
+}
+public void setReg_date(String reg_date) {
+	this.reg_date = reg_date;
+}
+public String getHitCount() {
+	return hitCount;
+}
+public void setHitCount(String hitCount) {
+	this.hitCount = hitCount;
+}
 public String getSubjectNo() {
 	return subjectNo;
 }

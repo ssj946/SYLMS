@@ -83,6 +83,8 @@ public class LectureServlet extends MyServlet {
 		LectureDAO dao= new LectureDAO();
 		String SubjectNo = req.getParameter("subjectNo");
 		LectureDTO dto = new LectureDTO();
+		List<LectureDTO> list=null;
+		List<LectureDTO> wlist=null;
 		try {
 			dto= dao.readSubject(SubjectNo);
 			
@@ -92,6 +94,11 @@ public class LectureServlet extends MyServlet {
 			req.setAttribute("credit", dto.getCredit());
 			req.setAttribute("syear", dto.getSyear());
 			
+			list = dao.readLecture(SubjectNo);
+			req.setAttribute("lectureList", list);
+			
+			wlist=dao.thisweekLecture(SubjectNo);
+			req.setAttribute("thisweekList", wlist);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

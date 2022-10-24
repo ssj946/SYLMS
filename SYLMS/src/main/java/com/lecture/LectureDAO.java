@@ -152,10 +152,118 @@ public class LectureDAO {
 	
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (Exception e2) {
+				}
+			}
+			
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
 		}
 		
 		return dto; 
 	}
+	
+	//강의 목록
+	public List<LectureDTO> readLecture(String subjectNo) throws SQLException{
+		List<LectureDTO> list =new ArrayList<>();
+		PreparedStatement pstmt= null;
+		String sql;
+		ResultSet rs=null;
+		
+		try {
+			sql="SELECT bbsNum, subjectNo, title, content, To_CHAR(reg_date,'YYYY-MM-DD') reg_date, week, part FROM LECTURE_BBS WHERE subjectNo=?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, subjectNo);
+			
+			rs= pstmt.executeQuery();
+			
+			while(rs.next()) {
+				LectureDTO dto = new LectureDTO();
+				dto.setBbsNum(rs.getString("bbsNum"));
+				dto.setTitle(rs.getString("title"));
+				dto.setContent(rs.getString("content"));
+				dto.setReg_date(rs.getString("reg_date"));
+				dto.setWeek(rs.getString("week"));
+				dto.setPart(rs.getString("part"));
+				
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (Exception e2) {
+				}
+			}
+			
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+		
+		return list;
+	}
+	
+	//이번주 강의 목록
+	public List<LectureDTO> thisweekLecture(String subjectNo) throws SQLException{
+		List<LectureDTO> list =new ArrayList<>();
+		PreparedStatement pstmt= null;
+		String sql;
+		ResultSet rs=null;
+		
+		try {
+			sql="SELECT bbsNum, subjectNo, title, content, To_CHAR(reg_date,'YYYY-MM-DD') reg_date, week, part "
+					+ "FROM LECTURE_BBS WHERE subjectNo = ? AND SYSDATE-reg_date < 7";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, subjectNo);
+			
+			rs= pstmt.executeQuery();
+			
+			while(rs.next()) {
+				LectureDTO dto = new LectureDTO();
+				dto.setBbsNum(rs.getString("bbsNum"));
+				dto.setTitle(rs.getString("title"));
+				dto.setContent(rs.getString("content"));
+				dto.setReg_date(rs.getString("reg_date"));
+				dto.setWeek(rs.getString("week"));
+				dto.setPart(rs.getString("part"));
+				
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (Exception e2) {
+				}
+			}
+			
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+		
+		return list;
+	}
 
 }
+
 

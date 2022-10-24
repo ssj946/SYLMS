@@ -108,8 +108,22 @@ $(function(){
 					    <i class="fas fa-pen fa-lg bg-navy"></i>&nbsp;이번주 강의
 					  </div>
 					  <div class="card-body">
-					    <h5 class="card-title">Special title treatment</h5>
-					    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+					  	<table class="table text-center thisweekList">
+					    <tr>
+					    	<th>주차</th>
+					    	<th>차시</th>
+					    	<th>제목</th>
+					    	<th>등록일</th>
+					    </tr>
+					    <c:forEach var="dto" items="${thisweekList}" varStatus="status">
+					    	<tr>
+					    	<td>${dto.week}</td>
+					    	<td>${dto.part}</td>
+					    	<td><a href="#">${dto.title}</a></td>
+					    	<td> ${dto.reg_date}</td>
+					    	</tr>
+					    </c:forEach>
+					    </table>
 					  </div>
 					</div>
 					
@@ -128,7 +142,24 @@ $(function(){
 					    <i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동
 					  </div>
 					  <div class="card-body">
-					    <div class="resultLayout"></div>
+					    <div class="resultLayout">
+					    <table class="table text-center">
+					    <tr>
+					    	<th>주차</th>
+					    	<th>차시</th>
+					    	<th>제목</th>
+					    	<th>등록일</th>
+					    </tr>
+					    <c:forEach var="dto" items="${lectureList}" varStatus="status">
+					    	<tr>
+					    	<td>${dto.week}</td>
+					    	<td>${dto.part}</td>
+					    	<td><a href="#">${dto.title}</a></td>
+					    	<td> ${dto.reg_date}</td>
+					    	</tr>
+					    </c:forEach>
+					    </table>
+					    </div>
 					    <div class="btn-group ms-auto " role="group" aria-label="Basic mixed styles example">
 						  <button type="button" class="btn btn-outline-primary week_plus_btn">주차 추가</button>
 						  <button type="button" class="btn btn-outline-danger week_del_btn">주차 삭제</button>
