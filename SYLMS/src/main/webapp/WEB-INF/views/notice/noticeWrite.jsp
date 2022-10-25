@@ -37,7 +37,7 @@ function sendOk() {
         return;
     }
 
-    f.action = "${pageContext.request.contextPath}/lecture/notice/${mode}_ok.do";
+	f.action = "${pageContext.request.contextPath}/notice/${mode}_ok.do"; 
     f.submit();
 }
 </script>
@@ -84,7 +84,7 @@ function sendOk() {
 						<tr>
 							<td class="table-light col-sm-2" scope="row">제 목</td>
 							<td>
-								<input type="text" name="subject" class="form-control" value="${dto.subject}">
+								<input type="text" name="title" maxlength="100" class="form-control" value="${dto.title}">
 							</td>
 						</tr>
 	        
@@ -106,18 +106,12 @@ function sendOk() {
 					<table class="table table-borderless">
 	 					<tr>
 							<td class="text-center">
-								<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='update'?'수정완료':(mode=='reply'? '답변완료':'등록하기')}&nbsp;<i class="bi bi-check2"></i></button>
+								<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
 								<button type="reset" class="btn btn-light">다시입력</button>
-								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/notice.do';">${mode=='update'?'수정취소':(mode=='reply'? '답변취소':'등록취소')}&nbsp;<i class="bi bi-x"></i></button>
+								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/notice.do?size=${size}';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
+								<input type="hidden" name="size" value="${size}">
 								<c:if test="${mode=='update'}">
-									<input type="hidden" name="boardNum" value="${dto.boardNum}">
-									<input type="hidden" name="page" value="${page}">
-								</c:if>
-								<c:if test="${mode=='reply'}">
-									<input type="hidden" name="groupNum" value="${dto.groupNum}">
-									<input type="hidden" name="orderNo" value="${dto.orderNo}">
-									<input type="hidden" name="depth" value="${dto.depth}">
-									<input type="hidden" name="parent" value="${dto.boardNum}">
+									<input type="hidden" name="articleNo" value="${dto.articleNo}">
 									<input type="hidden" name="page" value="${page}">
 								</c:if>
 							</td>

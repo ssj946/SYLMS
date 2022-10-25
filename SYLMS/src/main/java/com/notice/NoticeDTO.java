@@ -9,11 +9,21 @@ public class NoticeDTO {
 	private String content;
 	private String reg_date;
 	private int hitCount;
+	
+	
 	private String savefileName;
 	private String originalfileName;
 	private long fileSize;
 	
+	private String fileNo;
 	
+	private String[] saveFiles;
+	private String[] originalFiles;
+	private long gap;
+	
+	private String name;
+	
+
 	public String getArticleNo() {
 		return articleNo;
 	}
@@ -81,9 +91,39 @@ public class NoticeDTO {
 		this.fileSize = fileSize;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	
+	public long getGap() {
+		return gap;
+	}
+	public void setGap(long gap) {
+		this.gap = gap;
+	}
 	
+	public String getFileNo() {
+		return fileNo;
+	}
+	public void setFileNo(String fileNo) {
+		this.fileNo = fileNo;
+	}
+	public String[] getSaveFiles() {
+		return saveFiles;
+	}
+	public void setSaveFiles(String[] saveFiles) {
+		this.saveFiles = saveFiles;
+	}
+	public String[] getOriginalFiles() {
+		return originalFiles;
+	}
+	public void setOriginalFiles(String[] originalFiles) {
+		this.originalFiles = originalFiles;
+	}
 	
 	
 }

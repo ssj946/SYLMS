@@ -78,15 +78,14 @@ function searchList() {
 					</thead>
 					
 					<tbody>
-						<c:forEach var="dto" items="${list}" varStatus="status">
+						<c:forEach var="dto" items="${notice}" varStatus="status">
 							<tr>
 								<td>${dataCount - (page-1) * size - status.index}</td>
 								<td class="left">
-									<c:forEach var="n" begin="1" end="${dto.depth }">&nbsp;&nbsp;</c:forEach>
-									<c:if test="${dto.depth!=0}">└&nbsp;</c:if>
-									<a href="${articleUrl}&boardNum=${dto.boardNum}" class="text-reset">${dto.subject}</a>
-								</td>
-								<td>${dto.userName}</td>
+									<a href="${articleUrl}&num=${dto.articleNo}" class="text-reset">${dto.title}</a>
+										<c:if test="${dto.gap<2}"><img src="${pageContext.request.contextPath}/resources/images/new.png"></c:if>
+									</td>
+								<td>${dto.name}</td>
 								<td>${dto.reg_date}</td>
 								<td>${dto.hitCount}</td>
 							</tr>
@@ -100,16 +99,15 @@ function searchList() {
 
 				<div class="row board-list-footer">
 					<div class="col">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/notice.do';">새로고침</button>
+						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/notice.do';">새로고침</button>
 					</div>
 					<div class="col-6 text-center">
-						<form class="row" name="searchForm" action="${pageContext.request.contextPath}/lecture/list.do" method="post">
+						<form class="row" name="searchForm" action="${pageContext.request.contextPath}/notice/notice.do" method="post">
 							<div class="col-auto p-1">
 								<select name="condition" class="form-select">
 									<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>
-									<option value="userName" ${condition=="userName"?"selected='selected'":""}>작성자</option>
 									<option value="reg_date" ${condition=="reg_date"?"selected='selected'":""}>등록일</option>
-									<option value="subject" ${condition=="subject"?"selected='selected'":""}>제목</option>
+									<option value="title" ${condition=="title"?"selected='selected'":""}>제목</option>
 									<option value="content" ${condition=="content"?"selected='selected'":""}>내용</option>
 								</select>
 							</div>
@@ -122,7 +120,7 @@ function searchList() {
 						</form>
 					</div>
 					<div class="col text-end">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/notice_write.do';">글올리기</button>
+							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/noticeWrite.do';">글올리기</button>
 					</div>
 				</div>
 
