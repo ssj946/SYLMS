@@ -90,18 +90,20 @@ input[type=checkbox], input[type=radio] { vertical-align: middle; }
 </style>
 
 <script type="text/javascript">
-/*
-function itemAdd() {
-	const f = document.noteForm;
-	const item = f.itemLeft;
-	
-	item[item.length] = new Option(); // text, value 
+
+function check() {
+    const f = document.noteForm;
+	let str;
+
+    str = f.content.value.trim();
+    if(!str || str === "<p><br></p>") {
+        alert("내용을 입력하세요. ");
+        f.content.focus();
+        return false;
+    }
+
+    f.action = "${pageContext.request.contextPath}/messege/send_ok.do";
 }
-*/
-
-// window.onload = () => itemAdd();
-window.addEventListener('load', () => itemAdd());
-
 // 선택된 option을 좌 또는 우로 이동
 function itemMove(pos) {
 	const f = document.noteForm;
@@ -147,6 +149,9 @@ function itemAllMove(pos) {
 		source[0] = null; // 삭제
 	}
 }
+
+
+
 </script>
 </head>
 <body>
@@ -161,7 +166,7 @@ function itemAllMove(pos) {
 
 				<div class="row">&nbsp;</div>
 				<div class="row">
-					<div class="col-xl-2 col-lg-3 col-md-4 sidebar pt-1">
+					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1">
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 					</div>
@@ -190,9 +195,12 @@ function itemAllMove(pos) {
 												<td class="left">
 													<select name="itemLeft"
 													multiple="multiple" class="form-select"
-													style="width: 130px; height: 150px;">
+													style="width: 130px; height: 150px;">	
 													
-													 													
+													<c:forEach var="vo" items="${listMember}">
+														<option value="${vo.id}">${vo.name}(${vo.id})</option>
+													</c:forEach>
+																	
 													</select>
 												</td>
 												<td class="center">
@@ -218,16 +226,15 @@ function itemAllMove(pos) {
 												<td colspan="3"><span>메시지</span></td>
 											</tr>
 											<tr>
-												<td colspan="3" class="left"><textarea name="msg"
-														class="form-control" style="height: 80px; width: 98%;"></textarea>
+												<td colspan="3" class="left">
+												<textarea name="msg" class="form-control" style="height: 80px; width: 98%;">${vo.content}</textarea>
 												</td>
 											</tr>
 										</table>
 										<table class="table">
 											<tr>
 												<td class="right">
-													<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/message/send_ok.do';">
-														쪽지보내기</button>
+													<button type="submit" class="btn">쪽지보내기</button>
 														<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/message/receive.do';">
 														쪽지함 확인하기</button>
 												</td>
