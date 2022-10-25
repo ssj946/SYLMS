@@ -43,5 +43,5 @@ public String getScheduleNum() {
 public void setScheduleNum(String scheduleNum) {
 	this.scheduleNum = scheduleNum;
 }
-   
 }
+
