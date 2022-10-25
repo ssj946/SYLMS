@@ -56,8 +56,9 @@ $(function(){
 			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
 			</div>
 			<div class="col-lg-11 ms-auto">
-			<div class="row p-4">
+			
 			<!-- classroom header 자리 -->
+			<div class="row">
 			<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
 			</div>
 			<div class="row">
@@ -120,7 +121,7 @@ $(function(){
 					    	<td>${dto.week}</td>
 					    	<td>${dto.part}</td>
 					    	<td><a href="#">${dto.title}</a></td>
-					    	<td> ${dto.reg_date}</td>
+					    	<td>${dto.reg_date}</td>
 					    	</tr>
 					    </c:forEach>
 					    </table>

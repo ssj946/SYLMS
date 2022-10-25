@@ -144,6 +144,22 @@ public class LectureServlet extends MyServlet {
 
 	protected void syllabusForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 강의계획서
+		LectureDAO dao= new LectureDAO();
+		String SubjectNo = req.getParameter("subjectNo");
+		
+		LectureDTO dto = new LectureDTO();
+		try {
+			dto= dao.readSubject(SubjectNo);
+			
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("credit", dto.getCredit());
+			req.setAttribute("syear", dto.getSyear());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		String path = "/WEB-INF/views/lecture/syllabus.jsp";
 		forward(req, resp, path);
 	}
