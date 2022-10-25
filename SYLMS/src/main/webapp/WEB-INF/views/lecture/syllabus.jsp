@@ -43,9 +43,10 @@ list-style: none;
 			</div>
 			
 			<!-- 본문 -->
-			<div class="col-lg-10 gap-3 ms-auto">
+			 	<div class="col-lg-10 gap-3 ms-auto">
 				<div class="ms-1 me-1 pt-3 mt-3 mb-5">
-					<h2>시간표 및 수업계획조회 화면</h2>
+					<h3><i class="fas fa-clipboard-question  fa-lg mr-3"></i> 수업계획서 </h3>
+					
 					</div>
 					<div class="panel panel-info">
 						<div class="panel-heading">
@@ -66,21 +67,14 @@ list-style: none;
 							<select name="semester" class="form-control">
 								<option value="0" selected> -- 전체 -- </option>
 								<option value="1">2022년 2학기</option>
-								<option value="2">2022년 1학기</option>
-								<option value="3">2021년 2학기</option>
-								<option value="4">2021년 1학기</option>
-								<option value="5">2020년 2학기</option>
-								<option value="6">2020년 1학기</option>
-								<option value="7">2019년 2학기</option>
+				
 							</select>
 						</div>
 						<div class="form-group">
 							<label>전공선택</label>
 							<select class="form-control">
 								<option> -- 전체 -- </option>
-								<option>멀티미디어학과</option>
 								<option>컴퓨터소프트웨어학과</option>
-								<option>드론학과</option>
 							</select>
 						</div>
 					</form>
@@ -92,98 +86,36 @@ list-style: none;
 							<p>학과 : <strong>컴퓨터소프트웨어학과</strong></p>
 							<p></p>
 						</div>
-						<table class="table table-bordered">
-						<colgroup>
-							<col width="2%">
-							<col width="8%">
-							<col width="5%">
-							<col width="8%">
-							<col width="5%">
-							<col width="*%">
-							<col width="15%">
-							<col width="8%">
-							<col width="12%">
-						</colgroup> 
-						<thead>
-							<tr>
-								<th class="text-center">No</th>
-								<th class="text-center">과목번호</th>
-								<th class="text-center">학과번호</th>
-								<th class="text-center">이수구분</th>
-								<th class="text-center">학점</th>
-								<th class="text-center">강의명</th>
-								<th class="text-center">강의시간/강의실</th>
-								<th class="text-center">담당교수</th>
-								<th class="text-center">비고</th>
-								
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="text-center">1</td>
-								<td class="text-center">[A040]</td>
-								<td class="text-center"><a href="">P010001</a></td>
-								<td class="text-center">전공</td>
-								<td class="text-center">3</td>
-								<td class="text-center"><a href="">이산수학</a></td>
-								<td class="text-center">공학관301 월 4~6</td>
-								<td class="text-center"><a href="">박지윤</a></td>
-								<td class="text-center">
-									<button type="button" class="btn btn-warning btn-xs text-center">수업계획서</button>
-								</td>
-							</tr>
-							<tr>
-								<td class="text-center">2</td>
-								<td class="text-center">[A040]</td>
-								<td class="text-center"><a href="">P010731</a></td>
-								<td class="text-center">교양</td>
-								<td class="text-center">2</td>
-								<td class="text-center"><a href="">인터넷 마켓팅</a></td>
-								<td class="text-center">공학관 307 금 1~2</td>
-								<td class="text-center"><a href="">황정현</a></td>
-								<td class="text-center">
-									<button type="button" class="btn btn-warning btn-xs text-center">수업계획서</button>
-								</td>
-							</tr>
-							<tr>
-							<td class="text-center">4</td>
-								<td class="text-center">[A132]</td>
-								<td class="text-center"><a href="">J101001</a></td>
-								<td class="text-center">전공</td>
-								<td class="text-center">3</td>
-								<td class="text-center"><a href="">컴퓨터 네트워킹</a></td>
-								<td class="text-center">공학관307 수 1~3</td>
-								<td class="text-center"><a href="">김정길</a></td>
-								<td class="text-center">
-									<button type="button" class="btn btn-warning btn-xs text-center">수업계획서</button>
-								</td>
-								
-							</tr>
-							<tr>
-								<td class="text-center">4</td>
-								<td class="text-center">[D132]</td>
-								<td class="text-center"><a href="">J101001</a></td>
-								<td class="text-center">전공</td>
-								<td class="text-center">3</td>
-								<td class="text-center"><a href="">임베디드</a></td>
-								<td class="text-center">공학관305 수 4~6</td>
-								<td class="text-center"><a href="">김점구</a></td>
-								<td class="text-center">
-									<button type="button" class="btn btn-warning btn-xs text-center">수업계획서</button>
-								</td>
-							</tr>
+					
+					<div class="body-main">
+		        <div class="row board-list-header">
+		            <div class="col-auto me-auto">${dataCount}개(${page}/${total_page} 페이지)</div>
+		            <div class="col-auto">&nbsp;</div>
+		        </div>				
+				
+				<table class="table table-hover board-list">
+					<thead class="table-light">
+						<tr>
+							<th class="subjectNo">과목번호</th>
+							<th class="subjectName">과목명</th>
+							<th class="credit">취득학점</th>
+							<th class="departmentNum">학과번호</th>
+							<th class="id">교수번호</th>
+							<th class="scheduleNum">과목시간번호</th>
+						</tr>
+					</thead>		
+						<tbody>									
 						</tbody>
-					</table>
-					
-
-					
+					</table>				
+				</div>
+				</div>
+				</div>
 				</div>
 			<!-- 본문 끝 -->
 			</div>
 			</div>				
 				</div>
-			</div>
-		</div>
+		
 	
 	</section>
 </main>
