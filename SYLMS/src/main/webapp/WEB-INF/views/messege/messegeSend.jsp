@@ -91,7 +91,7 @@ input[type=checkbox], input[type=radio] { vertical-align: middle; }
 
 <script type="text/javascript">
 
-function check() {
+function sendOk() {
     const f = document.noteForm;
 	let str;
 
@@ -104,6 +104,12 @@ function check() {
 
     f.action = "${pageContext.request.contextPath}/messege/send_ok.do";
 }
+
+function check() {
+	const f = document.noteForm;
+	f.action = "${pageContext.request.contextPath}/messege/receive.do";
+}
+
 // 선택된 option을 좌 또는 우로 이동
 function itemMove(pos) {
 	const f = document.noteForm;
@@ -234,9 +240,8 @@ function itemAllMove(pos) {
 										<table class="table">
 											<tr>
 												<td class="right">
-													<button type="submit" class="btn">쪽지보내기</button>
-														<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/message/receive.do';">
-														쪽지함 확인하기</button>
+													<button type="submit" class="btn" onclick="sendOk()">쪽지보내기</button>
+													<button type="button" class="btn" onclick="check()">쪽지함 확인하기</button>
 												</td>
 											</tr>
 										</table>

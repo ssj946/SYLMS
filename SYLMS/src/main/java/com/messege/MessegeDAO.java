@@ -85,7 +85,8 @@ public class MessegeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM messege m " + " JOIN account a ON m.sendId = a.id ";
+			sql = "SELECT NVL(COUNT(*), 0) FROM messege m " 
+					+ " JOIN account a ON m.sendId = a.id ";
 			if (condition.equals("all")) {
 				sql += "  WHERE INSTR(content, ?) >= 1 ";
 			} else if (condition.equals("sendDate")) {
@@ -136,10 +137,10 @@ public class MessegeDAO {
 		String sql;
 
 		try {
-			sql = " SELECT sendId, name, content, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date " 
+			sql = " SELECT sendId, name, content, TO_CHAR(sendDate, 'YYYY-MM-DD') sendDate " 
 					+ " FROM messege m "
 					+ " JOIN account a ON m.sendId = a.id " 
-					+ " ORDER BY num DESC "
+					+ " ORDER BY sendDate DESC "
 					+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
 
 			pstmt = conn.prepareStatement(sql);
@@ -199,7 +200,7 @@ public class MessegeDAO {
 			} else {
 				sql += " WHERE INSTR(" + condition + ", ?) >= 1 ";
 			}
-			sql += " ORDER BY num DESC ";
+			sql += " ORDER BY sendDate DESC ";
 			sql += " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
 
 			pstmt = conn.prepareStatement(sql);
