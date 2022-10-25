@@ -45,8 +45,6 @@ public class LectureServlet extends MyServlet {
 			examForm(req, resp);
 		} else if (uri.indexOf("general.do") != -1) {
 			generalForm(req, resp);
-		} else if (uri.indexOf("notice.do") != -1) {
-			noticeForm(req, resp);
 		} else if (uri.indexOf("qna.do") != -1) {
 			qnaForm(req, resp);
 		} else if (uri.indexOf("syllabus.do") != -1) {
@@ -82,6 +80,7 @@ public class LectureServlet extends MyServlet {
 		// 강의실
 		LectureDAO dao= new LectureDAO();
 		String SubjectNo = req.getParameter("subjectNo");
+		
 		LectureDTO dto = new LectureDTO();
 		List<LectureDTO> list=null;
 		List<LectureDTO> wlist=null;
@@ -134,12 +133,6 @@ public class LectureServlet extends MyServlet {
 	protected void generalForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 자유게시판
 		String path = "/WEB-INF/views/lecture/general.jsp";
-		forward(req, resp, path);
-	}
-
-	protected void noticeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 공지사항
-		String path = "/WEB-INF/views/lecture/notice.jsp";
 		forward(req, resp, path);
 	}
 
