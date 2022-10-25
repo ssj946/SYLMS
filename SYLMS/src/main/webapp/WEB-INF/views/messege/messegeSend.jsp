@@ -94,7 +94,7 @@ input[type=checkbox], input[type=radio] { vertical-align: middle; }
 function check() {
     const f = document.noteForm;
 	let str;
-	
+
     str = f.content.value.trim();
     if(!str || str === "<p><br></p>") {
         alert("내용을 입력하세요. ");
@@ -102,8 +102,8 @@ function check() {
         return false;
     }
 
+    f.action = "${pageContext.request.contextPath}/messege/send_ok.do";
 }
-
 // 선택된 option을 좌 또는 우로 이동
 function itemMove(pos) {
 	const f = document.noteForm;
@@ -149,6 +149,9 @@ function itemAllMove(pos) {
 		source[0] = null; // 삭제
 	}
 }
+
+
+
 </script>
 </head>
 <body>
@@ -231,8 +234,7 @@ function itemAllMove(pos) {
 										<table class="table">
 											<tr>
 												<td class="right">
-													<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/message/send_ok.do';">
-														쪽지보내기</button>
+													<button type="submit" class="btn">쪽지보내기</button>
 														<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/message/receive.do';">
 														쪽지함 확인하기</button>
 												</td>

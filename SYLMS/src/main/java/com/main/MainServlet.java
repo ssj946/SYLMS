@@ -1,6 +1,7 @@
 package com.main;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,8 +30,28 @@ public class MainServlet extends MyServlet {
 		}
 		
 		if(uri.indexOf("main.do") != -1) {
-			forward(req, resp, "/WEB-INF/views/main/main.jsp");
+			subjectList(req, resp);
+			
 		}
+	}
+
+	protected void subjectList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		
+		MainDAO dao = new MainDAO();
+		List<MainDTO> list = null;
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		try {
+			list = dao.subjectName(info.getUserId());
+			req.setAttribute("list", list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		forward(req, resp, "/WEB-INF/views/main/main.jsp");
+		
 	}
 	
 	

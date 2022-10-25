@@ -40,22 +40,26 @@
 											<button class="accordion-button fw-bold" type="button"
 												data-bs-toggle="collapse" data-bs-target="#lecture_list"
 												aria-expanded="true" aria-controls="lecture_list">
-												전체 강의 보기</button>
+												이번학기 강의</button>
 										</h2>
 										<div id="lecture_list"
 											class="accordion-collapse collapse show"
 											aria-labelledby="lecture" data-bs-parent="#lecture_all">
 											<div class="accordion-body">
-												<ul
-													class="list-group list-group-flush group-item-action active"
-													aria-current="true">
-													<li class="list-group-item list-group-item-action"><a
-														href="#">과목</a></li>
-													<li class="list-group-item list-group-item-action"><a
-														href="#">과목</a></li>
-													<li class="list-group-item list-group-item-action"><a
-														href="#">과목</a></li>
-												</ul>
+												<table class="table table-hover">
+												<tr class="bg-light text-center">
+													<th>과목명</th>
+													<th>년도</th>
+													<th>학기</th>												
+												</tr>
+													<c:forEach var="dto" items="${list}" varStatus="status">
+														<tr class="text-center">													
+															<td><a href="${pageContext.request.contextPath}/lecture/classroom.do?subjectNo=${dto.subjectNo}">${dto.subjectName}</a>
+															<td>${dto.syear}</td>
+															<td>${dto.semester}</td>
+														</tr>
+													</c:forEach>
+												</table>
 											</div>
 										</div>
 									</div>
