@@ -7,7 +7,14 @@ public class MessegeDTO {
 	private String readDate;
 	private String sendId;
 	private String receiveId;
+	private String sendName;
 	
+	public String getSendName() {
+		return sendName;
+	}
+	public void setSendName(String sendName) {
+		this.sendName = sendName;
+	}
 	public String getMessegeCode() {
 		return messegeCode;
 	}

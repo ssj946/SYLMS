@@ -24,7 +24,7 @@ list-style: none;
 			</button>
 			<div class="collapse navbar-collapse" id="side_mypage" >
 			<ul>
-				<li><a href="#" class="nav-link text-white p-3 mb-2 current">개인정보수정</a></li>
+				<li><a href="${pageContext.request.contextPath}/mypage/pwd.do" class="nav-link text-white p-3 mb-2 current">개인정보수정</a></li>
 				<li><a href="#" class="nav-link text-white p-3 mb-2 current">올린파일함</a></li>
 				<li><a href="#" class="nav-link text-white p-3 mb-2 current">수강과목</a></li>
 				<li><a href="#" class="nav-link text-white p-3 mb-2 current">조교신청</a></li>

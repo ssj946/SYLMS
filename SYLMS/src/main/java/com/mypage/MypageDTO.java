@@ -2,12 +2,14 @@ package com.mypage;
 
 public class MypageDTO {
 	//개인정보 수정 
-	private String id;
+	private String UserId;
 	private String name;
 	private String pwd;
 	private String tel;
 	private String email;
 	private String birth;
+	private String departmentName;
+	
 	
 	
 	//수강과목 
@@ -27,11 +29,11 @@ public class MypageDTO {
 	private String applicationNum; //신청번호
 	
 	
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return UserId;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		UserId = userId;
 	}
 	public String getName() {
 		return name;
@@ -62,6 +64,12 @@ public class MypageDTO {
 	}
 	public void setBirth(String birth) {
 		this.birth = birth;
+	}
+	public String getDepartmentName() {
+		return departmentName;
+	}
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
 	}
 	public String getSubjectNo() {
 		return subjectNo;
@@ -117,6 +125,7 @@ public class MypageDTO {
 	public void setApplicationNum(String applicationNum) {
 		this.applicationNum = applicationNum;
 	}
+	
 	
 	
 	

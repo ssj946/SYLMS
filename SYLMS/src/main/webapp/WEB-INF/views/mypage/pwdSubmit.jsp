@@ -10,24 +10,28 @@
 <title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
 <style type="text/css">
+.body-container {
+	max-width: 800px;
+}
 </style>
 
 <script type="text/javascript">
+
 function sendOk() {
 	const f = document.pwdForm;
 
 	let str = f.userPwd.value;
 	if(!str) {
-		alert("패스워드를 입력하세요. ");
 		f.userPwd.focus();
 		return;
 	}
 
-	f.action = "${pageContext.request.contextPath}/member/pwd_ok.do";
+	f.action = "${pageContext.request.contextPath}/mypage/pwd_ok.do";
 	f.submit();
-
-
+}
 </script>
+
+
 
 </head>
 
@@ -43,7 +47,7 @@ function sendOk() {
 
 				<div class="row">&nbsp;</div>
 				<div class="row">
-					<div class="col-xl-2 col-lg-3 col-md-4 sidebar pt-1">
+					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1">
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 					</div>
@@ -71,11 +75,9 @@ function sendOk() {
 												class="form-control form-control-lg" placeholder="패스워드">
 										</div>
 										<div class="d-grid">
-											<button type="button" class="btn btn-lg btn-primary"
-												onclick="sendOk();">
+											<button type="button" class="btn btn-lg btn-primary" onclick="sendOk();">
 												확인 <i class="bi bi-check2"></i>
 											</button>
-											<input type="hidden" name="mode" value="${mode}">
 										</div>
 									</form>
 								</div>
