@@ -44,34 +44,22 @@ function searchList() {
 			
 			<div class="body-container">	
 			<div class="body-title">
-				<h3><i class="bi bi-book-half"></i> 쪽지함 </h3>
+				<h3><i class="bi bi-book-half"></i> ${dto.sendName}님이 보낸 쪽지 </h3>
 			</div>
 			
-			<div class="body-main">
-		        <div class="row board-list-header">
-		            <div class="col-auto me-auto">${dataCount}개(${page}/${total_page} 페이지)</div>
-		            <div class="col-auto">&nbsp;</div>
-		        </div>				
-				
+			<div class="body-main">		
 				<table class="table table-hover board-list">
 					<thead class="table-light">
 						<tr>
-							<th class="name">작성자</th>
-							<th class="subject">내용</th>
-							<th class="date">작성일</th>
+							<th class="name">${dto.sendId}</th>
+							<th class="date">${dto.sendDate}</th>
 						</tr>
 					</thead>
 					
 					<tbody>
-						<c:forEach var="dto" items="${received}" varStatus="status">
 							<tr>
-								<td>${dto.sendName}</td>
-								<td class="left">
-									<a href="${checkUrl}&num=${dto.id}" class="text-reset">${dto.content}</a>
-								</td>
-								<td>${dto.sendDate}</td>
+								<td>${dto.content}</td>
 							</tr>
-						</c:forEach>
 					</tbody>
 				</table>
 				
@@ -80,25 +68,6 @@ function searchList() {
 				</div>
 
 				<div class="row board-list-footer">
-					<div class="col">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/messege/receive.do';">새로고침</button>
-					</div>
-					<div class="col-6 text-center">
-						<form class="row" name="searchForm" action="${pageContext.request.contextPath}/messege/receive.do" method="post">
-							<div class="col-auto p-1">
-								<select name="condition" class="form-select">
-									<option value="userName" ${condition=="sendName"?"selected='selected'":""}>작성자</option>
-									<option value="reg_date" ${condition=="sendDate"?"selected='selected'":""}>등록일</option>
-								</select>
-							</div>
-							<div class="col-auto p-1">
-								<input type="text" name="keyword" value="${keyword}" class="form-control">
-							</div>
-							<div class="col-auto p-1">
-								<button type="button" class="btn btn-light" onclick="searchList()">검색</button>
-							</div>
-						</form>
-					</div>
 					<div class="col text-end">
 						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/messege/send.do';">쪽지보내기</button>
 					</div>
