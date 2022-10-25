@@ -1,4 +1,4 @@
-package com.lecture;
+package com.notice;
 
 public class NoticeDTO {
 	private String articleNo;

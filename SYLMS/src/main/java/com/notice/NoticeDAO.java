@@ -1,4 +1,4 @@
-package com.lecture;
+package com.notice;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
