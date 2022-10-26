@@ -15,54 +15,51 @@
 	function updateOk() {
 		const f = document.updateForm;
 
-		if(f.mode.value==="profile") {
+		if (f.mode.value === "profile") {
 			$(".pwdTr").show();
 			$(".pwdTr2").show();
-			
+			$(".image").show();
+
 			$("form input[name=email").prop("readonly", false);
 			$("form input[name=tel").prop("readonly", false);
-			
+
 			$(".btnOk").text("수정완료");
+			$(".title").text("학사정보수정")
 			f.mode.value = "update"
 			return;
 		}
-	 
-		
+
 		str = f.pwd.value;
-		if(! f.pwd.value.trim() ) { 
+		if (!f.pwd.value.trim()) {
 			alert("패스워드를 다시 입력 하세요. ");
 			f.pwd.focus();
 			return;
 		}
 
-		if( str !== f.pwd2.value ) {
-	        alert("패스워드가 일치하지 않습니다. ");
-	        f.pwd.focus();
-	        return;
+		if (str !== f.pwd2.value) {
+			alert("패스워드가 일치하지 않습니다. ");
+			f.pwd.focus();
+			return;
 		}
-		
-		
-		
-	   if(! f.email.value.trim()){
-	       alert("이메일 입력해주세요.");
-	        f.email.focus()
-	        return;
-	        
-	  }
-	   
-	   if(! f.tel.value.trim()){
-	       alert("전화번호 입력해주세요.");
-	        f.tel.focus()
-	        return;
-	        
-	  }
-		   
-	  f.action = "${pageContext.request.contextPath}/mypage/update_ok.do";
-	  f.submit();
 
-		
+		if (!f.email.value.trim()) {
+			alert("이메일 입력해주세요.");
+			f.email.focus()
+			return;
+
+		}
+
+		if (!f.tel.value.trim()) {
+			alert("전화번호 입력해주세요.");
+			f.tel.focus()
+			return;
+
+		}
+
+		f.action = "${pageContext.request.contextPath}/mypage/update_ok.do";
+		f.submit();
+
 	}
-	
 </script>
 </head>
 
@@ -87,23 +84,20 @@
 					<div class="col-xl-10 col-lg-9 col-md-8">
 						<div class="body-container">
 							<div class="body-title">
-								<h3>
+								<h3 class="title">
 									<i class="bi bi-person-square"></i> ${title}
 								</h3>
 							</div>
-							<form name="photoForm">
-								<div class="form">
+							<form name="updateForm" method="post" enctype="multipart/form-data">
 									<div class="img-grid" style="text-align: center;">
-										<img class="item img-add"
+										<img class="item img-add" 
 											style="width: 200px; height: 200px; margin: 10px;"
-											src="${pageContext.request.contextPath}/resources/images/profile.png">
-									</div>
-									<input type="file" name="selectFile" accept="image/*"
-										style="display: none;">
+											src="${pageContext.request.contextPath}/uploads/account/${dto.fileName}">
+									<div class="image" style="display: none;">
+									<input type="file" name="selectFile" accept="image/*">
+									<input name="fileName" type="hidden" value="${dto.fileName }">
+									</div>	
 								</div>
-							</form>
-							<form name="updateForm" method="post">
-
 								<table class="table table-border table-form">
 									<tr>
 										<td>학&nbsp;번</td>
@@ -167,7 +161,7 @@
 									<tr>
 										<td>전화번호 *</td>
 										<td><input type="text" name="tel" class="form-control"
-											style="width: 50%;" value="${dto.tel }" readonly="readonly"}></td>
+											style="width: 50%;" value="${dto.tel }" readonly="readonly"></td>
 									</tr>
 
 								</table>
@@ -199,6 +193,5 @@
 			</div>
 		</section>
 	</main>
-
 </body>
 </html>

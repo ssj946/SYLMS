@@ -1,20 +1,23 @@
 package com.mypage;
 
 import java.io.File;
-import java.io.IOException;
 
+import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import javax.servlet.http.Part;
 
 import com.member.SessionInfo;
-import com.util.MyServlet;
+import com.util.FileManager;
 import com.util.MyUploadServlet;
 
+@MultipartConfig
 @WebServlet("/mypage/*")
 public class MypageServlet extends MyUploadServlet {
 
@@ -43,7 +46,7 @@ public class MypageServlet extends MyUploadServlet {
 		if (uri.indexOf("pwd.do") != -1) {
 		    pwdForm(req, resp);
 		}else if(uri.indexOf("pwd_ok.do") != -1) {
-			pwdSumbit(req, resp);
+			pwdSubmit(req, resp);
 		}else if(uri.indexOf("update_ok.do") != -1) {
 			updateSubmit(req, resp);	
 		}else if(uri.indexOf("file.do") != -1) {
@@ -77,7 +80,7 @@ public class MypageServlet extends MyUploadServlet {
 		
 	}
 	
-	private void pwdSumbit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void pwdSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		MypageDAO dao = new MypageDAO();
 		HttpSession session = req.getSession();
 
@@ -115,7 +118,7 @@ public class MypageServlet extends MyUploadServlet {
 		
 	
             
-			req.setAttribute("title", "개인 정보");
+			req.setAttribute("title", "학사 정보");
 			req.setAttribute("dto", dto);
 			req.setAttribute("mode", "profile");
 			forward(req, resp, "/WEB-INF/views/mypage/updateForm.jsp");
@@ -150,14 +153,31 @@ public class MypageServlet extends MyUploadServlet {
 			}
 			
 			MypageDTO dto = new MypageDTO();
-			//파일처리 
+			 
+			dto.setUserId(info.getUserId());
 			dto.setPwd(req.getParameter("pwd"));
 			dto.setTel(req.getParameter("tel"));
 			dto.setEmail(req.getParameter("email"));
 			
-			dao.updateMember(dto);
+
 			
-			System.out.println(dto.getPwd());
+			String fileName =  req.getParameter("fileName");
+			
+			dto.setFileName(fileName);
+			
+				System.out.println(fileName);
+				
+			Part p = req.getPart("fileName");
+		
+			Map<String, String> map = doFileUpload(p, pathname);
+			if(map != null) {
+				String imagefilename =  map.get("saveFilename");
+				FileManager.doFiledelete(pathname,imagefilename);
+				dto.setFileName(imagefilename);
+			}
+			
+			dao.updateMember(dto);
+		
 			
 		} catch (Exception e) {
 			e.printStackTrace();

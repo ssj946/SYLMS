@@ -9,6 +9,8 @@ public class MypageDTO {
 	private String email;
 	private String birth;
 	private String departmentName;
+	private String fileName;
+	private String savefilename;
 	
 	
 	
@@ -20,11 +22,12 @@ public class MypageDTO {
 	private String fileNum; //파일번호
 	private String originName; //원래이름
 	private String saveName; //저장이름 
+	private long fileSize; // 파일 사이즈
 
 	
 	//조교신청
 	private String applicationTerm; //신청학기
-	private String  applicationMajor; //신청학과
+	private String applicationMajor; //신청학과
 	private String applicationYear; //신청연도 
 	private String applicationNum; //신청번호
 	
@@ -71,6 +74,18 @@ public class MypageDTO {
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
 	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public String getSavefilename() {
+		return savefilename;
+	}
+	public void setSavefilename(String savefilename) {
+		this.savefilename = savefilename;
+	}
 	public String getSubjectNo() {
 		return subjectNo;
 	}
@@ -101,6 +116,12 @@ public class MypageDTO {
 	public void setSaveName(String saveName) {
 		this.saveName = saveName;
 	}
+	public long getFileSize() {
+		return fileSize;
+	}
+	public void setFileSize(long fileSize) {
+		this.fileSize = fileSize;
+	}
 	public String getApplicationTerm() {
 		return applicationTerm;
 	}
@@ -126,6 +147,11 @@ public class MypageDTO {
 		this.applicationNum = applicationNum;
 	}
 	
+	
+	
+	
+	
+
 	
 	
 	
