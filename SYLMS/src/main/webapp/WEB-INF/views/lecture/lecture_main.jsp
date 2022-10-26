@@ -16,27 +16,7 @@ list-style: none;
 </style>
 
 <script type="text/javascript">
-$(function(){
-	let w=$(".resultLayout").children(".card").length+1;
-	
-	$(".week_plus_btn").click(function(){
-		$(".resultLayout").append('<div class="card mb-2"><h5 class="card-header">'+w+'주차</h5><div class="card-body">  <textarea class="form-control" rows="3"></textarea></div></div>');
-		w++;
-	});	
-	
-	$(".week_del_btn").click(function(){
-		$(".resultLayout").children(".card").last().remove();
-		w--;
-	});	
-	
-	$(".content_plus_btn").click(function(){
-		$(".resultLayout").children(".card").last().children(".card-body").append('<br><textarea class="form-control" row="3"></textarea>');
-	});	
-	
-	$(".content_del_btn").click(function(){
-		$(".resultLayout").children(".card").last().children(".card-body").children("textarea").last().remove();
-	});	
-});
+
 </script>
 </head>
 
@@ -71,8 +51,8 @@ $(function(){
 			<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto">
 				<div class="ms-1 me-1 pt-3 mt-3 mb-5">
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white">
-					    <i class="fas fa-rectangle-list fa-lg bg-navy"></i>&nbsp;강좌 개요
+					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white p-2">
+					    <h5><i class="fas fa-rectangle-list fa-lg bg-navy"></i>&nbsp;강좌 개요</h5>
 					  </div>
 					  <div class="card-body m-auto">
 					    <ul class="list-group list-group-horizontal text-center fw-bold">
@@ -105,71 +85,63 @@ $(function(){
 					</div>
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white">
-					    <i class="fas fa-pen fa-lg bg-navy"></i>&nbsp;이번주 강의
+					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white p-2">
+					   <h5> <i class="fas fa-pen fa-lg bg-navy"></i>&nbsp;이번주 강의</h5>
 					  </div>
 					  <div class="card-body">
-					  	<table class="table text-center thisweekList">
-					    <tr>
-					    	<th>주차</th>
-					    	<th>차시</th>
-					    	<th>제목</th>
-					    	<th>등록일</th>
-					    </tr>
-					    <c:forEach var="dto" items="${thisweekList}" varStatus="status">
-					    	<tr>
-					    	<td>${dto.week}</td>
-					    	<td>${dto.part}</td>
-					    	<td><a href="#">${dto.title}</a></td>
-					    	<td>${dto.reg_date}</td>
-					    	</tr>
+					  <c:forEach var="dto" items="${thisweekList}" varStatus="status">
+					    	<div class="ps-3 pe-3">
+					  		<div class="card mb-1">
+						  		<div class="card-body">
+						  		<div class="row">
+									<div class="col-1 text-center">
+									<i class="bi bi-book fa-3x"></i>
+									</div>
+						    		<div class="col-11 ms-auto">
+						    			<h5 class="card-title fw-bold"><a href="#">${dto.week}&nbsp;${dto.part} - ${dto.title}</a></h5>
+						    			<span class="text-muted">시작일: ${dto.reg_date} | 종료일: ${dto.end_date}</span>
+						    		</div>
+					    		</div>
+					    		</div>
+						    </div>
+						    </div>
 					    </c:forEach>
-					    </table>
-					  </div>
+					    <c:if test="${empty thisweekList}"> <p class="fs-5 fw-bold text-center"> 강의가 없습니다.</p>
+					    </c:if>
+					    </div>
 					</div>
+
+					
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white">
-					    <i class="fas fa-clipboard-question fa-lg"></i>&nbsp;질의 응답
-					  </div>
-					  <div class="card-body">
-					    <h5 class="card-title">Special title treatment</h5>
-					    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-					  </div>
+					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white p-2">
+					    <h5><i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동</h5>
 					</div>
-					
-					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white">
-					    <i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동
-					  </div>
 					  <div class="card-body">
 					    <div class="resultLayout">
-					    <table class="table text-center">
-					    <tr>
-					    	<th>주차</th>
-					    	<th>차시</th>
-					    	<th>제목</th>
-					    	<th>등록일</th>
-					    </tr>
+					    
+					    
 					    <c:forEach var="dto" items="${lectureList}" varStatus="status">
-					    	<tr>
-					    	<td>${dto.week}</td>
-					    	<td>${dto.part}</td>
-					    	<td><a href="#">${dto.title}</a></td>
-					    	<td> ${dto.reg_date}</td>
-					    	</tr>
+					    	<div class="ps-3 pe-3">
+					  		<div class="card mb-1">
+						  		<div class="card-body">
+						  		<div class="row">
+									<div class="col-1 text-center">
+									<i class="bi bi-book fa-3x"></i>
+									</div>
+						    		<div class="col-11 ms-auto">
+						    			<h5 class="card-title fw-bold"><a href="#">${dto.week}&nbsp;${dto.part} - ${dto.title}</a></h5>
+						    			<span class="text-muted">시작일: ${dto.reg_date} | 종료일: ${dto.end_date}</span>
+						    		</div>
+					    		</div>
+					    		</div>
+						    </div>
+						    </div>
 					    </c:forEach>
-					    </table>
 					    </div>
-					    <div class="btn-group ms-auto " role="group" aria-label="Basic mixed styles example">
-						  <button type="button" class="btn btn-outline-primary week_plus_btn">주차 추가</button>
-						  <button type="button" class="btn btn-outline-danger week_del_btn">주차 삭제</button>
-						  <button type="button" class="btn btn-outline-primary content_plus_btn">내용 추가</button>
-						  <button type="button" class="btn btn-outline-danger content_del_btn">내용 삭제</button>
-						</div>
 					  </div>
 					</div>
-					
+					</div>
 				</div>
 			<!-- 본문 끝 -->
 			</div>
@@ -178,7 +150,6 @@ $(function(){
 				
 				</div>
 			</div>
-		</div>
 	
 	</section>
 </main>
