@@ -14,12 +14,27 @@ private String bbsNum;
 private String title;
 private String content;
 private String reg_date;
+private String end_date;
 private String hitCount;
 
 private String week;
 private String part;
+private String savefilename;
 
 
+
+public String getEnd_date() {
+	return end_date;
+}
+public void setEnd_date(String end_date) {
+	this.end_date = end_date;
+}
+public String getSavefilename() {
+	return savefilename;
+}
+public void setSavefilename(String savefilename) {
+	this.savefilename = savefilename;
+}
 public String getWeek() {
 	return week;
 }

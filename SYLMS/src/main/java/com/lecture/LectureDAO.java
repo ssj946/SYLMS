@@ -128,6 +128,7 @@ public class LectureDAO {
 		
 	}
 	
+	//강의정보 불러오기
 	public LectureDTO readSubject(String subjectNo) throws SQLException{
 		
 		PreparedStatement pstmt= null;
@@ -179,7 +180,13 @@ public class LectureDAO {
 		ResultSet rs=null;
 		
 		try {
-			sql="SELECT bbsNum, subjectNo, title, content, To_CHAR(reg_date,'YYYY-MM-DD') reg_date, week, part FROM LECTURE_BBS WHERE subjectNo=?";
+			sql="SELECT l.bbsNum, subjectNo, title, content, week, part, savefilename, "
+					+ " TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
+					+ " TO_CHAR(end_date,'YYYY-MM-DD')end_date "
+					+ " FROM LECTURE_BBS l "
+					+ " LEFT OUTER JOIN LECTURE_BBS_FILE f on l.bbsnum=f.bbsnum "
+					+ " WHERE subjectNo=? "
+					+ " ORDER BY week,part ";
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, subjectNo);
 			
@@ -190,9 +197,11 @@ public class LectureDAO {
 				dto.setBbsNum(rs.getString("bbsNum"));
 				dto.setTitle(rs.getString("title"));
 				dto.setContent(rs.getString("content"));
-				dto.setReg_date(rs.getString("reg_date"));
 				dto.setWeek(rs.getString("week"));
 				dto.setPart(rs.getString("part"));
+				dto.setSavefilename(rs.getString("savefilename"));
+				dto.setReg_date(rs.getString("reg_date"));
+				dto.setEnd_date(rs.getString("end_date"));
 				
 				list.add(dto);
 			}
@@ -225,8 +234,13 @@ public class LectureDAO {
 		ResultSet rs=null;
 		
 		try {
-			sql="SELECT bbsNum, subjectNo, title, content, To_CHAR(reg_date,'YYYY-MM-DD') reg_date, week, part "
-					+ "FROM LECTURE_BBS WHERE subjectNo = ? AND SYSDATE-reg_date < 7";
+			sql="SELECT l.bbsNum, subjectNo, title, content, week, part, savefilename, "
+					+ " TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
+					+ " TO_CHAR(end_date,'YYYY-MM-DD')end_date "
+					+ " FROM LECTURE_BBS l "
+					+ " LEFT OUTER JOIN LECTURE_BBS_FILE f on l.bbsnum=f.bbsnum "
+					+ " WHERE subjectNo=? AND SYSDATE-reg_date < 7 "
+					+ " ORDER BY week,part ";
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, subjectNo);
 			
