@@ -34,9 +34,6 @@ public class MypageServlet extends MyUploadServlet {
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		
-		String root = session.getServletContext().getRealPath("/");
-		pathname = root + "uploads" + File.separator + "account";
-		
 		
 		if(info == null) { 
 			forward(req, resp, "/WEB-INF/views/member/login.jsp");
@@ -137,42 +134,34 @@ public class MypageServlet extends MyUploadServlet {
 		MypageDAO dao = new MypageDAO();
 		HttpSession session = req.getSession();
 		String cp = req.getContextPath();
+		
+		
+		String root = session.getServletContext().getRealPath("/");
+		pathname = root + "uploads" + File.separator + "account";
 
 		if (req.getMethod().equalsIgnoreCase("GET")) {
 			resp.sendRedirect(cp + "/");
 			return;
 		}
-		
-		
 		try {
 			
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
-			if (info == null) { 
-				resp.sendRedirect(cp + "/member/login.do");
-				return;
-			}
-			
+
 			MypageDTO dto = new MypageDTO();
 			 
 			dto.setUserId(info.getUserId());
 			dto.setPwd(req.getParameter("pwd"));
 			dto.setTel(req.getParameter("tel"));
 			dto.setEmail(req.getParameter("email"));
-			
-
-			
 			String fileName =  req.getParameter("fileName");
-			
 			dto.setFileName(fileName);
-			
-				System.out.println(fileName);
 				
-			Part p = req.getPart("fileName");
+			Part p = req.getPart("selectFile");
 		
 			Map<String, String> map = doFileUpload(p, pathname);
 			if(map != null) {
 				String imagefilename =  map.get("saveFilename");
-				FileManager.doFiledelete(pathname,imagefilename);
+				FileManager.doFiledelete(pathname,fileName);
 				dto.setFileName(imagefilename);
 			}
 			
