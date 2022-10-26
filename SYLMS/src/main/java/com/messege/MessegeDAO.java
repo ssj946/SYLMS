@@ -18,8 +18,8 @@ public class MessegeDAO {
 		String sql;
 
 		try {
-			sql = "INSERT INTO messege(messegeCode, content, sendDate, readDate, sendId, receiveId) "
-					+ " VALUES (messege_seq.NEXTVAL, ?, SYSDATE, '', ?, ?)";
+			sql = "INSERT INTO messege(messegeCode, content, sendDate, sendId, receiveId) "
+					+ " VALUES (messege_seq.NEXTVAL, ?, SYSDATE, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, dto.getContent());
@@ -41,16 +41,21 @@ public class MessegeDAO {
 	}
 
 	// 데이터 개수
-	public int dataCount() {
+	public int dataCount(String receiveId) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 
 		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM messege";
+			sql = "SELECT NVL(COUNT(*), 0) FROM messege "
+					+ " JOIN account a ON m.receiveId = a.id "
+					+ " WHERE receiveId = ? ";
 			pstmt = conn.prepareStatement(sql);
 
+			pstmt.setString(1,receiveId);
+			
+		
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				result = rs.getInt(1);
@@ -78,7 +83,7 @@ public class MessegeDAO {
 	}
 
 	// 검색에서의 데이터 개수
-	public int dataCount(String condition, String keyword) {
+	public int dataCount(String condition, String keyword, String receiveId) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -130,23 +135,25 @@ public class MessegeDAO {
 		return result;
 	}
 
-	public List<MessegeDTO> listBoard(int offset, int size) {
+	public List<MessegeDTO> listBoard(int offset, int size, String receiveId) {
 		List<MessegeDTO> list = new ArrayList<MessegeDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 
 		try {
-			sql = " SELECT sendId, name, content, TO_CHAR(sendDate, 'YYYY-MM-DD') sendDate " 
+			sql = " SELECT sendId, receiveId, name, content, TO_CHAR(sendDate, 'YYYY-MM-DD') sendDate " 
 					+ " FROM messege m "
-					+ " JOIN account a ON m.sendId = a.id " 
+					+ " JOIN account a ON m.receiveId = a.id "
+					+ " WHERE receiveId = ? "
 					+ " ORDER BY sendDate DESC "
 					+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
 
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setInt(1, offset);
-			pstmt.setInt(2, size);
+			pstmt.setString(1,receiveId);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, size);
 
 			rs = pstmt.executeQuery();
 
@@ -157,6 +164,7 @@ public class MessegeDAO {
 				dto.setSendName(rs.getString("name"));
 				dto.setContent(rs.getString("content"));
 				dto.setSendDate(rs.getString("sendDate"));
+				dto.setReceiveId(rs.getString("receiveId"));
 
 				list.add(dto);
 			}
@@ -182,14 +190,14 @@ public class MessegeDAO {
 		return list;
 	}
 
-	public List<MessegeDTO> listBoard(int offset, int size, String condition, String keyword) {
+	public List<MessegeDTO> listBoard(int offset, int size, String condition, String keyword, String receiveId) {
 		List<MessegeDTO> list = new ArrayList<MessegeDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 
 		try {
-			sql = " SELECT content, name, sendId, TO_CHAR(sendDate, 'YYYY-MM-DD') sendDate "
+			sql = " SELECT content, name, sendId, TO_CHAR(sendDate, 'YYYY-MM-DD') sendDate, receiveId "
 					+ " FROM messege m "
 					+ " JOIN account a ON m.sendId = a.id ";
 			if (condition.equals("all")) {
@@ -225,6 +233,7 @@ public class MessegeDAO {
 				dto.setSendName(rs.getString("name"));
 				dto.setContent(rs.getString("content"));
 				dto.setSendDate(rs.getString("sendDate"));
+				dto.setReceiveId(rs.getString("receiveId"));
 
 				list.add(dto);
 			}
@@ -338,6 +347,67 @@ public class MessegeDAO {
 		
 		return list;
 		
+	}
+	
+	//메세지 읽으면 원래 해당 메세지에 읽은 날짜 대입
+	public void readDate(MessegeDTO dto) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+
+		try {
+			sql = "INSERT INTO messege "
+					+ " SELECT * FROM messege ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+		}
+	}
+
+	// 읽지 않은 개수
+	public int messegeCount() {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+
+		try {
+			sql = "SELECT NVL(COUNT(*), 0) FROM messege"
+					+ " WHERE readDate = ''";
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+		return result;
 	}
 
 }

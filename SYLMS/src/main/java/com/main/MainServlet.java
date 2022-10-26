@@ -30,8 +30,7 @@ public class MainServlet extends MyServlet {
 		}
 		
 		if(uri.indexOf("main.do") != -1) {
-			subjectList(req, resp);
-			
+			subjectList(req, resp);			
 		}
 	}
 

@@ -69,4 +69,6 @@ public class MainDAO {
 			return list;
 			
 		}
+		
+		//할일 목록 가져오기 (기간은 현재주 일주일치, 불러올것은 과제 및 강의 자료)
 }

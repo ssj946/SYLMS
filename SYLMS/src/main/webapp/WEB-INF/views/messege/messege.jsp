@@ -63,7 +63,7 @@ function searchList() {
 					</thead>
 					
 					<tbody>
-						<c:forEach var="dto" items="${received}" varStatus="status">
+						<c:forEach var="dto" items="${listBoard}" varStatus="status">
 							<tr>
 								<td>${dto.sendName}</td>
 								<td class="left">
@@ -88,7 +88,6 @@ function searchList() {
 							<div class="col-auto p-1">
 								<select name="condition" class="form-select">
 									<option value="userName" ${condition=="sendName"?"selected='selected'":""}>작성자</option>
-									<option value="reg_date" ${condition=="sendDate"?"selected='selected'":""}>등록일</option>
 								</select>
 							</div>
 							<div class="col-auto p-1">

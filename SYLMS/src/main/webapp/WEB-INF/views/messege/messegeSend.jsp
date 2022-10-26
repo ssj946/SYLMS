@@ -102,12 +102,14 @@ function sendOk() {
         return false;
     }
 
+    
+    
+    
     f.action = "${pageContext.request.contextPath}/messege/send_ok.do";
 }
 
 function check() {
-	const f = document.noteForm;
-	f.action = "${pageContext.request.contextPath}/messege/receive.do";
+	window.location.href = "${pageContext.request.contextPath}/messege/receive.do";
 }
 
 // 선택된 option을 좌 또는 우로 이동
@@ -223,10 +225,11 @@ function itemAllMove(pos) {
 														onclick="itemAllMove('left');"
 														style="display: block; width: 80px;">&lt;&lt;</button>
 												</td>
-												<td class="left"><select name="itemRight"
-													multiple="multiple" class="form-select"
-													style="width: 130px; height: 150px;">
-												</select></td>
+												<td class="left">
+												<select name="itemRight" multiple="multiple" class="form-select" style="width: 130px; height: 150px;">
+													
+												</select>
+												</td>
 											</tr>
 											<tr>
 												<td colspan="3"><span>메시지</span></td>
