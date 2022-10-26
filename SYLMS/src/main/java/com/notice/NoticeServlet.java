@@ -45,7 +45,7 @@ public class NoticeServlet extends MyServlet {
 		pathname = root + "uploads" + File.separator + "notice";
 		
 
-		// uri에 따른 작업 구분
+		// uri에 따른 작업 구분 
 		if (uri.indexOf("notice.do") != -1) {
 			noticeForm(req, resp);
 		} else if (uri.indexOf("noticeWrite.do") != -1) {
@@ -63,6 +63,8 @@ public class NoticeServlet extends MyServlet {
 		
 		
 		try {
+			String subjectNo = req.getParameter("subjectNo");
+			
 			
 			String page = req.getParameter("page");
 			int current_page = 1;
@@ -87,9 +89,9 @@ public class NoticeServlet extends MyServlet {
 			int dataCount, total_page;
 
 			if (keyword.length() != 0) {
-				dataCount = dao.dataCount(condition, keyword);
+				dataCount = dao.dataCount(subjectNo, condition, keyword);
 			} else {
-				dataCount = dao.dataCount();
+				dataCount = dao.dataCount(subjectNo);
 			}
 			total_page = util.pageCount(dataCount, size);
 
@@ -102,14 +104,14 @@ public class NoticeServlet extends MyServlet {
 			
 			List<NoticeDTO> list;
 			if (keyword.length() != 0) {
-				list = dao.listNotice(offset, size, condition, keyword);
+				list = dao.listNotice(subjectNo, offset, size, condition, keyword);
 			} else {
-				list = dao.listNotice(offset, size);
+				list = dao.listNotice(subjectNo, offset, size);
 			}
 			
 			// 공지리스트
 			List<NoticeDTO> listNotice = null;
-			listNotice = dao.listNotice();
+			listNotice = dao.listNotice(subjectNo);
 			for (NoticeDTO dto : listNotice) {
 				dto.setReg_date(dto.getReg_date().substring(0, 10));
 			}
@@ -129,12 +131,12 @@ public class NoticeServlet extends MyServlet {
 			String listUrl;
 			
 			
-			listUrl = cp + "/notice/list.do?size=" + size;
+			listUrl = cp + "/notice/notice.do?subjectNo=" + subjectNo;
 			
 			String paging = util.paging(current_page, total_page, listUrl);
 			
 			
-			
+			req.setAttribute("subjectNo", subjectNo );
 			req.setAttribute("list", list);
 			req.setAttribute("listNotice", listNotice);
 			req.setAttribute("dataCount", dataCount);
@@ -149,32 +151,34 @@ public class NoticeServlet extends MyServlet {
 			e.printStackTrace();
 		}
 		
-		
-		forward(req, resp, "/WEB-INF/views/notice/notice.jsp");
+		String path = "/WEB-INF/views/notice/notice.jsp";
+		forward(req, resp, path);
 	}
 	
 	protected void noticeWriteForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 공지사항 작성
-
+		String subjectNo = req.getParameter("subjectNo");
+		req.setAttribute("subjectNo", subjectNo );
 		req.setAttribute("mode", "write");
 		forward(req, resp, "/WEB-INF/views/notice/noticeWrite.jsp");
 	}
 	
 	protected void noticeWriteSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 공지사항글 저장
+		NoticeDAO dao = new NoticeDAO();
+		
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		String cp = req.getContextPath();
+		String subjectNo = req.getParameter("subjectNo");
 		
 		if(req.getMethod().equalsIgnoreCase("GET")) {
-			resp.sendRedirect(cp+ "/notice/notice.do");
+			resp.sendRedirect(cp+ "/notice/notice.do?subjectNo=" + subjectNo);
 			return;
 		}
 		
-		NoticeDAO dao = new NoticeDAO();
 		
-		String size = req.getParameter("size");
 
 		try {
 			NoticeDTO dto = new NoticeDTO();
@@ -190,7 +194,7 @@ public class NoticeServlet extends MyServlet {
 			e.printStackTrace();
 		}
 		
-		resp.sendRedirect(cp + "/notice/notice.do?size=" + size);
+		resp.sendRedirect(cp + "/notice/notice.do?subjectNo=" + subjectNo);
 	}
 	
 	protected void noticeArticleForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

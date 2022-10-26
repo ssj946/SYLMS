@@ -82,7 +82,7 @@ function searchList() {
 							<tr>
 								<td>${dataCount - (page-1) * size - status.index}</td>
 								<td class="left">
-									<a href="${articleUrl}&num=${dto.articleNo}" class="text-reset">${dto.title}</a>
+									<a href="${articleUrl}&articleNo=${dto.articleNo}" class="text-reset">${dto.title}</a>
 										<c:if test="${dto.gap<2}"><img src="${pageContext.request.contextPath}/resources/images/new.png"></c:if>
 									</td>
 								<td>${dto.name}</td>
@@ -99,7 +99,7 @@ function searchList() {
 
 				<div class="row board-list-footer">
 					<div class="col">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/notice.do';">새로고침</button>
+						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/notice.do?subjectNo=${subjectNo}';">새로고침</button>
 					</div>
 					<div class="col-6 text-center">
 						<form class="row" name="searchForm" action="${pageContext.request.contextPath}/notice/notice.do" method="post">
@@ -115,12 +115,13 @@ function searchList() {
 								<input type="text" name="keyword" value="${keyword}" class="form-control">
 							</div>
 							<div class="col-auto p-1">
+								<input type="hidden" name="subjectNo" value="${subjectNo}">
 								<button type="button" class="btn btn-light" onclick="searchList()"> <i class="bi bi-search"></i> </button>
 							</div>
 						</form>
 					</div>
 					<div class="col text-end">
-							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/noticeWrite.do';">글올리기</button>
+							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/noticeWrite.do?subjectNo=${subjectNo }';">글올리기</button>
 					</div>
 				</div>
 

@@ -21,7 +21,7 @@ public class NoticeDAO {
 		try {
 			sql = "INSERT INTO subject_bbs(articleNo, subjectNo, bbsCode, "
 					+ " ID, title, content, reg_date, hitCount) "
-					+ " VALUES (subject_bbs.NEXTVAL, ?, 00001, ?, ?, ?, SYSDATE, 0)";
+					+ " VALUES (subject_bbs_seq.NEXTVAL, ?, 00001, ?, ?, ?, SYSDATE, 0)";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getSubjectNo());
@@ -45,15 +45,16 @@ public class NoticeDAO {
 		
 	}
 	
-	public int dataCount() {
+	public int dataCount(String subjectNo) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 
 		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM notice";
+			sql = "SELECT NVL(COUNT(*), 0) FROM subject_bbs WHERE subjectNo = ? ";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, subjectNo);
 			
 			rs = pstmt.executeQuery();
 			
@@ -82,7 +83,7 @@ public class NoticeDAO {
 		return result;
 	}
 
-	public int dataCount(String condition, String keyword) {
+	public int dataCount(String subjectNo, String condition, String keyword) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -90,7 +91,8 @@ public class NoticeDAO {
 
 		try {
 			sql = "SELECT NVL(COUNT(*), 0) FROM subject_bbs s "
-					+ " JOIN account a ON s.ID=a.ID ";
+					+ " JOIN account a ON s.ID=a.ID "
+					+ " WHERE subjectNo = ? ";
 			if (condition.equals("all")) {
 				sql += " WHERE INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ";
 			} else if (condition.equals("reg_date")) {
@@ -103,9 +105,10 @@ public class NoticeDAO {
 
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, keyword);
+			pstmt.setString(1, subjectNo);
+			pstmt.setString(2, keyword);
 			if (condition.equals("all")) {
-				pstmt.setString(2, keyword);
+				pstmt.setString(3, keyword);
 			}
 
 			rs = pstmt.executeQuery();
@@ -136,7 +139,7 @@ public class NoticeDAO {
 	}
 	
 	// 게시물 리스트
-	public List<NoticeDTO> listNotice(int offset, int size) {
+	public List<NoticeDTO> listNotice(String subjectNo, int offset, int size) {
 		List<NoticeDTO> list = new ArrayList<NoticeDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -146,14 +149,16 @@ public class NoticeDAO {
 			sb.append(" SELECT articleNo, b.ID, title, hitCount, reg_date ");
 			sb.append(" FROM subject_bbs b ");
 			sb.append(" JOIN account a ON b.ID = a.ID ");
+			sb.append(" WHERE subjectNo = ?  ");
 			sb.append(" ORDER BY articleNo DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 
 			
 			pstmt = conn.prepareStatement(sb.toString());
 			
-			pstmt.setInt(1, offset);
-			pstmt.setInt(2, size);
+			pstmt.setString(1, subjectNo);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, size);
 
 			rs = pstmt.executeQuery();
 
@@ -191,7 +196,7 @@ public class NoticeDAO {
 	}
 
 	// 검색에서 리스트
-	public List<NoticeDTO> listNotice(int offset, int size, String condition, String keyword) {
+	public List<NoticeDTO> listNotice(String subjectNo, int offset, int size, String condition, String keyword) {
 		List<NoticeDTO> list = new ArrayList<NoticeDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -201,6 +206,7 @@ public class NoticeDAO {
 			sb.append(" SELECT articleNo, b.ID, title, hitCount, reg_date ");
 			sb.append(" FROM subject_bbs b ");
 			sb.append(" JOIN account a ON b.ID = a.ID ");
+			sb.append(" WHERE subjectNo = ?  ");
 			
 			if (condition.equals("all")) {
 				sb.append(" WHERE INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ");
@@ -216,14 +222,17 @@ public class NoticeDAO {
 			pstmt = conn.prepareStatement(sb.toString());
 			
 			if (condition.equals("all")) {
-				pstmt.setString(1, keyword);
+				
+				pstmt.setString(1, subjectNo);
+				pstmt.setString(2, keyword);
+				pstmt.setString(3, keyword);
+				pstmt.setInt(4, offset);
+				pstmt.setInt(5, size);
+			} else {
+				pstmt.setString(1, subjectNo);
 				pstmt.setString(2, keyword);
 				pstmt.setInt(3, offset);
 				pstmt.setInt(4, size);
-			} else {
-				pstmt.setString(1, keyword);
-				pstmt.setInt(2, offset);
-				pstmt.setInt(3, size);
 			}
 
 			rs = pstmt.executeQuery();
@@ -262,7 +271,7 @@ public class NoticeDAO {
 	}
 	
 	
-	public List<NoticeDTO> listNotice() {
+	public List<NoticeDTO> listNotice(String subjectNo) {
 		List<NoticeDTO> list = new ArrayList<NoticeDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -273,10 +282,13 @@ public class NoticeDAO {
 			sb.append(" FROM subject_bbs b ");
 			sb.append(" JOIN account a ON b.ID = a.ID ");
 			//sb.append(" WHERE subject_bbs = 1  ");
+			sb.append(" WHERE subjectNo = ? ");
 			sb.append(" ORDER BY articleNo DESC ");
 
 			pstmt = conn.prepareStatement(sb.toString());
 
+			pstmt.setString(1, subjectNo);
+			
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
