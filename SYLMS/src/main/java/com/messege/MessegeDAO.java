@@ -214,6 +214,7 @@ public class MessegeDAO {
 			pstmt = conn.prepareStatement(sql);
 
 			if (condition.equals("all")) {
+				
 				pstmt.setString(1, keyword);
 				pstmt.setString(2, keyword);
 				pstmt.setInt(3, offset);
