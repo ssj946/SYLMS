@@ -184,7 +184,21 @@ public class MypageServlet extends MyUploadServlet {
 	}
 
 	protected void assistantForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException  {
-
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		
+		String cp = req.getContextPath();
+		if (info == null) {
+			resp.sendRedirect(cp + "/member/login.do");
+			return;
+		}
+	
+		
+		String path = "/WEB-INF/views/mypage/assistant.jsp";
+		forward(req, resp, path);
+		
+		
 	}
 
 	

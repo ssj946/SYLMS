@@ -41,7 +41,7 @@
 						<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 					</div>
 					<!-- 본문 -->
-		
+		   <h3>여기가 파일 업로드입니다. </h3>
 			
 				<!-- 본문 끝 -->	
 				</div>
