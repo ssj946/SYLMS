@@ -37,7 +37,7 @@ function sendOk() {
         return;
     }
 
-	f.action = "${pageContext.request.contextPath}/notice/${mode}_ok.do"; 
+	f.action = "${pageContext.request.contextPath}/notice/notice${mode}_ok.do"; 
     f.submit();
 }
 </script>

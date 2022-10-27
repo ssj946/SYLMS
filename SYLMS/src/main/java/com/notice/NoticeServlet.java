@@ -50,7 +50,7 @@ public class NoticeServlet extends MyServlet {
 			noticeForm(req, resp);
 		} else if (uri.indexOf("noticeWrite.do") != -1) {
 			noticeWriteForm(req, resp);
-		} else if (uri.indexOf("noticeWrite_ok.do") != -1) {
+		} else if (uri.indexOf("noticewrite_ok.do") != -1) {
 			noticeWriteSubmit(req, resp);
 		} else if (uri.indexOf("noticeArticle.do") != -1) {
 			noticeArticleForm(req, resp);
