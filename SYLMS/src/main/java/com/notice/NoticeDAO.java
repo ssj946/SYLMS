@@ -19,9 +19,9 @@ public class NoticeDAO {
 		String sql;
 		
 		try {
-			sql = "INSERT INTO subject_bbs(articleNo, subjectNo, bbsCode, "
+			sql = "INSERT INTO subject_bbs(articleNo, bbsCode, subjectNo,  "
 					+ " ID, title, content, reg_date, hitCount) "
-					+ " VALUES (subject_bbs_seq.NEXTVAL, ?, 00001, ?, ?, ?, SYSDATE, 0)";
+					+ " VALUES (subject_bbs_seq.NEXTVAL,'00001', ?, ?, ?, ?, SYSDATE, 0)";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getSubjectNo());

@@ -50,6 +50,8 @@ public class NoticeServlet extends MyServlet {
 			noticeForm(req, resp);
 		} else if (uri.indexOf("noticeWrite.do") != -1) {
 			noticeWriteForm(req, resp);
+		} else if (uri.indexOf("noticeWrite_ok.do") != -1) {
+			noticeWriteSubmit(req, resp);
 		} else if (uri.indexOf("noticeArticle.do") != -1) {
 			noticeArticleForm(req, resp);
 		}
@@ -186,6 +188,7 @@ public class NoticeServlet extends MyServlet {
 			dto.setUserId(info.getUserId());
 			dto.setTitle(req.getParameter("title"));
 			dto.setContent(req.getParameter("content"));
+			dto.setSubjectNo(req.getParameter("subjectNo"));
 			
 			
 			dao.insertNotice(dto);
