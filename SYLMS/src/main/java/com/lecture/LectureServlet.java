@@ -1,6 +1,7 @@
 package com.lecture;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -8,6 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.json.JSONObject;
 
 import com.member.SessionInfo;
 import com.util.MyServlet;
@@ -37,21 +40,23 @@ public class LectureServlet extends MyServlet {
 			classroomForm(req, resp);
 		} else if (uri.indexOf("lecture.do") != -1) {
 			lectureForm(req, resp);
+		} else if (uri.indexOf("history.do") != -1) {
+			registerHistory(req, resp);
 		}
 	}
 
 	protected void lectureNavForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 강의실 메인화면
+		// 강의실 네비게이션
 		LectureDAO dao= new LectureDAO();
 		List<LectureDTO> list= null;
 		List<LectureDTO> hlist= null;
 		
 		HttpSession session =req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
-
+		
 		try {
-			list= dao.registerSubject(info.getUserId());
-			hlist= dao.registerHistory(info.getUserId());
+			list=dao.registerSubject(info.getUserId());
+			hlist= dao.attendHistory(info.getUserId());
 			req.setAttribute("list", list);
 			req.setAttribute("hlist", hlist);
 		} catch (Exception e) {
@@ -125,5 +130,32 @@ public class LectureServlet extends MyServlet {
 		forward(req, resp, path);
 	}
 
+	protected void registerHistory(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 강의실
+		LectureDAO dao= new LectureDAO();
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		List<LectureDTO> list=null;
+		try {
+			String syear= req.getParameter("syear");
+			String semester= req.getParameter("semester");
+			list= dao.registerHistory(info.getUserId(), syear, semester);
+			
+			JSONObject job = new JSONObject();
+			job.put("list", list);
+			
+			resp.setContentType("text/html; charset=utf-8");
+			PrintWriter out = resp.getWriter();
+			out.print(job.toString());
+			return;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		resp.sendError(400);
+	}
 
 }
+
+

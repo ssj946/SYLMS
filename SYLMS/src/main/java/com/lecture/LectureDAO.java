@@ -12,6 +12,39 @@ import com.util.DBConn;
 public class LectureDAO {
 	private Connection conn = DBConn.getConnection();
 	
+	//해당학생의 수강학기 목록 불러오기
+	public List<LectureDTO> attendHistory(String studentcode) throws SQLException{
+		List<LectureDTO> list = new ArrayList<>();
+		PreparedStatement pstmt =null;
+		ResultSet rs= null;
+		String sql;
+		try {
+			sql= "SELECT STUDENTCODE, SEMESTER, TO_CHAR(syear,'YYYY')syear FROM REGISTERSUBJECT r "
+					+ " JOIN subject s ON s.SUBJECTNO =r.SUBJECTNO "
+					+ " WHERE STUDENTCODE = ? "
+					+ " GROUP BY studentcode, semester, TO_CHAR(syear,'YYYY') "
+					+ " ORDER BY syear,semester";
+			
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, studentcode);
+			
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				LectureDTO dto = new LectureDTO();
+				dto.setSyear(Integer.parseInt(rs.getString("syear")));
+				dto.setSemester(Integer.parseInt(rs.getString("semester")));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return list;
+	}
+	
 	//해당 학기 수강목록 불러오기
 	public List<LectureDTO> registerSubject(String studentcode) throws SQLException{
 		PreparedStatement pstmt= null;
@@ -71,7 +104,7 @@ public class LectureDAO {
 	}
 	
 	//모든 학기 수강내역
-	public List<LectureDTO> registerHistory(String studentcode) throws SQLException{
+	public List<LectureDTO> registerHistory(String studentcode, String syear, String semester) throws SQLException{
 		PreparedStatement pstmt= null;
 		String sql;
 		ResultSet rs=null;
@@ -83,11 +116,13 @@ public class LectureDAO {
 					+ " ON s.subjectNo=r.subjectNo "
 					+ " JOIN account a "
 					+ " ON a.id=studentcode "
-					+ " WHERE STUDENTcode = ? "
+					+ " WHERE STUDENTcode = ? AND TO_CHAR(sYear,'YYYY') = ? AND semester = ? "
 					+ " ORDER BY syear, semester ";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1,studentcode);
+			pstmt.setString(2,syear);
+			pstmt.setString(3,semester);
 			
 			rs= pstmt.executeQuery();
 			
@@ -279,5 +314,6 @@ public class LectureDAO {
 	}
 
 }
+
 
 
