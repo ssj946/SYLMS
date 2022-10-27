@@ -16,7 +16,13 @@ list-style: none;
 </style>
 
 <script type="text/javascript">
+function goBack(){
+	location.href="${pageContext.request.contextPath}/lecture/main.do";
+}
 
+function content_write(){
+	location.href="${pageContext.request.contextPath}/lecture/content_write.do?subjectNo=${subjectNo}";
+}
 </script>
 </head>
 
@@ -150,6 +156,11 @@ list-style: none;
 						    </div>
 					    </c:forEach>
 					    </div>
+					    <br>
+					    <div class="d-block text-end">
+							  <button type="button" class="btn btn-primary" onclick="content_write();">글쓰기</button>
+							  <button type="button" class="btn btn-outline-dark" onclick="goBack();">뒤로가기</button>
+						  </div>
 					  </div>
 					</div>
 					</div>

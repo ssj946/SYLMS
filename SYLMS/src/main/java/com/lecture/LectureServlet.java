@@ -44,6 +44,8 @@ public class LectureServlet extends MyServlet {
 			registerHistory(req, resp);
 		} else if (uri.indexOf("content.do") != -1) {
 			content(req, resp);
+		} else if (uri.indexOf("content_write.do") != -1) {
+			contentWrite(req, resp);
 		} else if (uri.indexOf("content_update.do") != -1) {
 			contentUpdate(req, resp);
 		} else if (uri.indexOf("content_delete.do") != -1) {
@@ -137,7 +139,7 @@ public class LectureServlet extends MyServlet {
 	}
 
 	protected void registerHistory(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 강의실
+		// 수강 기록
 		LectureDAO dao= new LectureDAO();
 		HttpSession session =req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
@@ -163,8 +165,10 @@ public class LectureServlet extends MyServlet {
 	}
 	
 	protected void content(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 강의실
+		// 강의 하나 받아오기
 		LectureDAO dao= new LectureDAO();	
+		
+		
 		
 		String subjectNo = req.getParameter("subjectNo");
 		String bbsNum = req.getParameter("bbsNum");
@@ -192,12 +196,61 @@ public class LectureServlet extends MyServlet {
 		
 	}
 	
-	protected void contentUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 강의실
+	protected void contentWrite(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 강의게시판 글쓰기
 		LectureDAO dao= new LectureDAO();
+		String cp =req.getContextPath();
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		if(info.getUserId().matches("/^\\d{8}$/")) {
+			resp.sendRedirect(cp + "/");
+			return;
+		}
 		
 		String subjectNo = req.getParameter("subjectNo");
 		String bbsNum = req.getParameter("bbsNum");
+		try {
+			LectureDTO dto = new LectureDTO();
+			dto= dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("credit", dto.getCredit());
+			req.setAttribute("syear", dto.getSyear());
+			
+			LectureDTO contentDTO = new LectureDTO();
+			contentDTO= dao.readContent(bbsNum);
+			
+			req.setAttribute("contentDTO", contentDTO);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		String path = "/WEB-INF/views/lecture/content.jsp";
+		forward(req, resp, path);
+	}
+	
+	protected void contentUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 강의게시판 수정
+		LectureDAO dao= new LectureDAO();
+		
+		String cp =req.getContextPath();
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		if(info.getUserId().matches("/^\\d{8}$/")) {
+			resp.sendRedirect(cp + "/");
+			return;
+		}
+		
+		String subjectNo = req.getParameter("subjectNo");
+		String bbsNum = req.getParameter("bbsNum");
+		
 		try {
 			LectureDTO dto = new LectureDTO();
 			dto= dao.readSubject(subjectNo);
@@ -222,8 +275,18 @@ public class LectureServlet extends MyServlet {
 	}
 	
 	protected void contentDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 강의실
+		// 강의게시판 지우기
 		LectureDAO dao= new LectureDAO();
+		
+		String cp =req.getContextPath();
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		if(info.getUserId().matches("/^\\d{8}$/")) {
+			resp.sendRedirect(cp + "/");
+			return;
+		}
 		
 		String subjectNo = req.getParameter("subjectNo");
 		String bbsNum = req.getParameter("bbsNum");
