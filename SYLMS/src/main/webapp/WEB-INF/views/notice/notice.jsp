@@ -11,6 +11,7 @@
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 <style type="text/css">
 
+
 ul{
 
 list-style: none;
@@ -78,13 +79,13 @@ function searchList() {
 					</thead>
 					
 					<tbody>
-						<c:forEach var="dto" items="${notice}" varStatus="status">
+						<c:forEach var="dto" items="${list}" varStatus="status">
 							<tr>
 								<td>${dataCount - (page-1) * size - status.index}</td>
 								<td class="left">
 									<a href="${articleUrl}&articleNo=${dto.articleNo}" class="text-reset">${dto.title}</a>
-										<c:if test="${dto.gap<2}"><img src="${pageContext.request.contextPath}/resources/images/new.png"></c:if>
-									</td>
+										<c:if test="${dto.gap<2}"><img src="${pageContext.request.contextPath}/resources/images/new.png" class="w-25"></c:if>
+								</td>
 								<td>${dto.name}</td>
 								<td>${dto.reg_date}</td>
 								<td>${dto.hitCount}</td>

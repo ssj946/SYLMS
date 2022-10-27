@@ -3,6 +3,7 @@ package com.notice;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -67,40 +68,44 @@ public class NoticeServlet extends MyServlet {
 		try {
 			String subjectNo = req.getParameter("subjectNo");
 			
-			
+			// 페이지 번호
 			String page = req.getParameter("page");
 			int current_page = 1;
 			if(page != null) {
 				current_page = Integer.parseInt(page);
 			}
 			
+			// 검색
 			String condition = req.getParameter("condition");
 			String keyword = req.getParameter("keyword");
 			if(condition == null) {
 				condition = "all";
 				keyword = "";
-			}
+			} // GET방식이라 디코딩
 			if (req.getMethod().equalsIgnoreCase("GET")) {
 				keyword = URLDecoder.decode(keyword, "utf-8");
 			}
-			
-			// 한페이지 표시할 데이터 개수 
-			String pageSize = req.getParameter("size");
-			int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
 
-			int dataCount, total_page;
-
+			// 전체 데이터 개수
+			int dataCount;
 			if (keyword.length() != 0) {
 				dataCount = dao.dataCount(subjectNo, condition, keyword);
 			} else {
 				dataCount = dao.dataCount(subjectNo);
 			}
-			total_page = util.pageCount(dataCount, size);
+			
+			// 한페이지 표시할 데이터 개수 
+			String pageSize = req.getParameter("size");
+			int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
+			
+			// 전체 페이지 수 
+			int total_page = util.pageCount(dataCount, size);
 
 			if (current_page > total_page) {
 				current_page = total_page;
 			}
-
+			
+			// 게시글 가져오기
 			int offset = (current_page - 1) * size;
 			if(offset < 0) offset = 0;
 			
@@ -118,6 +123,7 @@ public class NoticeServlet extends MyServlet {
 				dto.setReg_date(dto.getReg_date().substring(0, 10));
 			}
 			
+			// new이미지 뜨게하는거
 			long gap;
 			Date curDate = new Date();
 			SimpleDateFormat tt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -130,10 +136,18 @@ public class NoticeServlet extends MyServlet {
 				dto.setReg_date(dto.getReg_date().substring(0, 10));
 			}
 			
-			String listUrl;
+			String query = "";
+			if(keyword.length() != 0) {
+				query = "condition="+condition+"&keyword="+URLEncoder.encode(keyword, "utf-8");
+			}
 			
-			
-			listUrl = cp + "/notice/notice.do?subjectNo=" + subjectNo;
+			// 페이징처리
+			String listUrl = cp + "/notice/notice.do?subjectNo=" + subjectNo; // 공지리스트 주소
+			String noticeUrl = cp + "/notice/notice.do?subjectNo="+subjectNo+"?page="+current_page; // 이게 뭔지,,,
+			if(query.length() != 0) {
+				listUrl += "?" + query;
+				noticeUrl += "&"+query;
+			}
 			
 			String paging = util.paging(current_page, total_page, listUrl);
 			
@@ -148,6 +162,7 @@ public class NoticeServlet extends MyServlet {
 			req.setAttribute("paging", paging);
 			req.setAttribute("condition", condition);
 			req.setAttribute("keyword", keyword);
+			req.setAttribute("noticeUrl", noticeUrl);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

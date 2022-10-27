@@ -45,6 +45,7 @@ public class NoticeDAO {
 		
 	}
 	
+	// 공지개수
 	public int dataCount(String subjectNo) {
 		int result = 0;
 		PreparedStatement pstmt = null;
@@ -83,6 +84,7 @@ public class NoticeDAO {
 		return result;
 	}
 
+	// 검색에서의 데이터 개수
 	public int dataCount(String subjectNo, String condition, String keyword) {
 		int result = 0;
 		PreparedStatement pstmt = null;
@@ -94,12 +96,12 @@ public class NoticeDAO {
 					+ " JOIN account a ON s.ID=a.ID "
 					+ " WHERE subjectNo = ? ";
 			if (condition.equals("all")) {
-				sql += " WHERE INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ";
+				sql += " AND INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ";
 			} else if (condition.equals("reg_date")) {
 				keyword = keyword.replaceAll("(\\-|\\/|\\.)", "");
-				sql += "  WHERE TO_CHAR(reg_date, 'YYYYMMDD') = ? ";
+				sql += " AND TO_CHAR(reg_date, 'YYYYMMDD') = ? ";
 			} else {
-				sql += "  WHERE INSTR(" + condition + ", ?) >= 1 ";
+				sql += " AND INSTR(" + condition + ", ?) >= 1 ";
 			}
 			
 
@@ -138,7 +140,14 @@ public class NoticeDAO {
 		return result;
 	}
 	
-	// 게시물 리스트
+	/**
+	 * 
+	 * @param subjectNo
+	 * @param offset	건너뛸개수 ?개수를 건너뛰고 
+	 * @param size		가져올개수 몇개를 가져오겠읍니다
+	 * @return			게시글리스트
+	 */
+	// 공지 리스트
 	public List<NoticeDTO> listNotice(String subjectNo, int offset, int size) {
 		List<NoticeDTO> list = new ArrayList<NoticeDTO>();
 		PreparedStatement pstmt = null;
@@ -150,7 +159,7 @@ public class NoticeDAO {
 			sb.append(" FROM subject_bbs b ");
 			sb.append(" JOIN account a ON b.ID = a.ID ");
 			sb.append(" WHERE subjectNo = ?  ");
-			sb.append(" ORDER BY articleNo DESC ");
+			sb.append(" ORDER BY reg_date DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 
 			
@@ -195,6 +204,16 @@ public class NoticeDAO {
 		return list;
 	}
 
+	
+	/**
+	 * 
+	 * @param subjectNo
+	 * @param offset
+	 * @param size
+	 * @param condition
+	 * @param keyword
+	 * @return
+	 */
 	// 검색에서 리스트
 	public List<NoticeDTO> listNotice(String subjectNo, int offset, int size, String condition, String keyword) {
 		List<NoticeDTO> list = new ArrayList<NoticeDTO>();
@@ -209,12 +228,12 @@ public class NoticeDAO {
 			sb.append(" WHERE subjectNo = ?  ");
 			
 			if (condition.equals("all")) {
-				sb.append(" WHERE INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ");
+				sb.append(" AND INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ");
 			} else if (condition.equals("reg_date")) {
 				keyword = keyword.replaceAll("(\\-|\\/|\\.)", "");
-				sb.append(" WHERE TO_CHAR(reg_date, 'YYYYMMDD') = ?");
+				sb.append(" AND TO_CHAR(reg_date, 'YYYYMMDD') = ?");
 			} else {
-				sb.append(" WHERE INSTR(" + condition + ", ?) >= 1 ");
+				sb.append(" AND INSTR(" + condition + ", ?) >= 1 ");
 			}
 			sb.append(" ORDER BY articleNo DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
@@ -281,9 +300,8 @@ public class NoticeDAO {
 			sb.append(" SELECT articleNo, b.ID, title, hitCount, reg_date ");
 			sb.append(" FROM subject_bbs b ");
 			sb.append(" JOIN account a ON b.ID = a.ID ");
-			//sb.append(" WHERE subject_bbs = 1  ");
 			sb.append(" WHERE subjectNo = ? ");
-			sb.append(" ORDER BY articleNo DESC ");
+			sb.append(" ORDER BY reg_date DESC ");
 
 			pstmt = conn.prepareStatement(sb.toString());
 
