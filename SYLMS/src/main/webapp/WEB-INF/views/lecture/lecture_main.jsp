@@ -106,7 +106,8 @@ list-style: none;
 						    </div>
 						    </div>
 					    </c:forEach>
-					    <c:if test="${empty thisweekList}"> <p class="fs-5 fw-bold text-center"> 강의가 없습니다.</p>
+					    <c:if test="${empty thisweekList}"> 
+					    <p class="fs-5 fw-bold text-center"> 강의가 없습니다.</p>
 					    </c:if>
 					    </div>
 					</div>
@@ -119,7 +120,9 @@ list-style: none;
 					</div>
 					  <div class="card-body">
 					    <div class="resultLayout">
-					    
+					    <c:if test="${empty lectureList}">
+					   	<p class="fs-5 fw-bold text-center"> 강의가 없습니다.</p>
+					    </c:if>
 					    
 					    <c:forEach var="dto" items="${lectureList}" varStatus="status">
 					    	<div class="ps-3 pe-3">
@@ -127,11 +130,21 @@ list-style: none;
 						  		<div class="card-body">
 						  		<div class="row">
 									<div class="col-1 text-center">
-									<i class="bi bi-book fa-3x"></i>
+										<i class="bi bi-book fa-3x"></i>
 									</div>
-						    		<div class="col-11 ms-auto">
+						    		<div class="col-10">
 						    			<h5 class="card-title fw-bold"><a href="#">${dto.week}&nbsp;${dto.part} - ${dto.title}</a></h5>
 						    			<span class="text-muted">시작일: ${dto.reg_date} | 종료일: ${dto.end_date}</span>
+						    		</div>
+						    		<div class="col-1 ms-auto dropdown d-inline text-end pe-4">
+						    		<c:if test="${not empty sessionScope.member.userId}">
+						    			<a id="update_menu" data-bs-toggle="dropdown" aria-expanded="false">
+						    			<i class="fas fa-ellipsis-vertical text-muted fa-lg"></i></a>
+						    			<ul class="dropdown-menu" aria-labelledby="update_menu">
+						    				<li><a class="dropdown-item" href="#">수정하기</a></li>
+						    				<li><a class="dropdown-item" href="#">삭제하기</a></li>
+						    			</ul>
+						    		</c:if>
 						    		</div>
 					    		</div>
 					    		</div>

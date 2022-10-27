@@ -105,20 +105,19 @@ $(function(){
 											<c:if test="${not empty list}">
 												<table class="table table-hover">
 												<tr class="bg-light text-center">
-													<th>과목명</th>
+													<th class="w-50">과목명</th>
 													<th>학점</th>
 													<th>년도</th>
 													<th>학기</th>												
 												</tr>
-													<c:forEach var="dto" items="${list}" varStatus="status">
-
-														<tr class="text-center">													
-															<td><a href="${pageContext.request.contextPath}/lecture/classroom.do?subjectNo=${dto.subjectNo}">${dto.subjectName}</a>
-															<td>${dto.credit}</td>
-															<td>${dto.syear}</td>
-															<td>${dto.semester}</td>
-														</tr>
-													</c:forEach>
+												<c:forEach var="dto" items="${list}" varStatus="status">
+													<tr class="text-center">													
+														<td><a href="${pageContext.request.contextPath}/lecture/classroom.do?subjectNo=${dto.subjectNo}">${dto.subjectName}</a>
+														<td>${dto.credit}</td>
+														<td>${dto.syear}</td>
+														<td>${dto.semester}</td>
+													</tr>
+												</c:forEach>
 												</table>
 											</c:if>
 											</div>
@@ -156,8 +155,8 @@ $(function(){
 												</c:if>
 												<c:if test="${not empty hlist}">
 												<table class="table table-hover history_list">
-												<tr class="bg-light ">
-													<th>과목명</th>
+												<tr class="bg-light">
+													<th class="w-50">과목명</th>
 													<th>학점</th>
 													<th>년도</th>
 													<th>학기</th>												
