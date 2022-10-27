@@ -67,7 +67,7 @@ function searchList() {
 							<tr>
 								<td>${dto.sendName}</td>
 								<td class="left">
-									<a href="${checkUrl}&num=${dto.id}" class="text-reset">${dto.content}</a>
+									<a href="${checkUrl}&num=${dto.sendId}" class="text-reset">${dto.content}</a>
 								</td>
 								<td>${dto.sendDate}</td>
 							</tr>

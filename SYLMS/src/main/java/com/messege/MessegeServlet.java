@@ -119,7 +119,7 @@ public class MessegeServlet extends MyServlet {
 			dto.setSendId(info.getUserId());
 
 			dto.setReceiveId(req.getParameter("itemRight"));
-			dto.setContent(req.getParameter("content"));
+			dto.setContent(req.getParameter("msg"));
 
 			dao.sendMessege(dto);
 

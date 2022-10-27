@@ -174,6 +174,7 @@ input[type=checkbox], input[type=radio] {
 </style>
 
 <script type="text/javascript">
+/*
 	function sendOk() {
 		const f = document.noteForm;
 		
@@ -181,19 +182,20 @@ input[type=checkbox], input[type=radio] {
 			alert("받는사람을 먼저 추가하세요...");
 			return;
 		}
-
+		
 		$("#itemRight option:selected").prop("selected", true);
 		$("#itemRight option:selected").val();
 
-		
-		f.action = "${pageContext.request.contextPath}/messege/send_ok.do";
 		f.submit;
+		f.action = "${pageContext.request.contextPath}/messege/send_ok.do";
+		
 	}
-
+*/
 	function check() {
 		window.location.href = "${pageContext.request.contextPath}/messege/receive.do";
 	}
-
+	
+	
 	$(function() {
 		$("#btnRight").click(function() {
 			$("#itemLeft option:selected").each(function() {
@@ -250,7 +252,7 @@ input[type=checkbox], input[type=radio] {
 									</h3>
 								</div>
 
-								<form name="noteForm" method="post">
+								<form name="noteForm" method="post" action="${pageContext.request.contextPath}/messege/send_ok.do">
 									<table class="table form-table">
 										<tr>
 											<td width="150"><span>보내는 목록</span></td>
@@ -281,14 +283,14 @@ input[type=checkbox], input[type=radio] {
 										</tr>
 										<tr>
 											<td colspan="3" class="left">
-											<textarea name="msg" class="form-control">${vo.content}</textarea>
+											<textarea name="msg" class="form-control"></textarea>
 											</td>
 										</tr>
 									</table>
 									<table class="table">
 										<tr>
 											<td class="right">
-												<button type="button" class="btn" onclick="sendOk()">쪽지보내기</button>
+												<button type="submit" class="btn">쪽지보내기</button>
 												<button type="button" class="btn" onclick="check()">쪽지함 확인하기</button>
 											</td>
 										</tr>
