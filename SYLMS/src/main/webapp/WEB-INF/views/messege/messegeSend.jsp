@@ -175,6 +175,8 @@ input[type=checkbox], input[type=radio] {
 
 <script type="text/javascript">
 	function sendOk() {
+		const f = document.noteForm;
+		
 		if ($("#itemRight option").length == 0) {
 			alert("받는사람을 먼저 추가하세요...");
 			return;
@@ -183,7 +185,9 @@ input[type=checkbox], input[type=radio] {
 		$("#itemRight option:selected").prop("selected", true);
 		$("#itemRight option:selected").val();
 
+		
 		f.action = "${pageContext.request.contextPath}/messege/send_ok.do";
+		f.submit;
 	}
 
 	function check() {
@@ -284,7 +288,7 @@ input[type=checkbox], input[type=radio] {
 									<table class="table">
 										<tr>
 											<td class="right">
-												<button type="submit" class="btn" onclick="sendOk()">쪽지보내기</button>
+												<button type="button" class="btn" onclick="sendOk()">쪽지보내기</button>
 												<button type="button" class="btn" onclick="check()">쪽지함 확인하기</button>
 											</td>
 										</tr>
