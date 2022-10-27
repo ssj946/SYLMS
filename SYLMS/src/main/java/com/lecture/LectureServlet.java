@@ -42,6 +42,12 @@ public class LectureServlet extends MyServlet {
 			lectureForm(req, resp);
 		} else if (uri.indexOf("history.do") != -1) {
 			registerHistory(req, resp);
+		} else if (uri.indexOf("content.do") != -1) {
+			content(req, resp);
+		} else if (uri.indexOf("content_update.do") != -1) {
+			contentUpdate(req, resp);
+		} else if (uri.indexOf("content_delete.do") != -1) {
+			contentUpdate(req, resp);
 		}
 	}
 
@@ -155,6 +161,97 @@ public class LectureServlet extends MyServlet {
 		
 		resp.sendError(400);
 	}
+	
+	protected void content(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 강의실
+		LectureDAO dao= new LectureDAO();	
+		
+		String subjectNo = req.getParameter("subjectNo");
+		String bbsNum = req.getParameter("bbsNum");
+		try {
+			LectureDTO dto = new LectureDTO();
+			dto= dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("credit", dto.getCredit());
+			req.setAttribute("syear", dto.getSyear());
+			
+			LectureDTO contentDTO = new LectureDTO();
+			contentDTO= dao.readContent(bbsNum);
+			
+			req.setAttribute("contentDTO", contentDTO);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		String path = "/WEB-INF/views/lecture/content.jsp";
+		forward(req, resp, path);
+		
+	}
+	
+	protected void contentUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 강의실
+		LectureDAO dao= new LectureDAO();
+		
+		String subjectNo = req.getParameter("subjectNo");
+		String bbsNum = req.getParameter("bbsNum");
+		try {
+			LectureDTO dto = new LectureDTO();
+			dto= dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("credit", dto.getCredit());
+			req.setAttribute("syear", dto.getSyear());
+			
+			LectureDTO contentDTO = new LectureDTO();
+			contentDTO= dao.readContent(bbsNum);
+			
+			req.setAttribute("contentDTO", contentDTO);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		String path = "/WEB-INF/views/lecture/content.jsp";
+		forward(req, resp, path);
+	}
+	
+	protected void contentDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 강의실
+		LectureDAO dao= new LectureDAO();
+		
+		String subjectNo = req.getParameter("subjectNo");
+		String bbsNum = req.getParameter("bbsNum");
+		try {
+			LectureDTO dto = new LectureDTO();
+			dto= dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("credit", dto.getCredit());
+			req.setAttribute("syear", dto.getSyear());
+			
+			LectureDTO contentDTO = new LectureDTO();
+			contentDTO= dao.readContent(bbsNum);
+			
+			req.setAttribute("contentDTO", contentDTO);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		String path = "/WEB-INF/views/lecture/content.jsp";
+		forward(req, resp, path);
+	}
+	
+	
 
 }
 

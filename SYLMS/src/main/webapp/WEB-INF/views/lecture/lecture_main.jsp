@@ -43,7 +43,7 @@ list-style: none;
 			</div>
 			<div class="row">
 			<!-- 강의 사이드바 자리 -->
-			<div class="col-xl-2 col-md-2 col-lg-2 bg-black bg-gradient" style="box-shadow: none; height: 150vh;">
+			<div class="col-xl-2 col-md-2 col-lg-2 bg-black bg-gradient" style="box-shadow: none;">
 			<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
 			</div>
 			
@@ -133,18 +133,16 @@ list-style: none;
 										<i class="bi bi-book fa-3x"></i>
 									</div>
 						    		<div class="col-10">
-						    			<h5 class="card-title fw-bold"><a href="#">${dto.week}&nbsp;${dto.part} - ${dto.title}</a></h5>
+						    			<h5 class="card-title fw-bold"><a href="${pageContext.request.contextPath}/lecture/content.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}">${dto.week}&nbsp;${dto.part} - ${dto.title}</a></h5>
 						    			<span class="text-muted">시작일: ${dto.reg_date} | 종료일: ${dto.end_date}</span>
 						    		</div>
 						    		<div class="col-1 ms-auto dropdown d-inline text-end pe-4">
-						    		<c:if test="${not empty sessionScope.member.userId}">
 						    			<a id="update_menu" data-bs-toggle="dropdown" aria-expanded="false">
 						    			<i class="fas fa-ellipsis-vertical text-muted fa-lg"></i></a>
 						    			<ul class="dropdown-menu" aria-labelledby="update_menu">
-						    				<li><a class="dropdown-item" href="#">수정하기</a></li>
-						    				<li><a class="dropdown-item" href="#">삭제하기</a></li>
+					    					<li><a href="${pageContext.request.contextPath}/lecture/content_update.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}" class="dropdown-item">수정하기</a></li>
+						    				<li><a href="${pageContext.request.contextPath}/lecture/content_delete.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}" class="dropdown-item">삭제하기</a></li>
 						    			</ul>
-						    		</c:if>
 						    		</div>
 					    		</div>
 					    		</div>
@@ -166,6 +164,9 @@ list-style: none;
 	
 	</section>
 </main>
+
+
 <jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
 </body>
 </html>
+

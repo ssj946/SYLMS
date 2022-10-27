@@ -312,6 +312,55 @@ public class LectureDAO {
 		
 		return list;
 	}
+	public LectureDTO readContent(String bbsNum) throws SQLException{
+		PreparedStatement pstmt= null;
+		String sql;
+		ResultSet rs=null;
+		LectureDTO dto =new LectureDTO();
+		try {
+			sql="SELECT l.bbsNum, subjectNo, title, content, week, part, savefilename,"
+					+ " TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
+					+ " TO_CHAR(end_date,'YYYY-MM-DD')end_date "
+					+ " FROM LECTURE_BBS l "
+					+ " LEFT OUTER JOIN LECTURE_BBS_FILE f on l.bbsnum=f.bbsnum "
+					+ " WHERE l.bbsNum=? ";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, bbsNum);
+			rs= pstmt.executeQuery();
+			
+			
+			if(rs.next()) {
+				dto.setBbsNum(bbsNum);
+				dto.setSubjectNo(rs.getString("subjectNo"));
+				dto.setContent(rs.getString("content"));
+				dto.setTitle(rs.getString("title"));
+				dto.setWeek(rs.getString("week"));
+				dto.setPart(rs.getString("part"));
+				dto.setSavefilename(rs.getString("savefilename"));
+				dto.setReg_date(rs.getString("reg_date"));
+				dto.setEnd_date(rs.getString("end_date"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				if(rs!=null) {
+					try {
+						rs.close();
+					} catch (Exception e2) {
+					}
+				}
+				
+				if(pstmt!=null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+					}
+				}
+			}
+		
+		return dto;
+	}
 
 }
 
