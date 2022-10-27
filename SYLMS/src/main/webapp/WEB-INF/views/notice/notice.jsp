@@ -69,8 +69,8 @@ function searchList() {
 				<table class="table table-hover board-list">
 					<thead class="table-light">
 						<tr>
-							<th class="num">번호</th>
-							<th class="subject">제목</th>
+							<th class="articleNo">번호</th>
+							<th class="title">제목</th>
 							<th class="name">작성자</th>
 							<th class="date">작성일</th>
 							<th class="hit">조회수</th>
