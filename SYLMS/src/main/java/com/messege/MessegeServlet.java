@@ -53,11 +53,15 @@ public class MessegeServlet extends MyServlet {
 
 	private void countForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		MessegeDAO dao = new MessegeDAO();
+		//읽지 않은 메세지 수
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		try {
-			int messegeCount;
-			messegeCount = dao.messegeCount();
-			
+			int messegeCount;			
+			String userId = info.getUserId();
+			messegeCount = dao.messegeCount(userId);
 			req.setAttribute("messegeCount", messegeCount);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,7 +70,14 @@ public class MessegeServlet extends MyServlet {
 	}
 
 	private void readForm(HttpServletRequest req, HttpServletResponse resp) {
+		//메세지를 읽은 날짜를 넣기
+		MessegeDAO dao = new MessegeDAO();
 		
+		try {
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -124,10 +135,13 @@ public class MessegeServlet extends MyServlet {
 		// 받은 메세지 리스트
 		MessegeDAO dao = new MessegeDAO();
 		MyUtil util = new MyUtilBootstrap();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
 		String cp = req.getContextPath();
 
-		try {
+		try {			
 			String page = req.getParameter("page");
 			int current_page = 1;
 			if (page != null) {
@@ -147,7 +161,7 @@ public class MessegeServlet extends MyServlet {
 
 			// 데이터 개수
 			int dataCount;
-			String userId = req.getParameter("receiveId");
+			String userId = info.getUserId();
 						
 			if (keyword.length() == 0) {
 				dataCount = dao.dataCount(userId);
@@ -198,6 +212,7 @@ public class MessegeServlet extends MyServlet {
 			req.setAttribute("paging", paging);
 			req.setAttribute("condition", condition);
 			req.setAttribute("keyword", keyword);
+			req.setAttribute("userId", userId);
 
 		} catch (Exception e) {
 			e.printStackTrace();

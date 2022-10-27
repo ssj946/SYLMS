@@ -41,19 +41,19 @@ public class MessegeDAO {
 	}
 
 	// 데이터 개수
-	public int dataCount(String receiveId) {
+	public int dataCount(String userId) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 
 		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM messege "
+			sql = "SELECT NVL(COUNT(*), 0) FROM messege m "
 					+ " JOIN account a ON m.receiveId = a.id "
 					+ " WHERE receiveId = ? ";
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1,receiveId);
+			pstmt.setString(1,userId);
 			
 		
 			rs = pstmt.executeQuery();
@@ -83,7 +83,7 @@ public class MessegeDAO {
 	}
 
 	// 검색에서의 데이터 개수
-	public int dataCount(String condition, String keyword, String receiveId) {
+	public int dataCount(String condition, String keyword, String userId) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -103,9 +103,11 @@ public class MessegeDAO {
 
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, keyword);
+			pstmt.setString(1,userId);
+			
+			pstmt.setString(2, keyword);
 			if (condition.equals("all")) {
-				pstmt.setString(2, keyword);
+				pstmt.setString(3, keyword);
 			}
 
 			rs = pstmt.executeQuery();
@@ -135,7 +137,7 @@ public class MessegeDAO {
 		return result;
 	}
 
-	public List<MessegeDTO> listBoard(int offset, int size, String receiveId) {
+	public List<MessegeDTO> listBoard(int offset, int size, String userId) {
 		List<MessegeDTO> list = new ArrayList<MessegeDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -151,7 +153,7 @@ public class MessegeDAO {
 
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1,receiveId);
+			pstmt.setString(1,userId);
 			pstmt.setInt(2, offset);
 			pstmt.setInt(3, size);
 
@@ -190,7 +192,7 @@ public class MessegeDAO {
 		return list;
 	}
 
-	public List<MessegeDTO> listBoard(int offset, int size, String condition, String keyword, String receiveId) {
+	public List<MessegeDTO> listBoard(int offset, int size, String condition, String keyword, String userId) {
 		List<MessegeDTO> list = new ArrayList<MessegeDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -199,7 +201,8 @@ public class MessegeDAO {
 		try {
 			sql = " SELECT content, name, sendId, TO_CHAR(sendDate, 'YYYY-MM-DD') sendDate, receiveId "
 					+ " FROM messege m "
-					+ " JOIN account a ON m.sendId = a.id ";
+					+ " JOIN account a ON m.sendId = a.id "
+					+ " WHERE receivedId = ? ";
 			if (condition.equals("all")) {
 				sql += " WHERE INSTR(content, ?) >= 1 ";
 			} else if (condition.equals("sendDate")) {
@@ -214,14 +217,16 @@ public class MessegeDAO {
 			pstmt = conn.prepareStatement(sql);
 
 			if (condition.equals("all")) {
-				pstmt.setString(1, keyword);
+				pstmt.setString(1,userId);
+				pstmt.setString(2, keyword);
+				pstmt.setString(3, keyword);
+				pstmt.setInt(4, offset);
+				pstmt.setInt(5, size);
+			} else {
+				pstmt.setString(1,userId);
 				pstmt.setString(2, keyword);
 				pstmt.setInt(3, offset);
 				pstmt.setInt(4, size);
-			} else {
-				pstmt.setString(1, keyword);
-				pstmt.setInt(2, offset);
-				pstmt.setInt(3, size);
 			}
 
 			rs = pstmt.executeQuery();
@@ -355,8 +360,7 @@ public class MessegeDAO {
 		String sql;
 
 		try {
-			sql = "INSERT INTO messege "
-					+ " SELECT * FROM messege ";
+			sql = "UPDATE messege SET readDate = SYSDATE WHERE messegeCode = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.executeUpdate();
 
@@ -373,7 +377,7 @@ public class MessegeDAO {
 	}
 
 	// 읽지 않은 개수
-	public int messegeCount() {
+	public int messegeCount(String userId) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -381,9 +385,11 @@ public class MessegeDAO {
 
 		try {
 			sql = "SELECT NVL(COUNT(*), 0) FROM messege"
-					+ " WHERE readDate = ''";
+					+ " WHERE readDate = NULL";
 			pstmt = conn.prepareStatement(sql);
 
+			pstmt.setString(1, userId);
+			
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				result = rs.getInt(1);
