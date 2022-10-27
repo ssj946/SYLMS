@@ -23,7 +23,7 @@
 		</li>
 
 		<li class="nav-item">
-		<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/notice/notice.do?subjectNo=${dto.subjectNo}" ><i class="fas fa-microphone  fa-lg mr-3"></i>&nbsp;공지사항</a>
+		<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/notice/notice.do?subjectNo=${subjectNo}" ><i class="fas fa-microphone  fa-lg mr-3"></i>&nbsp;공지사항</a>
 		</li>
 		
 		<li class="nav-item dropdown">

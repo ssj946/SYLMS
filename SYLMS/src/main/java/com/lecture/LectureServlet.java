@@ -72,24 +72,24 @@ public class LectureServlet extends MyServlet {
 	protected void classroomForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 강의실
 		LectureDAO dao= new LectureDAO();
-		String SubjectNo = req.getParameter("subjectNo");
+		String subjectNo = req.getParameter("subjectNo");
 		
 		LectureDTO dto = new LectureDTO();
 		List<LectureDTO> list=null;
 		List<LectureDTO> wlist=null;
 		try {
-			dto= dao.readSubject(SubjectNo);
-			
+			dto= dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
 			req.setAttribute("professorName", dto.getProfessorname());
 			req.setAttribute("semester", dto.getSemester());
 			req.setAttribute("subjectName", dto.getSubjectName());
 			req.setAttribute("credit", dto.getCredit());
 			req.setAttribute("syear", dto.getSyear());
 			
-			list = dao.readLecture(SubjectNo);
+			list = dao.readLecture(subjectNo);
 			req.setAttribute("lectureList", list);
 			
-			wlist=dao.thisweekLecture(SubjectNo);
+			wlist=dao.thisweekLecture(subjectNo);
 			req.setAttribute("thisweekList", wlist);
 		} catch (Exception e) {
 			e.printStackTrace();
