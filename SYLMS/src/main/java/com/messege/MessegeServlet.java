@@ -151,7 +151,7 @@ public class MessegeServlet extends MyServlet {
 			String condition = req.getParameter("condition");
 			String keyword = req.getParameter("keyword");
 			if (condition == null) {
-				condition = "all";
+				condition = "userName";
 				keyword = "";
 			}
 
@@ -166,7 +166,7 @@ public class MessegeServlet extends MyServlet {
 			if (keyword.length() == 0) {
 				dataCount = dao.dataCount(userId);
 			} else {
-				dataCount = dao.dataCount(condition, keyword);
+				dataCount = dao.dataCount(condition, keyword, userId);
 			}
 
 			// 전체 페이지 수
@@ -178,14 +178,13 @@ public class MessegeServlet extends MyServlet {
 
 			// 쪽지 가져오기
 			int offset = (current_page - 1) * size;
-			if (offset < 0)
-				offset = 0;
-
+			if (offset < 0)	offset = 0;
+			
 			List<MessegeDTO> list = null;
 			if (keyword.length() == 0) {
 				list = dao.listBoard(offset, size, userId);
 			} else {
-				list = dao.listBoard(offset, size, condition, keyword);
+				list = dao.listBoard(offset, size, condition, keyword, userId);
 			}
 
 			String query = "";
@@ -228,11 +227,15 @@ public class MessegeServlet extends MyServlet {
 
 		String cp = req.getContextPath();
 
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
 		String page = req.getParameter("page");
 		String query = "page=" + page;
 
 		try {
 			String sendID = req.getParameter("sendId");
+			String userId = info.getUserId();
 			String condition = req.getParameter("condition");
 			String keyword = req.getParameter("keyword");
 			if (condition == null) {
@@ -246,7 +249,7 @@ public class MessegeServlet extends MyServlet {
 			}
 
 			// 쪽지 가져오기
-			MessegeDTO dto = dao.readMessege(sendID);
+			MessegeDTO dto = dao.readMessege(sendID, userId);
 			if (dto == null) { // 쪽지가 없으면 다시 리스트로
 				resp.sendRedirect(cp + "/messege/receive.do?" + query);
 				return;

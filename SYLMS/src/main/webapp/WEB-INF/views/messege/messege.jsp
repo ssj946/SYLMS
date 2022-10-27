@@ -10,6 +10,14 @@
 <title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 <style type="text/css">
+.body-container {
+	max-width: 800px;
+}
+
+.hidden{
+	display: none;
+}
+
 </style>
 
 
@@ -65,6 +73,7 @@ function searchList() {
 					<tbody>
 						<c:forEach var="dto" items="${list}" varStatus="status">
 							<tr>
+								<td class="hidden">${dto.messegeCode}</td>
 								<td>${dto.sendName}</td>
 								<td class="left">
 									<a href="${checkUrl}&num=${dto.sendId}" class="text-reset">${dto.content}</a>
@@ -87,7 +96,7 @@ function searchList() {
 						<form class="row" name="searchForm" action="${pageContext.request.contextPath}/messege/receive.do" method="post">
 							<div class="col-auto p-1">
 								<select name="condition" class="form-select">
-									<option value="userName" ${condition=="sendName"?"selected='selected'":""}>작성자</option>
+									<option value="userName" ${condition=="userName"?"selected='selected'":""}>작성자</option>
 								</select>
 							</div>
 							<div class="col-auto p-1">

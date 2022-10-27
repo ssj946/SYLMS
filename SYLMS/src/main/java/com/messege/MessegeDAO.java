@@ -48,7 +48,7 @@ public class MessegeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM messege m "
+			sql = "SELECT COUNT(*) FROM messege m "
 					+ " JOIN account a ON m.receiveId = a.id "
 					+ " WHERE receiveId = ? ";
 			pstmt = conn.prepareStatement(sql);
@@ -83,37 +83,28 @@ public class MessegeDAO {
 	}
 
 	// 검색에서의 데이터 개수
-	public int dataCount(String condition, String keyword) {
+	public int dataCount(String condition, String keyword, String userId) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 
 		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM messege m " 
-					+ " JOIN account a ON m.sendId = a.id ";
-			if (condition.equals("all")) {
-				sql += "  WHERE INSTR(content, ?) >= 1 ";
-			} else if (condition.equals("sendDate")) {
-				keyword = keyword.replaceAll("(\\-|\\/|\\.)", "");
-				sql += "  WHERE TO_CHAR(sendDate, 'YYYYMMDD') = ? ";
-			} else {
-				sql += "  WHERE INSTR(" + condition + ", ?) >= 1 ";
-			}
-
-			pstmt = conn.prepareStatement(sql);
+			sql = "SELECT COUNT(*) FROM messege m " 
+					+ " JOIN account a ON m.sendId = a.id "
+					+ " WHERE sendId = ? AND receiveId = ? ";
 			
-			pstmt.setString(2, keyword);
-			if (condition.equals("all")) {
-				pstmt.setString(3, keyword);
-			}
+			pstmt = conn.prepareStatement(sql);
 
+			
+			pstmt.setString(1,keyword);
+			pstmt.setString(2,userId);
+		
 			rs = pstmt.executeQuery();
-
 			if (rs.next()) {
 				result = rs.getInt(1);
 			}
-
+						
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -135,6 +126,7 @@ public class MessegeDAO {
 		return result;
 	}
 
+	//게시글 리스트
 	public List<MessegeDTO> listBoard(int offset, int size, String userId) {
 		List<MessegeDTO> list = new ArrayList<MessegeDTO>();
 		PreparedStatement pstmt = null;
@@ -142,12 +134,13 @@ public class MessegeDAO {
 		String sql;
 
 		try {
-			sql = " SELECT sendId, receiveId, name, content, TO_CHAR(sendDate, 'YYYY-MM-DD') sendDate " 
+			sql = " SELECT sendId, receiveId, name, content, TO_CHAR(sendDate, 'YYYY-MM-DD') sendDate, messegeCode " 
 					+ " FROM messege m "
 					+ " JOIN account a ON m.receiveId = a.id "
 					+ " WHERE receiveId = ? "
 					+ " ORDER BY sendDate DESC "
 					+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
+			
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -165,6 +158,7 @@ public class MessegeDAO {
 				dto.setContent(rs.getString("content"));
 				dto.setSendDate(rs.getString("sendDate"));
 				dto.setReceiveId(rs.getString("receiveId"));
+				dto.setMessegeCode(rs.getString("messegeCode"));
 
 				list.add(dto);
 			}
@@ -190,40 +184,27 @@ public class MessegeDAO {
 		return list;
 	}
 
-	public List<MessegeDTO> listBoard(int offset, int size, String condition, String keyword) {
+	//검색에서 리스트
+	public List<MessegeDTO> listBoard(int offset, int size, String condition, String keyword, String userId) {
 		List<MessegeDTO> list = new ArrayList<MessegeDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 
 		try {
-			sql = " SELECT content, name, sendId, TO_CHAR(sendDate, 'YYYY-MM-DD') sendDate, receiveId "
+			sql = " SELECT sendId, receiveId, name, content, TO_CHAR(sendDate, 'YYYY-MM-DD') sendDate, messegeCode " 
 					+ " FROM messege m "
-					+ " JOIN account a ON m.sendId = a.id ";
-			if (condition.equals("all")) {
-				sql += " WHERE INSTR(content, ?) >= 1 ";
-			} else if (condition.equals("sendDate")) {
-				keyword = keyword.replaceAll("(\\-|\\/|\\.)", "");
-				sql += " WHERE TO_CHAR(sendDate, 'YYYYMMDD') = ? ";
-			} else {
-				sql += " WHERE INSTR(" + condition + ", ?) >= 1 ";
-			}
-			sql += " ORDER BY sendDate DESC ";
-			sql += " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
+					+ " JOIN account a ON m.receiveId = a.id "
+					+ " WHERE sendId = ? AND receiveId = ? "
+					+ " ORDER BY sendDate DESC "
+					+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
 
 			pstmt = conn.prepareStatement(sql);
 
-			if (condition.equals("all")) {
-				
-				pstmt.setString(1, keyword);
-				pstmt.setString(2, keyword);
-				pstmt.setInt(3, offset);
-				pstmt.setInt(4, size);
-			} else {
-				pstmt.setString(1, keyword);
-				pstmt.setInt(2, offset);
-				pstmt.setInt(3, size);
-			}
+			pstmt.setString(1,keyword);
+			pstmt.setString(2,userId);
+			pstmt.setInt(3, offset);
+			pstmt.setInt(4, size);
 
 			rs = pstmt.executeQuery();
 
@@ -231,13 +212,15 @@ public class MessegeDAO {
 				MessegeDTO dto = new MessegeDTO();
 
 				dto.setSendId(rs.getString("sendId"));
-				dto.setSendName(rs.getString("sendName"));
+				dto.setSendName(rs.getString("name"));
 				dto.setContent(rs.getString("content"));
 				dto.setSendDate(rs.getString("sendDate"));
 				dto.setReceiveId(rs.getString("receiveId"));
+				dto.setMessegeCode(rs.getString("messegeCode"));
 
 				list.add(dto);
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -258,7 +241,8 @@ public class MessegeDAO {
 		return list;
 	}
 	
-	public MessegeDTO readMessege(String sendId) {
+	//선택한 쪽지 내용보기
+	public MessegeDTO readMessege(String sendId, String userId) {
 		MessegeDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -268,10 +252,12 @@ public class MessegeDAO {
 			sql = " SELECT m.sendId, name, content, sendDate "
 					+ " FROM messege m "
 					+ " JOIN account a ON m.sendId = a.id "
-					+ " WHERE sendId = ? ";
+					+ " WHERE sendId = ? AND receiveId = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, sendId);
+			pstmt.setString(2, userId);
+			
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
@@ -304,6 +290,7 @@ public class MessegeDAO {
 		return dto;
 	}
 	
+	//전체인원의 아이디와 이름 리스트
 	public List<MemberDTO> idList (String id){
 		List<MemberDTO> list = new ArrayList<>();
 		
@@ -358,6 +345,9 @@ public class MessegeDAO {
 		try {
 			sql = "UPDATE messege SET readDate = SYSDATE WHERE messegeCode = ?";
 			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getMessegeCode());
+			
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -380,7 +370,7 @@ public class MessegeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM messege"
+			sql = "SELECT COUNT(*) FROM messege"
 					+ " WHERE readDate = NULL";
 			pstmt = conn.prepareStatement(sql);
 
