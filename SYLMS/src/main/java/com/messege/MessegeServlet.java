@@ -166,7 +166,7 @@ public class MessegeServlet extends MyServlet {
 			if (keyword.length() == 0) {
 				dataCount = dao.dataCount(userId);
 			} else {
-				dataCount = dao.dataCount(condition, keyword, userId);
+				dataCount = dao.dataCount(condition, keyword);
 			}
 
 			// 전체 페이지 수
@@ -185,7 +185,7 @@ public class MessegeServlet extends MyServlet {
 			if (keyword.length() == 0) {
 				list = dao.listBoard(offset, size, userId);
 			} else {
-				list = dao.listBoard(offset, size, condition, keyword, userId);
+				list = dao.listBoard(offset, size, condition, keyword);
 			}
 
 			String query = "";
@@ -201,7 +201,7 @@ public class MessegeServlet extends MyServlet {
 				checkUrl += "&" + query;
 			}
 			String paging = util.paging(current_page, total_page, listUrl);
-
+			
 			// 포워딩할 JSP에 넘길 속성
 			req.setAttribute("list", list);
 			req.setAttribute("page", current_page);

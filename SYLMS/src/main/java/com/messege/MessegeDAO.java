@@ -83,7 +83,7 @@ public class MessegeDAO {
 	}
 
 	// 검색에서의 데이터 개수
-	public int dataCount(String condition, String keyword, String userId) {
+	public int dataCount(String condition, String keyword) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -102,8 +102,6 @@ public class MessegeDAO {
 			}
 
 			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1,userId);
 			
 			pstmt.setString(2, keyword);
 			if (condition.equals("all")) {
@@ -192,7 +190,7 @@ public class MessegeDAO {
 		return list;
 	}
 
-	public List<MessegeDTO> listBoard(int offset, int size, String condition, String keyword, String userId) {
+	public List<MessegeDTO> listBoard(int offset, int size, String condition, String keyword) {
 		List<MessegeDTO> list = new ArrayList<MessegeDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -201,8 +199,7 @@ public class MessegeDAO {
 		try {
 			sql = " SELECT content, name, sendId, TO_CHAR(sendDate, 'YYYY-MM-DD') sendDate, receiveId "
 					+ " FROM messege m "
-					+ " JOIN account a ON m.sendId = a.id "
-					+ " WHERE receivedId = ? ";
+					+ " JOIN account a ON m.sendId = a.id ";
 			if (condition.equals("all")) {
 				sql += " WHERE INSTR(content, ?) >= 1 ";
 			} else if (condition.equals("sendDate")) {
@@ -217,16 +214,14 @@ public class MessegeDAO {
 			pstmt = conn.prepareStatement(sql);
 
 			if (condition.equals("all")) {
-				pstmt.setString(1,userId);
-				pstmt.setString(2, keyword);
-				pstmt.setString(3, keyword);
-				pstmt.setInt(4, offset);
-				pstmt.setInt(5, size);
-			} else {
-				pstmt.setString(1,userId);
+				pstmt.setString(1, keyword);
 				pstmt.setString(2, keyword);
 				pstmt.setInt(3, offset);
 				pstmt.setInt(4, size);
+			} else {
+				pstmt.setString(1, keyword);
+				pstmt.setInt(2, offset);
+				pstmt.setInt(3, size);
 			}
 
 			rs = pstmt.executeQuery();
@@ -235,7 +230,7 @@ public class MessegeDAO {
 				MessegeDTO dto = new MessegeDTO();
 
 				dto.setSendId(rs.getString("sendId"));
-				dto.setSendName(rs.getString("name"));
+				dto.setSendName(rs.getString("sendName"));
 				dto.setContent(rs.getString("content"));
 				dto.setSendDate(rs.getString("sendDate"));
 				dto.setReceiveId(rs.getString("receiveId"));

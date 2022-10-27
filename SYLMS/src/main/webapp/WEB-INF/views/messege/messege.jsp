@@ -63,7 +63,7 @@ function searchList() {
 					</thead>
 					
 					<tbody>
-						<c:forEach var="dto" items="${listBoard}" varStatus="status">
+						<c:forEach var="dto" items="${list}" varStatus="status">
 							<tr>
 								<td>${dto.sendName}</td>
 								<td class="left">
