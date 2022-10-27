@@ -1,8 +1,6 @@
 package com.syllabus;
 
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -40,18 +38,11 @@ public class SyllabusServlet extends MyServlet {
 				if (page != null) {
 					current_page = Integer.parseInt(page);
 				}
-				if (req.getMethod().equalsIgnoreCase("GET")) {
-					cp = URLDecoder.decode(cp, "utf-8");
-				}
+				
 
 				// 전체 데이터 개수
 				int dataCount;
-				Object condition = null;
-				if (cp.length() == 0) {
 					dataCount = dao.dataCount();
-				} else {
-					dataCount = dao.dataCount();
-				}
 				
 				// 전체 페이지 수
 				int size = 10;
@@ -65,16 +56,14 @@ public class SyllabusServlet extends MyServlet {
 				if(offset < 0) offset = 0;
 				
 				List<SyllabusDTO> list = null;
-				if (cp.length() == 0) {
-					list = dao.listBoard(offset, size);
-				} else {
-					list = dao.listBoard(offset, size);
-				}
+				list = dao.listBoard(offset, size);
 
 				String query = "";
-				if (cp.length() != 0) {
-					query = "condition=" + condition + "&keyword=" + URLEncoder.encode(cp, "utf-8");
+				/*
+				if (keyword.length() != 0) {
+					query = "condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "utf-8");
 				}
+				*/
 
 				// 페이징 처리
 				String listUrl = cp + "/syllabus/list.do";
@@ -91,8 +80,8 @@ public class SyllabusServlet extends MyServlet {
 				req.setAttribute("dataCount", dataCount);
 				req.setAttribute("size", size);
 				req.setAttribute("paging", paging);
-				req.setAttribute("condition", condition);
-				req.setAttribute("keyword", cp);
+				//req.setAttribute("condition", condition);
+				//req.setAttribute("keyword", keyword);
 				
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -100,10 +89,12 @@ public class SyllabusServlet extends MyServlet {
 
 				
 		forward(req, resp, "/WEB-INF/views/syllabus/list.jsp");
-			}
+	}
 	
 	protected void test(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	     }
-	}	
+		
+	}
+	
+}	
 
 		

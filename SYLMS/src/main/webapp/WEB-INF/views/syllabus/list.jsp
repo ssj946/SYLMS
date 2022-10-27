@@ -55,8 +55,8 @@ list-style: none;
 							</h3>
 						</div>
 						<div class="panel-body">
-							<p> 1. 수강신청기간 동안 교수명 클릭시, 강의평가 결과가 조회됩니다.</p>
-							<p> 2. 과목코드에 마우스를 올리면 과목 해설이 표시됩니다.</p>
+							<p> 1. 교수명 클릭시,조회됩니다.</p>
+							<p> 2. 과목명 표시됩니다.</p>
 							<p> 3. The English title will be shown when you place your mouse pointer on Korean subject name.</p>
 						</div>
 					</div>
@@ -96,18 +96,34 @@ list-style: none;
 				<table class="table table-hover board-list">
 					<thead class="table-light">
 						<tr>
-							<th class="subjectName">과목명</th>
+							<th class="no">번호</th>
+							<th class="subjectNo">과목명</th>
 							<th class="openDate">개강일자</th>
 							<th class="semester">학기</th>
 							<th class="lecturePlace">강의실</th>
 							<th class="assignmentRate">과제비율</th>
 							<th class="middleRate">중간고사비율</th>
-							<th class="finalRate">기말고사비율 </th>
-							
-							
+							<th class="finalRate">기말고사비율 </th>	
 						</tr>
 					</thead>		
-						<tbody>									
+						<tbody>	
+						<c:forEach var="dto" items="${list}" varStatus="status">
+							<tr>
+								<td>${dataCount - (page-1) * size - status.index}</td>
+								<td class="left">
+									${dto.subjectNo}
+								</td>
+								<td>${dto.openDate}</td>
+								<td>${dto.semester}</td>
+								<td>${dto.lecturePlace}</td>
+								<td>${dto.assignmentRate}</td>
+							    <td>${dto.middleRate}</td>
+								<td>${dto.finalRate}</td>
+									
+							</tr>
+						</c:forEach>
+						
+														
 						</tbody>
 					</table>				
 				</div>
