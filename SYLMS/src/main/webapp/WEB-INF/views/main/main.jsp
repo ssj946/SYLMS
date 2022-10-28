@@ -22,10 +22,9 @@
 	<main>
 		<section>
 			<div class="container-fluid">
-
 				<div class="row">&nbsp;</div>
 				<div class="row">
-					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1">
+					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1" style="height: 100vh">
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 					</div>
@@ -45,21 +44,28 @@
 										<div id="lecture_list"
 											class="accordion-collapse collapse show"
 											aria-labelledby="lecture" data-bs-parent="#lecture_all">
-											<div class="accordion-body">
+											<div class="accordion-body text-center">
+											<c:if test="${empty list}">
+														수강 기록이 없습니다.
+											</c:if>
+											<c:if test="${not empty list}">
 												<table class="table table-hover">
 												<tr class="bg-light text-center">
-													<th>과목명</th>
+													<th class="w-50">과목명</th>
+													<th>학점</th>
 													<th>년도</th>
 													<th>학기</th>												
 												</tr>
-													<c:forEach var="dto" items="${list}" varStatus="status">
-														<tr class="text-center">													
-															<td><a href="${pageContext.request.contextPath}/lecture/classroom.do?subjectNo=${dto.subjectNo}">${dto.subjectName}</a>
-															<td>${dto.syear}</td>
-															<td>${dto.semester}</td>
-														</tr>
-													</c:forEach>
+												<c:forEach var="dto" items="${list}" varStatus="status">
+													<tr class="text-center">													
+														<td><a href="${pageContext.request.contextPath}/lecture/classroom.do?subjectNo=${dto.subjectNo}">${dto.subjectName}</a>
+														<td>${dto.credit}</td>
+														<td>${dto.syear}</td>
+														<td>${dto.semester}</td>
+													</tr>
+												</c:forEach>
 												</table>
+											</c:if>
 											</div>
 										</div>
 									</div>
