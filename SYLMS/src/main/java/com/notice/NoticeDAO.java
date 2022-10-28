@@ -23,7 +23,7 @@ public class NoticeDAO {
 					+ " ID, title, content, reg_date, hitCount) "
 					+ " VALUES (subject_bbs_seq.NEXTVAL,'00001', ?, ?, ?, ?, SYSDATE, 0)";
 			pstmt = conn.prepareStatement(sql);
-			 
+			
 			pstmt.setString(1, dto.getSubjectNo());
 			pstmt.setString(2, dto.getUserId());
 			pstmt.setString(3, dto.getTitle());
@@ -343,8 +343,274 @@ public class NoticeDAO {
 		return list;
 	}
 
+	public NoticeDTO readNotice(String articleNo) {
+		NoticeDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
 
-	
+		try {
+			sql = "SELECT articleNo, bbsCode, subjectNo, Id, title, content, reg_date, hitcount "
+					+ " FROM subject_bbs b "
+					+ " JOIN account a ON b.Id=a.Id "
+					+ " WHERE articleNo = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, articleNo);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				dto = new NoticeDTO();
+
+				dto.setArticleNo(rs.getString("articleNo"));
+				dto.setBbsCode(rs.getString("bbsCode"));
+				dto.setSubjectNo(rs.getString("subjectNo"));
+				dto.setUserId(rs.getString("id"));
+				dto.setTitle(rs.getString("title"));
+				dto.setContent(rs.getString("content"));
+				dto.setReg_date(rs.getString("reg_date")); 
+				dto.setHitCount(rs.getInt("hitCount"));
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+		return dto;
+	}
+/*	
+	// 이전글
+	public NoticeDTO preReadNotice(long num, String condition, String keyword) {
+		NoticeDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+
+		try {
+			if (keyword != null && keyword.length() != 0) {
+				sb.append(" SELECT num, subject ");
+				sb.append(" FROM notice n ");
+				sb.append(" JOIN member1 m ON n.userId = m.userId ");
+				sb.append(" WHERE ( num > ? ) ");
+				if (condition.equals("all")) {
+					sb.append("   AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
+				} else if (condition.equals("reg_date")) {
+					keyword = keyword.replaceAll("(\\-|\\/|\\.)", "");
+					sb.append("   AND ( TO_CHAR(reg_date, 'YYYYMMDD') = ? ) ");
+				} else {
+					sb.append("   AND ( INSTR(" + condition + ", ?) >= 1 ) ");
+				}
+				sb.append(" ORDER BY num ASC ");
+				sb.append(" FETCH FIRST 1 ROWS ONLY ");
+
+				pstmt = conn.prepareStatement(sb.toString());
+				
+				pstmt.setLong(1, num);
+				pstmt.setString(2, keyword);
+				if (condition.equals("all")) {
+					pstmt.setString(3, keyword);
+				}
+			} else {
+				sb.append(" SELECT num, subject FROM notice ");
+				sb.append(" WHERE num > ? ");
+				sb.append(" ORDER BY num ASC ");
+				sb.append(" FETCH FIRST 1 ROWS ONLY ");
+
+				pstmt = conn.prepareStatement(sb.toString());
+				
+				pstmt.setLong(1, num);
+			}
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				dto = new NoticeDTO();
+				
+				dto.setNum(rs.getLong("num"));
+				dto.setSubject(rs.getString("subject"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+		return dto;
+	}
+
+	// 다음글
+	public NoticeDTO nextReadNotice(long num, String condition, String keyword) {
+		NoticeDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+
+		try {
+			if (keyword != null && keyword.length() != 0) {
+				sb.append(" SELECT num, subject ");
+				sb.append(" FROM notice n ");
+				sb.append(" JOIN member1 m ON n.userId = m.userId ");
+				sb.append(" WHERE ( num < ? ) ");
+				if (condition.equals("all")) {
+					sb.append("   AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
+				} else if (condition.equals("reg_date")) {
+					keyword = keyword.replaceAll("(\\-|\\/|\\.)", "");
+					sb.append("   AND ( TO_CHAR(reg_date, 'YYYYMMDD') = ? ) ");
+				} else {
+					sb.append("   AND ( INSTR(" + condition + ", ?) >= 1 ) ");
+				}
+				sb.append(" ORDER BY num DESC ");
+				sb.append(" FETCH FIRST 1 ROWS ONLY ");
+
+				pstmt = conn.prepareStatement(sb.toString());
+				
+				pstmt.setLong(1, num);
+				pstmt.setString(2, keyword);
+				if (condition.equals("all")) {
+					pstmt.setString(3, keyword);
+				}
+			} else {
+				sb.append(" SELECT num, subject FROM notice ");
+				sb.append(" WHERE num < ? ");
+				sb.append(" ORDER BY num DESC ");
+				sb.append(" FETCH FIRST 1 ROWS ONLY ");
+
+				pstmt = conn.prepareStatement(sb.toString());
+				
+				pstmt.setLong(1, num);
+			}
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				dto = new NoticeDTO();
+				
+				dto.setNum(rs.getLong("num"));
+				dto.setSubject(rs.getString("subject"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+		return dto;
+	}
+*/
+	public void updateHitCount(String articleNo, String subjectNo) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+
+		try {
+			sql = "UPDATE subjectNo SET hitCount=hitCount+1 WHERE articleNo=? AND subjectNo=? ";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, articleNo);
+			pstmt.setString(2, subjectNo);
+			
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+	}
+/*
+	public void updateNotice(NoticeDTO dto) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+
+		try {
+			sql = "UPDATE notice SET notice=?, subject=?, content=? "
+					+ " WHERE num=?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, dto.getNotice());
+			pstmt.setString(2, dto.getSubject());
+			pstmt.setString(3, dto.getContent());
+			pstmt.setLong(4, dto.getNum());
+			
+			pstmt.executeUpdate();
+			
+			pstmt.close();
+			pstmt = null;
+
+			if (dto.getSaveFiles() != null) {
+				sql = "INSERT INTO noticeFile(fileNum, num, saveFilename, originalFilename) VALUES (noticeFile_seq.NEXTVAL, ?, ?, ?)";
+				pstmt = conn.prepareStatement(sql);
+				
+				for (int i = 0; i < dto.getSaveFiles().length; i++) {
+					pstmt.setLong(1, dto.getNum());
+					pstmt.setString(2, dto.getSaveFiles()[i]);
+					pstmt.setString(3, dto.getOriginalFiles()[i]);
+					
+					pstmt.executeUpdate();
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+	}
+ */
 
 
 }

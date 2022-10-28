@@ -58,8 +58,8 @@ function deleteBoard() {
 			</div>
 			
 			<!-- 본문 -->
-			<div class="col-lg-10 gap-3 ms-auto">
-				<div class="ms-5 me-5 pt-3 mt-4 mb-5">
+			<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto">
+				<div class="ms-1 me-1 pt-3 mt-3 mb-5">
 				<div class="body-title">
 					<h3><i class="fas fa-microphone fa-1x"></i> 공지사항 </h3>
 				</div>

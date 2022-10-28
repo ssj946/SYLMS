@@ -215,10 +215,57 @@ public class NoticeServlet extends MyServlet {
 		resp.sendRedirect(cp + "/notice/notice.do?subjectNo=" + subjectNo);
 	}
 	
+	
 	protected void noticeArticleForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 공지사항 보기
-		String path = "/WEB-INF/views/notice/noticeArticle.jsp";
-		forward(req, resp, path);
+		String cp = req.getContextPath();
+
+		String page = req.getParameter("page");
+		String size = req.getParameter("size");
+		String query = "page=" + page + "&size=" + size;
+
+		NoticeDAO dao = new NoticeDAO();
+
+		try {
+			String articleNo = req.getParameter("articleNo");
+			String subjectNo = req.getParameter("subjectNo");
+
+			String condition = req.getParameter("condition");
+			String keyword = req.getParameter("keyword");
+			if (condition == null) {
+				condition = "all";
+				keyword = "";
+			}
+			keyword = URLDecoder.decode(keyword, "utf-8");
+
+			if (keyword.length() != 0) {
+				query += "&condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "UTF-8");
+			}
+
+			// 조회수
+			dao.updateHitCount(articleNo, subjectNo);
+
+			// 게시물 가져오기
+			NoticeDTO dto = dao.readNotice(articleNo);
+			if (dto == null) {
+				resp.sendRedirect(cp + "/notice/notice.do?" + query);
+				return;
+			}
+
+			dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
+
+			// 이전글/다음글
+			
+			// 파일
+			
+
+			forward(req, resp, "/WEB-INF/views/notice/noticeArticle.jsp");
+			return;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		resp.sendRedirect(cp + "/notice/notice.do?" + query);
 	}
 	
 	
