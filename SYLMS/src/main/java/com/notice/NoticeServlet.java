@@ -130,7 +130,7 @@ public class NoticeServlet extends MyServlet {
 			
 			for (NoticeDTO dto : list) {
 				Date date = tt.parse(dto.getReg_date());
-				gap = (curDate.getTime() - date.getTime()) / (1000 * 60 * 60);
+				gap = (curDate.getTime() - date.getTime()) / (1000 * 60 * 60 *24);
 				dto.setGap(gap);
 				
 				dto.setReg_date(dto.getReg_date().substring(0, 10));
