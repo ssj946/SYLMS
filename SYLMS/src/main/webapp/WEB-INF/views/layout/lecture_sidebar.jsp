@@ -14,7 +14,7 @@
 				<div class="collapse navbar-collapse" id="lec_info" >
 				<ul>
 					<li class="nav-item">
-						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/syllabus/list.do">
+						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/syllabus/list.do?subjectNo=10045"> 
 						 <i class="fas fa-map  fa-lg mr-3"></i>&nbsp;수업계획서
 						 </a>
 					</li>	

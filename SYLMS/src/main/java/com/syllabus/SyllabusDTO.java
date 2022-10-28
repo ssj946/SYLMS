@@ -9,6 +9,10 @@ public class SyllabusDTO {
 	private int assignmentRate;
 	private int middleRate;
 	private int finalRate;
+	private int credit;
+	private String id;
+	private String name;
+	
 	public String getSubjectNo() {
 		return subjectNo;
 	}
@@ -56,6 +60,24 @@ public class SyllabusDTO {
 	}
 	public void setSubjectName(String subjectName) {
 		this.subjectName = subjectName;
+	}
+	public int getCredit() {
+		return credit;
+	}
+	public void setCredit(int credit) {
+		this.credit = credit;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

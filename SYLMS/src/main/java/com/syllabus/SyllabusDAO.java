@@ -12,15 +12,20 @@ import com.util.DBConn;
 public class SyllabusDAO {
 	private Connection conn = DBConn.getConnection();
 
-	public int dataCount() {
+	// 학생용
+	public int dataCount(String subjectNo) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 
 		try {
-			sql = "SELECT COUNT(*) FROM curriculum";
+			sql = "SELECT COUNT(*) FROM curriculum c "
+					+ " JOIN subject s ON c.subjectNo = s.subjectNo "
+					+ " JOIN account a ON s.id = a.id "
+					+ " WHERE c.subjectNo = ? ";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, subjectNo);
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
@@ -48,7 +53,50 @@ public class SyllabusDAO {
 		return result;
 	}
 	
-	public List<SyllabusDTO> listBoard() {
+	// 교수용
+	public int dataCountProfessor(String id) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+
+		try {
+			sql = "SELECT COUNT(*) FROM curriculum c "
+					+ " JOIN subject s ON c.subjectNo = s.subjectNo "
+					+ " JOIN account a ON s.id = a.id "
+					+ " WHERE s.id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				result = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (Exception e2) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+
+		}
+
+		return result;
+	}
+	
+	// 학생용
+	public List<SyllabusDTO> listBoard(String subjectNo, int offset, int size) {
 		List<SyllabusDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -56,14 +104,83 @@ public class SyllabusDAO {
 
 		try {
 		sql= "SELECT b.subjectNo,subjectName,b.lecturePlace, b.semester, b.assignmentRate, b.middleRate,b.finalRate, " 
-			 +" TO_CHAR(b.openDate, 'YYYY-MM-DD') openDate " 
+			 +" TO_CHAR(b.openDate, 'YYYY-MM-DD') openDate, credit, s.id, a.name " 
 			 +" FROM curriculum b" 	
-			 +" JOIN subject m ON b.subjectNo = m.subjectNo"
-			 +" ORDER BY subjectNo DESC" ;
+			 +" JOIN subject s ON b.subjectNo = s.subjectNo"
+			 +" JOIN account a ON s.id = a.id "
+			 +" WHERE b.subjectNo = ? "
+			 +" ORDER BY b.subjectNo DESC "
+			 +" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
 					
 
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, subjectNo);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, size);
+			
+			rs = pstmt.executeQuery();
 
+			while (rs.next()) {
+				SyllabusDTO dto = new SyllabusDTO();
+				dto.setSubjectNo(rs.getString("subjectNo"));
+				dto.setSubjectName(rs.getString("subjectName"));
+				dto.setLecturePlace(rs.getString("lecturePlace"));
+				dto.setOpenDate(rs.getString("openDate"));
+				dto.setSemester(rs.getInt("semester"));
+				dto.setAssignmentRate(rs.getInt("assignmentRate"));
+				dto.setMiddleRate(rs.getInt("middleRate"));
+				dto.setFinalRate(rs.getInt("finalRate"));
+				dto.setCredit(rs.getInt("credit")); // 학점
+				
+				dto.setId(rs.getString("id"));  // 교수아이디
+				dto.setName(rs.getString("name")); // 교수이름
+				
+				list.add(dto);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (Exception e2) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+
+		return list;
+	}
+	
+	// 교수용
+	public List<SyllabusDTO> listBoardProfessor(String id, int offset, int size) {
+		List<SyllabusDTO> list = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+
+		try {
+		sql= "SELECT b.subjectNo,subjectName,b.lecturePlace, b.semester, b.assignmentRate, b.middleRate,b.finalRate, " 
+			 +" TO_CHAR(b.openDate, 'YYYY-MM-DD') openDate, credit, s.id, a.name " 
+			 +" FROM curriculum b" 	
+			 +" JOIN subject s ON b.subjectNo = s.subjectNo"
+			 +" JOIN account a ON s.id = a.id "
+			 +" WHERE s.id = ? "
+			 +" ORDER BY b.subjectNo DESC "
+			 +" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+					
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, size);
 			
 			rs = pstmt.executeQuery();
 
@@ -77,6 +194,10 @@ public class SyllabusDAO {
 				dto.setAssignmentRate(rs.getInt("assignmentRate"));
 				dto.setMiddleRate(rs.getInt("middleRate"));
 				dto.setFinalRate(rs.getInt("finalRate"));
+				dto.setCredit(rs.getInt("credit")); // 학점
+				
+				dto.setId(rs.getString("id"));  // 교수아이디
+				dto.setName(rs.getString("name")); // 교수이름
 				
 				list.add(dto);
 			}

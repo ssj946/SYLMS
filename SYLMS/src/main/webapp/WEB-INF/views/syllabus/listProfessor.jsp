@@ -38,7 +38,7 @@ list-style: none;
 			</div>
 			<div class="row">
 			<!-- 강의 사이드바 자리 -->
-			<div class="col-lg-2 bg-dark bg-gradient" style="box-shadow: none; height: 150vh;">
+			<div class="col-lg-2 bg-black bg-gradient" style="box-shadow: none; height: 150vh;">
 			<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
 			</div>
 			
@@ -71,10 +71,10 @@ list-style: none;
 							</select>
 						</div>
 						<div class="form-group">
-							<label>전공선택</label>
+							<label>과목선택</label>
 							<select class="form-control">
 								<option> -- 전체 -- </option>
-								<option>컴퓨터소프트웨어학과</option>
+								<option>컴퓨터구조</option>
 							</select>
 						</div>
 					</form>
@@ -82,8 +82,8 @@ list-style: none;
 					<div class="panel panel-info">
 						<div class="panel-heading"><strong>시간표 및 수업계획서</strong></div>
 						<div class="panel-body">
-							<p>학기 : <strong>2022년 2학기</strong></p>
-							<p>학과 : <strong>컴퓨터소프트웨어학과</strong></p>
+							<p>학기 : <strong>2022년 1학기</strong></p>
+							<p>과목 : <strong>컴퓨터구조</strong></p>
 							<p></p>
 						</div>
 					
@@ -98,7 +98,6 @@ list-style: none;
 						<tr>
 							<th class="no">번호</th>
 							<th class="subjectName">과목명</th>
-							<th class="name">담당교수</th>
 							<th class="openDate">개강일자</th>
 							<th class="semester">학기</th>
 							<th class="lecturePlace">강의실</th>
@@ -107,7 +106,7 @@ list-style: none;
 							<th class="middleRate">중간고사비율</th>
 							<th class="finalRate">기말고사비율 </th>	
 						</tr>
-					</thead>		
+					</thead>
 						<tbody>	
 						<c:forEach var="dto" items="${list}" varStatus="status">
 							<tr>
@@ -115,7 +114,6 @@ list-style: none;
 								<td class="left">
 									${dto.subjectName}
 								</td>
-								<td>${dto.name}</td>
 								<td>${dto.openDate}</td>
 								<td>${dto.semester}</td>
 								<td>${dto.lecturePlace}</td>
