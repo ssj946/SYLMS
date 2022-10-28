@@ -2,6 +2,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -143,12 +144,14 @@ function content_write(){
 						    			<span class="text-muted">시작일: ${dto.reg_date} | 종료일: ${dto.end_date}</span>
 						    		</div>
 						    		<div class="col-1 ms-auto dropdown d-inline text-end pe-4">
+						    		<c:if test="${fn:length(sessionScope.member.userId) != 8}">
 						    			<a id="update_menu" data-bs-toggle="dropdown" aria-expanded="false">
 						    			<i class="fas fa-ellipsis-vertical text-muted fa-lg"></i></a>
 						    			<ul class="dropdown-menu" aria-labelledby="update_menu">
 					    					<li><a href="${pageContext.request.contextPath}/lecture/content_update.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}" class="dropdown-item">수정하기</a></li>
 						    				<li><a onclick="if(confirm(' ${dto.week}&nbsp;${dto.part} - ${dto.title} 을(를) 삭제하시겠습니까?')){location.href='${pageContext.request.contextPath}/lecture/content_delete.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}'}" class="dropdown-item">삭제하기</a></li>
 						    			</ul>
+						    		</c:if>
 						    		</div>
 					    		</div>
 					    		</div>
@@ -158,7 +161,9 @@ function content_write(){
 					    </div>
 					    <br>
 					    <div class="d-block text-end">
+					    <c:if test="${fn:length(sessionScope.member.userId) != 8}">
 							  <button type="button" class="btn btn-primary" onclick="content_write();">글쓰기</button>
+						</c:if>
 							  <button type="button" class="btn btn-outline-dark" onclick="goBack();">뒤로가기</button>
 						  </div>
 					  </div>

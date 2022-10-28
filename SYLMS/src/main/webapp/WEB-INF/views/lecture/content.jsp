@@ -2,6 +2,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,9 +88,11 @@ function content_delete(){
 						  <br>
 						 <h4 class="mb-3 fw-bold">강의 자료</h4> <input type="file" class="form-control">
 						  <br>
-						  <div class="d-block text-end">
-							  <button type="button" class="btn btn-outline-primary invisible" onclick="content_update();">수정</button>
-							  <button type="button" class="btn btn-outline-danger invisible" onclick="content_delete();">삭제</button>
+						  <div class="text-end">
+						  	<c:if test="${fn:length(sessionScope.member.userId) != 8}">
+							  <button type="button" class="btn btn-outline-primary" onclick="content_update();">수정</button>
+							  <button type="button" class="btn btn-outline-danger" onclick="content_delete();">삭제</button>
+							</c:if>
 							  <button type="button" class="btn btn-outline-dark" onclick="goBack();">뒤로가기</button>
 						  </div>
 						  
