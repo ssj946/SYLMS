@@ -56,7 +56,7 @@ public class SyllabusServlet extends MyServlet {
 				if(offset < 0) offset = 0;
 				
 				List<SyllabusDTO> list = null;
-				list = dao.listBoard(offset, size);
+				list = dao.listBoard();
 
 				String query = "";
 				/*

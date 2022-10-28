@@ -48,35 +48,32 @@ public class SyllabusDAO {
 		return result;
 	}
 	
-	public List<SyllabusDTO> listBoard(int offset, int size) {
+	public List<SyllabusDTO> listBoard() {
 		List<SyllabusDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 
 		try {
-			sql = " SELECT subjectNo,lecturePlace, semester, assignmentRate, middleRate,finalRate, "
-					+ " TO_CHAR(openDate, 'YYYY-MM-DD') openDate " 
-					+ " FROM curriculum b "		
-					+ " ORDER BY subjectNo DESC "
-					+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
+		sql= "SELECT b.subjectNo,subjectName,b.lecturePlace, b.semester, b.assignmentRate, b.middleRate,b.finalRate, " 
+			 +" TO_CHAR(b.openDate, 'YYYY-MM-DD') openDate " 
+			 +" FROM curriculum b" 	
+			 +" JOIN subject m ON b.subjectNo = m.subjectNo"
+			 +" ORDER BY subjectNo DESC" ;
+					
 
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setInt(1, offset);
 			
-			pstmt.setInt(2, size);
-
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				SyllabusDTO dto = new SyllabusDTO();
 				dto.setSubjectNo(rs.getString("SubjectNo"));
-				// dto.setSubjectName(rs.getString("subjectName"));
+				dto.setSubjectName(rs.getString("subjectName"));
+				dto.setLecturePlace(rs.getString("lecturePlace"));
 				dto.setOpenDate(rs.getString("openDate"));
 				dto.setSemester(rs.getInt("semester"));
-				dto.setLecturePlace(rs.getString("lecturePlace"));
-				//dto.setLecturePlace(rs.getString("lecturePlace"));
 				dto.setAssignmentRate(rs.getInt("assignmentRate"));
 				dto.setMiddleRate(rs.getInt("middleRate"));
 				dto.setFinalRate(rs.getInt("finalRate"));

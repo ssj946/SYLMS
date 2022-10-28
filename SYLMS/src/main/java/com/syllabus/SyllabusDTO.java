@@ -2,6 +2,7 @@ package com.syllabus;
 
 public class SyllabusDTO {
 	private String subjectNo;
+	private String subjectName;
 	private String lecturePlace;
 	private String openDate;
 	private int semester;
@@ -50,4 +51,11 @@ public class SyllabusDTO {
 	public void setFinalRate(int finalRate) {
 		this.finalRate = finalRate;
 	}
+	public String getSubjectName() {
+		return subjectName;
+	}
+	public void setSubjectName(String subjectName) {
+		this.subjectName = subjectName;
+	}
+
 }

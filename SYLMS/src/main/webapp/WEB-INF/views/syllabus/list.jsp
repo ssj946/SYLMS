@@ -97,7 +97,7 @@ list-style: none;
 					<thead class="table-light">
 						<tr>
 							<th class="no">번호</th>
-							<th class="subjectNo">과목명</th>
+							<th class="subjectName">과목명</th>
 							<th class="openDate">개강일자</th>
 							<th class="semester">학기</th>
 							<th class="lecturePlace">강의실</th>
@@ -111,7 +111,7 @@ list-style: none;
 							<tr>
 								<td>${dataCount - (page-1) * size - status.index}</td>
 								<td class="left">
-									${dto.subjectNo}
+									${dto.subjectName}
 								</td>
 								<td>${dto.openDate}</td>
 								<td>${dto.semester}</td>
