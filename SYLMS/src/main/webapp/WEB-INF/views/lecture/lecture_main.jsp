@@ -147,7 +147,7 @@ function content_write(){
 						    			<i class="fas fa-ellipsis-vertical text-muted fa-lg"></i></a>
 						    			<ul class="dropdown-menu" aria-labelledby="update_menu">
 					    					<li><a href="${pageContext.request.contextPath}/lecture/content_update.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}" class="dropdown-item">수정하기</a></li>
-						    				<li><a href="${pageContext.request.contextPath}/lecture/content_delete.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}" class="dropdown-item">삭제하기</a></li>
+						    				<li><a onclick="if(confirm(' ${dto.week}&nbsp;${dto.part} - ${dto.title} 을(를) 삭제하시겠습니까?')){location.href='${pageContext.request.contextPath}/lecture/content_delete.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}'}" class="dropdown-item">삭제하기</a></li>
 						    			</ul>
 						    		</div>
 					    		</div>

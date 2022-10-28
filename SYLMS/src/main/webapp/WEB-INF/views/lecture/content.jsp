@@ -75,7 +75,7 @@ function content_delete(){
 								</div>
 							</div>
 						  	<hr>
-							<video src="#" class="w-100 rounded" controls></video>
+							<video src="${pageContext.request.contextPath}/resources/videos/cat.mp4" class="w-100 rounded" controls></video>
 							</div>
 						</div>
 						<div class="card mb-3">
