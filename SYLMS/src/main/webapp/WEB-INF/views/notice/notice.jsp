@@ -11,9 +11,9 @@
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 <style type="text/css">
 
+.new { height: 15px; padding-left: 3px; padding-bottom: 3px; }
 
 ul{
-
 list-style: none;
 }
 </style>
@@ -84,7 +84,7 @@ function searchList() {
 								<td>${dataCount - (page-1) * size - status.index}</td>
 								<td class="left">
 									<a href="${articleUrl}&articleNo=${dto.articleNo}" class="text-reset">${dto.title}</a>
-										<c:if test="${dto.gap<2}"><img src="${pageContext.request.contextPath}/resources/images/new.png" class="w-25"></c:if>
+										<c:if test="${dto.gap<1}"><img src="${pageContext.request.contextPath}/resources/images/new.png" class="new"></c:if>
 								</td>
 								<td>${dto.name}</td>
 								<td>${dto.reg_date}</td>
