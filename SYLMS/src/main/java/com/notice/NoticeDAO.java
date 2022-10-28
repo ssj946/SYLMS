@@ -23,7 +23,7 @@ public class NoticeDAO {
 					+ " ID, title, content, reg_date, hitCount) "
 					+ " VALUES (subject_bbs_seq.NEXTVAL,'00001', ?, ?, ?, ?, SYSDATE, 0)";
 			pstmt = conn.prepareStatement(sql);
-			
+			 
 			pstmt.setString(1, dto.getSubjectNo());
 			pstmt.setString(2, dto.getUserId());
 			pstmt.setString(3, dto.getTitle());
