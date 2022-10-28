@@ -49,7 +49,7 @@ public class MessegeDAO {
 
 		try {
 			sql = "SELECT COUNT(*) FROM messege m "
-					+ " JOIN account a ON m.receiveId = a.id "
+					+ " JOIN account a ON m.sendId = a.id "
 					+ " WHERE receiveId = ? ";
 			pstmt = conn.prepareStatement(sql);
 
@@ -92,11 +92,10 @@ public class MessegeDAO {
 		try {
 			sql = "SELECT COUNT(*) FROM messege m " 
 					+ " JOIN account a ON m.sendId = a.id "
-					+ " WHERE sendId = ? AND receiveId = ? ";
+					+ " WHERE INSTR(" + condition + ", ?) >= 1 AND receiveId = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 
-			
 			pstmt.setString(1,keyword);
 			pstmt.setString(2,userId);
 		
@@ -136,7 +135,7 @@ public class MessegeDAO {
 		try {
 			sql = " SELECT sendId, receiveId, name, content, TO_CHAR(sendDate, 'YYYY-MM-DD') sendDate, messegeCode " 
 					+ " FROM messege m "
-					+ " JOIN account a ON m.receiveId = a.id "
+					+ " JOIN account a ON m.sendId = a.id "
 					+ " WHERE receiveId = ? "
 					+ " ORDER BY sendDate DESC "
 					+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
@@ -194,8 +193,8 @@ public class MessegeDAO {
 		try {
 			sql = " SELECT sendId, receiveId, name, content, TO_CHAR(sendDate, 'YYYY-MM-DD') sendDate, messegeCode " 
 					+ " FROM messege m "
-					+ " JOIN account a ON m.receiveId = a.id "
-					+ " WHERE sendId = ? AND receiveId = ? "
+					+ " JOIN account a ON m.sendId = a.id "
+					+ " WHERE INSTR(" + condition + ", ?) >= 1 AND receiveId = ? "
 					+ " ORDER BY sendDate DESC "
 					+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
 
@@ -242,20 +241,20 @@ public class MessegeDAO {
 	}
 	
 	//선택한 쪽지 내용보기
-	public MessegeDTO readMessege(String sendId, String userId) {
+	public MessegeDTO readMessege(String messegeCode, String userId) {
 		MessegeDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 		
 		try {
-			sql = " SELECT m.sendId, name, content, sendDate "
+			sql = " SELECT messegeCode, m.sendId, name, content, sendDate "
 					+ " FROM messege m "
 					+ " JOIN account a ON m.sendId = a.id "
-					+ " WHERE sendId = ? AND receiveId = ? ";
+					+ " WHERE messegeCode = ? AND receiveId = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, sendId);
+			pstmt.setString(1, messegeCode);
 			pstmt.setString(2, userId);
 			
 			
@@ -263,6 +262,7 @@ public class MessegeDAO {
 			if(rs.next()) {
 				dto = new MessegeDTO();
 				
+				dto.setMessegeCode(rs.getString("messegeCode"));
 				dto.setSendId(rs.getString("sendId"));
 				dto.setSendName(rs.getString("name"));
 				dto.setContent(rs.getString("content"));
@@ -338,7 +338,7 @@ public class MessegeDAO {
 	}
 	
 	//메세지 읽으면 원래 해당 메세지에 읽은 날짜 대입
-	public void readDate(MessegeDTO dto) throws SQLException {
+	public void readDate(String messegeCode) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 
@@ -346,7 +346,7 @@ public class MessegeDAO {
 			sql = "UPDATE messege SET readDate = SYSDATE WHERE messegeCode = ?";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, dto.getMessegeCode());
+			pstmt.setString(1, messegeCode);
 			
 			pstmt.executeUpdate();
 

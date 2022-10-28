@@ -42,9 +42,7 @@ public class MessegeServlet extends MyServlet {
 		} else if (uri.indexOf("send.do") != -1) {
 			sendForm(req, resp);
 		} else if (uri.indexOf("send_ok.do") != -1) {
-			submit(req, resp);
-		} else if (uri.indexOf("read_ok.do") != -1) {
-			readForm(req, resp);
+			submit(req, resp);			
 		} else if (uri.indexOf("count.do") != -1) {
 			countForm(req, resp);
 		}
@@ -68,19 +66,6 @@ public class MessegeServlet extends MyServlet {
 		}
 		forward(req, resp, "/WEB-INF/views/layout/header.jsp");
 	}
-
-	private void readForm(HttpServletRequest req, HttpServletResponse resp) {
-		//메세지를 읽은 날짜를 넣기
-		MessegeDAO dao = new MessegeDAO();
-		
-		try {
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-
 	private void sendForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 메세지 작성폼
 		MessegeDAO dao = new MessegeDAO();
@@ -234,7 +219,7 @@ public class MessegeServlet extends MyServlet {
 		String query = "page=" + page;
 
 		try {
-			String sendID = req.getParameter("sendId");
+			String messegeCode = req.getParameter("messegeCode");
 			String userId = info.getUserId();
 			String condition = req.getParameter("condition");
 			String keyword = req.getParameter("keyword");
@@ -244,12 +229,14 @@ public class MessegeServlet extends MyServlet {
 			}
 			keyword = URLDecoder.decode(keyword, "utf-8");
 
+			dao.readDate(messegeCode);
+			
 			if (keyword.length() != 0) {
 				query += "&condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "UTF-8");
 			}
 
 			// 쪽지 가져오기
-			MessegeDTO dto = dao.readMessege(sendID, userId);
+			MessegeDTO dto = dao.readMessege(messegeCode, userId);
 			if (dto == null) { // 쪽지가 없으면 다시 리스트로
 				resp.sendRedirect(cp + "/messege/receive.do?" + query);
 				return;

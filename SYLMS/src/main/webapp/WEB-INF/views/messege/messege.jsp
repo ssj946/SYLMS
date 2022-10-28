@@ -76,7 +76,7 @@ function searchList() {
 								<td class="hidden">${dto.messegeCode}</td>
 								<td>${dto.sendName}</td>
 								<td class="left">
-									<a href="${checkUrl}&num=${dto.sendId}" class="text-reset">${dto.content}</a>
+									<a href="${checkUrl}&messegeCode=${dto.messegeCode}" class="text-reset">${dto.content}</a>
 								</td>
 								<td>${dto.sendDate}</td>
 							</tr>
@@ -95,8 +95,8 @@ function searchList() {
 					<div class="col-6 text-center">
 						<form class="row" name="searchForm" action="${pageContext.request.contextPath}/messege/receive.do" method="post">
 							<div class="col-auto p-1">
-								<select name="condition" class="form-select">
-									<option value="userName" ${condition=="userName"?"selected='selected'":""}>작성자</option>
+								<select name="condition" class="form-select">															
+									<option value="name" ${condition=="sendName"?"selected='selected'":""}>작성자</option>								
 								</select>
 							</div>
 							<div class="col-auto p-1">
