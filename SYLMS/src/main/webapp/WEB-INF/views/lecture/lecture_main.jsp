@@ -59,7 +59,7 @@ function content_write(){
 				<div class="ms-1 me-1 pt-3 mt-3 mb-5">
 					<div class="card mb-3">
 					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2">
-					    <h5><i class="fas fa-rectangle-list fa-lg bg-navy"></i>&nbsp;강좌 개요</h5>
+					    <h5 class="d-inline"><i class="fas fa-rectangle-list fa-lg bg-navy"></i>&nbsp;강좌 개요</h5>
 					  </div>
 					  <div class="card-body m-auto">
 					    <ul class="list-group list-group-horizontal text-center fw-bold">
@@ -93,7 +93,7 @@ function content_write(){
 					
 					<div class="card mb-3">
 					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2">
-					   <h5> <i class="fas fa-pen fa-lg bg-navy"></i>&nbsp;이번주 강의</h5>
+					   <h5 class="d-inline"> <i class="fas fa-pen fa-lg bg-navy"></i>&nbsp;이번주 강의</h5>
 					  </div>
 					  <div class="card-body">
 					  <c:forEach var="dto" items="${thisweekList}" varStatus="status">
@@ -123,7 +123,7 @@ function content_write(){
 					
 					<div class="card mb-3">
 					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2">
-					    <h5><i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동</h5>
+					    <h5 class="d-inline"><i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동</h5>
 					</div>
 					  <div class="card-body">
 					    <div class="resultLayout">
