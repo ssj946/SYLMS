@@ -2,7 +2,11 @@ package com.mypage;
 
 import java.io.File;
 
+
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -16,6 +20,10 @@ import javax.servlet.http.Part;
 import com.member.SessionInfo;
 import com.util.FileManager;
 import com.util.MyUploadServlet;
+import com.util.MyUtil;
+import com.util.MyUtilBootstrap;
+
+
 
 @MultipartConfig
 @WebServlet("/mypage/*")
@@ -52,11 +60,16 @@ public class MypageServlet extends MyUploadServlet {
 			scheduleForm(req, resp);
 		}else if(uri.indexOf("assistant.do") != -1) {
 			assistantForm(req, resp);
+		}else if(uri.indexOf("assistant_ok.do") != -1 ) {
+			assistantSubmit(req, resp);
 		}
 		
 	}
 	
 	
+
+	
+
 
 	private void pwdForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
@@ -177,13 +190,6 @@ public class MypageServlet extends MyUploadServlet {
 	
 	protected void fileuploadForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-	}
-
-	protected void scheduleForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-	}
-
-	protected void assistantForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException  {
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
@@ -195,13 +201,174 @@ public class MypageServlet extends MyUploadServlet {
 		}
 	
 		
+		String path = "/WEB-INF/views/mypage/files.jsp";
+		forward(req, resp, path);
+		
+	}
+
+	protected void scheduleForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+	}
+
+	protected void assistantForm(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
+	     	MypageDAO dao = new MypageDAO();
+			
+			MyUtil util = new  MyUtilBootstrap();
+		
+		    String cp = req.getContextPath();
+		
+		
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+	
+		if (info == null) {
+			resp.sendRedirect(cp + "/member/login.do");
+			return;
+		}
+
+		
+		
+		
+		try {
+
+			// 페이지 번호
+			String page = req.getParameter("page");
+			int current_page = 1;
+			if (page != null) {
+				current_page = Integer.parseInt(page);
+			}
+			
+			
+
+			// 검색
+			String condition = req.getParameter("condition");
+			String keyword = req.getParameter("keyword");
+
+			if (condition == null) {
+				condition = "f";
+				keyword = "";
+			}
+			
+			// GET방식이라 디코딩
+			if (req.getMethod().equalsIgnoreCase("GET")) {
+				keyword = URLDecoder.decode(keyword, "utf-8");
+			}
+				
+				
+			// 한페이지 표시할 데이터 개수 
+			String pageSize = req.getParameter("size");
+			int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
+			
+			
+			
+			
+			
+			
+			//전체 데이터 개수
+			int dataCount, total_page;
+			
+			if(keyword.length() != 0) {
+				dataCount = dao.dataCount(condition, keyword);
+			}else {
+				dataCount = dao.dataCount();
+			}
+		
+			
+			// 전체 페이지 수 
+			 total_page = util.pageCount(dataCount, size);
+			 
+			 
+			if (current_page > total_page) {
+				current_page = total_page;
+			}
+
+			
+			
+			
+			// 게시글 가져오기
+			int offset = (current_page - 1) * size;
+			if (offset < 0)
+				offset = 0;
+			
+			List<MypageDTO> list = null;
+			if(keyword.length() != 0) {
+				list = dao.listSubmit(offset, size, condition, keyword);
+			}else {
+				list = dao.listSubject(offset, size);
+			}
+			
+			
+			String query = "";
+			if (keyword.length() != 0) {
+				query = "condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "utf-8");
+			}
+
+			String listUrl = cp + "/mypage/assistant.do";
+			if(query.length() != 0) {
+				listUrl += "?" + query;
+			}
+			
+			String paging = util.paging(current_page, total_page, listUrl);
+			
+			req.setAttribute("list", list);
+			req.setAttribute("page", current_page);
+			req.setAttribute("total_page", total_page);
+			req.setAttribute("dataCount", dataCount);
+			req.setAttribute("size", size);
+			req.setAttribute("paging", paging);
+			req.setAttribute("condition", condition);
+			req.setAttribute("keyword", keyword);
+			
+
+		} catch (Exception e) {
+               e.printStackTrace();
+		}
+
 		String path = "/WEB-INF/views/mypage/assistant.jsp";
 		forward(req, resp, path);
 		
 		
 	}
 
+	private void assistantSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException  {
+		MypageDAO dao = new MypageDAO();
+		
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		
+		String cp = req.getContextPath();
+		
+		if (info == null) {
+			resp.sendRedirect(cp + "/member/login.do");
+			return;
+		}
+		
+		if (req.getMethod().equalsIgnoreCase("GET")) {
+			resp.sendRedirect(cp + "/");
+			return;
+		}
+		
+		String subjectNo =  req.getParameter("subjectNo");
+		String id = info.getUserId();
+		
+		
+		try {
+			    
+		
+			dao.insertassiantance(subjectNo, id);
+		
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	
+		resp.sendRedirect(cp + "/member/login.do");
+		
+	}
 
 	
 

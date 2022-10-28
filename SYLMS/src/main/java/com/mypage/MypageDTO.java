@@ -18,6 +18,8 @@ public class MypageDTO {
 	private String  subjectNo; //과목번호
 	private String studentCode; //학생학번 
 	
+	
+	
 	//올린 파일함
 	private String fileNum; //파일번호
 	private String originName; //원래이름
@@ -27,11 +29,17 @@ public class MypageDTO {
 	
 	//조교신청
 	private String applicationTerm; //신청학기
-	private String applicationMajor; //신청학과
+	private String applicationdepartment; //신청과목
 	private String applicationYear; //신청연도 
 	private String applicationNum; //신청번호
+	private String ENABLE; //승인여부
 	
-	
+	//과목
+	private String year; //과목연도
+	private String semester; //학기
+	private String department; //학과
+	private String subject;//과목명
+	private String professor;// 교수
 	public String getUserId() {
 		return UserId;
 	}
@@ -128,11 +136,11 @@ public class MypageDTO {
 	public void setApplicationTerm(String applicationTerm) {
 		this.applicationTerm = applicationTerm;
 	}
-	public String getApplicationMajor() {
-		return applicationMajor;
+	public String getApplicationdepartment() {
+		return applicationdepartment;
 	}
-	public void setApplicationMajor(String applicationMajor) {
-		this.applicationMajor = applicationMajor;
+	public void setApplicationdepartment(String applicationdepartment) {
+		this.applicationdepartment = applicationdepartment;
 	}
 	public String getApplicationYear() {
 		return applicationYear;
@@ -146,9 +154,42 @@ public class MypageDTO {
 	public void setApplicationNum(String applicationNum) {
 		this.applicationNum = applicationNum;
 	}
-	
-	
-	
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public String getSemester() {
+		return semester;
+	}
+	public void setSemester(String semester) {
+		this.semester = semester;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	public String getProfessor() {
+		return professor;
+	}
+	public void setProfessor(String professor) {
+		this.professor = professor;
+	}
+	public String getENABLE() {
+		return ENABLE;
+	}
+	public void setENABLE(String eNABLE) {
+		ENABLE = eNABLE;
+	}
 	
 	
 
