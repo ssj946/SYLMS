@@ -63,8 +63,16 @@ public class LectureServlet extends MyServlet {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		try {
-			list=dao.registerSubject(info.getUserId());
-			hlist= dao.attendHistory(info.getUserId());
+			if(info.getUserId().matches("\\d{8}")){
+				list = dao.registerSubject(info.getUserId());
+				hlist = dao.attendHistory(info.getUserId());
+			} else if (info.getUserId().matches("\\d{5}")) {
+				list = dao.registerSubject_pro(info.getUserId());
+				hlist = dao.attendHistory_pro(info.getUserId());
+			} else {
+				hlist = dao.attendHistory_admin();
+			}
+			
 			req.setAttribute("list", list);
 			req.setAttribute("hlist", hlist);
 		} catch (Exception e) {
@@ -78,7 +86,7 @@ public class LectureServlet extends MyServlet {
 	}
 	
 	protected void classroomForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 강의실
+		// 강의실 메인화면
 		LectureDAO dao= new LectureDAO();
 		String subjectNo = req.getParameter("subjectNo");
 		
@@ -124,6 +132,7 @@ public class LectureServlet extends MyServlet {
 			req.setAttribute("credit", dto.getCredit());
 			req.setAttribute("syear", dto.getSyear());
 			
+			
 			list = dao.readLecture(SubjectNo);
 			req.setAttribute("lectureList", list);
 			
@@ -147,7 +156,14 @@ public class LectureServlet extends MyServlet {
 		try {
 			String syear= req.getParameter("syear");
 			String semester= req.getParameter("semester");
-			list= dao.registerHistory(info.getUserId(), syear, semester);
+			
+			if(info.getUserId().matches("\\d{8}")) {
+				list= dao.registerHistory(info.getUserId(), syear, semester);
+			} else if(info.getUserId().matches("\\d{5}")) {
+				list= dao.registerHistory_pro(info.getUserId(), syear, semester);
+			} else {
+				list= dao.registerHistory_admin(syear, semester);
+			}
 			
 			JSONObject job = new JSONObject();
 			job.put("list", list);
@@ -168,10 +184,10 @@ public class LectureServlet extends MyServlet {
 		// 강의 하나 받아오기
 		LectureDAO dao= new LectureDAO();	
 		
-		
-		
 		String subjectNo = req.getParameter("subjectNo");
 		String bbsNum = req.getParameter("bbsNum");
+		
+		req.setAttribute("mode", "view");
 		try {
 			LectureDTO dto = new LectureDTO();
 			dto= dao.readSubject(subjectNo);
@@ -204,10 +220,12 @@ public class LectureServlet extends MyServlet {
 		HttpSession session =req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
-		if(info.getUserId().matches("/^\\d{8}$/")) {
+		if(info.getUserId().matches("\\d{8}")) {
 			resp.sendRedirect(cp + "/");
 			return;
 		}
+		
+		req.setAttribute("mode", "write");
 		
 		String subjectNo = req.getParameter("subjectNo");
 		String bbsNum = req.getParameter("bbsNum");
@@ -243,10 +261,12 @@ public class LectureServlet extends MyServlet {
 		HttpSession session =req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
-		if(info.getUserId().matches("/^\\d{8}$/")) {
+		if(info.getUserId().matches("\\d{8}")) {
 			resp.sendRedirect(cp + "/");
 			return;
 		}
+		
+		req.setAttribute("mode", "update");
 		
 		String subjectNo = req.getParameter("subjectNo");
 		String bbsNum = req.getParameter("bbsNum");
@@ -283,7 +303,7 @@ public class LectureServlet extends MyServlet {
 		HttpSession session =req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
-		if(info.getUserId().matches("/^\\d{8}$/")) {
+		if(info.getUserId().matches("\\d{8}")) {
 			resp.sendRedirect(cp + "/");
 			return;
 		}

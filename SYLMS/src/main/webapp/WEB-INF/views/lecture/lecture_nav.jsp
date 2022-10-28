@@ -48,7 +48,7 @@ $(function(){
 				let subjectNo = item.subjectNo;
 				let syear = item.syear;
 				
-				out = "<tr class='history_append'><td><a href='${pageContext.request.contextPath}/lecture/classroom.do?subjectNo="+subjectNo+"'>"+subjectName+"</a></td>";
+				out += "<tr class='history_append'><td><a href='${pageContext.request.contextPath}/lecture/classroom.do?subjectNo="+subjectNo+"'>"+subjectName+"</a></td>";
 				out += "<td>"+credit+"</td>";
 				out += "<td>"+syear+"</td>";
 				out += "<td>"+semester+"</td></tr>";

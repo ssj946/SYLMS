@@ -22,6 +22,24 @@ function goBack(){
 	location.href="${pageContext.request.contextPath}/lecture/classroom.do?"+query;	
 }
 
+$(function(){
+	if(${mode == 'update'||mode == 'write'}){
+		$("input").attr("readonly",false);
+		$("textarea").attr("readonly",false);
+	}
+	
+});
+
+function content_view(){
+	let query="subjectNo=${subjectNo}&bbsNum=${contentDTO.bbsNum}";
+	location.href="${pageContext.request.contextPath}/lecture/content_update.do?"+query;
+}
+
+function content_write(){
+	let query="subjectNo=${subjectNo}&bbsNum=${contentDTO.bbsNum}";
+	location.href="${pageContext.request.contextPath}/lecture/content_write.do?"+query;
+}
+
 function content_update(){
 	let query="subjectNo=${subjectNo}&bbsNum=${contentDTO.bbsNum}";
 	location.href="${pageContext.request.contextPath}/lecture/content_update.do?"+query;
@@ -90,7 +108,10 @@ function content_delete(){
 						  <br>
 						  <div class="text-end">
 						  	<c:if test="${fn:length(sessionScope.member.userId) != 8}">
-							  <button type="button" class="btn btn-outline-primary" onclick="content_update();">수정</button>
+							  <button type="button" class="btn btn-outline-primary" onclick="content_${mode}();">
+								  <c:if test="${mode == 'write'}">저장</c:if>
+								  <c:if test="${mode == 'update'|| mode == 'view'}">수정</c:if>
+							  </button>
 							  <button type="button" class="btn btn-outline-danger" onclick="content_delete();">삭제</button>
 							</c:if>
 							  <button type="button" class="btn btn-outline-dark" onclick="goBack();">뒤로가기</button>

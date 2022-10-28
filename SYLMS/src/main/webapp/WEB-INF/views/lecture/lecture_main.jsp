@@ -58,7 +58,7 @@ function content_write(){
 			<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto">
 				<div class="ms-1 me-1 pt-3 mt-3 mb-5">
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white p-2">
+					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2">
 					    <h5><i class="fas fa-rectangle-list fa-lg bg-navy"></i>&nbsp;강좌 개요</h5>
 					  </div>
 					  <div class="card-body m-auto">
@@ -92,7 +92,7 @@ function content_write(){
 					</div>
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white p-2">
+					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2">
 					   <h5> <i class="fas fa-pen fa-lg bg-navy"></i>&nbsp;이번주 강의</h5>
 					  </div>
 					  <div class="card-body">
@@ -122,7 +122,7 @@ function content_write(){
 					
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white p-2">
+					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2">
 					    <h5><i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동</h5>
 					</div>
 					  <div class="card-body">

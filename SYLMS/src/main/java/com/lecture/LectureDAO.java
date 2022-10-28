@@ -12,40 +12,7 @@ import com.util.DBConn;
 public class LectureDAO {
 	private Connection conn = DBConn.getConnection();
 	
-	//해당학생의 수강학기 목록 불러오기
-	public List<LectureDTO> attendHistory(String studentcode) throws SQLException{
-		List<LectureDTO> list = new ArrayList<>();
-		PreparedStatement pstmt =null;
-		ResultSet rs= null;
-		String sql;
-		try {
-			sql= "SELECT STUDENTCODE, SEMESTER, TO_CHAR(syear,'YYYY')syear FROM REGISTERSUBJECT r "
-					+ " JOIN subject s ON s.SUBJECTNO =r.SUBJECTNO "
-					+ " WHERE STUDENTCODE = ? "
-					+ " GROUP BY studentcode, semester, TO_CHAR(syear,'YYYY') "
-					+ " ORDER BY syear,semester";
-			
-			pstmt=conn.prepareStatement(sql);
-			
-			pstmt.setString(1, studentcode);
-			
-			rs=pstmt.executeQuery();
-			
-			while(rs.next()) {
-				LectureDTO dto = new LectureDTO();
-				dto.setSyear(Integer.parseInt(rs.getString("syear")));
-				dto.setSemester(Integer.parseInt(rs.getString("semester")));
-				list.add(dto);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
-		return list;
-	}
-	
-	//해당 학기 수강목록 불러오기
+	//현재 학기 수강목록 불러오기 - 학생
 	public List<LectureDTO> registerSubject(String studentcode) throws SQLException{
 		PreparedStatement pstmt= null;
 		String sql;
@@ -60,6 +27,7 @@ public class LectureDAO {
 					+ " ON a.id=studentcode "
 					+ " WHERE STUDENTcode = ?"
 					+ " AND TO_CHAR(sYear,'YYYY')=TO_CHAR(SYSDATE,'YYYY') "
+					+ " AND sYear < SYSDATE"
 					+ " AND SYSDATE<sYear+(interval '4' month)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1,studentcode);
@@ -103,7 +71,40 @@ public class LectureDAO {
 		
 	}
 	
-	//모든 학기 수강내역
+	//수강학기 목록 불러오기 - 학생
+		public List<LectureDTO> attendHistory(String studentcode) throws SQLException{
+			List<LectureDTO> list = new ArrayList<>();
+			PreparedStatement pstmt =null;
+			ResultSet rs= null;
+			String sql;
+			try {
+				sql= "SELECT STUDENTCODE, SEMESTER, TO_CHAR(syear,'YYYY')syear FROM REGISTERSUBJECT r "
+						+ " JOIN subject s ON s.SUBJECTNO =r.SUBJECTNO "
+						+ " WHERE STUDENTCODE = ? "
+						+ " GROUP BY studentcode, semester, TO_CHAR(syear,'YYYY') "
+						+ " ORDER BY syear,semester";
+				
+				pstmt=conn.prepareStatement(sql);
+				
+				pstmt.setString(1, studentcode);
+				
+				rs=pstmt.executeQuery();
+				
+				while(rs.next()) {
+					LectureDTO dto = new LectureDTO();
+					dto.setSyear(Integer.parseInt(rs.getString("syear")));
+					dto.setSemester(Integer.parseInt(rs.getString("semester")));
+					list.add(dto);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			return list;
+		}
+	
+	//해당 학기 수강내역 - 학생
 	public List<LectureDTO> registerHistory(String studentcode, String syear, String semester) throws SQLException{
 		PreparedStatement pstmt= null;
 		String sql;
@@ -162,6 +163,229 @@ public class LectureDAO {
 		return list;
 		
 	}
+	
+	//현재 학기 수강목록 불러오기 - 교수, 조교
+	public List<LectureDTO> registerSubject_pro(String id) throws SQLException{
+		PreparedStatement pstmt= null;
+		String sql;
+		ResultSet rs=null;
+		List<LectureDTO> list = new ArrayList<>();
+		try {
+			sql= "SELECT subjectNo, subjectName, credit, TO_CHAR(syear,'YYYY') syear, semester FROM subject s "
+					+ " JOIN account a on s.id= a.id "
+					+ " WHERE a.id= ? "
+					+ " AND TO_CHAR(sYear,'YYYY')=TO_CHAR(SYSDATE,'YYYY') "
+					+ " AND sYear < SYSDATE "
+					+ " AND SYSDATE<sYear+(interval '4' month)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,id);
+			
+			rs= pstmt.executeQuery();
+			
+			while(rs.next()) {
+				LectureDTO dto= new LectureDTO();
+				dto.setSubjectNo(rs.getString("subjectNo"));
+				dto.setSubjectName(rs.getString("subjectName"));
+				dto.setCredit(Integer.parseInt(rs.getString("credit")));
+				dto.setSyear(Integer.parseInt(rs.getString("syear")));
+				dto.setSemester(Integer.parseInt(rs.getString("semester")));
+				
+				
+				list.add(dto);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (Exception e2) {
+				}
+			}
+			
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+		
+		return list;
+		
+	}
+	
+	//수강학기 목록 불러오기 - 교수, 조교
+	public List<LectureDTO> attendHistory_pro(String id) throws SQLException{
+		List<LectureDTO> list = new ArrayList<>();
+		PreparedStatement pstmt =null;
+		ResultSet rs= null;
+		String sql;
+		try {
+			sql= "SELECT TO_CHAR(syear,'YYYY') syear, semester FROM subject s "
+					+" JOIN account a on s.id= a.id "
+					+" WHERE a.id= ? "
+					+" GROUP BY TO_CHAR(syear,'YYYY'), semester";
+			
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, id);
+			
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				LectureDTO dto = new LectureDTO();
+				dto.setSyear(Integer.parseInt(rs.getString("syear")));
+				dto.setSemester(Integer.parseInt(rs.getString("semester")));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return list;
+	}
+	
+	
+	//해당 학기 수강내역 - 교수, 조교
+	public List<LectureDTO> registerHistory_pro(String id, String syear, String semester) throws SQLException{
+		PreparedStatement pstmt= null;
+		String sql;
+		ResultSet rs=null;
+		List<LectureDTO> list = new ArrayList<>();
+		try {
+			sql= "SELECT subjectNo, subjectName, credit, TO_CHAR(syear,'YYYY') syear, semester FROM subject s "
+					+ "JOIN account a on s.id= a.id "
+					+ "WHERE a.id= ? "
+					+ "AND TO_CHAR(syear, 'YYYY') = ? AND Semester = ? ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,id);
+			pstmt.setString(2,syear);
+			pstmt.setString(3,semester);
+			
+			rs= pstmt.executeQuery();
+			
+			while(rs.next()) {
+				LectureDTO dto= new LectureDTO();
+				dto.setSubjectNo(rs.getString("subjectNo"));
+				dto.setSubjectName(rs.getString("subjectName"));
+				dto.setCredit(Integer.parseInt(rs.getString("credit")));
+				dto.setSyear(Integer.parseInt(rs.getString("syear")));
+				dto.setSemester(Integer.parseInt(rs.getString("semester")));
+				
+				list.add(dto);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (Exception e2) {
+				}
+			}
+			
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+		
+		return list;
+		
+	}	
+	
+		
+	//전체학기 목록 불러오기 - 관리자
+	public List<LectureDTO> attendHistory_admin() throws SQLException{
+		List<LectureDTO> list = new ArrayList<>();
+		PreparedStatement pstmt =null;
+		ResultSet rs= null;
+		String sql;
+		try {
+			sql= "SELECT SEMESTER, TO_CHAR(syear,'YYYY')syear FROM Subject "
+					+ " GROUP BY semester, TO_CHAR(syear,'YYYY') "
+					+ " ORDER BY syear,semester";
+			
+			pstmt=conn.prepareStatement(sql);
+			
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				LectureDTO dto = new LectureDTO();
+				dto.setSyear(Integer.parseInt(rs.getString("syear")));
+				dto.setSemester(Integer.parseInt(rs.getString("semester")));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return list;
+	}
+	
+	//해당학기 전체 수강내역 - 관리자
+	public List<LectureDTO> registerHistory_admin(String syear, String semester) throws SQLException{
+		PreparedStatement pstmt= null;
+		String sql;
+		ResultSet rs=null;
+		List<LectureDTO> list = new ArrayList<>();
+		try {
+			sql= "SELECT subjectNo, subjectName, credit, TO_CHAR(syear,'YYYY') syear, semester FROM subject s "
+					+ "WHERE TO_CHAR(syear, 'YYYY') = ? AND Semester = ? ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,syear);
+			pstmt.setString(2,semester);
+			
+			rs= pstmt.executeQuery();
+			
+			while(rs.next()) {
+				LectureDTO dto= new LectureDTO();
+				dto.setSubjectNo(rs.getString("subjectNo"));
+				dto.setSubjectName(rs.getString("subjectName"));
+				dto.setCredit(Integer.parseInt(rs.getString("credit")));
+				dto.setSyear(Integer.parseInt(rs.getString("syear")));
+				dto.setSemester(Integer.parseInt(rs.getString("semester")));
+				
+				
+				list.add(dto);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (Exception e2) {
+				}
+			}
+			
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+		
+		return list;
+		
+	}
+	
+	
+		
 	
 	//강의정보 불러오기
 	public LectureDTO readSubject(String subjectNo) throws SQLException{
