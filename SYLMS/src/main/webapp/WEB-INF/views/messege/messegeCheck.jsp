@@ -91,7 +91,6 @@
 				</div>
 				<!-- 본문 끝 -->
 			</div>
-			</div>
 		</section>
 	</main>
 	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
