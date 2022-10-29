@@ -533,6 +533,8 @@ public class LectureDAO {
 		
 		return list;
 	}
+	
+	//강의 하나 불러오기
 	public LectureDTO readContent(String bbsNum) throws SQLException{
 		PreparedStatement pstmt= null;
 		String sql;
@@ -582,7 +584,65 @@ public class LectureDAO {
 		
 		return dto;
 	}
-
+	
+	//강의 등록하기
+	public void insertLecture(LectureDTO dto) throws SQLException{
+		PreparedStatement pstmt= null;
+		String sql;
+		try {
+			sql = "INSERT INTO LECTURE_BBS (bbsNum, subjectNo, title, content, reg_date, end_date, week, part) VALUES (LECTURE_BBS_seq.NEXTVAL, "
+					+ " ?, ? , ? , SYSDATE, SYSDATE+7, ?, ?)";
+			
+			pstmt= conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getSubjectNo());
+			pstmt.setString(2, dto.getTitle());
+			pstmt.setString(3, dto.getContent());
+			pstmt.setString(4, dto.getWeek());
+			pstmt.setString(5, dto.getPart());
+			
+			pstmt.executeUpdate();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+	}
+	
+	//강의 수정하기
+		public void updateLecture(LectureDTO dto) throws SQLException{
+			PreparedStatement pstmt= null;
+			String sql;
+			try {
+				sql = "UPDATE LECTURE_BBS SET title = ?, content = ?, reg_date= ?, end_date = ?, week= ? , part = ? WHERE bbsNum=?";
+				
+				pstmt= conn.prepareStatement(sql);
+				pstmt.setString(1, dto.getSubjectNo());
+				pstmt.setString(2, dto.getTitle());
+				pstmt.setString(3, dto.getContent());
+				pstmt.setString(4, dto.getWeek());
+				pstmt.setString(5, dto.getPart());
+				
+				pstmt.executeUpdate();
+				
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(pstmt!=null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+					}
+				}
+			}
+		}
 }
 
 

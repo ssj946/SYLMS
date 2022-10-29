@@ -46,6 +46,8 @@ public class LectureServlet extends MyServlet {
 			content(req, resp);
 		} else if (uri.indexOf("content_write.do") != -1) {
 			contentWrite(req, resp);
+		} else if (uri.indexOf("content_submit.do") != -1) {
+			contentWriteSubmit(req, resp);
 		} else if (uri.indexOf("content_update.do") != -1) {
 			contentUpdate(req, resp);
 		} else if (uri.indexOf("content_delete.do") != -1) {
@@ -213,8 +215,9 @@ public class LectureServlet extends MyServlet {
 	}
 	
 	protected void contentWrite(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 강의게시판 글쓰기
+		// 강의게시판 글쓰기 화면 띄우기
 		LectureDAO dao= new LectureDAO();
+		
 		String cp =req.getContextPath();
 		
 		HttpSession session =req.getSession();
@@ -229,6 +232,7 @@ public class LectureServlet extends MyServlet {
 		
 		String subjectNo = req.getParameter("subjectNo");
 		String bbsNum = req.getParameter("bbsNum");
+		
 		try {
 			LectureDTO dto = new LectureDTO();
 			dto= dao.readSubject(subjectNo);
@@ -250,6 +254,47 @@ public class LectureServlet extends MyServlet {
 		
 		String path = "/WEB-INF/views/lecture/content.jsp";
 		forward(req, resp, path);
+	}
+	
+	protected void contentWriteSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 강의게시판 글쓰기
+		LectureDAO dao= new LectureDAO();
+		String cp =req.getContextPath();
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		if(info.getUserId().matches("\\d{8}")) {
+			resp.sendRedirect(cp + "/");
+			return;
+		}
+		
+		
+		
+		String subjectNo = req.getParameter("subjectNo");
+		
+		String state ="false";
+		try {
+			LectureDTO dto = new LectureDTO();
+			dto.setSubjectNo(subjectNo);
+			dto.setTitle(req.getParameter("title"));
+			dto.setContent(req.getParameter("content"));
+			dto.setWeek(req.getParameter("week"));
+			dto.setPart(req.getParameter("type"));
+			
+			dao.insertLecture(dto);
+			
+			state="true";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		JSONObject job = new JSONObject();
+		job.put("state", state);
+		resp.setContentType("text/html;charset=utf-8");
+		PrintWriter out = resp.getWriter();
+		out.print(job.toString());
+		
 	}
 	
 	protected void contentUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

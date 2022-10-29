@@ -105,7 +105,7 @@ function content_write(){
 									<i class="bi bi-book fa-3x"></i>
 									</div>
 						    		<div class="col-11 ms-auto">
-						    			<h5 class="card-title fw-bold"><a href="#">${dto.week}&nbsp;${dto.part} - ${dto.title}</a></h5>
+						    			<h5 class="card-title fw-bold"><a href="${pageContext.request.contextPath}/lecture/content.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}">${dto.week}&nbsp;${dto.part} - ${dto.title}</a></h5>
 						    			<span class="text-muted">시작일: ${dto.reg_date} | 종료일: ${dto.end_date}</span>
 						    		</div>
 					    		</div>
