@@ -55,9 +55,21 @@ public class NoticeServlet extends MyServlet {
 			noticeWriteSubmit(req, resp);
 		} else if (uri.indexOf("noticeArticle.do") != -1) {
 			noticeArticleForm(req, resp);
+		} else if (uri.indexOf("update.do") != -1) {
+			updateForm(req, resp);
+		} else if (uri.indexOf("update_ok.do") != -1) {
+			updateSubmit(req, resp);
+		} else if (uri.indexOf("deleteFile.do") != -1) {
+			deleteFile(req, resp);
+		} else if (uri.indexOf("delete.do") != -1) {
+			delete(req, resp);
+		} else if (uri.indexOf("download.do") != -1) {
+			download(req, resp);
+		} else if (uri.indexOf("deleteList.do") != -1) {
+			deleteList(req, resp);
 		}
 	}	
-		
+
 	protected void noticeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 공지사항 리스트
 		NoticeDAO dao = new NoticeDAO();
@@ -255,8 +267,18 @@ public class NoticeServlet extends MyServlet {
 		NoticeDAO dao = new NoticeDAO();
 
 		try {
-			String articleNo = req.getParameter("articleNo");
 			String subjectNo = req.getParameter("subjectNo");
+			
+			NoticeDTO dto1 = new NoticeDTO();
+			
+			dto1 = dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto1.getProfessorname());
+			req.setAttribute("semester", dto1.getSemester());
+			req.setAttribute("subjectName", dto1.getSubjectName());
+			req.setAttribute("syear", dto1.getSyear());
+			
+			String articleNo = req.getParameter("articleNo");
 
 			String condition = req.getParameter("condition");
 			String keyword = req.getParameter("keyword");
@@ -287,11 +309,13 @@ public class NoticeServlet extends MyServlet {
 			// 파일
 			
 
-			req.setAttribute("query", query);
 			req.setAttribute("subjectNo", subjectNo );
-			req.setAttribute("size", size);
 			req.setAttribute("condition", condition);
 			req.setAttribute("keyword", keyword);
+			req.setAttribute("query", query);
+			req.setAttribute("page", page);
+			req.setAttribute("size", size);
+			
 			
 			
 			forward(req, resp, "/WEB-INF/views/notice/noticeArticle.jsp");
@@ -301,6 +325,36 @@ public class NoticeServlet extends MyServlet {
 		}
 		
 		resp.sendRedirect(cp + "/notice/notice.do?" + query);
+	}
+	
+	protected void updateForm(HttpServletRequest req, HttpServletResponse resp) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	protected void updateSubmit(HttpServletRequest req, HttpServletResponse resp) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	protected void deleteFile(HttpServletRequest req, HttpServletResponse resp) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	protected void delete(HttpServletRequest req, HttpServletResponse resp) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	protected void download(HttpServletRequest req, HttpServletResponse resp) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	protected void deleteList(HttpServletRequest req, HttpServletResponse resp) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
