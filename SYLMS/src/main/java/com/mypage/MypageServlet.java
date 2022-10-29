@@ -211,124 +211,128 @@ public class MypageServlet extends MyUploadServlet {
 	}
 
 	protected void assistantForm(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
-	     	MypageDAO dao = new MypageDAO();
-			
-			MyUtil util = new  MyUtilBootstrap();
+		MypageDAO dao = new MypageDAO();
 		
-		    String cp = req.getContextPath();
-		
-		
-		
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		MyUtil util = new  MyUtilBootstrap();
+	
+	    String cp = req.getContextPath();
+	
+	
+	
+	HttpSession session = req.getSession();
+	SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+
+	if (info == null) {
+		resp.sendRedirect(cp + "/member/login.do");
+		return;
+	}
 
 	
-		if (info == null) {
-			resp.sendRedirect(cp + "/member/login.do");
-			return;
+	
+	
+	try {
+
+		// 페이지 번호
+		String page = req.getParameter("page");
+		int current_page = 1;
+		if (page != null) {
+			current_page = Integer.parseInt(page);
+		}
+		
+		
+
+		// 검색
+		String condition = req.getParameter("condition");
+		String keyword = req.getParameter("keyword");
+
+		if (condition == null) {
+			condition = "subjectName";
+			keyword = "";
+		}
+		
+		// GET방식이라 디코딩
+		if (req.getMethod().equalsIgnoreCase("GET")) {
+			keyword = URLDecoder.decode(keyword, "utf-8");
+		}
+			
+			
+		// 한페이지 표시할 데이터 개수 
+		String pageSize = req.getParameter("size");
+		int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
+		
+		
+		
+		
+		
+		
+		//전체 데이터 개수
+		int dataCount, total_page;
+		
+		if(keyword.length() != 0) {
+			dataCount = dao.dataCount(condition, keyword);
+		}else {
+			dataCount = dao.dataCount();
+		}
+	
+		
+		// 전체 페이지 수 
+		 total_page = util.pageCount(dataCount, size);
+		 
+		 
+		if (current_page > total_page) {
+			current_page = total_page;
 		}
 
 		
 		
 		
-		try {
-
-			// 페이지 번호
-			String page = req.getParameter("page");
-			int current_page = 1;
-			if (page != null) {
-				current_page = Integer.parseInt(page);
-			}
-			
-			
-
-			// 검색
-			String condition = req.getParameter("condition");
-			String keyword = req.getParameter("keyword");
-
-			if (condition == null) {
-				condition = "f";
-				keyword = "";
-			}
-			
-			// GET방식이라 디코딩
-			if (req.getMethod().equalsIgnoreCase("GET")) {
-				keyword = URLDecoder.decode(keyword, "utf-8");
-			}
-				
-				
-			// 한페이지 표시할 데이터 개수 
-			String pageSize = req.getParameter("size");
-			int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
-			
-			
-			
-			
-			
-			
-			//전체 데이터 개수
-			int dataCount, total_page;
-			
-			if(keyword.length() != 0) {
-				dataCount = dao.dataCount(condition, keyword);
-			}else {
-				dataCount = dao.dataCount();
-			}
+		// 게시글 가져오기
+		int offset = (current_page - 1) * size;
+		if (offset < 0)
+			offset = 0;
 		
-			
-			// 전체 페이지 수 
-			 total_page = util.pageCount(dataCount, size);
-			 
-			 
-			if (current_page > total_page) {
-				current_page = total_page;
-			}
-
-			
-			
-			
-			// 게시글 가져오기
-			int offset = (current_page - 1) * size;
-			if (offset < 0)
-				offset = 0;
-			
-			List<MypageDTO> list = null;
-			if(keyword.length() != 0) {
-				list = dao.listSubmit(offset, size, condition, keyword);
-			}else {
-				list = dao.listSubject(offset, size);
-			}
-			
-			
-			String query = "";
-			if (keyword.length() != 0) {
-				query = "condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "utf-8");
-			}
-
-			String listUrl = cp + "/mypage/assistant.do";
-			if(query.length() != 0) {
-				listUrl += "?" + query;
-			}
-			
-			String paging = util.paging(current_page, total_page, listUrl);
-			
-			req.setAttribute("list", list);
-			req.setAttribute("page", current_page);
-			req.setAttribute("total_page", total_page);
-			req.setAttribute("dataCount", dataCount);
-			req.setAttribute("size", size);
-			req.setAttribute("paging", paging);
-			req.setAttribute("condition", condition);
-			req.setAttribute("keyword", keyword);
-			
-
-		} catch (Exception e) {
-               e.printStackTrace();
+		List<MypageDTO> list = null;
+		if(keyword.length() != 0) {
+			list = dao.listSubmit(offset, size, condition, keyword);
+		}else {
+			list = dao.listSubject(offset, size);
+		}
+		
+		List<MypageDTO> alist = null;
+		//이부분 맞는지 모르겠다 일단 나오긴하는대
+		String id = info.getUserId();
+		alist = dao.readAssitance(id);
+		
+		String query = "";
+		if (keyword.length() != 0) {
+			query = "condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "utf-8");
 		}
 
-		String path = "/WEB-INF/views/mypage/assistant.jsp";
-		forward(req, resp, path);
+		String listUrl = cp + "/mypage/assistant.do";
+		if(query.length() != 0) {
+			listUrl += "?" + query;
+		}
 		
+		String paging = util.paging(current_page, total_page, listUrl);
+		
+		req.setAttribute("list", list);
+		req.setAttribute("alist", alist);
+		req.setAttribute("page", current_page);
+		req.setAttribute("total_page", total_page);
+		req.setAttribute("dataCount", dataCount);
+		req.setAttribute("size", size);
+		req.setAttribute("paging", paging);
+		req.setAttribute("condition", condition);
+		req.setAttribute("keyword", keyword);
+		
+
+	} catch (Exception e) {
+           e.printStackTrace();
+	}
+
+	String path = "/WEB-INF/views/mypage/assistant.jsp";
+	forward(req, resp, path);
 		
 	}
 
@@ -347,10 +351,7 @@ public class MypageServlet extends MyUploadServlet {
 			return;
 		}
 		
-		if (req.getMethod().equalsIgnoreCase("GET")) {
-			resp.sendRedirect(cp + "/");
-			return;
-		}
+		
 		
 		String subjectNo =  req.getParameter("subjectNo");
 		String id = info.getUserId();
@@ -360,13 +361,13 @@ public class MypageServlet extends MyUploadServlet {
 			    
 		
 			dao.insertassiantance(subjectNo, id);
-		
+		  
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	
-		resp.sendRedirect(cp + "/member/login.do");
+		resp.sendRedirect(cp + "/");
 		
 	}
 

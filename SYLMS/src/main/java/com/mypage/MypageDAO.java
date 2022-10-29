@@ -7,9 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.eclipse.jdt.internal.compiler.ast.ReturnStatement;
-
 import com.util.DBConn;
 
 public class MypageDAO {
@@ -152,19 +149,9 @@ public class MypageDAO {
 					try {
 						sql = " SELECT NVL (COUNT(*), 0) FROM subject WHERE  sYear >= SYSDATE ";
 
-						if (condition.equals("f")) {
-							sql += " AND INSTR(semester, ?) >= 1 ";
-						} else if (condition.equals("s")) {
-							sql += " AND INSTR(semester, ?) >= 1 ";
-
-						} else if (condition.equals("subjectName")) {
-							sql += " AND INSTR(subjectName, ?) >= 1 ";
-
-						} else if (condition.equals("year")) {
-							sql += " AND INSTR(TO_CHAR(sYear,'YYYY'), ?) >= 1 ";
-
-						} else {
-							sql += " AND INSTR(" + condition + ", ?) >= 1 ";
+						if (condition.equals("subjectName")) {
+							sql += " AND INSTR(s.subjectName, ?) >= 1 ";
+				
 						}
 
 						pstmt = conn.prepareStatement(sql);
@@ -209,7 +196,7 @@ public class MypageDAO {
 				
 				try {
 					sb.append(" SELECT distinct ");
-					sb.append(" s.sYear, s.subjectno, s.semester, d.departmentName, s.subjectName, a.name ");
+					sb.append(" TO_CHAR(s.sYear, 'YYYY') sYear , s.subjectno, s.semester, d.departmentName, s.subjectName, a.name ");
 					sb.append(" FROM subject s");
 					sb.append(" LEFT outer join department  d");
 					sb.append(" ON s.departmentNum = d.departmentNum ");
@@ -280,7 +267,7 @@ public class MypageDAO {
 				try {
 					
 					sb.append(" SELECT distinct ");
-					sb.append(" s.sYear, s.semester, s.subjectno, d.departmentName, s.subjectName, a.name ");
+					sb.append(" TO_CHAR(s.sYear, 'YYYY') sYear, s.semester, s.subjectno, d.departmentName, s.subjectName, a.name ");
 					sb.append(" FROM subject s");
 					sb.append(" LEFT outer join department  d");
 					sb.append(" ON s.departmentNum = d.departmentNum ");
@@ -289,19 +276,8 @@ public class MypageDAO {
 					sb.append(" WHERE  sYear >= SYSDATE ");
 					
 					
-					if (condition.equals("f")) {
-						sb.append(" AND INSTR(semester, ?) >= 1 ");
-					} else if (condition.equals("s")) {
-						sb.append(" AND INSTR(semester, ?) >= 1 ");
-
-					} else if (condition.equals("subjectName")) {
-						sb.append(" AND INSTR(subjectName, ?) >= 1 ");
-
-					} else if (condition.equals("year")) {
-						sb.append(" AND INSTR(TO_CHAR(sYear,'YYYY'), ?) >= 1 ");
-
-					} else {
-						sb.append(" AND INSTR(" + condition + ", ?) >= 1 ");
+					if (condition.equals("subjectName")) {
+						sb.append(" AND INSTR(s.subjectName, ?) >= 1 ");
 					}
 					sb.append(" ORDER BY d.departmentName DESC ");
 					sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
@@ -372,9 +348,9 @@ public class MypageDAO {
 					pstmt = conn.prepareStatement(sql);
 					
 					
-				
-					pstmt.setString(1, subjectNo);
-		            pstmt.setString(2, id);
+			     	pstmt.setString(1, id);
+					pstmt.setString(2, subjectNo);
+		            
 					
 					
 					pstmt.executeUpdate();
@@ -396,8 +372,75 @@ public class MypageDAO {
 	
 			
 			
-			// 조교 신청 등록
+			// 조교 신청 및 승인 내용 출력
+			List<MypageDTO>  readAssitance(String studentCode) {
+				List<MypageDTO> alist = new ArrayList<>();
+			       PreparedStatement pstmt = null;
+			       ResultSet rs = null;
+			       String  sql;
+			       
+			       try {
+			    	   
+			    	sql = " SELECT distinct  "
+			    			+ " TO_CHAR(s.sYear, 'YYYY') sYear , s.subjectno, s.semester, d.departmentName, s.subjectName, a.name, ENABLE "
+			    			+ " FROM subject s "
+			    			+ " LEFT outer join department  d "
+			    			+ " ON s.departmentNum = d.departmentNum "
+			    			+ " LEFT outer join account a "
+			    			+ " ON s.id = a.id "
+			    			+ " LEFT outer join applicationAssistant ap "
+			    			+ " ON s.subjectNo = ap.subjectNo "
+			    			+ " WHERE  sYear >= SYSDATE  AND  studentCode =  ? "
+			    			+ " ORDER BY d.departmentName, ENABLE DESC ";
+					
+					pstmt = conn.prepareStatement(sql);
+					
+					pstmt.setString(1, studentCode);
+					
+					rs = pstmt.executeQuery();
+					
+					while(rs.next()) {
+						MypageDTO dto = new MypageDTO();
+						
+						
+						dto.setYear(rs.getString("sYear"));
+						dto.setSubjectNo(rs.getString("subjectno"));
+						dto.setSemester(rs.getString("semester"));
+						dto.setDepartment(rs.getString("departmentName"));
+						dto.setSubject(rs.getString("subjectName"));
+						dto.setProfessor(rs.getString("name"));
+						dto.setENABLE(rs.getString("ENABLE"));
+						
+						
+						alist.add(dto);
+						
+					}
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}finally {
+					if(rs != null) {
+						try {
+							rs.close();
+						} catch (SQLException e) {
+						}
+					}
+						
+					if(pstmt != null) {
+						try {
+							pstmt.close();
+						} catch (SQLException e) {
+						}
+					}
+				}
+			       
+			       return alist;
+				}
 		
+			//조교승인내역
 			
+			
+			
+			//조교 신청 내역
 	
 }
