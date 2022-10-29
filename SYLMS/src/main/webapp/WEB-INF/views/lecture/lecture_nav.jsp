@@ -33,12 +33,12 @@ function ajaxFun(url, method, query, dataType, fn) {
 $(function(){
 	
 	$(".reg_history_btn").click(function(){
-		let syear = $("#reg_history option:selected").attr("data-nx");
-		let semester = $("#reg_history option:selected").attr("data-ny");
+		let syear = $("#syear option:selected").val();
+		let semester = $("#semester option:selected").val();
 		let url="${pageContext.request.contextPath}/lecture/history.do";
 		let query= "syear="+syear+"&semester="+semester;
 		
-		const fn=function(data){
+		const fn = function(data){
 			
 			let out;
 			for(let item of data.list){
@@ -139,17 +139,38 @@ $(function(){
 											class="accordion-collapse collapse show"
 											aria-labelledby="lecture" data-bs-parent="#lecture_history">
 											<div class="accordion-body text-center">
-												<select class="d-inline form-select w-75" id="reg_history">
+											<div class="d-flex justify-content-center">
+												<div class="p-2">
+												<select class="form-select" id="syear" >
 												<c:if test="${empty hlist}">
 														<option>-</option>
 												</c:if>
 												<c:forEach var="dto" items="${hlist}">
-													<option data-nx="${dto.syear}" data-ny="${dto.semester}">${dto.syear} - ${dto.semester}학기</option>
+													<option value="${dto.syear}">${dto.syear}</option>
 												</c:forEach>
 												</select>
-												<button type="button" class="d-inline btn btn-outline-primary ms-auto reg_history_btn">조회</button>
-												<p>&nbsp;</p>
+												</div>
 												
+												<div class="p-2 fs-5 mt-auto">
+												<span>학년도</span>
+												</div>
+												
+												<div class="p-2">
+												<select class="form-select" id="semester">
+													<option value="1">1</option>
+													<option value="2">2</option>
+												</select>
+												</div>
+												
+												<div class="p-2 fs-5 mt-auto">
+												<span>학기</span>
+												</div>
+												
+												<div class="p-2">
+												<button type="button" class="btn btn-outline-primary  reg_history_btn">조회</button>
+												</div>
+											</div>
+												<p>&nbsp;</p>	
 												<c:if test="${empty hlist}">
 														수강 기록이 없습니다.
 												</c:if>

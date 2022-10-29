@@ -78,11 +78,11 @@ public class LectureDAO {
 			ResultSet rs= null;
 			String sql;
 			try {
-				sql= "SELECT STUDENTCODE, SEMESTER, TO_CHAR(syear,'YYYY')syear FROM REGISTERSUBJECT r "
+				sql= "SELECT STUDENTCODE, TO_CHAR(syear,'YYYY')syear FROM REGISTERSUBJECT r "
 						+ " JOIN subject s ON s.SUBJECTNO =r.SUBJECTNO "
 						+ " WHERE STUDENTCODE = ? "
-						+ " GROUP BY studentcode, semester, TO_CHAR(syear,'YYYY') "
-						+ " ORDER BY syear,semester";
+						+ " GROUP BY studentcode, TO_CHAR(syear,'YYYY') "
+						+ " ORDER BY syear";
 				
 				pstmt=conn.prepareStatement(sql);
 				
@@ -93,7 +93,6 @@ public class LectureDAO {
 				while(rs.next()) {
 					LectureDTO dto = new LectureDTO();
 					dto.setSyear(Integer.parseInt(rs.getString("syear")));
-					dto.setSemester(Integer.parseInt(rs.getString("semester")));
 					list.add(dto);
 				}
 			} catch (Exception e) {
@@ -224,10 +223,10 @@ public class LectureDAO {
 		ResultSet rs= null;
 		String sql;
 		try {
-			sql= "SELECT TO_CHAR(syear,'YYYY') syear, semester FROM subject s "
+			sql= "SELECT TO_CHAR(syear,'YYYY') syear FROM subject s "
 					+" JOIN account a on s.id= a.id "
 					+" WHERE a.id= ? "
-					+" GROUP BY TO_CHAR(syear,'YYYY'), semester";
+					+" GROUP BY TO_CHAR(syear,'YYYY')";
 			
 			pstmt=conn.prepareStatement(sql);
 			
@@ -238,7 +237,6 @@ public class LectureDAO {
 			while(rs.next()) {
 				LectureDTO dto = new LectureDTO();
 				dto.setSyear(Integer.parseInt(rs.getString("syear")));
-				dto.setSemester(Integer.parseInt(rs.getString("semester")));
 				list.add(dto);
 			}
 		} catch (Exception e) {
@@ -311,9 +309,9 @@ public class LectureDAO {
 		ResultSet rs= null;
 		String sql;
 		try {
-			sql= "SELECT SEMESTER, TO_CHAR(syear,'YYYY')syear FROM Subject "
-					+ " GROUP BY semester, TO_CHAR(syear,'YYYY') "
-					+ " ORDER BY syear,semester";
+			sql= "SELECT TO_CHAR(syear,'YYYY')syear FROM Subject "
+					+ " GROUP BY TO_CHAR(syear,'YYYY') "
+					+ " ORDER BY syear";
 			
 			pstmt=conn.prepareStatement(sql);
 			
@@ -322,7 +320,6 @@ public class LectureDAO {
 			while(rs.next()) {
 				LectureDTO dto = new LectureDTO();
 				dto.setSyear(Integer.parseInt(rs.getString("syear")));
-				dto.setSemester(Integer.parseInt(rs.getString("semester")));
 				list.add(dto);
 			}
 		} catch (Exception e) {
