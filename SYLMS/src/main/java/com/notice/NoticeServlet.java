@@ -61,13 +61,21 @@ public class NoticeServlet extends MyServlet {
 	protected void noticeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 공지사항 리스트
 		NoticeDAO dao = new NoticeDAO();
+		String subjectNo = req.getParameter("subjectNo");
+		
+		NoticeDTO dto1 = new NoticeDTO();
 		MyUtil util = new MyUtilBootstrap();
 		String cp = req.getContextPath();
 		
 		
 		try {
-			String subjectNo = req.getParameter("subjectNo");
-			
+			dto1 = dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto1.getProfessorname());
+			req.setAttribute("semester", dto1.getSemester());
+			req.setAttribute("subjectName", dto1.getSubjectName());
+			req.setAttribute("syear", dto1.getSyear());
+		
 			// 페이지 번호
 			String page = req.getParameter("page");
 			int current_page = 1;
@@ -152,6 +160,7 @@ public class NoticeServlet extends MyServlet {
 			String paging = util.paging(current_page, total_page, listUrl);
 			
 			
+			req.setAttribute("query", query);
 			req.setAttribute("subjectNo", subjectNo );
 			req.setAttribute("list", list);
 			req.setAttribute("listNotice", listNotice);
@@ -164,6 +173,7 @@ public class NoticeServlet extends MyServlet {
 			req.setAttribute("keyword", keyword);
 			req.setAttribute("noticeUrl", noticeUrl);
 			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -174,9 +184,27 @@ public class NoticeServlet extends MyServlet {
 	
 	protected void noticeWriteForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 공지사항 작성
-		String subjectNo = req.getParameter("subjectNo");
-		req.setAttribute("subjectNo", subjectNo );
-		req.setAttribute("mode", "write");
+		
+		try {
+			String subjectNo = req.getParameter("subjectNo");
+			
+			NoticeDAO dao = new NoticeDAO();
+			NoticeDTO dto1 = new NoticeDTO();
+			
+			dto1 = dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto1.getProfessorname());
+			req.setAttribute("semester", dto1.getSemester());
+			req.setAttribute("subjectName", dto1.getSubjectName());
+			req.setAttribute("syear", dto1.getSyear());
+			
+			
+			req.setAttribute("subjectNo", subjectNo );
+			req.setAttribute("mode", "write");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		forward(req, resp, "/WEB-INF/views/notice/noticeWrite.jsp");
 	}
 	
@@ -259,6 +287,13 @@ public class NoticeServlet extends MyServlet {
 			// 파일
 			
 
+			req.setAttribute("query", query);
+			req.setAttribute("subjectNo", subjectNo );
+			req.setAttribute("size", size);
+			req.setAttribute("condition", condition);
+			req.setAttribute("keyword", keyword);
+			
+			
 			forward(req, resp, "/WEB-INF/views/notice/noticeArticle.jsp");
 			return;
 		} catch (Exception e) {
