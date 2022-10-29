@@ -395,7 +395,7 @@ public class NoticeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT articleNo, bbsCode, subjectNo, Id, title, content, reg_date, hitcount "
+			sql = "SELECT articleNo, bbsCode, subjectNo, a.Id, title, content, reg_date, hitcount "
 					+ " FROM subject_bbs b "
 					+ " JOIN account a ON b.Id=a.Id "
 					+ " WHERE articleNo = ?";
@@ -589,7 +589,7 @@ public class NoticeDAO {
 		String sql;
 
 		try {
-			sql = "UPDATE subjectNo SET hitCount=hitCount+1 WHERE articleNo=? AND subjectNo=? ";
+			sql = "UPDATE subject_bbs SET hitCount=hitCount+1 WHERE articleNo=? AND subjectNo=? ";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, articleNo);

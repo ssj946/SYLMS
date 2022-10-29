@@ -21,7 +21,7 @@ list-style: none;
 <c:if test="${sessionScope.member.userId==dto.userId || sessionScope.member.userId=='admin'}">
 function deleteBoard() {
     if(confirm("게시글을 삭제 하시 겠습니까 ? ")) {
-	    let query = "boardNum=${dto.boardNum}&${query}";
+	    let query = "articleNo=${dto.articleNo}&${query}";
 	    let url = "${pageContext.request.contextPath}/notice/delete.do?" + query;
     	location.href = url;
     }
@@ -68,11 +68,11 @@ function deleteBoard() {
 				<div class="body-main">
 					
 					<table class="table">
+				
 						<thead>
 							<tr>
 								<td colspan="2" align="center">
-									<c:if test="${dto.depth!=0 }">[Re] </c:if>
-									${dto.subject}
+									[Re]${dto.title}
 								</td>
 							</tr>
 						</thead>
@@ -80,7 +80,7 @@ function deleteBoard() {
 						<tbody>
 							<tr>
 								<td width="50%">
-									이름 : ${dto.userName}
+									이름 : ${dto.userId}
 								</td>
 								<td align="right">
 									${dto.reg_date} | 조회 ${dto.hitCount}
@@ -97,7 +97,7 @@ function deleteBoard() {
 								<td colspan="2">
 									이전글 :
 									<c:if test="${not empty preReadDto}">
-										<a href="${pageContext.request.contextPath}/lecture/notice/article.do?${query}&boardNum=${preReadDto.boardNum}">${preReadDto.subject}</a>
+										<a href="${pageContext.request.contextPath}/lecture/notice/article.do?${query}&articleNo=${preReadDto.boardNum}">${preReadDto.subject}</a>
 									</c:if>
 								</td>
 							</tr>
@@ -105,21 +105,20 @@ function deleteBoard() {
 								<td colspan="2">
 									다음글 :
 									<c:if test="${not empty nextReadDto}">
-										<a href="${pageContext.request.contextPath}/lecture/notice/article.do?${query}&boardNum=${nextReadDto.boardNum}">${nextReadDto.subject}</a>
+										<a href="${pageContext.request.contextPath}/lecture/notice/article.do?${query}&articleNo=${nextReadDto.boardNum}">${nextReadDto.subject}</a>
 									</c:if>
 								</td>
 							</tr>
 						</tbody>
 					</table>
-					
 					<table class="table table-borderless">
 						<tr>
 							<td width="50%">
-								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/notice/reply.do?boardNum=${dto.boardNum}&page=${page}';">답변</button>
+								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/notice/reply.do?boardNum=${dto.articleNo}&page=${page}';">답변</button>
 								
 								<c:choose>
 									<c:when test="${sessionScope.member.userId==dto.userId}">
-										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/notice/update.do?boardNum=${dto.boardNum}&page=${page}';">수정</button>
+										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/notice/update.do?boardNum=${dto.articleNo}&page=${page}';">수정</button>
 									</c:when>
 									<c:otherwise>
 										<button type="button" class="btn btn-light" disabled="disabled">수정</button>

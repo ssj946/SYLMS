@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -104,7 +105,7 @@ function searchList() {
 							<tr>
 								<td>${dataCount - (page-1) * size - status.index}</td>
 								<td class="left">
-									<a href="${articleUrl}&articleNo=${dto.articleNo}" class="text-reset">${dto.title}</a>
+									<a href="${pageContext.request.contextPath}/notice/noticeArticle.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}" class="text-reset">${dto.title}</a>
 										<c:if test="${dto.gap<2}"><img src="${pageContext.request.contextPath}/resources/images/new.png" class="new"></c:if>
 								</td>
 								<td>${dto.name}</td>

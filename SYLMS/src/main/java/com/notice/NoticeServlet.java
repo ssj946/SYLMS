@@ -308,7 +308,7 @@ public class NoticeServlet extends MyServlet {
 			
 			// 파일
 			
-
+			req.setAttribute("dto", dto);
 			req.setAttribute("subjectNo", subjectNo );
 			req.setAttribute("condition", condition);
 			req.setAttribute("keyword", keyword);
