@@ -47,13 +47,14 @@ function deleteBoard() {
 			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
 			</div>
 			<div class="col-lg-11 ms-auto">
-			<div class="row">
+			
 			<!-- classroom header 자리 -->
+			<div class="row">
 			<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
 			</div>
 			<div class="row">
 			<!-- 강의 사이드바 자리 -->
-			<div class="col-lg-2 bg-dark bg-gradient" style="box-shadow: none; height: 150vh;">
+			<div class="col-xl-2 col-md-2 col-lg-2 bg-black bg-gradient" style="box-shadow: none;">
 			<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
 			</div>
 			

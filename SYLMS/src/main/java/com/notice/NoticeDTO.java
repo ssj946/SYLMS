@@ -24,6 +24,14 @@ public class NoticeDTO {
 	private String name;
 	
 
+	private String professorname;
+	private int semester;
+	private String subjectName;
+	private int syear;
+	private int credit;
+	
+
+
 	public String getArticleNo() {
 		return articleNo;
 	}
@@ -125,5 +133,40 @@ public class NoticeDTO {
 		this.originalFiles = originalFiles;
 	}
 	
+	
+	
+	public String getProfessorname() {
+		return professorname;
+	}
+	public void setProfessorname(String professorname) {
+		this.professorname = professorname;
+	}
+	public int getSemester() {
+		return semester;
+	}
+	public void setSemester(int semester) {
+		this.semester = semester;
+	}
+	public String getSubjectName() {
+		return subjectName;
+	}
+	public void setSubjectName(String subjectName) {
+		this.subjectName = subjectName;
+	}
+	public int getSyear() {
+		return syear;
+	}
+	public void setSyear(int syear) {
+		this.syear = syear;
+	}
+	public void setOriginalFilename(String originalFilename) {
+		this.originalFilename = originalFilename;
+	}
+	public int getCredit() {
+		return credit;
+	}
+	public void setCredit(int credit) {
+		this.credit = credit;
+	}
 	
 }
