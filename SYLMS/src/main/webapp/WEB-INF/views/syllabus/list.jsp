@@ -45,7 +45,7 @@ list-style: none;
 			<!-- 본문 -->
 			 	<div class="col-lg-10 gap-3 ms-auto">
 				<div class="ms-1 me-1 pt-3 mt-3 mb-5">
-					<h3><i class="fas fa-clipboard-question  fa-lg mr-3"></i> 수업계획서 </h3>
+					<h3><i class="fas fa-map  fa-lg mr-3"></i> 수업계획서 </h3>
 					
 					</div>
 					<div class="panel panel-info">
@@ -67,25 +67,20 @@ list-style: none;
 							<select name="semester" class="form-control">
 								<option value="0" selected> -- 전체 -- </option>
 								<option value="1">2022년 2학기</option>
-				
+				         
+				         
 							</select>
 						</div>
 						<div class="form-group">
-							<label>전공선택</label>
+							<label>수업선택</label>
 							<select class="form-control">
 								<option> -- 전체 -- </option>
-								<option>컴퓨터소프트웨어학과</option>
+								<option> 동의학</option>
+								<option> 정의학</option>
 							</select>
 						</div>
 					</form>
 					<hr>
-					<div class="panel panel-info">
-						<div class="panel-heading"><strong>시간표 및 수업계획서</strong></div>
-						<div class="panel-body">
-							<p>학기 : <strong>2022년 2학기</strong></p>
-							<p>학과 : <strong>컴퓨터소프트웨어학과</strong></p>
-							<p></p>
-						</div>
 					
 					<div class="body-main">
 		        <div class="row board-list-header">
@@ -136,13 +131,16 @@ list-style: none;
 					${dataCount == 0 ? "등록된 게시물이 없습니다." : paging}
 				</div>
 				
+							</div>
+				
+					</div>
+					
 				</div>
 				</div>
 				</div>
 			<!-- 본문 끝 -->
-			</div>
-			</div>				
-				</div>
+					
+				
 		
 	
 	</section>
