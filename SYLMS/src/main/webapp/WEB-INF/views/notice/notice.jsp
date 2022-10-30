@@ -34,9 +34,14 @@
 
 .new { height: 15px; padding-left: 3px; padding-bottom: 3px; }
 
+.table-light { text-align: center; }
+
+
 ul{
 list-style: none;
 }
+
+
 </style>
 
 <script type="text/javascript">
@@ -79,43 +84,41 @@ function searchList() {
 			<div class="col-lg-10 gap-3 ms-auto">
 				<div class="ms-5 me-5 pt-3 mt-4 mb-5">
 				
-			<div class="body-title">
+			<div>
 				<h3><i class="fas fa-microphone fa-1x"></i> 공지사항 </h3>
 			</div>
 			
-			<div class="body-main">
+			<div>
 		        <div class="row board-list-header">
 		            <div class="col-auto me-auto">${dataCount}개(${page}/${total_page} 페이지)</div>
 		            <div class="col-auto">&nbsp;</div>
 		        </div>				
-				
-				<table class="table table-hover board-list">
-					<thead class="table-light">
-						<tr>
-							<th class="articleNo">번호</th>
-							<th class="title">제목</th>
-							<th class="name">작성자</th>
-							<th class="date">작성일</th>
-							<th class="hit">조회수</th>
-						</tr>
-					</thead>
+		<div>
+				<table  class= "card table text-center">
 					
-					<tbody>
-						<c:forEach var="dto" items="${list}" varStatus="status">
-							<tr>
-								<td>${dataCount - (page-1) * size - status.index}</td>
-								<td class="left">
-									<a href="${pageContext.request.contextPath}/notice/noticeArticle.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}" class="text-reset">${dto.title}</a>
-										<c:if test="${dto.gap<2}"><img src="${pageContext.request.contextPath}/resources/images/new.png" class="new"></c:if>
-								</td>
-								<td>${dto.name}</td>
-								<td>${dto.reg_date}</td>
-								<td>${dto.hitCount}</td>
-							</tr>
-						</c:forEach>
-					</tbody>
+						<tr class="row">
+							<th class="col-1">번호</th>
+							<th class="col-7">제목</th>
+							<th class=" col-1" >작성자</th>
+							<th class=" col-2">작성일</th>
+							<th class="col-1">조회수</th>
+						</tr>
+					
+					<c:forEach var="dto" items="${list}" varStatus="status">
+						<tr>
+							<td class="w-10" >${dataCount - (page-1) * size - status.index}</td>
+							<td class="left w-70">
+								<a href="${pageContext.request.contextPath}/notice/noticeArticle.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}" class="text-reset ps-4">${dto.title}</a>
+								<c:if test="${dto.gap<2}"><img src="${pageContext.request.contextPath}/resources/images/new.png" class="new"></c:if>
+							</td>
+							<td class="w-5"  >${dto.name}</td>
+							<td class="w-10" >${dto.reg_date}</td>
+							<td class="w-5" >${dto.hitCount}</td>
+						</tr>
+					</c:forEach>
+					
 				</table>
-				
+		</div>		
 				<div class="page-navigation">
 					${dataCount == 0 ? "등록된 게시물이 없습니다." : paging}
 				</div>

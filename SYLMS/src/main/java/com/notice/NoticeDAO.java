@@ -13,7 +13,7 @@ public class NoticeDAO {
 	private Connection conn = DBConn.getConnection();
 	
 	
-	
+	// 과목정보 불러오기
 	public NoticeDTO readSubject(String subjectNo) throws SQLException{
 		
 		PreparedStatement pstmt= null;
@@ -61,20 +61,60 @@ public class NoticeDAO {
 	// 공지작성
 	public void insertNotice(NoticeDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
-		String sql;
+		ResultSet rs = null;
+		String sql, seq;
 		
 		try {
-			sql = "INSERT INTO subject_bbs(articleNo, bbsCode, subjectNo,  "
-					+ " ID, title, content, reg_date, hitCount) "
-					+ " VALUES (subject_bbs_seq.NEXTVAL,'00001', ?, ?, ?, ?, SYSDATE, 0)";
+			sql = "SELECT subject_bbs_seq.NEXTVAL FROM dual";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, dto.getSubjectNo());
-			pstmt.setString(2, dto.getUserId());
-			pstmt.setString(3, dto.getTitle());
-			pstmt.setString(4, dto.getContent());
+			rs = pstmt.executeQuery();
+			
+			seq = null;
+			if (rs.next()) {
+				seq = rs.getString(1);
+			}
+			dto.setArticleNo(seq);
+			
+			rs.close();
+			pstmt.close();
+			rs = null;
+			pstmt = null;
+			
+			sql = "INSERT INTO subject_bbs(articleNo, bbsCode, subjectNo,  "
+					+ " ID, title, content, reg_date, hitCount) "
+					+ " VALUES ( ?,'00001', ?, ?, ?, ?, SYSDATE, 0)";
+			pstmt = conn.prepareStatement(sql);
+			
+			
+			pstmt.setString(1, dto.getArticleNo());
+			pstmt.setString(2, dto.getSubjectNo());
+			pstmt.setString(3, dto.getUserId());
+			pstmt.setString(4, dto.getTitle());
+			pstmt.setString(5, dto.getContent());
+			
 			
 			pstmt.executeUpdate();
+			
+			pstmt.close();
+			pstmt = null;
+			
+			if (dto.getSaveFiles() != null) {
+				sql = " INSERT INTO subject_bbs_file(fileNo, saveFilename, originalFilename, articleNo, bbsCode, subjectNo, fileSize) "
+						+ " VALUES (subject_bbs_file_seq.NEXTVAL, ?, ? , ?, '00001', ?, ? )";
+				pstmt = conn.prepareStatement(sql);
+				
+				for ( int i = 0; i< dto.getSaveFiles().length; i++) {
+					pstmt.setString(1, dto.getSaveFiles()[i]);
+					pstmt.setString(2, dto.getOriginalFiles()[i]);
+					pstmt.setString(3, dto.getArticleNo());
+					pstmt.setString(4, dto.getSubjectNo());
+					pstmt.setString(5, dto.getFileSize());
+					
+					pstmt.executeUpdate();
+				}
+			}
+			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -200,7 +240,7 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT articleNo, b.ID, title, hitCount, reg_date ");
+			sb.append(" SELECT articleNo, b.ID, title, hitCount, reg_date, a.name ");
 			sb.append(" FROM subject_bbs b ");
 			sb.append(" JOIN account a ON b.ID = a.ID ");
 			sb.append(" WHERE subjectNo = ?  ");
@@ -224,6 +264,7 @@ public class NoticeDAO {
 				dto.setTitle(rs.getString("title"));
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setReg_date(rs.getString("reg_date"));
+				dto.setName(rs.getString("name"));
 
 				list.add(dto);
 			}
@@ -267,7 +308,7 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT articleNo, b.ID, title, hitCount, reg_date ");
+			sb.append(" SELECT articleNo, b.ID, title, hitCount, reg_date, a.name");
 			sb.append(" FROM subject_bbs b ");
 			sb.append(" JOIN account a ON b.ID = a.ID ");
 			sb.append(" WHERE subjectNo = ?  ");
@@ -305,7 +346,7 @@ public class NoticeDAO {
 				NoticeDTO dto = new NoticeDTO();
 
 				dto.setArticleNo(rs.getString("articleNo"));
-				dto.setUserId(rs.getString("id"));
+				dto.setName(rs.getString("name"));
 				dto.setTitle(rs.getString("title"));
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setReg_date(rs.getString("reg_date")); // yyyy-MM-dd HH:mm:ss
@@ -335,6 +376,7 @@ public class NoticeDAO {
 	}
 	
 	
+	// 공지 목록
 	public List<NoticeDTO> listNotice(String subjectNo) {
 		List<NoticeDTO> list = new ArrayList<NoticeDTO>();
 		PreparedStatement pstmt = null;
@@ -388,6 +430,7 @@ public class NoticeDAO {
 		return list;
 	}
 
+	// 공지보기
 	public NoticeDTO readNotice(String articleNo) {
 		NoticeDTO dto = null;
 		PreparedStatement pstmt = null;
@@ -395,7 +438,7 @@ public class NoticeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT articleNo, bbsCode, subjectNo, a.Id, title, content, reg_date, hitcount "
+			sql = "SELECT articleNo, bbsCode, subjectNo, a.Id, title, content, reg_date, hitcount, a.name "
 					+ " FROM subject_bbs b "
 					+ " JOIN account a ON b.Id=a.Id "
 					+ " WHERE articleNo = ?";
@@ -416,6 +459,7 @@ public class NoticeDAO {
 				dto.setContent(rs.getString("content"));
 				dto.setReg_date(rs.getString("reg_date")); 
 				dto.setHitCount(rs.getInt("hitCount"));
+				dto.setName(rs.getString("name"));
 
 			}
 

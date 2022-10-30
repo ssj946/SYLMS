@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,7 @@ import com.util.MyServlet;
 import com.util.MyUtil;
 import com.util.MyUtilBootstrap;
 
-
+@MultipartConfig
 @WebServlet("/notice/*")
 public class NoticeServlet extends MyServlet {
 	private static final long serialVersionUID = 1L;
@@ -196,8 +197,21 @@ public class NoticeServlet extends MyServlet {
 	
 	protected void noticeWriteForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 공지사항 작성
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
+		String cp = req.getContextPath();
+		
+		String size = req.getParameter("size");
+		
+		// 교수만 등록,,,
+		if (!info.getUserId().matches("\\d{8}")) {
+			resp.sendRedirect(cp + "/");
+			return;
+		}
+
 		try {
+			
 			String subjectNo = req.getParameter("subjectNo");
 			
 			NoticeDAO dao = new NoticeDAO();
@@ -209,7 +223,7 @@ public class NoticeServlet extends MyServlet {
 			req.setAttribute("semester", dto1.getSemester());
 			req.setAttribute("subjectName", dto1.getSubjectName());
 			req.setAttribute("syear", dto1.getSyear());
-			
+			req.setAttribute("size", size);
 			
 			req.setAttribute("subjectNo", subjectNo );
 			req.setAttribute("mode", "write");
@@ -235,8 +249,12 @@ public class NoticeServlet extends MyServlet {
 			return;
 		}
 		
+		// 교수만 등록,,,
+		if (!info.getUserId().matches("\\d{8}")) {
+			resp.sendRedirect(cp + "/");
+			return;
+		}
 		
-
 		try {
 			NoticeDTO dto = new NoticeDTO();
 			
@@ -315,6 +333,7 @@ public class NoticeServlet extends MyServlet {
 			req.setAttribute("query", query);
 			req.setAttribute("page", page);
 			req.setAttribute("size", size);
+			req.setAttribute("name", dto.getName());
 			
 			
 			

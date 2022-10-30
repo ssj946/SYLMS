@@ -59,8 +59,9 @@ function deleteBoard() {
 			</div>
 			
 			<!-- 본문 -->
-			<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto">
-				<div class="ms-1 me-1 pt-3 mt-3 mb-5">
+				<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto">
+					<div class="ms-1 me-1 pt-3 mt-3 mb-5">
+					
 				<div class="body-title">
 					<h3><i class="fas fa-microphone fa-1x"></i> 공지사항 </h3>
 				</div>
@@ -72,7 +73,7 @@ function deleteBoard() {
 						<thead>
 							<tr>
 								<td colspan="2" align="center">
-									[Re]${dto.title}
+									${dto.title}
 								</td>
 							</tr>
 						</thead>
@@ -80,7 +81,7 @@ function deleteBoard() {
 						<tbody>
 							<tr>
 								<td width="50%">
-									이름 : ${dto.userId}
+									이름 : ${dto.name}
 								</td>
 								<td align="right">
 									${dto.reg_date} | 조회 ${dto.hitCount}
@@ -114,7 +115,6 @@ function deleteBoard() {
 					<table class="table table-borderless">
 						<tr>
 							<td width="50%">
-								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/notice/reply.do?boardNum=${dto.articleNo}&page=${page}';">답변</button>
 								
 								<c:choose>
 									<c:when test="${sessionScope.member.userId==dto.userId}">

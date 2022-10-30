@@ -13,8 +13,7 @@ public class NoticeDTO {
 	
 	private String savefileName;
 	private String originalFilename;
-	private long fileSize;
-	
+	private String fileSize;
 	private String fileNo;
 	
 	private String[] saveFiles;
@@ -92,13 +91,13 @@ public class NoticeDTO {
 	public void setOriginalfileName(String originalFilename) {
 		this.originalFilename = originalFilename;
 	}
-	public long getFileSize() {
+
+	public String getFileSize() {
 		return fileSize;
 	}
-	public void setFileSize(long fileSize) {
+	public void setFileSize(String fileSize) {
 		this.fileSize = fileSize;
 	}
-	
 	public String getName() {
 		return name;
 	}
