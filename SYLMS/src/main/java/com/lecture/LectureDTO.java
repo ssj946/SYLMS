@@ -14,6 +14,7 @@ private String bbsNum;
 private String title;
 private String content;
 private String reg_date;
+private String start_date;
 private String end_date;
 private String hitCount;
 
@@ -23,6 +24,12 @@ private String savefilename;
 
 
 
+public String getStart_date() {
+	return start_date;
+}
+public void setStart_date(String start_date) {
+	this.start_date = start_date;
+}
 public String getEnd_date() {
 	return end_date;
 }

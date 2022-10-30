@@ -438,6 +438,7 @@ public class LectureDAO {
 		try {
 			sql="SELECT l.bbsNum, subjectNo, title, content, week, part, savefilename, "
 					+ " TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
+					+ " TO_CHAR(start_date,'YYYY-MM-DD') start_date, "
 					+ " TO_CHAR(end_date,'YYYY-MM-DD')end_date "
 					+ " FROM LECTURE_BBS l "
 					+ " LEFT OUTER JOIN LECTURE_BBS_FILE f on l.bbsnum=f.bbsnum "
@@ -457,6 +458,7 @@ public class LectureDAO {
 				dto.setPart(rs.getString("part"));
 				dto.setSavefilename(rs.getString("savefilename"));
 				dto.setReg_date(rs.getString("reg_date"));
+				dto.setStart_date(rs.getString("start_date"));
 				dto.setEnd_date(rs.getString("end_date"));
 				
 				list.add(dto);
@@ -492,11 +494,12 @@ public class LectureDAO {
 		try {
 			sql="SELECT l.bbsNum, subjectNo, title, content, week, part, savefilename, "
 					+ " TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
+					+ " TO_CHAR(start_date,'YYYY-MM-DD') start_date, "
 					+ " TO_CHAR(end_date,'YYYY-MM-DD')end_date "
 					+ " FROM LECTURE_BBS l "
 					+ " LEFT OUTER JOIN LECTURE_BBS_FILE f on l.bbsnum=f.bbsnum "
-					+ " WHERE subjectNo=? AND SYSDATE-reg_date < 7 "
-					+ " ORDER BY week,part ";
+					+ " WHERE subjectNo=? AND SYSDATE-start_date < 7 "
+					+ " ORDER BY week,part,reg_date ";
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, subjectNo);
 			
@@ -508,6 +511,8 @@ public class LectureDAO {
 				dto.setTitle(rs.getString("title"));
 				dto.setContent(rs.getString("content"));
 				dto.setReg_date(rs.getString("reg_date"));
+				dto.setStart_date(rs.getString("start_date"));
+				dto.setEnd_date(rs.getString("end_date"));
 				dto.setWeek(rs.getString("week"));
 				dto.setPart(rs.getString("part"));
 				
@@ -543,6 +548,7 @@ public class LectureDAO {
 		try {
 			sql="SELECT l.bbsNum, subjectNo, title, content, week, part, savefilename,"
 					+ " TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
+					+ " TO_CHAR(start_date,'YYYY-MM-DD') start_date, "
 					+ " TO_CHAR(end_date,'YYYY-MM-DD')end_date "
 					+ " FROM LECTURE_BBS l "
 					+ " LEFT OUTER JOIN LECTURE_BBS_FILE f on l.bbsnum=f.bbsnum "
@@ -561,6 +567,7 @@ public class LectureDAO {
 				dto.setPart(rs.getString("part"));
 				dto.setSavefilename(rs.getString("savefilename"));
 				dto.setReg_date(rs.getString("reg_date"));
+				dto.setStart_date(rs.getString("start_date"));
 				dto.setEnd_date(rs.getString("end_date"));
 			}
 			
@@ -590,15 +597,17 @@ public class LectureDAO {
 		PreparedStatement pstmt= null;
 		String sql;
 		try {
-			sql = "INSERT INTO LECTURE_BBS (bbsNum, subjectNo, title, content, reg_date, end_date, week, part) VALUES (LECTURE_BBS_seq.NEXTVAL, "
-					+ " ?, ? , ? , SYSDATE, SYSDATE+7, ?, ?)";
+			sql = "INSERT INTO LECTURE_BBS (bbsNum, subjectNo, title, content, reg_date, start_date, end_date, week, part, hitcount) VALUES (LECTURE_BBS_seq.NEXTVAL, "
+					+ " ?, ? , ? , SYSDATE, ?, ?, ?, ?, 0)";
 			
 			pstmt= conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getSubjectNo());
 			pstmt.setString(2, dto.getTitle());
 			pstmt.setString(3, dto.getContent());
-			pstmt.setString(4, dto.getWeek());
-			pstmt.setString(5, dto.getPart());
+			pstmt.setString(4, dto.getStart_date());
+			pstmt.setString(5, dto.getEnd_date());
+			pstmt.setString(6, dto.getWeek());
+			pstmt.setString(7, dto.getPart());
 			
 			pstmt.executeUpdate();
 			
@@ -620,18 +629,41 @@ public class LectureDAO {
 			PreparedStatement pstmt= null;
 			String sql;
 			try {
-				sql = "UPDATE LECTURE_BBS SET title = ?, content = ?, reg_date= ?, end_date = ?, week= ? , part = ? WHERE bbsNum=?";
+				sql = "UPDATE LECTURE_BBS SET title = ?, content = ?, reg_date= SYSDATE, start_date=TO_DATE(?,'yyyy-mm-dd'), end_date = TO_DATE(?,'yyyy-mm-dd'), week= ? , part = ? WHERE bbsNum=?";
 				
 				pstmt= conn.prepareStatement(sql);
-				pstmt.setString(1, dto.getSubjectNo());
-				pstmt.setString(2, dto.getTitle());
-				pstmt.setString(3, dto.getContent());
-				pstmt.setString(4, dto.getWeek());
-				pstmt.setString(5, dto.getPart());
+				pstmt.setString(1, dto.getTitle());
+				pstmt.setString(2, dto.getContent());
+				pstmt.setString(3, dto.getStart_date());
+				pstmt.setString(4, dto.getEnd_date());
+				pstmt.setString(5, dto.getWeek());
+				pstmt.setString(6, dto.getPart());
 				
+				pstmt.setString(7, dto.getSubjectNo());
 				pstmt.executeUpdate();
 				
 				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(pstmt!=null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+					}
+				}
+			}
+		}
+	//강의 삭제하기
+		public void deleteLecture(String bbsNum) throws SQLException{
+			PreparedStatement pstmt= null;
+			String sql;
+			try {
+				sql= "DELETE FROM LECTURE_BBS WHERE bbsNum=?";
+				
+				pstmt= conn.prepareStatement(sql);
+				pstmt.setString(1, bbsNum);
+				pstmt.executeUpdate();
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {

@@ -27,18 +27,10 @@ $(function(){
 		$("input").attr("readonly",false);
 		$("textarea").attr("readonly",false);
 	}
+	$("#week").val("${contentDTO.week}").prop("selected", true);
+	$("#type").val("${contentDTO.part}").prop("selected", true);
 	
 });
-
-function content_view(){
-	let query="subjectNo=${subjectNo}&bbsNum=${contentDTO.bbsNum}";
-	location.href="${pageContext.request.contextPath}/lecture/content_update.do?"+query;
-}
-
-function content_delete(){
-	let query="subjectNo=${subjectNo}&bbsNum=${contentDTO.bbsNum}";
-	location.href="${pageContext.request.contextPath}/lecture/content_delete.do?"+query;
-}
 
 function login() {
 	location.href="${pageContext.request.contextPath}/member/login.do";
@@ -84,15 +76,26 @@ $(function(){
 			$("#content").focus();
 			return false;
 		}
-		let week = $("#week").val().trim();
+		let week = $("#week").val();
 		if(!week){
 			$("#week").focus();
 			return false;
 		}
 		
-		let type= $("#type").val().trim();
+		let type= $("#type").val();
 		if(!type){
 			$("#type").focus();
+			return false;
+		}
+		
+		let sdate = $("#s_date").val().trim();
+		if(!sdate){
+			$("#s_date").focus();
+			return false;
+		}
+		let edate = $("#e_date").val().trim();
+		if(!edate){
+			$("#e_date").focus();
 			return false;
 		}
 		
@@ -101,9 +104,12 @@ $(function(){
 		content = encodeURIComponent(content);
 		week = encodeURIComponent(week);
 		type = encodeURIComponent(type);
+		sdate = encodeURIComponent(sdate);
+		edate = encodeURIComponent(edate);
 		
-		let url = "${pageContext.request.contextPath}/lecture/content_submit.do";
-		let query ="subjectNo="+subjectNo+"&title="+title+"&content="+content+"&week="+week+"&type="+type;
+		
+		
+		let query = "subjectNo="+subjectNo+"&title="+title+"&content="+content+"&week="+week+"&type="+type+"&sdate="+sdate+"&edate="+edate;
 		
 		const fn = function(data){
 			if(data.state==="true"){
@@ -113,12 +119,19 @@ $(function(){
 		}
 		
 		if("${mode}"==="write"){
+			let url = "${pageContext.request.contextPath}/lecture/content_submit.do";
 			ajaxFun(url, "post", query, "json", fn);
 		}
 		
-		if("${mode}"==="update"||"${mode}"==="view"){
-			alert("수정하고싶어요");
+		if("${mode}"==="update"){
+			let url = "${pageContext.request.contextPath}/lecture/content_update_ok.do";
+			ajaxFun(url, "post", query, "json", fn);
 		}
+		
+		if("${mode}"==="view"){
+			location.href="{pageContext.request.contextPath}/lecture/content_update.do?subjectNo=${subjectNo}&bbsNum=${contentDTO.bbsNum}";
+		}
+		
 	});
 });
 
@@ -164,22 +177,22 @@ $(function(){
 								<label for="week" class="col-2 col-form-label text-center fw-bold fs-4">강의 주차</label>
 								<div class="col-4">
 									<select class="form-select h-100 mb-2" id="week">
-										<option>1주차</option>
-										<option>2주차</option>
-										<option>3주차</option>
-										<option>4주차</option>
-										<option>5주차</option>
-										<option>6주차</option>
-										<option>7주차</option>
-										<option>8주차</option>
-										<option>9주차</option>
-										<option>10주차</option>
-										<option>11주차</option>
-										<option>12주차</option>
-										<option>13주차</option>
-										<option>14주차</option>
-										<option>15주차</option>
-										<option>16주차</option>
+										<option value="1">1주차</option>
+										<option value="2">2주차</option>
+										<option value="3">3주차</option>
+										<option value="4">4주차</option>
+										<option value="5">5주차</option>
+										<option value="6">6주차</option>
+										<option value="7">7주차</option>
+										<option value="8">8주차</option>
+										<option value="9">9주차</option>
+										<option value="10">10주차</option>
+										<option value="11">11주차</option>
+										<option value="12">12주차</option>
+										<option value="13">13주차</option>
+										<option value="14">14주차</option>
+										<option value="15">15주차</option>
+										<option value="16">16주차</option>
 									</select>
 								</div>
 								<label for="week" class="col-2 col-form-label text-center fw-bold fs-4">종류</label>
@@ -191,6 +204,17 @@ $(function(){
 								</div>
 							</div>
 							<hr>
+							<div class= "mb-3 row d-flex">
+								<label for="week" class="col-2 col-form-label text-center fw-bold fs-4">시작 일자</label>
+								<div class="col-4">
+									<input type="date" class="form-control h-100 mb-2" readonly="readonly" id="s_date" value="${contentDTO.start_date}">
+								</div>
+								<label for="week" class="col-2 col-form-label text-center fw-bold fs-4">종료 일자</label>
+								<div class="col-4 ">
+									<input type="date" class="form-control h-100 mb-2" readonly="readonly" id="e_date" value="${contentDTO.end_date}">
+								</div>
+							</div>
+							<hr>
 							<div class="mb-3 row">
 								<label for="title" class="col-2 col-form-label text-center fw-bold fs-4">강의 제목</label>
 								<div class="col-10 d-flex align-content-center">
@@ -198,6 +222,7 @@ $(function(){
 								</div>
 							</div>
 						  	<hr>
+						  	<br>
 							<video src="${pageContext.request.contextPath}/resources/videos/cat.mp4" class="w-100 rounded" controls></video>
 							</div>
 						</div>

@@ -64,7 +64,7 @@ function content_write(){
 					  <div class="card-body m-auto">
 					    <ul class="list-group list-group-horizontal text-center fw-bold">
 					    <li><ul>
-					    <li class="list-group-item"><a href="#"><i class="fas fa-microphone fa-3x"></i></a></li>
+					    <li class="list-group-item"><a href="${pageContext.request.contextPath}/notice/notice.do?subjectNo=${subjectNo}"><i class="fas fa-microphone fa-3x"></i></a></li>
 					    <li class="list-group-item">강의공지</li>
 					    </ul></li>
 					    <li><ul>
@@ -73,12 +73,12 @@ function content_write(){
 					    </ul></li>
 					    
 					    <li><ul>
-					    <li class="list-group-item"><a href="#"><i class="fas fa-pen fa-3x"></i></a></li>
+					    <li class="list-group-item"><a href="#thisweek_lec"><i class="fas fa-pen fa-3x"></i></a></li>
 					    <li class="list-group-item">이번주 강의</li>
 					    </ul></li>
 					    
 					    <li><ul>
-					    <li class="list-group-item"><a href="#"><i class="fas fa-calendar fa-3x"></i></a></li>
+					    <li class="list-group-item"><a href="#all_lecture"><i class="fas fa-calendar fa-3x"></i></a></li>
 					    <li class="list-group-item">주차별 학습활동</li>
 					    
 					    </ul></li>
@@ -92,7 +92,7 @@ function content_write(){
 					</div>
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2">
+					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2" id="thisweek_lec">
 					   <h5 class="d-inline"> <i class="fas fa-pen fa-lg bg-navy"></i>&nbsp;이번주 강의</h5>
 					  </div>
 					  <div class="card-body">
@@ -105,8 +105,8 @@ function content_write(){
 									<i class="bi bi-book fa-3x"></i>
 									</div>
 						    		<div class="col-11 ms-auto">
-						    			<h5 class="card-title fw-bold"><a href="${pageContext.request.contextPath}/lecture/content.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}">${dto.week}&nbsp;${dto.part} - ${dto.title}</a></h5>
-						    			<span class="text-muted">시작일: ${dto.reg_date} | 종료일: ${dto.end_date}</span>
+						    			<h5 class="card-title fw-bold"><a href="${pageContext.request.contextPath}/lecture/content.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}">${dto.week}주차 ${dto.part} - ${dto.title}</a></h5>
+						    			<span class="text-muted">시작일: ${dto.start_date} | 종료일: ${dto.end_date}</span>
 						    		</div>
 					    		</div>
 					    		</div>
@@ -122,7 +122,7 @@ function content_write(){
 					
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2">
+					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2" id="all_lecture">
 					    <h5 class="d-inline"><i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동</h5>
 					</div>
 					  <div class="card-body">
@@ -140,8 +140,8 @@ function content_write(){
 										<i class="bi bi-book fa-3x"></i>
 									</div>
 						    		<div class="col-10">
-						    			<h5 class="card-title fw-bold"><a href="${pageContext.request.contextPath}/lecture/content.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}">${dto.week}&nbsp;${dto.part} - ${dto.title}</a></h5>
-						    			<span class="text-muted">시작일: ${dto.reg_date} | 종료일: ${dto.end_date}</span>
+						    			<h5 class="card-title fw-bold"><a href="${pageContext.request.contextPath}/lecture/content.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}">${dto.week}주차 ${dto.part} - ${dto.title}</a></h5>
+						    			<span class="text-muted">시작일: ${dto.start_date} | 종료일: ${dto.end_date}</span>
 						    		</div>
 						    		<div class="col-1 ms-auto dropdown d-inline text-end pe-4">
 						    		<c:if test="${fn:length(sessionScope.member.userId) != 8}">
@@ -149,7 +149,7 @@ function content_write(){
 						    			<i class="fas fa-ellipsis-vertical text-muted fa-lg"></i></a>
 						    			<ul class="dropdown-menu" aria-labelledby="update_menu">
 					    					<li><a href="${pageContext.request.contextPath}/lecture/content_update.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}" class="dropdown-item">수정하기</a></li>
-						    				<li><a onclick="if(confirm(' ${dto.week}&nbsp;${dto.part} - ${dto.title} 을(를) 삭제하시겠습니까?')){location.href='${pageContext.request.contextPath}/lecture/content_delete.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}'}" class="dropdown-item">삭제하기</a></li>
+						    				<li><a onclick="if(confirm(' ${dto.week}주차 ${dto.part} - ${dto.title} 을(를) 삭제하시겠습니까?')){location.href='${pageContext.request.contextPath}/lecture/content_delete.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}'}" class="dropdown-item">삭제하기</a></li>
 						    			</ul>
 						    		</c:if>
 						    		</div>
