@@ -111,12 +111,7 @@
 													<th class="apply" width="200px;">조교신청</th>
 												</tr>
 											</thead>
-
 											<tbody>
-
-
-
-
 												<c:forEach var="dto" items="${list}" varStatus="status">
 													<tr>
 														<td>${dto.year}</td>
@@ -125,19 +120,13 @@
 														<td>${dto.subject}</td>
 														<td>${dto.professor}</td>
 														<td><button type="submit" class="btn btn-light"
-																onclick="location.href='${pageContext.request.contextPath}/mypage/assistant_ok.do?subjectNo=${dto.subjectNo}';">신청</button></td>
+																onclick=" if(confirm('조교신청을 하시겠습니까?')) location.href='${pageContext.request.contextPath}/mypage/assistant_ok.do?subjectNo=${dto.subjectNo}&mode=apply';">신청</button></td>
 													</tr>
 												</c:forEach>
 											</tbody>
 										</table>
-
-
 										<div class="page-navigation">${dataCount == 0 ? "신청할 과목이 없습니다." : paging}
 										</div>
-
-
-
-
 									</form>
 								</div>
 							</div>
@@ -195,12 +184,7 @@
 													<th class="apply" width="200px;">조교신청</th>
 												</tr>
 											</thead>
-
 											<tbody>
-
-
-
-
 												<c:forEach var="dto" items="${aplist}" varStatus="status">
 													<tr>
 														<td>${dto.year}</td>
@@ -211,19 +195,13 @@
 														<td>${dto.reg_date}</td>
 														<td>${dto.ENABLE == "0" ? "신청":""}</td>
 														<td><button type="submit" class="btn btn-light"
-																onclick="location.href='${pageContext.request.contextPath}/mypage/assistant_ok.do?applicationNum=${dto.applicationNum}';">승인</button></td>
+																onclick=" if(confirm('승인 하시겠습니까?'))  location.href='${pageContext.request.contextPath}/mypage/assistant_ok.do?applicationNum=${dto.applicationNum}&mode=approve';">승인</button></td>
 													</tr>
 												</c:forEach>
 											</tbody>
 										</table>
-
-
 										<div class="page-navigation">${dataCount == 0 ? "승인할 신청목록이 없습니다." : paging}
 										</div>
-
-
-
-
 									</form>
 								</div>
 							</div>
@@ -242,7 +220,7 @@
 												<th class="department" width="150px;">학과</th>
 												<th class="subname">과목명</th>
 												<th class="prof" width="80px;">교수</th>
-												<th class="apply" width="200px;">승인여부</th>
+												<th class="apply" width="200px;">상태</th>
 											</tr>
 										</thead>
 
@@ -254,7 +232,15 @@
 													<td>${dto.department}</td>
 													<td>${dto.subject}</td>
 													<td>${dto.professor}</td>
-													<td>${dto.ENABLE == "1" ? "승인":""}</td>
+													<c:if test="${dto.ENABLE == 1 }">
+														<td>승인</td>
+													</c:if>
+													<c:if test="${dto.ENABLE == 2 }">
+														<td>반려</td>
+													</c:if>
+													<c:if test="${dto.ENABLE == 0 }">
+														<td>신청</td>
+													</c:if>
 												</tr>
 											</c:forEach>
 										</tbody>
@@ -315,12 +301,7 @@
 													<th class="apply" width="200px;">조교신청</th>
 												</tr>
 											</thead>
-
 											<tbody>
-
-
-
-
 												<c:forEach var="dto" items="${aslist}" varStatus="status">
 													<tr>
 														<td>${dto.year}</td>
@@ -328,21 +309,18 @@
 														<td>${dto.department}</td>
 														<td>${dto.subject}</td>
 														<td>${dto.name}</td>
+														<c:if test="">
+
+														</c:if>
 														<td>${dto.ENABLE == "1" ? "승인":""}</td>
 														<td><button type="submit" class="btn btn-light"
-																onclick="location.href='${pageContext.request.contextPath}/mypage/assistant_ok.do?applicationNum=${dto.applicationNum}';">취소</button></td>
+																onclick="  if(confirm('조교자격을 취소하시겠습니까?')) location.href='${pageContext.request.contextPath}/mypage/assistant_ok.do?applicationNum=${dto.applicationNum}&mode=cancel';">취소</button></td>
 													</tr>
 												</c:forEach>
 											</tbody>
 										</table>
-
-
 										<div class="page-navigation">${dataCount == 0 ? "확인할 조교가 없습니다." : paging}
 										</div>
-
-
-
-
 									</form>
 								</div>
 							</div>
