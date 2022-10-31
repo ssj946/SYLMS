@@ -20,7 +20,7 @@ $(function(){
 });
 
 $(function(){
-	url = "${pageContext.request.contextPath}/messege/count.do";
+	url = "${pageContext.request.contextPath}/header/count.do";
 	$.post(url, null, function(data){
 		let count = data.count;
 		$(".alert-count").html(data.count);
@@ -77,11 +77,15 @@ $(function(){
         
          <li class="nav-item">
            <a href="#" class="position-relative nav-link alert-popover" data-toggle="popover" data-bs-placement="bottom"
-            data-bs-toggle="popover" title="전체 학사 알림" data-bs-content="${listAlert }">
+            data-bs-toggle="popover" title="전체 학사 알림" data-bs-content="">
             &nbsp;&nbsp;<i class="fas fa-bell text-muted fa-lg"></i>
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger alert-count">
   			</span> 	
-          </a>                           
+          </a>  
+          
+          <div id="popover-content" style="display: none;">
+          	${listAlert }
+          </div>                         
           </li> 
           
           
