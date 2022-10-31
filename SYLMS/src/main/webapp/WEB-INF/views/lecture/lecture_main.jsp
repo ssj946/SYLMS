@@ -55,7 +55,7 @@ function content_write(){
 			</div>
 			
 			<!-- 본문 -->
-			<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto">
+			<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto" style="min-height:100vh">
 				<div class="ms-1 me-1 pt-3 mt-3 mb-5">
 					<div class="card mb-3">
 					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2">
@@ -102,7 +102,12 @@ function content_write(){
 						  		<div class="card-body">
 						  		<div class="row">
 									<div class="col-1 text-center">
-									<i class="bi bi-book fa-3x"></i>
+										<c:if test="${dto.part == '동영상강의'}">
+										<i class="fas fa-video fa-3x"></i>
+										</c:if>
+										<c:if test="${dto.part == '강의자료'}">
+										<i class="fas fa-file fa-3x"></i>
+										</c:if>
 									</div>
 						    		<div class="col-11 ms-auto">
 						    			<h5 class="card-title fw-bold"><a href="${pageContext.request.contextPath}/lecture/content.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}">${dto.week}주차 ${dto.part} - ${dto.title}</a></h5>
@@ -114,7 +119,9 @@ function content_write(){
 						    </div>
 					    </c:forEach>
 					    <c:if test="${empty thisweekList}"> 
-					    <p class="fs-5 fw-bold text-center"> 강의가 없습니다.</p>
+					    <br>
+					    <h4 class="text-center"> 강의가 없습니다.</h4>
+					    <br>
 					    </c:if>
 					    </div>
 					</div>
@@ -137,7 +144,12 @@ function content_write(){
 						  		<div class="card-body">
 						  		<div class="row">
 									<div class="col-1 text-center">
-										<i class="bi bi-book fa-3x"></i>
+										<c:if test="${dto.part == '동영상강의'}">
+										<i class="fas fa-video fa-3x"></i>
+										</c:if>
+										<c:if test="${dto.part == '강의자료'}">
+										<i class="fas fa-file fa-3x"></i>
+										</c:if>
 									</div>
 						    		<div class="col-10 d-flex align-items-center">
 						    			<div class="row">

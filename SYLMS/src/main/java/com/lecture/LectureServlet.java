@@ -54,6 +54,8 @@ public class LectureServlet extends MyServlet {
 			contentUpdateSubmit(req, resp);
 		} else if (uri.indexOf("content_delete.do") != -1) {
 			contentDelete(req, resp);
+		} else if (uri.indexOf("attend.do") != -1) {
+			attendForm(req, resp);
 		}
 	}
 
@@ -419,7 +421,33 @@ public class LectureServlet extends MyServlet {
 		}
 		resp.sendRedirect(cp + "/lecture/classroom.do?subjectNo="+subjectNo);
 	}
+	
+	protected void attendForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		LectureDAO dao= new LectureDAO();
+		String subjectNo = req.getParameter("subjectNo");
+		
+		LectureDTO dto = new LectureDTO();
 
+		try {
+			dto= dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("credit", dto.getCredit());
+			req.setAttribute("syear", dto.getSyear());
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		
+		String path = "/WEB-INF/views/lecture/attend.jsp";
+		forward(req, resp, path);
+		
+	}
 }
 
 

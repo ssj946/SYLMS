@@ -33,7 +33,7 @@
 				<div class="collapse navbar-collapse" id="lec_attend" >
 				<ul>
 					<li class="nav-item">
-						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/attend.do">
+						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/attend.do?subjectNo=${subjectNo}">
 						 <i class="fas fa-hand  fa-lg mr-3"></i>&nbsp;출석조회
 						 </a>
 					</li>

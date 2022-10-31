@@ -2,19 +2,12 @@
 <%@ page trimDirectiveWhitespaces ="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<style type="text/css">
-ul{
-list-style: none;
-}
-</style>
 <!-- 왼쪽 사이드바 -->
-	<div class="card mt-3 pt-4 ps-2 pe-2">
+	<div class="card mt-3 p-4">
 		<img src="${pageContext.request.contextPath}/resources/images/syuniv_logo.png" class="card-img-top">
-		<div class="card-body text-center">	
-		</div>
 	</div>
 		
-	<ul class="nav navbar-nav flex-column mt-3">
+	<ul class="nav navbar-nav flex-column mt-3" >
 		<li class="nav-item">
 			<a href="${pageContext.request.contextPath}/" class="nav-link text-white p-3 mb-2 current"> <i class="fas fa-home text-white fa-lg mr-3"></i>&nbsp;대쉬 보드</a>
 		</li>
@@ -23,7 +16,7 @@ list-style: none;
 			 <i class="fas fa-address-card text-white fa-lg mr-3"></i>&nbsp;마이 페이지
 			</button>
 			<div class="collapse navbar-collapse" id="side_mypage" >
-			<ul>
+			<ul style="list-style: none;">
 				<li><a href="${pageContext.request.contextPath}/mypage/pwd.do" class="nav-link text-white p-3 mb-2 current">개인정보수정</a></li>
 				<li><a href="${pageContext.request.contextPath}/mypage/file.do" class="nav-link text-white p-3 mb-2 current">올린파일함</a></li>
 				<li><a href="#" class="nav-link text-white p-3 mb-2 current">수강과목</a></li>
