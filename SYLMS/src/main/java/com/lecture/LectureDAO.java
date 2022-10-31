@@ -255,7 +255,7 @@ public class LectureDAO {
 		ResultSet rs=null;
 		List<LectureDTO> list = new ArrayList<>();
 		try {
-			sql= "SELECT subjectNo, subjectName, credit, TO_CHAR(syear,'YYYY') syear, semester FROM subject s "
+			sql= "SELECT subjectNo, subjectName, credit, TO_CHAR(syear,'YYYY') syear, semester, name FROM subject s "
 					+ "JOIN account a on s.id= a.id "
 					+ "WHERE a.id= ? "
 					+ "AND TO_CHAR(syear, 'YYYY') = ? AND Semester = ? ";
@@ -274,6 +274,7 @@ public class LectureDAO {
 				dto.setCredit(Integer.parseInt(rs.getString("credit")));
 				dto.setSyear(Integer.parseInt(rs.getString("syear")));
 				dto.setSemester(Integer.parseInt(rs.getString("semester")));
+				dto.setProfessorname(rs.getString("name"));
 				
 				list.add(dto);
 			}
@@ -337,8 +338,9 @@ public class LectureDAO {
 		ResultSet rs=null;
 		List<LectureDTO> list = new ArrayList<>();
 		try {
-			sql= "SELECT subjectNo, subjectName, credit, TO_CHAR(syear,'YYYY') syear, semester FROM subject s "
-					+ "WHERE TO_CHAR(syear, 'YYYY') = ? AND Semester = ? ";
+			sql= "SELECT subjectNo, subjectName, credit, TO_CHAR(syear,'YYYY') syear, semester, name FROM subject s "
+					+ " JOIN account a ON a.id = s.id "
+					+ " WHERE TO_CHAR(syear, 'YYYY') = ? AND Semester = ? ";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1,syear);
@@ -353,7 +355,7 @@ public class LectureDAO {
 				dto.setCredit(Integer.parseInt(rs.getString("credit")));
 				dto.setSyear(Integer.parseInt(rs.getString("syear")));
 				dto.setSemester(Integer.parseInt(rs.getString("semester")));
-				
+				dto.setProfessorname(rs.getString("name"));
 				
 				list.add(dto);
 			}
@@ -629,7 +631,7 @@ public class LectureDAO {
 			PreparedStatement pstmt= null;
 			String sql;
 			try {
-				sql = "UPDATE LECTURE_BBS SET title = ?, content = ?, reg_date= SYSDATE, start_date=TO_DATE(?,'yyyy-mm-dd'), end_date = TO_DATE(?,'yyyy-mm-dd'), week= ? , part = ? WHERE bbsNum=?";
+				sql = "UPDATE LECTURE_BBS SET title = ?, content = ?, reg_date = SYSDATE, start_date = TO_DATE(?,'yyyy-mm-dd'), end_date = TO_DATE(?,'yyyy-mm-dd'), week= ? , part = ? WHERE bbsNum=?";
 				
 				pstmt= conn.prepareStatement(sql);
 				pstmt.setString(1, dto.getTitle());
@@ -639,7 +641,7 @@ public class LectureDAO {
 				pstmt.setString(5, dto.getWeek());
 				pstmt.setString(6, dto.getPart());
 				
-				pstmt.setString(7, dto.getSubjectNo());
+				pstmt.setString(7, dto.getBbsNum());
 				pstmt.executeUpdate();
 				
 				

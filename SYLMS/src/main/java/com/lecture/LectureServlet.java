@@ -377,7 +377,7 @@ public class LectureServlet extends MyServlet {
 			dto.setPart(req.getParameter("type"));
 			dto.setBbsNum(bbsNum);
 			
-			dao.insertLecture(dto);
+			dao.updateLecture(dto);
 			
 			state="true";
 		} catch (Exception e) {

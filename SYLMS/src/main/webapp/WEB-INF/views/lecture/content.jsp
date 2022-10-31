@@ -125,6 +125,7 @@ $(function(){
 		
 		if("${mode}"==="update"){
 			let url = "${pageContext.request.contextPath}/lecture/content_update_ok.do";
+			let query = "subjectNo="+subjectNo+"&title="+title+"&content="+content+"&week="+week+"&type="+type+"&sdate="+sdate+"&edate="+edate+"&bbsNum=${contentDTO.bbsNum}";
 			ajaxFun(url, "post", query, "json", fn);
 		}
 		

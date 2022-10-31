@@ -47,11 +47,13 @@ $(function(){
 				let subjectName = item.subjectName;
 				let subjectNo = item.subjectNo;
 				let syear = item.syear;
+				let professorName = item.professorname
 				
 				out += "<tr class='history_append'><td><a href='${pageContext.request.contextPath}/lecture/classroom.do?subjectNo="+subjectNo+"'>"+subjectName+"</a></td>";
 				out += "<td>"+credit+"</td>";
 				out += "<td>"+syear+"</td>";
-				out += "<td>"+semester+"</td></tr>";
+				out += "<td>"+semester+"</td>";
+				out += "<td>"+professorName+"</td></tr>";
 				
 			}
 			$(".history_append").remove();
@@ -132,7 +134,7 @@ $(function(){
 										<h2 class="accordion-header">
 											<button class="accordion-button fw-bold" type="button" id="lecture"
 												data-bs-toggle="collapse" data-bs-target="#lecture_history"
-												aria-expanded="true" aria-controls="lecture_history">
+												aria-expanded="false" aria-controls="lecture_history">
 												강의 History</button>
 										</h2>
 										<div id="lecture_history"
@@ -177,10 +179,11 @@ $(function(){
 												<c:if test="${not empty hlist}">
 												<table class="table table-hover history_list">
 												<tr class="bg-light">
-													<th class="w-50">과목명</th>
+													<th style="width:60%">과목명</th>
 													<th>학점</th>
 													<th>년도</th>
-													<th>학기</th>												
+													<th>학기</th>	
+													<th>담당교수</th>											
 												</tr>
 													
 												</table>

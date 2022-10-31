@@ -10,12 +10,17 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style2.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/layout.css" type="text/css">
-
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.2.0/css/all.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR&display=swap" rel="stylesheet">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+.container-fluid{
+font-family: 'Noto Sans KR', sans-serif;
+}
 </style>
+
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/util-jquery.js"></script>

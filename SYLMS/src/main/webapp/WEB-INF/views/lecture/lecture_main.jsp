@@ -139,9 +139,15 @@ function content_write(){
 									<div class="col-1 text-center">
 										<i class="bi bi-book fa-3x"></i>
 									</div>
-						    		<div class="col-10">
+						    		<div class="col-10 d-flex align-items-center">
+						    			<div class="row">
+						    			<div class="row">
 						    			<h5 class="card-title fw-bold"><a href="${pageContext.request.contextPath}/lecture/content.do?subjectNo=${subjectNo}&bbsNum=${dto.bbsNum}">${dto.week}주차 ${dto.part} - ${dto.title}</a></h5>
+						    			</div>
+						    			<div class="row">
 						    			<span class="text-muted">시작일: ${dto.start_date} | 종료일: ${dto.end_date}</span>
+						    			</div>
+						    			</div>
 						    		</div>
 						    		<div class="col-1 ms-auto dropdown d-inline text-end pe-4">
 						    		<c:if test="${fn:length(sessionScope.member.userId) != 8}">
