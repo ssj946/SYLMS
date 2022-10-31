@@ -32,7 +32,10 @@ public class MypageDTO {
 	private String applicationdepartment; //신청과목
 	private String applicationYear; //신청연도 
 	private String applicationNum; //신청번호
-	private String ENABLE; //승인여부
+	private int ENABLE; //승인여부
+	private String  reg_date;
+
+	
 	
 	//과목
 	private String year; //과목연도
@@ -184,12 +187,19 @@ public class MypageDTO {
 	public void setProfessor(String professor) {
 		this.professor = professor;
 	}
-	public String getENABLE() {
+	public int getENABLE() {
 		return ENABLE;
 	}
-	public void setENABLE(String eNABLE) {
+	public void setENABLE(int eNABLE) {
 		ENABLE = eNABLE;
 	}
+	public String getReg_date() {
+		return reg_date;
+	}
+	public void setReg_date(String reg_date) {
+		this.reg_date = reg_date;
+	}
+	
 	
 	
 

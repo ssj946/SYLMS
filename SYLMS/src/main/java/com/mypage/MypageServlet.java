@@ -293,16 +293,33 @@ public class MypageServlet extends MyUploadServlet {
 			offset = 0;
 		
 		List<MypageDTO> list = null;
-		if(keyword.length() != 0) {
+	
+		
+		if(keyword.length() != 0 ) {
 			list = dao.listSubmit(offset, size, condition, keyword);
 		}else {
 			list = dao.listSubject(offset, size);
 		}
 		
 		List<MypageDTO> alist = null;
-		//이부분 맞는지 모르겠다 일단 나오긴하는대
+	
+		
 		String id = info.getUserId();
+		
 		alist = dao.readAssitance(id);
+		
+		
+		
+		List<MypageDTO> aplist = null;
+		//신청자 
+		 int ENABLE = 0;
+		aplist = dao.approvelist(offset, size, ENABLE);
+		
+		
+		//조교
+		 ENABLE = 1;
+		List<MypageDTO>  aslist = dao.approvelist(offset, size, ENABLE);
+		
 		
 		String query = "";
 		if (keyword.length() != 0) {
@@ -316,8 +333,10 @@ public class MypageServlet extends MyUploadServlet {
 		
 		String paging = util.paging(current_page, total_page, listUrl);
 		
-		req.setAttribute("list", list);
-		req.setAttribute("alist", alist);
+		req.setAttribute("aslist", aslist); // 조교목록 
+		req.setAttribute("aplist", aplist); //신청자목록
+		req.setAttribute("list", list); // 신청화면
+		req.setAttribute("alist", alist);//승인내역, 신청내역
 		req.setAttribute("page", current_page);
 		req.setAttribute("total_page", total_page);
 		req.setAttribute("dataCount", dataCount);
@@ -354,6 +373,7 @@ public class MypageServlet extends MyUploadServlet {
 		
 		
 		String subjectNo =  req.getParameter("subjectNo");
+		String applicationNum = req.getParameter("applicationNum");
 		String id = info.getUserId();
 		
 		
@@ -361,6 +381,8 @@ public class MypageServlet extends MyUploadServlet {
 			    
 		
 			dao.insertassiantance(subjectNo, id);
+			dao.approve(applicationNum);
+			dao.cancel(applicationNum);
 		  
 			
 		} catch (Exception e) {

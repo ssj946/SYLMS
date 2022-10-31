@@ -202,16 +202,19 @@ public class MypageDAO {
 					sb.append(" ON s.departmentNum = d.departmentNum ");
 					sb.append(" LEFT outer join account a ");
 					sb.append(" ON s.id = a.id ");
-					sb.append(" WHERE  sYear >= SYSDATE ");
+					sb.append(" LEFT outer join APPLICATIONASSISTANT ap ");
+					sb.append(" ON s.subjectNo = ap.subjectNo  ");
+					sb.append(" WHERE  sYear >= SYSDATE  AND  enable = null ");
 					sb.append(" ORDER BY d.departmentName DESC ");
 					sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 					
 					
 					pstmt = conn.prepareStatement(sb.toString());
 					
-					
+				
 					pstmt.setInt(1, offset);
 					pstmt.setInt(2, size);
+					
 					
 					rs = pstmt.executeQuery();
 					
@@ -267,13 +270,15 @@ public class MypageDAO {
 				try {
 					
 					sb.append(" SELECT distinct ");
-					sb.append(" TO_CHAR(s.sYear, 'YYYY') sYear, s.semester, s.subjectno, d.departmentName, s.subjectName, a.name ");
+					sb.append(" TO_CHAR(s.sYear, 'YYYY') sYear , s.subjectno, s.semester, d.departmentName, s.subjectName, a.name ");
 					sb.append(" FROM subject s");
 					sb.append(" LEFT outer join department  d");
 					sb.append(" ON s.departmentNum = d.departmentNum ");
 					sb.append(" LEFT outer join account a ");
 					sb.append(" ON s.id = a.id ");
-					sb.append(" WHERE  sYear >= SYSDATE ");
+					sb.append(" LEFT outer join APPLICATIONASSISTANT ap ");
+					sb.append(" ON s.subjectNo = ap.subjectNo  ");
+					sb.append(" WHERE  sYear >= SYSDATE  AND  enable = null ");
 					
 					
 					if (condition.equals("subjectName")) {
@@ -372,7 +377,7 @@ public class MypageDAO {
 	
 			
 			
-			// 조교 신청 및 승인 내용 출력
+			// 조교 신청 및 승인 내용 출력 - 학생 신청내역, 승인내역 
 			List<MypageDTO>  readAssitance(String studentCode) {
 				List<MypageDTO> alist = new ArrayList<>();
 			       PreparedStatement pstmt = null;
@@ -409,7 +414,7 @@ public class MypageDAO {
 						dto.setDepartment(rs.getString("departmentName"));
 						dto.setSubject(rs.getString("subjectName"));
 						dto.setProfessor(rs.getString("name"));
-						dto.setENABLE(rs.getString("ENABLE"));
+						dto.setENABLE(rs.getInt("ENABLE"));
 						
 						
 						alist.add(dto);
@@ -437,10 +442,138 @@ public class MypageDAO {
 			       return alist;
 				}
 		
-			//조교승인내역
+			//조교 내역 - 관리자 -페이징 처리 필요 승인, 출력 신청자 0 , 승인 1, 반려 2 
+			List<MypageDTO> approvelist (int offset, int size, int ENABLE){
+				List<MypageDTO> aplist = new ArrayList<>();
+			       PreparedStatement pstmt = null;
+			       ResultSet rs = null;
+			       String  sql;
+			       
+			       try {
+			    	   
+			    	sql = " select distinct  TO_CHAR(s.sYear, 'YYYY') sYear , s.semester, departmentName, subjectName, TO_CHAR(REG_DATE, 'YYYY-MM-DD') REG_DATE,  name, enable, APPLICATIONNUM "
+			    			+ " FROM APPLICATIONASSISTANT ap "
+			    			+ " join account a "
+			    			+ " on ap.studentCode = a.id "
+			    			+ " join subject s "
+			    			+ " on s.subjectNo = ap.subjectNo "
+			    			+ " join department d "
+			    			+ " on s.departmentNum = d.departmentNum "
+			    			+ " where  enable=  ? "
+			    			+ " ORDER BY departmentName DESC  "
+			    			+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
+			    	
+			
+					
+					pstmt = conn.prepareStatement(sql);
+					
+					pstmt.setInt(1, ENABLE);
+					pstmt.setInt(2, offset);
+					pstmt.setInt(3, size);
+					
+					rs = pstmt.executeQuery();
+					
+					while(rs.next()) {
+						MypageDTO dto = new MypageDTO();
+						
+						dto.setYear(rs.getString("sYear"));
+						dto.setSemester(rs.getString("semester"));
+						dto.setDepartment(rs.getString("departmentName"));
+						dto.setSubject(rs.getString("subjectName"));
+						dto.setReg_date(rs.getString("reg_date"));
+						dto.setName(rs.getString("name"));
+						dto.setENABLE(rs.getInt("ENABLE"));
+						
+						
+						aplist.add(dto);
+						
+					}
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}finally {
+					if(rs != null) {
+						try {
+							rs.close();
+						} catch (SQLException e) {
+						}
+					}
+						
+					if(pstmt != null) {
+						try {
+							pstmt.close();
+						} catch (SQLException e) {
+						}
+					}
+				}
+			       
+			       return aplist;
+			}
 			
 			
+		// 조교 승인해주기 
 			
-			//조교 신청 내역
-	
+			
+					
+				public void approve ( String applicationNum) throws SQLException {
+				PreparedStatement pstmt = null;
+				String sql;
+				
+				
+				try {
+					sql = " UPDATE APPLICATIONASSISTANT SET ENABLE = 1 WHERE APPLICATIONNUM = ?   ";
+					pstmt = conn.prepareStatement(sql);
+					
+					pstmt.setString(1, applicationNum);
+			     
+
+					pstmt.executeUpdate();
+				
+					
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw e;
+				} finally {
+					if(pstmt != null) {
+						try {
+							pstmt.close();
+						} catch (SQLException e) {
+						}
+					}
+				}
+
+			}
+			
+		//조교 취소하기  	
+			
+				public void cancel ( String applicationNum) throws SQLException {
+					PreparedStatement pstmt = null;
+					String sql;
+					
+					
+					try {
+						sql = " UPDATE APPLICATIONASSISTANT SET ENABLE = 2 WHERE APPLICATIONNUM = ?   ";
+						pstmt = conn.prepareStatement(sql);
+						
+						pstmt.setString(1, applicationNum);
+				     
+
+						pstmt.executeUpdate();
+					
+						
+					} catch (SQLException e) {
+						e.printStackTrace();
+						throw e;
+					} finally {
+						if(pstmt != null) {
+							try {
+								pstmt.close();
+							} catch (SQLException e) {
+							}
+						}
+					}
+
+				}
+					
+			
 }
