@@ -105,7 +105,7 @@ list-style: none;
 					</thead>		
 						<tbody>	
 						<c:forEach var="dto" items="${list}" varStatus="status">
-							<tr>
+							<tr onclick="javacript:location.href='${articleUrl}&readNo=${dto.subjectNo}';">
 								<td>${dataCount - (page-1) * size - status.index}</td>
 								<td class="left">
 									${dto.subjectName}
