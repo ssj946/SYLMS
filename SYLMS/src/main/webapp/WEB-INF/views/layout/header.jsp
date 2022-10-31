@@ -4,6 +4,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<script type="text/javascript">
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+    	html:true
+    });   
+
+});
+</script>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
     <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#topbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,15 +55,22 @@
           <a class="nav-link" href="#" id="mypage" title="마이페이지">
           &nbsp;<i class="fas fa-user text-muted fa-lg">&nbsp;</i></a>
         </li>
-        <li class="nav-item">
-          <a class="position-relative nav-link " title="알림" href="#">
+        
+        
+        
+        
+         <li class="nav-item">
+           <a href="#" class="position-relative nav-link alert-popover" data-toggle="popover" data-bs-placement="bottom"
+            data-bs-toggle="popover" title="전체 학사 알림" data-bs-content="${listAlert }">
             &nbsp;&nbsp;<i class="fas fa-bell text-muted fa-lg"></i>
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">99+
-            	<span class="visually-hidden">unread messages</span>
-  			</span>
-  			
-  			
-          </a> &nbsp;&nbsp;
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">!
+  			</span> 	
+          </a>                           
+          </li> 
+          
+          
+          
+          
         <li class="nav-item">
           <a class="nav-link position-relative" href="${pageContext.request.contextPath}/messege/send.do" title="메시지">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-comments text-muted fa-lg"></i>
           <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">${dataCount}
