@@ -150,7 +150,7 @@ public class MypageDAO {
 			sql = " SELECT NVL (COUNT(*), 0) FROM subject WHERE  sYear >= SYSDATE ";
 
 			if (condition.equals("subjectName")) {
-				sql += " AND INSTR(s.subjectName, ?) >= 1 ";
+				sql += " AND INSTR(subjectName, ?) >= 1 ";
 
 			}
 
@@ -270,7 +270,7 @@ public class MypageDAO {
 			sb.append(" WHERE  sYear >= SYSDATE  AND  enable is null ");
 
 			if (condition.equals("subjectName")) {
-				sb.append(" AND INSTR(s.subjectName, ?) >= 1 ");
+				sb.append(" AND INSTR(subjectName, ?) >= 1 ");
 			}
 			sb.append(" ORDER BY d.departmentName DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");

@@ -39,6 +39,48 @@
 			}
 		});
 	}
+	
+$(function () {
+	$(".applybtn").click(function () {
+	let syear = $("#syear option:selected").val();
+	let semester = $("#semester option:selected").val();
+	let url = "${pageContext.request.contextPath}/mypage/assistant.do"
+	let query= "syear="+syear+"&semester="+semester;
+	
+	const fn = function(data){
+		let out;   
+		
+		for(let item of data.list){
+			let year = item.year;
+			let semester = item.semester;
+			let department = item.department;
+			let subject = item.subject;
+			let professor = item.professor;
+			let apply = item.apply;
+			
+			out += "<tr>";
+			out += "<td>"+year+"</td>";
+			out += "<td>"+semester+"</td>";
+			out += "<td>"+department+"</td>";
+			out += "<td>"+subject+"</td>";
+			out += "<td>"+professor+"</td>";
+			out += "<td>"+apply+"</td></tr>";
+			
+		}
+		
+		
+	}
+	ajaxFun(url, "GET", query, "JSON", fn);
+		
+	});
+	
+});	
+	
+	btn-light
+	
+	
+	
+	
 </script>
 
 </head>
@@ -81,7 +123,8 @@
 											</select>
 										</div>
 										<div class="s-1" style="display: inline-block; width: 150px;">
-											<select class="form-select" id="subjectName">
+											<select class="form-select" id="subjectName"
+												name="condition">
 												<option value="subjectName"
 													${condition=="subjectName"?"selected='selected'":""}>강좌명</option>
 											</select>
@@ -93,7 +136,7 @@
 										</div>
 										<div class="col-auto p-1"
 											style="display: inline-block; width: 150px;">
-											<button type="button" class="btn btn-light"
+											<button type="button" class="btn btn-light applybtn"
 												onclick="searchList()">
 												<i class="bi bi-search"></i>
 											</button>
@@ -127,6 +170,7 @@
 										</table>
 										<div class="page-navigation">${dataCount == 0 ? "신청할 과목이 없습니다." : paging}
 										</div>
+
 									</form>
 								</div>
 							</div>

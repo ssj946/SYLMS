@@ -231,7 +231,7 @@ public class MypageServlet extends MyUploadServlet {
 
 			// 한페이지 표시할 데이터 개수
 			String pageSize = req.getParameter("size");
-			int size = pageSize == null ? 2 : Integer.parseInt(pageSize);
+			int size = pageSize == null ? 5 : Integer.parseInt(pageSize);
 
 			// 전체 데이터 개수
 			int dataCount, total_page;
