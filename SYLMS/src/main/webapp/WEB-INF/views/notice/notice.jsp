@@ -82,87 +82,98 @@ function searchList() {
 			
 			<!-- 본문 -->
 			<div class="col-lg-10 gap-3 ms-auto">
-				<div class="ms-5 me-5 pt-3 mt-4 mb-5">
-				
-			<div>
-				<h3><i class="fas fa-microphone fa-1x"></i> 공지사항 </h3>
-			</div>
-			
-			<div>
-		        <div class="row board-list-header">
-		            <div class="col-auto me-auto">${dataCount}개(${page}/${total_page} 페이지)</div>
-		            <div class="col-auto">&nbsp;</div>
-		        </div>				
-		<div>
-				<table  class= "card table text-center">
+			<div class="ms-5 me-5 pt-3 mt-4 mb-5">
+				<div class="card">
+					<div class= "card-header fw-bold">
+						<h3><i class="fas fa-microphone fa-1x"></i> 공지사항 </h3>
+						
+				    </div>
+			        <div class="card-body">
+			        <p class="text-end">${dataCount}개(${page}/${total_page} 페이지)</p>
+			        <br>
+			        	<div class="row card-body">
+						<table class= "table text-center">
+							<tr>
+								<th>번호</th>
+								<th>제목</th>
+								<th>작성자</th>
+								<th>작성일</th>
+								<th>조회수</th>
+							</tr>
 					
-						<tr class="row">
-							<th class="col-1">번호</th>
-							<th class="col-7">제목</th>
-							<th class=" col-1" >작성자</th>
-							<th class=" col-2">작성일</th>
-							<th class="col-1">조회수</th>
-						</tr>
-					
-					<c:forEach var="dto" items="${list}" varStatus="status">
-						<tr>
-							<td class="w-10" >${dataCount - (page-1) * size - status.index}</td>
-							<td class="left w-70">
-								<a href="${pageContext.request.contextPath}/notice/noticeArticle.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}" class="text-reset ps-4">${dto.title}</a>
+						<c:forEach var="dto" items="${list}" varStatus="status">
+							<tr>
+								<td>${dataCount - (page-1) * size - status.index}</td>
+								<td class="text-start">
+									<a href="${pageContext.request.contextPath}/notice/noticeArticle.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}" class="text-reset ps-4">${dto.title}</a>
 								<c:if test="${dto.gap<2}"><img src="${pageContext.request.contextPath}/resources/images/new.png" class="new"></c:if>
-							</td>
-							<td class="w-5"  >${dto.name}</td>
-							<td class="w-10" >${dto.reg_date}</td>
-							<td class="w-5" >${dto.hitCount}</td>
-						</tr>
-					</c:forEach>
-					
-				</table>
-		</div>		
-				<div class="page-navigation">
-					${dataCount == 0 ? "등록된 게시물이 없습니다." : paging}
-				</div>
-
-				<div class="row board-list-footer">
-					<div class="col">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/notice.do?subjectNo=${subjectNo}';">새로고침</button>
-					</div>
-					<div class="col-6 text-center">
-						<form class="row" name="searchForm" action="${pageContext.request.contextPath}/notice/notice.do" method="post">
-							<div class="col-auto p-1">
-								<select name="condition" class="form-select">
-									<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>
-									<option value="reg_date" ${condition=="reg_date"?"selected='selected'":""}>등록일</option>
-									<option value="title" ${condition=="title"?"selected='selected'":""}>제목</option>
-									<option value="content" ${condition=="content"?"selected='selected'":""}>내용</option>
-								</select>
-							</div>
-							<div class="col-auto p-1">
-								<input type="text" name="keyword" value="${keyword}" class="form-control">
-							</div>
-							<div class="col-auto p-1">
-								<input type="hidden" name="subjectNo" value="${subjectNo}">
+								</td>
+								<td>${dto.name}</td>
+								<td>${dto.reg_date}</td>
+								<td>${dto.hitCount}</td>
+							</tr>
+						</c:forEach>
+						</table>
+						</div>
+						<div class="row">
+						<div class="page-navigation m-auto">
+							${dataCount == 0 ? "등록된 게시물이 없습니다." : paging}
+						</div>
+						</div>
+						<div class="board-list-footer">
+							<div class="row text-center">
+							<div class="col-2"></div>
+							<div class="col-8">
+							<form name="searchForm" action="${pageContext.request.contextPath}/notice/notice.do" method="post">
+							<div class="row">
+								<div class="col-2 p-1">
+									<select name="condition" class="form-select">
+										<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>
+										<option value="reg_date" ${condition=="reg_date"?"selected='selected'":""}>등록일</option>
+										<option value="title" ${condition=="title"?"selected='selected'":""}>제목</option>
+										<option value="content" ${condition=="content"?"selected='selected'":""}>내용</option>
+									</select>
+								</div>
+								
+								<div class="col-9 p-1">
+									<input type="text" name="keyword" value="${keyword}" class="form-control">
+								</div>
+								<div class="col-auto p-1">
+									<input type="hidden" name="subjectNo" value="${subjectNo}">
+								</div>
+								<div class="col-auto p-1">
 								<button type="button" class="btn btn-light" onclick="searchList()"> <i class="bi bi-search"></i> </button>
+								</div>
+							
 							</div>
-						</form>
-					</div>
-					<div class="col text-end">
-							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/noticeWrite.do?subjectNo=${subjectNo }';">글올리기</button>
-					</div>
-				</div>
-
-			</div>
-					
-					
-				</div>
+							</form>
+							</div>
+							
+							<div class="col-2"></div>
+							</div>
+							<br>
+							<br>
+							<div class="row">
+							<div class="col-2">
+								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/notice.do?subjectNo=${subjectNo}';">새로고침</button>
+							</div>
+							<div class="col-8 text-center">
+							
+							</div>
+								<div class=" col-2 text-end">
+										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/noticeWrite.do?subjectNo=${subjectNo}">글올리기</button>
+								</div>
+						</div>
+						</div>
+						</div>
+						</div>
+						</div>
 			<!-- 본문 끝 -->
-			</div>
-			</div>
-
-				
+					</div>
 				</div>
 			</div>
-		</div>
+			</div>
+			</div>
 	
 	</section>
 </main>
