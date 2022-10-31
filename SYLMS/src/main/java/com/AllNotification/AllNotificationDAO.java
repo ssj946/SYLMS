@@ -3,6 +3,7 @@ package com.AllNotification;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +21,12 @@ public class AllNotificationDAO {
 		
 		try {
 			sql = " SELECT noticeCode, content, reg_date "
-					+ " FROM notice n "
-					+ " JOIN account a ON n.id = a.id "
+					+ " FROM notice "
 					+ " WHERE id = 'admin' AND TO_CHAR(reg_date,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD') "
 					+ " ORDER BY noticeCode DESC ";
 			
 			pstmt = conn.prepareStatement(sql);
+			
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
@@ -58,5 +59,43 @@ public class AllNotificationDAO {
 		}
 		
 		return list;
+	}
+	
+	//오늘날짜의 알림이 있으면 알림 표시
+	public int alertCount() {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+
+		try {
+			sql = "SELECT COUNT(*) FROM notice "
+					+ "WHERE TO_CHAR(reg_date,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')";
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+		return result;
 	}
 }

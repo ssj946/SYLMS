@@ -9,8 +9,24 @@ $(document).ready(function(){
     $('[data-toggle="popover"]').popover({
     	html:true
     });   
-
 });
+
+$(function(){
+	url = "${pageContext.request.contextPath}/messege/count.do";
+	$.post(url, null, function(data){
+		let count = data.count;
+		$(".message-count").html(data.count);
+	}, "json");
+});
+
+$(function(){
+	url = "${pageContext.request.contextPath}/messege/count.do";
+	$.post(url, null, function(data){
+		let count = data.count;
+		$(".alert-count").html(data.count);
+	}, "json");
+});
+
 </script>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -63,7 +79,7 @@ $(document).ready(function(){
            <a href="#" class="position-relative nav-link alert-popover" data-toggle="popover" data-bs-placement="bottom"
             data-bs-toggle="popover" title="전체 학사 알림" data-bs-content="${listAlert }">
             &nbsp;&nbsp;<i class="fas fa-bell text-muted fa-lg"></i>
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">!
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger alert-count">
   			</span> 	
           </a>                           
           </li> 
@@ -73,9 +89,7 @@ $(document).ready(function(){
           
         <li class="nav-item">
           <a class="nav-link position-relative" href="${pageContext.request.contextPath}/messege/send.do" title="메시지">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-comments text-muted fa-lg"></i>
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">${dataCount}
-            	<span class="visually-hidden">unread messages</span>
-  			</span>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger message-count"></span>
           </a>&nbsp;&nbsp;       
         </li>
         

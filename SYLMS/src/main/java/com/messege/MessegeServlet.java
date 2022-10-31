@@ -1,6 +1,7 @@
 package com.messege;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
@@ -10,6 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.json.JSONObject;
 
 import com.member.MemberDTO;
 import com.member.SessionInfo;
@@ -55,17 +58,25 @@ public class MessegeServlet extends MyServlet {
 		
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		int messegeCount = 0;			
 		
 		try {
-			int messegeCount;			
 			String userId = info.getUserId();
 			messegeCount = dao.messegeCount(userId);
-			req.setAttribute("messegeCount", messegeCount);
+			req.setAttribute("dataCount", messegeCount);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		forward(req, resp, "/WEB-INF/views/layout/header.jsp");
+		
+		resp.setContentType("text/html;charset=utf-8");
+		
+		JSONObject job = new JSONObject();
+		job.put("count", messegeCount);
+		
+		PrintWriter out = resp.getWriter();
+		out.print(job.toString());
 	}
+	
 	private void sendForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 메세지 작성폼
 		MessegeDAO dao = new MessegeDAO();

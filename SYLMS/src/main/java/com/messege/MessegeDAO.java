@@ -370,8 +370,9 @@ public class MessegeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT COUNT(*) FROM messege"
-					+ " WHERE readDate = NULL";
+			sql = "SELECT COUNT(*) FROM messege m "
+					+ " JOIN account a ON m.sendId = a.id "
+					+ " WHERE readDate IS NULL AND receiveId = ?";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, userId);
