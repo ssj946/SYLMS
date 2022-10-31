@@ -95,7 +95,7 @@ function searchList() {
 						<table class= "table text-center">
 							<tr>
 								<th>번호</th>
-								<th>제목</th>
+								<th class="w-75">제목</th>
 								<th>작성자</th>
 								<th>작성일</th>
 								<th>조회수</th>
@@ -120,7 +120,6 @@ function searchList() {
 							${dataCount == 0 ? "등록된 게시물이 없습니다." : paging}
 						</div>
 						</div>
-						<div class="board-list-footer">
 							<div class="row text-center">
 							<div class="col-2"></div>
 							<div class="col-8">
@@ -171,7 +170,6 @@ function searchList() {
 			<!-- 본문 끝 -->
 					</div>
 				</div>
-			</div>
 			</div>
 			</div>
 	
