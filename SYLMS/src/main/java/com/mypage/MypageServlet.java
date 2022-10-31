@@ -207,6 +207,9 @@ public class MypageServlet extends MyUploadServlet {
 		}
 
 		try {
+			
+			String syear = req.getParameter("syear");
+			String semester= req.getParameter("semester");
 
 			// 페이지 번호
 			String page = req.getParameter("page");
