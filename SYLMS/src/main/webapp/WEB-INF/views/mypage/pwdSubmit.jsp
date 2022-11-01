@@ -10,13 +10,9 @@
 <title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
 <style type="text/css">
-.body-container {
-	max-width: 800px;
-}
+ max-width: 800px;
 </style>
-
 <script type="text/javascript">
-
 function sendOk() {
 	const f = document.pwdForm;
 
@@ -29,10 +25,8 @@ function sendOk() {
 	f.action = "${pageContext.request.contextPath}/mypage/pwd_ok.do";
 	f.submit();
 }
+
 </script>
-
-
-
 </head>
 
 <body>
@@ -47,12 +41,13 @@ function sendOk() {
 
 				<div class="row">&nbsp;</div>
 				<div class="row">
-					<div style="height: 100vh" class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1">
+					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1" style="height: 100vh">
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 					</div>
+
 					<!-- 본문 -->
-					<div class="col-xl-10 col-lg-9 col-md-8 ps-5">
+							<div class="col-xl-10 col-lg-9 col-md-8 ps-5">
 
 
 						<div  class="row justify-content-center h-50" >
@@ -89,12 +84,13 @@ function sendOk() {
 						</div>
 
 					</div>
+					<!-- 본문 끝 -->
+					
 				</div>
-				<!-- 본문 끝 -->
 			</div>
-
 		</section>
 	</main>
-
+	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
+

@@ -11,69 +11,78 @@
 <title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
 <style type="text/css">
-</style>
-<script type="text/javascript">
-function ajaxFun(url, method, query, dataType, fn) {
-	$.ajax({
-		type:method,
-		url:url,
-		data:query,
-		dataType:dataType,
-		success:function(data){
-			fn(data);
-		},
-		beforeSend:function(jqXHR) {
-			// jqXHR.setRequestHeader("AJAX", true);
-		},
-		error:function(jqXHR) {
-			console.log(jqXHR.responseText);
-		}
-	});
+.body-container {
+	max-width: 800px;
 }
+</style>
 
-$(function(){
-	
-	$(".reg_history_btn").click(function(){
-		let syear = $("#syear option:selected").val();
-		let semester = $("#semester option:selected").val();
-		let url="${pageContext.request.contextPath}/lecture/history.do";
-		let query= "syear="+syear+"&semester="+semester;
-		
-		const fn = function(data){
-			
-			let out;
-			for(let item of data.list){
-				let credit = item.credit;
-				let semester = item.semester;
-				let subjectName = item.subjectName;
-				let subjectNo = item.subjectNo;
-				let syear = item.syear;
-				let professorName = item.professorname
-				
-				out += "<tr class='history_append'><td><a href='${pageContext.request.contextPath}/lecture/classroom.do?subjectNo="+subjectNo+"'>"+subjectName+"</a></td>";
-				out += "<td>"+credit+"</td>";
-				out += "<td>"+syear+"</td>";
-				out += "<td>"+semester+"</td>";
-				out += "<td>"+professorName+"</td></tr>";
-				
+<script type="text/javascript">
+	function searchList() {
+		const f = document.searchForm
+		f.submit();
+	}
+
+	function ajaxFun(url, method, query, dataType, fn) {
+		$.ajax({
+			type : method,
+			url : url,
+			data : query,
+			dataType : dataType,
+			success : function(data) {
+				fn(data);
+			},
+			beforeSend : function(jqXHR) {
+				// jqXHR.setRequestHeader("AJAX", true);
+			},
+			error : function(jqXHR) {
+				console.log(jqXHR.responseText);
 			}
-			$(".history_append").remove();
-			$(".history_list").append(out);
+		});
+	}
+	
+$(function () {
+	$(".applybtn").click(function () {
+	let syear = $("#syear option:selected").val();
+	let semester = $("#semester option:selected").val();
+	let url = "assistant.jsp"
+	let query= $("form[name=searchForm]").serialize();
+	
+	const fn = function(data){
+		let out;   
+		
+		for(let item of data.list){
+			let year = item.year;
+			let semester = item.semester;
+			let department = item.department;
+			let subject = item.subject;
+			let professor = item.professor;
+			let apply = item.apply;
+			
+			out += "<tr>";
+			out += "<td>"+year+"</td>";
+			out += "<td>"+semester+"</td>";
+			out += "<td>"+department+"</td>";
+			out += "<td>"+subject+"</td>";
+			out += "<td>"+professor+"</td>";
+			out += "<td>"+apply+"</td></tr>";
+			
 		}
-		ajaxFun(url, "GET", query, "JSON", fn);
+		
+		$(".ho-list").append(out);
+		
+	}
+	ajaxFun(url, "POST", query, "JSON", fn);
+		
 	});
-
-});
+	
+});	
 
 </script>
 </head>
-
 <body>
-
 	<header>
 		<jsp:include page="/WEB-INF/views/layout/header.jsp" />
 	</header>
-
 	<main>
 		<section>
 			<div class="container-fluid">
@@ -92,40 +101,31 @@ $(function(){
 									<form class="row" name="searchForm"
 										action="${pageContext.request.contextPath}/mypage/assistant.do"
 										method="post">
-
 										<div class="s-1" style="display: inline-block; width: 150px;">
-											<select class="form-select" id="syear">
-												<option value="1">2023년</option>
+											<select class="form-select" name="year" id="syear">
+												<option value="2023">2023년</option>
 											</select>
 										</div>
 
 										<div class="s-1" style="display: inline-block; width: 150px;">
-											<select class="form-select" id="semester">
+											<select class="form-select" name="semester" id="semester">
 												<option value="1">1학기</option>
 												<option value="2">2학기</option>
-											</select>
-										</div>
-										<div class="s-1" style="display: inline-block; width: 150px;">
-											<select class="form-select" id="subjectName"
-												name="condition">
-												<option value="subjectName"
-													${condition=="subjectName"?"selected='selected'":""}>강좌명</option>
 											</select>
 										</div>
 										<div class="col-auto p-1"
 											style="display: inline-block; width: 150px;">
 											<input type="text" name="keyword" value="${keyword}"
-												class="form-control">
+												class="form-control" placeholder="과목명">
 										</div>
 										<div class="col-auto p-1"
 											style="display: inline-block; width: 150px;">
-											<button type="button" class="btn btn-light applybtn"
-												onclick="searchList()">
-												<i class="bi bi-search"></i>
-											</button>
+											<button type="submit" class="btn btn-light applybtn">
+											<i class="bi bi-search"></i></button>
+
 										</div>
 
-										<table class="table table-hover board-list"
+										<table class="table table-hover board-list ho-list"
 											style="margin-top: 50px;">
 											<thead class="table-light">
 												<tr style="text-align: center;">
@@ -162,81 +162,36 @@ $(function(){
 							<div class="card pt-2 pb-2 ps-2 pe-2" style="margin: 50px 0px;">
 								<h5 class="card-header">조교신청내역</h5>
 								<div class="card-body">
-									<form class="row" name="searchForm"
-										action="${pageContext.request.contextPath}/mypage/assistant.do"
-										method="post">
+									<div class="s-1" style="display: inline-block; width: 150px;">
+										<select class="form-select" id="syear">
+											<option value="1">2023년</option>
+										</select>
+									</div>
 
-										<div class="s-1" style="display: inline-block; width: 150px;">
-											<select class="form-select" id="syear">
-												<option value="1">2023년</option>
-											</select>
-										</div>
-
-										<div class="s-1" style="display: inline-block; width: 150px;">
-											<select class="form-select" id="semester">
-												<option value="1">1학기</option>
-												<option value="2">2학기</option>
-											</select>
-										</div>
-										<div class="s-1" style="display: inline-block; width: 150px;">
-											<select class="form-select" id="subjectName">
-												<option value="subjectName"
-													${condition=="subjectName"?"selected='selected'":""}>강좌명</option>
-											</select>
-										</div>
-										<div class="col-auto p-1"
-											style="display: inline-block; width: 150px;">
-											<input type="text" name="keyword" value="${keyword}"
-												class="form-control">
-										</div>
-										<div class="col-auto p-1"
-											style="display: inline-block; width: 150px;">
-											<button type="button" class="btn btn-light"
-												onclick="searchList()">
-												<i class="bi bi-search"></i>
-											</button>
-										</div>
-
-										<table class="table table-hover board-list"
-											style="margin-top: 50px;">
-											<thead class="table-light">
-												<tr style="text-align: center;">
-													<th class="year" width="60px;">연도</th>
-													<th class="semester" width="60px;">학기</th>
-													<th class="department" width="150px;">학과</th>
-													<th class="subname">과목명</th>
-													<th class="name" width="80px;">이름</th>
-													<th class="reg_date" width="80px;">신청일</th>
-													<th class="station" width="80px;">상태</th>
-													<th class="apply" width="200px;">조교신청</th>
-												</tr>
-											</thead>
-											<tbody>
-												<c:forEach var="dto" items="${aplist}" varStatus="status">
-													<tr>
-														<td>${dto.year}</td>
-														<td>${dto.semester}</td>
-														<td>${dto.department}</td>
-														<td>${dto.subject}</td>
-														<td>${dto.name}</td>
-														<td>${dto.reg_date}</td>
-														<td>${dto.ENABLE == "0" ? "신청":""}</td>
-														<td><button type="submit" class="btn btn-light"
-																onclick=" if(confirm('승인 하시겠습니까?'))  location.href='${pageContext.request.contextPath}/mypage/assistant_ok.do?applicationNum=${dto.applicationNum}&mode=approve';">승인</button></td>
-													</tr>
-												</c:forEach>
-											</tbody>
-										</table>
-										<div class="page-navigation">${dataCount == 0 ? "승인할 신청목록이 없습니다." : paging}
-										</div>
-									</form>
-								</div>
-							</div>
-						</c:if>
-						<c:if test="${fn:length(sessionScope.member.userId) == 8 }">
-							<div class="card pt-2 pb-2 ps-2 pe-2" style="margin: 50px 0px;">
-								<h5 class="card-header">신청내역 · 승인내역</h5>
-								<div class="card-body">
+									<div class="s-1" style="display: inline-block; width: 150px;">
+										<select class="form-select" id="semester">
+											<option value="1">1학기</option>
+											<option value="2">2학기</option>
+										</select>
+									</div>
+									<div class="s-1" style="display: inline-block; width: 150px;">
+										<select class="form-select" id="subjectName">
+											<option value="subjectName"
+												${condition=="subjectName"?"selected='selected'":""}>강좌명</option>
+										</select>
+									</div>
+									<div class="col-auto p-1"
+										style="display: inline-block; width: 150px;">
+										<input type="text" name="keyword" value="${keyword}"
+											class="form-control">
+									</div>
+									<div class="col-auto p-1"
+										style="display: inline-block; width: 150px;">
+										<button type="button" class="btn btn-light"
+											onclick="searchList()">
+											<i class="bi bi-search"></i>
+										</button>
+									</div>
 
 									<table class="table table-hover board-list"
 										style="margin-top: 50px;">
@@ -246,33 +201,76 @@ $(function(){
 												<th class="semester" width="60px;">학기</th>
 												<th class="department" width="150px;">학과</th>
 												<th class="subname">과목명</th>
-												<th class="prof" width="80px;">교수</th>
-												<th class="apply" width="200px;">상태</th>
+												<th class="name" width="80px;">이름</th>
+												<th class="reg_date" width="80px;">신청일</th>
+												<th class="station" width="80px;">상태</th>
+												<th class="apply" width="200px;">조교신청</th>
 											</tr>
 										</thead>
-
 										<tbody>
-											<c:forEach var="dto" items="${alist}" varStatus="status">
+											<c:forEach var="dto" items="${aplist}" varStatus="status">
 												<tr>
 													<td>${dto.year}</td>
 													<td>${dto.semester}</td>
 													<td>${dto.department}</td>
 													<td>${dto.subject}</td>
-													<td>${dto.professor}</td>
-													<c:if test="${dto.ENABLE == 1 }">
-														<td>승인</td>
-													</c:if>
-													<c:if test="${dto.ENABLE == 2 }">
-														<td>반려</td>
-													</c:if>
-													<c:if test="${dto.ENABLE == 0 }">
-														<td>신청</td>
-													</c:if>
+													<td>${dto.name}</td>
+													<td>${dto.reg_date}</td>
+													<td>${dto.ENABLE == "0" ? "신청":""}</td>
+													<td><button type="submit" class="btn btn-light"
+															onclick=" if(confirm('승인 하시겠습니까?'))  location.href='${pageContext.request.contextPath}/mypage/assistant_ok.do?applicationNum=${dto.applicationNum}&mode=approve';">승인</button></td>
 												</tr>
 											</c:forEach>
 										</tbody>
 									</table>
+									<div class="page-navigation">${dataCount == 0 ? "승인할 신청목록이 없습니다." : paging}
+									</div>
+								</div>
+							</div>
+						</c:if>
+						<c:if test="${fn:length(sessionScope.member.userId) == 8 }">
+							<div class="card pt-2 pb-2 ps-2 pe-2" style="margin: 50px 0px;">
+								<h5 class="card-header">신청내역 · 승인내역</h5>
+								<div class="card-body">
+									<form class="row" name="searchForm"
+										action="${pageContext.request.contextPath}/mypage/assistant.do"
+										method="post">
 
+										<table class="table table-hover board-list"
+											style="margin-top: 50px;">
+											<thead class="table-light">
+												<tr style="text-align: center;">
+													<th class="year" width="60px;">연도</th>
+													<th class="semester" width="60px;">학기</th>
+													<th class="department" width="150px;">학과</th>
+													<th class="subname">과목명</th>
+													<th class="prof" width="80px;">교수</th>
+													<th class="apply" width="200px;">상태</th>
+												</tr>
+											</thead>
+
+											<tbody>
+												<c:forEach var="dto" items="${alist}" varStatus="status">
+													<tr>
+														<td>${dto.year}</td>
+														<td>${dto.semester}</td>
+														<td>${dto.department}</td>
+														<td>${dto.subject}</td>
+														<td>${dto.professor}</td>
+														<c:if test="${dto.ENABLE == 1 }">
+															<td>승인</td>
+														</c:if>
+														<c:if test="${dto.ENABLE == 2 }">
+															<td>반려</td>
+														</c:if>
+														<c:if test="${dto.ENABLE == 0 }">
+															<td>신청</td>
+														</c:if>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</form>
 								</div>
 							</div>
 						</c:if>
@@ -352,8 +350,6 @@ $(function(){
 								</div>
 							</div>
 						</c:if>
-
-
 					</div>
 					<!-- 본문 끝 -->
 				</div>
@@ -363,4 +359,3 @@ $(function(){
 	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
-

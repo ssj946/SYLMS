@@ -103,8 +103,54 @@ public class MypageDAO {
 	}
 
 	
+	// 데이터 
+		public int dataCount(int tyear, int tsemester ) {
+			int result = 0;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql;
+
+			try {  
+				sql = " SELECT NVL (COUNT(*), 0) FROM subject s LEFT JOIN APPLICATIONASSISTANT ap "
+						+ " ON s.subjectNo = ap.subjectNo  WHERE  to_char(sYear,'YYYY') >= ? AND semester = ? AND enable is NULL ";
+
+				pstmt = conn.prepareStatement(sql);
+
+				pstmt.setInt(1, tyear);
+				pstmt.setInt(2, tsemester);
+				
+
+				rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+					result = rs.getInt(1);
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				if (rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException e) {
+					}
+				}
+
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (SQLException e) {
+					}
+				}
+			}
+
+			return result;
+		}
+
+	
+	
 	// 데이터 검색 기본 
-	public int dataCount(String condition, String keyword, String syear, String semester) {
+	public int dataCount(int tyear, int tsemester,  String keyword ) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -114,7 +160,7 @@ public class MypageDAO {
 			sql = " SELECT NVL (COUNT(*), 0) FROM subject s LEFT JOIN APPLICATIONASSISTANT ap "
 					+ " ON s.subjectNo = ap.subjectNo  WHERE  to_char(sYear,'YYYY') >= ? AND semester = ? AND enable is NULL ";
 
-			if (condition.equals("subjectName") && keyword != null ) {
+			if ( keyword != null ) {
 				sql += " AND INSTR(subjectName, ?) >= 1 ";
 
 			} 
@@ -122,8 +168,8 @@ public class MypageDAO {
 
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, syear);
-			pstmt.setString(2, semester);
+			pstmt.setInt(1, tyear);
+			pstmt.setInt(2, tsemester);
 			pstmt.setString(3, keyword);
 
 			rs = pstmt.executeQuery();
@@ -153,9 +199,76 @@ public class MypageDAO {
 		return result;
 	}
 
+	// 기본 리스트  
+		List<MypageDTO> listSubject(int offset, int size,  int tyear, int tsemester) {
+			List<MypageDTO> list = new ArrayList<>();
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			StringBuilder sb = new StringBuilder();
+
+			try {
+
+				sb.append(" SELECT distinct ");
+				sb.append(" TO_CHAR(s.sYear, 'YYYY') sYear , s.subjectno, s.semester, d.departmentName, s.subjectName, a.name ");
+				sb.append(" FROM subject s");
+				sb.append(" LEFT outer join department  d");
+				sb.append(" ON s.departmentNum = d.departmentNum ");
+				sb.append(" LEFT outer join account a ");
+				sb.append(" ON s.id = a.id ");
+				sb.append(" LEFT outer join APPLICATIONASSISTANT ap ");
+				sb.append(" ON s.subjectNo = ap.subjectNo  ");
+				sb.append(" where to_char(sYear,'YYYY') >= ? AND semester = ?  AND  enable is null ");
+				sb.append(" ORDER BY d.departmentName DESC ");
+				sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
+
+				pstmt = conn.prepareStatement(sb.toString());
+
+				pstmt.setInt(1, tyear);
+				pstmt.setInt(2, tsemester);
+			
+				pstmt.setInt(3, offset);
+				pstmt.setInt(4, size);
+
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					MypageDTO dto = new MypageDTO();
+
+					dto.setYear(rs.getString("sYear"));
+					dto.setSubjectNo(rs.getString("subjectno"));
+					dto.setSemester(rs.getString("semester"));
+					dto.setDepartment(rs.getString("departmentName"));
+					dto.setSubject(rs.getString("subjectName"));
+					dto.setProfessor(rs.getString("name"));
+			
+
+					list.add(dto);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException e) {
+					}
+				}
+
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (SQLException e) {
+					}
+				}
+			}
+
+			return list;
+		}
+	
 
 	// 검색에서 리스트 검색 2개 페이징 처리 
-	List<MypageDTO> listSubmit(int offset, int size, String condition, String keyword, String syear, String semester) {
+	List<MypageDTO> listSubmit(int offset, int size, String keyword, int tyear, int tsemester) {
 		List<MypageDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -174,7 +287,7 @@ public class MypageDAO {
 			sb.append(" ON s.subjectNo = ap.subjectNo  ");
 			sb.append(" where to_char(sYear,'YYYY') >= ? AND semester = ?  AND  enable is null ");
 
-			if (condition.equals("subjectName") && keyword != null ) {
+			if ( keyword != null ) {
 				sb.append(" AND INSTR(subjectName, ?) >= 1 ");
 			}
 			sb.append(" ORDER BY d.departmentName DESC ");
@@ -182,8 +295,8 @@ public class MypageDAO {
 
 			pstmt = conn.prepareStatement(sb.toString());
 
-			pstmt.setString(1, syear);
-			pstmt.setString(2, semester);
+			pstmt.setInt(1, tyear);
+			pstmt.setInt(2, tsemester);
 			pstmt.setString(3, keyword);
 			pstmt.setInt(4, offset);
 			pstmt.setInt(5, size);
@@ -194,11 +307,12 @@ public class MypageDAO {
 				MypageDTO dto = new MypageDTO();
 
 				dto.setYear(rs.getString("sYear"));
+				dto.setSubjectNo(rs.getString("subjectno"));
 				dto.setSemester(rs.getString("semester"));
 				dto.setDepartment(rs.getString("departmentName"));
 				dto.setSubject(rs.getString("subjectName"));
 				dto.setProfessor(rs.getString("name"));
-				dto.setSubjectNo(rs.getString("subjectno"));
+		
 
 				list.add(dto);
 			}

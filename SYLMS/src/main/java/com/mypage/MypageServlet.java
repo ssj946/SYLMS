@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -192,6 +193,12 @@ public class MypageServlet extends MyUploadServlet {
 
 	protected void assistantForm(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		
+		
+		req.setCharacterEncoding("utf-8");
+		
+		
+		
 		MypageDAO dao = new MypageDAO();
 
 		MyUtil util = new MyUtilBootstrap();
@@ -207,13 +214,6 @@ public class MypageServlet extends MyUploadServlet {
 		}
 
 		try {
-			
-			String syear = req.getParameter("syear");
-			String semester= req.getParameter("semester");
-            
-			System.out.println(syear);
-			System.out.println(semester);
-
 			// 페이지 번호
 			String page = req.getParameter("page");
 			int current_page = 1;
@@ -222,13 +222,25 @@ public class MypageServlet extends MyUploadServlet {
 			}
 
 			// 검색
-			String condition = req.getParameter("condition");
+			String year = req.getParameter("year");
+			if(year==null) {
+				Calendar cal = Calendar.getInstance();
+				int y = cal.get(Calendar.YEAR)+1;
+				year = Integer.toString(y);
+			}
+			String semester= req.getParameter("semester");
+			if(semester==null) {
+				semester = "1";
+			}
+			//int형으로 변환
+			int tyear = Integer.parseInt(year);
+			int tsemester = Integer.parseInt(semester);
+			
 			String keyword = req.getParameter("keyword");
-
-			if (condition == null) {
-				condition = "subjectName";
+			if (keyword == null) {
 				keyword = "";
 			}
+
 
 			// GET방식이라 디코딩
 			if (req.getMethod().equalsIgnoreCase("GET")) {
@@ -236,18 +248,19 @@ public class MypageServlet extends MyUploadServlet {
 			}
 
 			// 한페이지 표시할 데이터 개수
-			String pageSize = req.getParameter("size");
-			int size = pageSize == null ? 5 : Integer.parseInt(pageSize);
+			int size = 10;
 
 			// 전체 데이터 개수
-			int dataCount = 0;
+			int dataCount;
 			int total_page;
 
-
-			dataCount = dao.dataCount(condition, keyword, syear, semester);
-				
-		
-
+			if(keyword.length() != 0) {
+				dataCount = dao.dataCount(tyear, tsemester, keyword);
+			}else {
+				dataCount = dao.dataCount(tyear, tsemester);
+			}
+			
+			
 			// 전체 페이지 수
 			total_page = util.pageCount(dataCount, size);
 
@@ -262,18 +275,15 @@ public class MypageServlet extends MyUploadServlet {
 
 			List<MypageDTO> list = null;
 
+			if(keyword.length() != 0) {
+				list = dao.listSubmit(offset, size, keyword, tyear, tsemester);
+			}else {
+				list = dao.listSubject(offset, size, tyear, tsemester);
+			}
 			
-			list = dao.listSubmit(offset, size, condition, keyword, syear, semester);
-				
 			
-				
-			
-
-			System.out.println(syear);
-			System.out.println(semester);
 			
 			List<MypageDTO> alist = null;
-
 			String id = info.getUserId();
 
 			alist = dao.readAssitance(id);
@@ -290,7 +300,7 @@ public class MypageServlet extends MyUploadServlet {
 
 			String query = "";
 			if (keyword.length() != 0) {
-				query = "condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "utf-8");
+				query =  "keyword=" + URLEncoder.encode(keyword, "utf-8");
 			}
 
 			String listUrl = cp + "/mypage/assistant.do";
@@ -309,7 +319,8 @@ public class MypageServlet extends MyUploadServlet {
 			req.setAttribute("dataCount", dataCount);
 			req.setAttribute("size", size);
 			req.setAttribute("paging", paging);
-			req.setAttribute("condition", condition);
+			req.setAttribute("tyear", tyear);
+			req.setAttribute("tsemester", tsemester);
 			req.setAttribute("keyword", keyword);
 
 		} catch (Exception e) {

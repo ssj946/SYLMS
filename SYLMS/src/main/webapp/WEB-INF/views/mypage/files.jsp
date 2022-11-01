@@ -49,6 +49,6 @@
 
 		</section>
 	</main>
-
+	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
