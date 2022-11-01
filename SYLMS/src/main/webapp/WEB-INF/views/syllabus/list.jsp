@@ -66,7 +66,6 @@ list-style: none;
 							<label>학년도 학기</label>
 							<select name="semester" class="form-control">
 								<option value="0" selected> -- 전체 -- </option>
-								<option value="1">2022년 2학기</option>
 				         
 				         
 							</select>
@@ -75,8 +74,7 @@ list-style: none;
 							<label>수업선택</label>
 							<select class="form-control">
 								<option> -- 전체 -- </option>
-								<option> 동의학</option>
-								<option> 정의학</option>
+							
 							</select>
 						</div>
 					</form>
