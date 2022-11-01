@@ -43,17 +43,24 @@ public class AllNotificationServlet extends MyServlet {
 
 	private void notice(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		AllNotificationDAO dao = new AllNotificationDAO();
-		List<AllNotificationDTO> list = null;
-		// 알림내용출력
+		List<AllNotificationDTO> alertList = null;
+		// 알림내용출력	
+		
 
 		try {
-			list = dao.listAlert();
-			req.setAttribute("listAlert", list);
+			alertList = dao.listAlert();
+			req.setAttribute("listAlert", alertList);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		forward(req, resp, "/WEB-INF/views/layout/header.jsp");
+		resp.setContentType("text/html;charset=utf-8");
+
+		JSONObject job = new JSONObject();
+		job.put("alert", alertList);
+
+		PrintWriter out = resp.getWriter();
+		out.print(job.toString());
 	}
 
 	private void countForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

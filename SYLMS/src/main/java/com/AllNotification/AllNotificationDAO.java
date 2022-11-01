@@ -12,7 +12,7 @@ import com.util.DBConn;
 public class AllNotificationDAO {
 	private Connection conn = DBConn.getConnection();
 	
-	//관리자가 보낸 알람 가져오기
+	//관리자가 보낸 공지리스트 가져오기
 	public List<AllNotificationDTO> listAlert() {
 		List<AllNotificationDTO> list = new ArrayList<AllNotificationDTO>();
 		PreparedStatement pstmt = null;
@@ -59,7 +59,7 @@ public class AllNotificationDAO {
 		}
 		
 		return list;
-	}
+	}	
 	
 	//오늘날짜의 알림이 있으면 알림 표시
 	public int alertCount() {

@@ -71,4 +71,33 @@ public class MainDAO {
 		}
 		
 		//할일 목록 가져오기 (기간은 현재주 일주일치, 불러올것은 과제 및 강의 자료)
+		public List<MainDTO> assignmentList(String userId) {
+			List<MainDTO> list = new ArrayList<MainDTO>();
+			PreparedStatement pstmt= null;
+			String sql;
+			ResultSet rs=null;
+			
+			try {
+				sql = " SELECT ";
+			}  catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(rs!=null) {
+					try {
+						rs.close();
+					} catch (Exception e2) {
+					}
+				}
+				
+				if(pstmt!=null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+					}
+				}
+			}
+			
+			return list;
+		}
+		
 }
