@@ -40,7 +40,7 @@
 					
 					<li class="nav-item">
 						<a class="nav-link  p-3 mb-2 current" href="#">
-						 <i class="fas fa-list-check  fa-lg mr-3"></i>&nbsp;출석입력
+						 <i class="fas fa-list-check  fa-lg mr-3"></i>&nbsp;출석관리
 						 </a>
 					</li>		
 				</ul>

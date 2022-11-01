@@ -142,56 +142,14 @@ $(function(){
 							<hr>
 							</div>
 							<div class="card-body p-4 text-center">
-							<c:if test="${fn:length(sessionScope.member.userId) !=8 }">
-								<div class="row">
-										<div class="col-3">&nbsp;</div>
-										<div class="col-6">
-										<div class="card">
-											<div class="card-header bg-navy bg-gradient text-white">
-												<h5>출석코드 생성</h5>
-											</div>
-											<div class="card-body">
-											<br>
-												<input class="form-control" placeholder="출석코드를 입력하세요." id="attendCode_gen" readonly="readonly">
-											<br>
-												<button class="btn btn-outline-primary">생성하기</button>
-											<br>
-											</div>
-										</div>
-										</div>
-										<div class="col-3">&nbsp;</div>
-								</div>
-								<br>
-								<br>
-							</c:if>
-								<div class="row">
-									<div class="col-3">&nbsp;</div>
-									<div class="col-6">
-									<div class="card">
-										<div class="card-header bg-navy bg-gradient text-white">
-											<h5>출석하기</h5>
-										</div>
-										<div class="card-body">
-										<br>
-											<input class="form-control" placeholder="출석코드를 입력하세요." id="attendCode">
-										<br>
-											<button class="btn btn-outline-primary">출석하기</button>
-										<br>
-										</div>
-									</div>
-									</div>
-									<div class="col-3">&nbsp;</div>
-								</div>
 								<br>
 								<br>
 								<div class="row">
 									<div class="col-2">&nbsp;</div>
 									<div class="col-8">
-									
-									<button class="btn"><i class="fas fa-check fa-3x text-success p-4"></i></button>
-									<button class="btn"><i class="fas fa-x fa-3x text-danger  p-4"></i></button>
-									<button class="btn"><i class="fas fa-person-running fa-3x text-warning  p-4"></i></button>
-
+										<button class="btn"><i class="fas fa-check fa-3x text-success p-4"></i></button>
+										<button class="btn"><i class="fas fa-x fa-3x text-danger  p-4"></i></button>
+										<button class="btn"><i class="fas fa-person-running fa-3x text-warning  p-4"></i></button>
 									</div>
 									<div class="col-2">&nbsp;</div>
 								</div>

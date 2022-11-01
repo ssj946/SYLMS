@@ -21,9 +21,16 @@ private String hitCount;
 private String week;
 private String part;
 private String savefilename;
+private String alarmEnable;
 
 
 
+public String getAlarmEnable() {
+	return alarmEnable;
+}
+public void setAlarmEnable(String alarmEnable) {
+	this.alarmEnable = alarmEnable;
+}
 public String getStart_date() {
 	return start_date;
 }

@@ -12,6 +12,75 @@ import com.util.DBConn;
 public class LectureDAO {
 	private Connection conn = DBConn.getConnection();
 	
+	//과목의 수강자 목록 불러오기
+	public List<LectureDTO> subjectStudentList(String subjectNo)throws SQLException{
+		List<LectureDTO> slist = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql="";
+		
+		try {
+			sql ="SELECT subjectNo, studentCode FROM REGISTERSUBJECT WHERE subjectNo = ?";
+			
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, subjectNo);
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				LectureDTO dto = new LectureDTO();
+				dto.setSubjectNo(rs.getString("subjectNo"));
+				dto.setStudentcode(rs.getString("studentCode"));
+				slist.add(dto);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			
+		}
+		
+		
+		return slist;
+	}
+	
+	//과목 게시글 작성시 알람
+	public void alarm(List<LectureDTO> slist , String link) throws SQLException{
+		PreparedStatement pstmt = null;
+		String sql="";
+		try {
+			sql ="INSERT INTO ALARM(subjectNo, studentCode, enabled, link) VALUES (?, ?, 0, ?)";
+			conn.setAutoCommit(false);
+			
+			pstmt=conn.prepareStatement(sql);
+			for(LectureDTO dto: slist) {
+			pstmt.setString(1, dto.getSubjectNo());
+			pstmt.setString(2, dto.getStudentcode());
+			pstmt.setString(3, link);
+			pstmt.addBatch();
+			}
+			
+			pstmt.executeBatch();
+			
+			pstmt.clearBatch();
+			conn.commit();
+			
+			
+		} catch (Exception e) {
+			conn.rollback();
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt!=null) {
+					pstmt.close();
+				}
+			} catch (Exception e2) {
+			}
+		}
+		
+	}
+	
+	
 	//현재 학기 수강목록 불러오기 - 학생
 	public List<LectureDTO> registerSubject(String studentcode) throws SQLException{
 		PreparedStatement pstmt= null;
