@@ -11,75 +11,61 @@
 <title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
 <style type="text/css">
-.body-container {
-	max-width: 800px;
-}
 </style>
-
 <script type="text/javascript">
-	function searchList() {
-		const f = document.searchForm
-		f.submit();
-	}
-
-	function ajaxFun(url, method, query, dataType, fn) {
-		$.ajax({
-			type : method,
-			url : url,
-			data : query,
-			dataType : dataType,
-			success : function(data) {
-				fn(data);
-			},
-			beforeSend : function(jqXHR) {
-				// jqXHR.setRequestHeader("AJAX", true);
-			},
-			error : function(jqXHR) {
-				console.log(jqXHR.responseText);
-			}
-		});
-	}
-	
-$(function () {
-	$(".applybtn").click(function () {
-	let syear = $("#syear option:selected").val();
-	let semester = $("#semester option:selected").val();
-	let url = "${pageContext.request.contextPath}/mypage/assistant.do"
-	let query= "syear="+syear+"&semester="+semester;
-	
-	const fn = function(data){
-		let out;   
-		
-		for(let item of data.list){
-			let year = item.year;
-			let semester = item.semester;
-			let department = item.department;
-			let subject = item.subject;
-			let professor = item.professor;
-			let apply = item.apply;
-			
-			out += "<tr>";
-			out += "<td>"+year+"</td>";
-			out += "<td>"+semester+"</td>";
-			out += "<td>"+department+"</td>";
-			out += "<td>"+subject+"</td>";
-			out += "<td>"+professor+"</td>";
-			out += "<td>"+apply+"</td></tr>";
-			
+function ajaxFun(url, method, query, dataType, fn) {
+	$.ajax({
+		type:method,
+		url:url,
+		data:query,
+		dataType:dataType,
+		success:function(data){
+			fn(data);
+		},
+		beforeSend:function(jqXHR) {
+			// jqXHR.setRequestHeader("AJAX", true);
+		},
+		error:function(jqXHR) {
+			console.log(jqXHR.responseText);
 		}
-		
-		
-	}
-	ajaxFun(url, "GET", query, "JSON", fn);
-		
 	});
-	
-});	
-	
-	
-	
-</script>
+}
 
+$(function(){
+	
+	$(".reg_history_btn").click(function(){
+		let syear = $("#syear option:selected").val();
+		let semester = $("#semester option:selected").val();
+		let url="${pageContext.request.contextPath}/lecture/history.do";
+		let query= "syear="+syear+"&semester="+semester;
+		
+		const fn = function(data){
+			
+			let out;
+			for(let item of data.list){
+				let credit = item.credit;
+				let semester = item.semester;
+				let subjectName = item.subjectName;
+				let subjectNo = item.subjectNo;
+				let syear = item.syear;
+				let professorName = item.professorname
+				
+				out += "<tr class='history_append'><td><a href='${pageContext.request.contextPath}/lecture/classroom.do?subjectNo="+subjectNo+"'>"+subjectName+"</a></td>";
+				out += "<td>"+credit+"</td>";
+				out += "<td>"+syear+"</td>";
+				out += "<td>"+semester+"</td>";
+				out += "<td>"+professorName+"</td></tr>";
+				
+			}
+			$(".history_append").remove();
+			$(".history_list").append(out);
+		}
+		ajaxFun(url, "GET", query, "JSON", fn);
+	});
+
+});
+
+</script>
 </head>
 
 <body>
@@ -374,5 +360,7 @@ $(function () {
 			</div>
 		</section>
 	</main>
+	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
+
