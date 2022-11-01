@@ -424,9 +424,13 @@ public class MypageDAO {
 
 		return alist;
 	}
- //학번, 이름, 과목명 
-	// 조교 내역 - 관리자 -페이징 처리 필요 승인, 출력 신청자 0 , 승인 1, 반려 2
-	List<MypageDTO> approvelist(int offset, int size, int ENABLE, String id) {
+	
+	//데이터 카운터 
+	
+	
+	
+	//검색 키워드 없음 
+	List<MypageDTO> approvelist(int offset, int size, int ENABLE, String id, int tyear, int tsemester) {
 		List<MypageDTO> aplist = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -435,17 +439,101 @@ public class MypageDAO {
 		try {
 
 			sql = " select distinct  TO_CHAR(s.sYear, 'YYYY') sYear , s.semester, departmentName, subjectName, TO_CHAR(REG_DATE, 'YYYY-MM-DD') REG_DATE,  name, enable, APPLICATIONNUM  "
-					+ " FROM APPLICATIONASSISTANT ap " + " join account a " + " on ap.studentCode = a.id "
-					+ " join subject s " + " on s.subjectNo = ap.subjectNo " + " join department d "
-					+ " on s.departmentNum = d.departmentNum " + " where  enable= ? and s.id = ? "
-					+ " ORDER BY departmentName DESC  " + " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
+					+ " FROM APPLICATIONASSISTANT ap "
+					+ " join account a "
+					+ " on ap.studentCode = a.id "
+					+ " join subject s " + " on s.subjectNo = ap.subjectNo " 
+					+ " join department d "
+					+ " on s.departmentNum = d.departmentNum " 
+					+ " where enable= ? and s.id = ? and to_char(sYear,'YYYY') >= ? AND semester = ? "
+					+ " ORDER BY departmentName DESC  OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
 
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setInt(1, ENABLE);
 			pstmt.setString(2, id);
-			pstmt.setInt(3, offset);
-			pstmt.setInt(4, size);
+			pstmt.setInt(3, tyear);
+			pstmt.setInt(4, tsemester);
+			pstmt.setInt(5, offset);
+			pstmt.setInt(6, size);
+		
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				MypageDTO dto = new MypageDTO();
+
+				dto.setYear(rs.getString("sYear"));
+				dto.setSemester(rs.getString("semester"));
+				dto.setDepartment(rs.getString("departmentName"));
+				dto.setSubject(rs.getString("subjectName"));
+				dto.setReg_date(rs.getString("reg_date"));
+				dto.setName(rs.getString("name"));
+				dto.setENABLE(rs.getInt("ENABLE"));
+				dto.setApplicationNum(rs.getString("applicationNum"));
+
+				aplist.add(dto);
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+		return aplist;
+	}
+
+	
+	
+	
+ //학번, 이름, 과목명 
+	// 조교 내역 - 관리자 -페이징 처리 필요 승인, 출력 신청자 0 , 승인 1, 반려 2
+	List<MypageDTO> approvelist(int offset, int size, int ENABLE, String id, int tyear, int tsemester, String keyword) {
+		List<MypageDTO> aplist = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+
+		try {
+
+			sql = " select distinct  TO_CHAR(s.sYear, 'YYYY') sYear , s.semester, departmentName, subjectName, TO_CHAR(REG_DATE, 'YYYY-MM-DD') REG_DATE,  name, enable, APPLICATIONNUM  "
+					+ " FROM APPLICATIONASSISTANT ap "
+					+ " join account a "
+					+ " on ap.studentCode = a.id "
+					+ " join subject s " + " on s.subjectNo = ap.subjectNo " 
+					+ " join department d "
+					+ " on s.departmentNum = d.departmentNum " 
+					+ " where enable= ? and s.id = ? and to_char(sYear,'YYYY') >= ? AND semester = ? ";
+					
+					if ( keyword != null ) {
+						sql += " AND INSTR(subjectName, ?) >= 1 ";
+					}
+					sql +=  " ORDER BY departmentName DESC  OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, ENABLE);
+			pstmt.setString(2, id);
+			pstmt.setInt(3, tyear);
+			pstmt.setInt(4, tsemester);
+			pstmt.setString(5, keyword);
+			pstmt.setInt(6, offset);
+			pstmt.setInt(7, size);
+		
 
 			rs = pstmt.executeQuery();
 

@@ -16,68 +16,6 @@
 }
 </style>
 
-<script type="text/javascript">
-	function searchList() {
-		const f = document.searchForm
-		f.submit();
-	}
-
-	function ajaxFun(url, method, query, dataType, fn) {
-		$.ajax({
-			type : method,
-			url : url,
-			data : query,
-			dataType : dataType,
-			success : function(data) {
-				fn(data);
-			},
-			beforeSend : function(jqXHR) {
-				// jqXHR.setRequestHeader("AJAX", true);
-			},
-			error : function(jqXHR) {
-				console.log(jqXHR.responseText);
-			}
-		});
-	}
-	
-$(function () {
-	$(".applybtn").click(function () {
-	let syear = $("#syear option:selected").val();
-	let semester = $("#semester option:selected").val();
-	let url = "assistant.jsp"
-	let query= $("form[name=searchForm]").serialize();
-	
-	const fn = function(data){
-		let out;   
-		
-		for(let item of data.list){
-			let year = item.year;
-			let semester = item.semester;
-			let department = item.department;
-			let subject = item.subject;
-			let professor = item.professor;
-			let apply = item.apply;
-			
-			out += "<tr>";
-			out += "<td>"+year+"</td>";
-			out += "<td>"+semester+"</td>";
-			out += "<td>"+department+"</td>";
-			out += "<td>"+subject+"</td>";
-			out += "<td>"+professor+"</td>";
-			out += "<td>"+apply+"</td></tr>";
-			
-		}
-		
-		$(".ho-list").append(out);
-		
-	}
-	ajaxFun(url, "POST", query, "JSON", fn);
-		
-	});
-	
-});	
-
-</script>
 </head>
 <body>
 	<header>
@@ -116,7 +54,7 @@ $(function () {
 										<div class="col-auto p-1"
 											style="display: inline-block; width: 150px;">
 											<input type="text" name="keyword" value="${keyword}"
-												class="form-control" placeholder="과목명">
+												class="form-control" placeholder="강좌명">
 										</div>
 										<div class="col-auto p-1"
 											style="display: inline-block; width: 150px;">
@@ -162,33 +100,27 @@ $(function () {
 							<div class="card pt-2 pb-2 ps-2 pe-2" style="margin: 50px 0px;">
 								<h5 class="card-header">조교신청내역</h5>
 								<div class="card-body">
+								<form method="post" class="row" name="searchForm" action="${pageContext.request.contextPath}/mypage/assistant.do">
 									<div class="s-1" style="display: inline-block; width: 150px;">
-										<select class="form-select" id="syear">
+										<select class="form-select" id="syear" name="year">
 											<option value="1">2023년</option>
 										</select>
 									</div>
 
 									<div class="s-1" style="display: inline-block; width: 150px;">
-										<select class="form-select" id="semester">
+										<select class="form-select" id="semester" name="semester">
 											<option value="1">1학기</option>
 											<option value="2">2학기</option>
 										</select>
 									</div>
-									<div class="s-1" style="display: inline-block; width: 150px;">
-										<select class="form-select" id="subjectName">
-											<option value="subjectName"
-												${condition=="subjectName"?"selected='selected'":""}>강좌명</option>
-										</select>
-									</div>
+										<div class="col-auto p-1"
+											style="display: inline-block; width: 150px;">
+											<input type="text" name="keyword" value="${keyword}"
+												class="form-control" placeholder="강좌명">
+										</div>
 									<div class="col-auto p-1"
 										style="display: inline-block; width: 150px;">
-										<input type="text" name="keyword" value="${keyword}"
-											class="form-control">
-									</div>
-									<div class="col-auto p-1"
-										style="display: inline-block; width: 150px;">
-										<button type="button" class="btn btn-light"
-											onclick="searchList()">
+										<button type="submit" class="btn btn-light">
 											<i class="bi bi-search"></i>
 										</button>
 									</div>
@@ -225,6 +157,7 @@ $(function () {
 									</table>
 									<div class="page-navigation">${dataCount == 0 ? "승인할 신청목록이 없습니다." : paging}
 									</div>
+									</form>
 								</div>
 							</div>
 						</c:if>
@@ -278,36 +211,30 @@ $(function () {
 							<div class="card pt-2 pb-2 ps-2 pe-2" style="margin: 50px 0px;">
 								<h5 class="card-header">조교내역</h5>
 								<div class="card-body">
-									<form class="row" name="searchForm"
+									<form class="row" name="searchForm" 
 										action="${pageContext.request.contextPath}/mypage/assistant.do"
 										method="post">
 
 										<div class="s-1" style="display: inline-block; width: 150px;">
-											<select class="form-select" id="syear">
+											<select class="form-select" id="syear" name="year">
 												<option value="1">2023년</option>
 											</select>
 										</div>
 
 										<div class="s-1" style="display: inline-block; width: 150px;">
-											<select class="form-select" id="semester">
+											<select class="form-select" id="semester" name="semester">
 												<option value="1">1학기</option>
 												<option value="2">2학기</option>
-											</select>
-										</div>
-										<div class="s-1" style="display: inline-block; width: 150px;">
-											<select class="form-select" id="subjectName">
-												<option value="subjectName"
-													${condition=="subjectName"?"selected='selected'":""}>강좌명</option>
 											</select>
 										</div>
 										<div class="col-auto p-1"
 											style="display: inline-block; width: 150px;">
 											<input type="text" name="keyword" value="${keyword}"
-												class="form-control">
+												class="form-control" placeholder="강좌명">
 										</div>
 										<div class="col-auto p-1"
 											style="display: inline-block; width: 150px;">
-											<button type="button" class="btn btn-light"
+											<button type="submit" class="btn btn-light"
 												onclick="searchList()">
 												<i class="bi bi-search"></i>
 											</button>

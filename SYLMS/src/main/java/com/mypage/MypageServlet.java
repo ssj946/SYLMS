@@ -292,12 +292,25 @@ public class MypageServlet extends MyUploadServlet {
 			// 신청자
 			int ENABLE = 0;
 
-			aplist = dao.approvelist(offset, size, ENABLE, info.getUserId());
-
+			
+			if(keyword.length() != 0) {
+				aplist = dao.approvelist(offset, size, ENABLE, info.getUserId(), tyear, tsemester, keyword);
+			}else {
+				aplist = dao.approvelist(offset, size, ENABLE, info.getUserId(), tyear, tsemester);
+			}
+			
+			
 			// 조교
 			ENABLE = 1;
-			List<MypageDTO> aslist = dao.approvelist(offset, size, ENABLE, info.getUserId());
+			List<MypageDTO> aslist = null;
+					
+			if(keyword.length() != 0) {
+				aslist = dao.approvelist(offset, size, ENABLE, info.getUserId(), tyear, tsemester, keyword );
 
+			}else {
+				aslist = dao.approvelist(offset, size, ENABLE, info.getUserId(), tyear, tsemester);
+			}		
+					
 			String query = "";
 			if (keyword.length() != 0) {
 				query =  "keyword=" + URLEncoder.encode(keyword, "utf-8");
