@@ -70,15 +70,32 @@ public class MainDAO {
 			
 		}
 		
-		//할일 목록 가져오기 (기간은 현재주 일주일치, 불러올것은 과제 및 강의 자료)
-		public List<MainDTO> assignmentList(String userId) {
+		//학생 - 할일 목록 가져오기 (기간은 현재주 일주일치, 불러올것은 과제)
+		public List<MainDTO> assignmentList(String studentcode) {
 			List<MainDTO> list = new ArrayList<MainDTO>();
 			PreparedStatement pstmt= null;
 			String sql;
 			ResultSet rs=null;
 			
 			try {
-				sql = " SELECT ";
+				sql = " SELECT assignmentName, TO_DATE(endDate, 'YYYY-MM-DD') - TO_DATE(startDate, 'YYYY-MM-DD') AS dday "
+						+ " FROM REGISTERSUBJECT r JOIN subject s ON s.subjectNo=r.subjectNo  "
+						+ " JOIN account a ON a.id=studentcode "
+						+ " JOIN assignment ag ON ag.subjectNo = s.subjectNo "
+						+ " WHERE STUDENTcode = ? ";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1,studentcode);
+				
+				rs= pstmt.executeQuery();
+				
+				while(rs.next()) {
+					MainDTO dto= new MainDTO();
+					dto.setAssignmentName(rs.getString("assignmentName"));
+					dto.setDday(Integer.parseInt(rs.getString("dday")));				
+					
+					list.add(dto);
+				}
+				
 			}  catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -99,5 +116,6 @@ public class MainDAO {
 			
 			return list;
 		}
+		
 		
 }

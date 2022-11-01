@@ -29,7 +29,7 @@ public class AllNotificationDAO {
 			
 			
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
+			while(rs.next()) {
 				AllNotificationDTO dto = new AllNotificationDTO();
 				
 				dto.setNoticeCode(rs.getString("noticeCode"));

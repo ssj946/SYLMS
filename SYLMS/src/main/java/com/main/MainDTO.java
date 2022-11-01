@@ -60,4 +60,23 @@ public class MainDTO {
 		this.professorname = professorname;
 	}
 	
+	
+	
+	private String assignmentName;
+	private int dday;
+	
+
+	public int getDday() {
+		return dday;
+	}
+	public void setDday(int dday) {
+		this.dday = dday;
+	}
+	public String getAssignmentName() {
+		return assignmentName;
+	}
+	public void setAssignmentName(String assignmentName) {
+		this.assignmentName = assignmentName;
+	}
+	
 }

@@ -15,14 +15,6 @@
 	})
 	
 	$(function() {
-		url = "${pageContext.request.contextPath}/header/notice.do";
-		$.post(url, null, function(data) {
-			let alert = data.alert;
-			$(".alert-list").html(data.alert);
-		}, "json");
-	});
-
-	$(function() {
 		url = "${pageContext.request.contextPath}/messege/count.do";
 		$.post(url, null, function(data) {
 			let count = data.count;
@@ -35,11 +27,13 @@
 		$.post(url, null, function(data) {
 			let count = data.count;
 			$(".alert-count").html(data.count);
+			if(count>=1){
+			$(".alert-list").html("알람이 있습니다");
+			}
 		}, "json");
 	});
 </script>
 
-<body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 	<div class="container-fluid">
 		<button class="navbar-toggler ms-auto" type="button"
@@ -121,7 +115,7 @@
 		</div>
 	</div>
 </nav>
-</body>
+
 <!-- Login Modal -->
 <script type="text/javascript">
 	function dialogLogin() {

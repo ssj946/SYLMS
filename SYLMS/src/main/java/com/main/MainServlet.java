@@ -30,12 +30,13 @@ public class MainServlet extends MyServlet {
 		}
 		
 		if(uri.indexOf("main.do") != -1) {
-			subjectList(req, resp);			
+			subjectList(req, resp);		
+			
 		}
 	}
 
+
 	protected void subjectList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		
 		MainDAO dao = new MainDAO();
 		List<MainDTO> list = null;
 		
@@ -52,6 +53,8 @@ public class MainServlet extends MyServlet {
 		forward(req, resp, "/WEB-INF/views/main/main.jsp");
 		
 	}
+	
+
 	
 	
 }

@@ -46,7 +46,6 @@ public class AllNotificationServlet extends MyServlet {
 		List<AllNotificationDTO> alertList = null;
 		// 알림내용출력	
 		
-
 		try {
 			alertList = dao.listAlert();
 			req.setAttribute("listAlert", alertList);
