@@ -102,61 +102,29 @@ public class MypageDAO {
 		}
 	}
 
-	// 데이터 개수 구하기
-	public int dataCount() {
+	
+	// 데이터 검색 기본 
+	public int dataCount(String condition, String keyword, String syear, String semester) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 
-		try {
-			sql = " SELECT NVL (COUNT(*), 0) FROM subject WHERE  sYear >= sysdate";
-			pstmt = conn.prepareStatement(sql);
+		try {  
+			sql = " SELECT NVL (COUNT(*), 0) FROM subject s LEFT JOIN APPLICATIONASSISTANT ap "
+					+ " ON s.subjectNo = ap.subjectNo  WHERE  to_char(sYear,'YYYY') >= ? AND semester = ? AND enable is NULL ";
 
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				result = rs.getInt(1);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-				}
-			}
-
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-				}
-			}
-		}
-		return result;
-	}
-
-	// 검색에서의 개수 구하기
-	public int dataCount(String condition, String keyword) {
-		int result = 0;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql;
-
-		try {
-			sql = " SELECT NVL (COUNT(*), 0) FROM subject WHERE  sYear >= SYSDATE ";
-
-			if (condition.equals("subjectName")) {
+			if (condition.equals("subjectName") && keyword != null ) {
 				sql += " AND INSTR(subjectName, ?) >= 1 ";
 
-			}
+			} 
+			
 
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, keyword);
+			pstmt.setString(1, syear);
+			pstmt.setString(2, semester);
+			pstmt.setString(3, keyword);
 
 			rs = pstmt.executeQuery();
 
@@ -185,71 +153,9 @@ public class MypageDAO {
 		return result;
 	}
 
-	// 리스트
-	List<MypageDTO> listSubject(int offset, int size) {
-		List<MypageDTO> list = new ArrayList<>();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		StringBuilder sb = new StringBuilder();
 
-		try {
-			sb.append(" SELECT distinct ");
-			sb.append(
-					" TO_CHAR(s.sYear, 'YYYY') sYear , s.subjectno, s.semester, d.departmentName, s.subjectName, a.name ");
-			sb.append(" FROM subject s");
-			sb.append(" LEFT outer join department  d");
-			sb.append(" ON s.departmentNum = d.departmentNum ");
-			sb.append(" LEFT outer join account a ");
-			sb.append(" ON s.id = a.id ");
-			sb.append(" LEFT outer join APPLICATIONASSISTANT ap ");
-			sb.append(" ON s.subjectNo = ap.subjectNo  ");
-			sb.append(" WHERE  sYear >= SYSDATE  AND  enable is null ");
-			sb.append(" ORDER BY d.departmentName DESC ");
-			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
-
-			pstmt = conn.prepareStatement(sb.toString());
-
-			pstmt.setInt(1, offset);
-			pstmt.setInt(2, size);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				MypageDTO dto = new MypageDTO();
-
-				dto.setYear(rs.getString("sYear"));
-				dto.setSemester(rs.getString("semester"));
-				dto.setDepartment(rs.getString("departmentName"));
-				dto.setSubject(rs.getString("subjectName"));
-				dto.setProfessor(rs.getString("name"));
-				dto.setSubjectNo(rs.getString("subjectno"));
-
-				list.add(dto);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-				}
-			}
-
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-				}
-			}
-		}
-
-		return list;
-	}
-
-	// 검색에서 리스트
-	List<MypageDTO> listSubmit(int offset, int size, String condition, String keyword) {
+	// 검색에서 리스트 검색 2개 페이징 처리 
+	List<MypageDTO> listSubmit(int offset, int size, String condition, String keyword, String syear, String semester) {
 		List<MypageDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -258,8 +164,7 @@ public class MypageDAO {
 		try {
 
 			sb.append(" SELECT distinct ");
-			sb.append(
-					" TO_CHAR(s.sYear, 'YYYY') sYear , s.subjectno, s.semester, d.departmentName, s.subjectName, a.name ");
+			sb.append(" TO_CHAR(s.sYear, 'YYYY') sYear , s.subjectno, s.semester, d.departmentName, s.subjectName, a.name ");
 			sb.append(" FROM subject s");
 			sb.append(" LEFT outer join department  d");
 			sb.append(" ON s.departmentNum = d.departmentNum ");
@@ -267,9 +172,9 @@ public class MypageDAO {
 			sb.append(" ON s.id = a.id ");
 			sb.append(" LEFT outer join APPLICATIONASSISTANT ap ");
 			sb.append(" ON s.subjectNo = ap.subjectNo  ");
-			sb.append(" WHERE  sYear >= SYSDATE  AND  enable is null ");
+			sb.append(" where to_char(sYear,'YYYY') >= ? AND semester = ?  AND  enable is null ");
 
-			if (condition.equals("subjectName")) {
+			if (condition.equals("subjectName") && keyword != null ) {
 				sb.append(" AND INSTR(subjectName, ?) >= 1 ");
 			}
 			sb.append(" ORDER BY d.departmentName DESC ");
@@ -277,9 +182,11 @@ public class MypageDAO {
 
 			pstmt = conn.prepareStatement(sb.toString());
 
-			pstmt.setString(1, keyword);
-			pstmt.setInt(2, offset);
-			pstmt.setInt(3, size);
+			pstmt.setString(1, syear);
+			pstmt.setString(2, semester);
+			pstmt.setString(3, keyword);
+			pstmt.setInt(4, offset);
+			pstmt.setInt(5, size);
 
 			rs = pstmt.executeQuery();
 
@@ -403,7 +310,7 @@ public class MypageDAO {
 
 		return alist;
 	}
-
+ //학번, 이름, 과목명 
 	// 조교 내역 - 관리자 -페이징 처리 필요 승인, 출력 신청자 0 , 승인 1, 반려 2
 	List<MypageDTO> approvelist(int offset, int size, int ENABLE, String id) {
 		List<MypageDTO> aplist = new ArrayList<>();

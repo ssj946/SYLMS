@@ -76,9 +76,6 @@ $(function () {
 	
 });	
 	
-	btn-light
-	
-	
 	
 	
 </script>

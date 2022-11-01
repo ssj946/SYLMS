@@ -210,6 +210,9 @@ public class MypageServlet extends MyUploadServlet {
 			
 			String syear = req.getParameter("syear");
 			String semester= req.getParameter("semester");
+            
+			System.out.println(syear);
+			System.out.println(semester);
 
 			// 페이지 번호
 			String page = req.getParameter("page");
@@ -237,13 +240,13 @@ public class MypageServlet extends MyUploadServlet {
 			int size = pageSize == null ? 5 : Integer.parseInt(pageSize);
 
 			// 전체 데이터 개수
-			int dataCount, total_page;
+			int dataCount = 0;
+			int total_page;
 
-			if (keyword.length() != 0) {
-				dataCount = dao.dataCount(condition, keyword);
-			} else {
-				dataCount = dao.dataCount();
-			}
+
+			dataCount = dao.dataCount(condition, keyword, syear, semester);
+				
+		
 
 			// 전체 페이지 수
 			total_page = util.pageCount(dataCount, size);
@@ -259,12 +262,16 @@ public class MypageServlet extends MyUploadServlet {
 
 			List<MypageDTO> list = null;
 
-			if (keyword.length() != 0) {
-				list = dao.listSubmit(offset, size, condition, keyword);
-			} else {
-				list = dao.listSubject(offset, size);
-			}
+			
+			list = dao.listSubmit(offset, size, condition, keyword, syear, semester);
+				
+			
+				
+			
 
+			System.out.println(syear);
+			System.out.println(semester);
+			
 			List<MypageDTO> alist = null;
 
 			String id = info.getUserId();
