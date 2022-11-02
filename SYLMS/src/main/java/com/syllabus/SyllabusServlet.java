@@ -36,95 +36,54 @@ public class SyllabusServlet extends MyServlet {
 			list(req, resp);
 		} else if (uri.indexOf("listProfessor.do") != -1) {
 			listProfessor(req, resp);
-		} else if(uri.indexOf("read.do") != -1) {
-			read(req, resp);
+		} else if (uri.indexOf("readProfessor.do") != -1) {
+			readProfessor(req, resp);
 		}
 	}
 
-		
 	protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 학생-과목번호
 		SyllabusDAO dao = new SyllabusDAO();
-		MyUtil util = new MyUtilBootstrap();
 
 		String cp = req.getContextPath();
 
 		try {
 			String subjectNo = req.getParameter("subjectNo");
-			if(subjectNo == null) {
-				subjectNo = "";
+			HttpSession session = req.getSession();
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			
+			SyllabusDTO dto = dao.read(subjectNo);
+			if (dto == null) {
+				resp.sendRedirect(cp + "/");
+				return;
 			}
 			
-			// 페이지 번호
-			String page = req.getParameter("page");
-			int current_page = 1;
-			if (page != null) {
-				current_page = Integer.parseInt(page);
-			}
+			List<SyllabusDTO> listRegister = dao.listRegisterSubject(info.getUserId());
+			
+			req.setAttribute("professorName", dto.getName());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("syear", dto.getOpenDate().substring(0, 4));
 
-			// 전체 데이터 개수
-			int dataCount;
-			dataCount = dao.dataCount(subjectNo);
-
-			// 전체 페이지 수
-			int size = 10;
-			int total_page = util.pageCount(dataCount, size);
-			if (current_page > total_page) {
-				current_page = total_page;
-			}
-
-			// 게시물 가져오기
-			int offset = (current_page - 1) * size;
-			if (offset < 0)
-				offset = 0;
-
-			List<SyllabusDTO> list = null;
-			list = dao.listBoard(subjectNo, offset, size);
-
-			String query = "";
-			if(subjectNo.length() != 0) {
-				query = "subjectNo=" + subjectNo;
-			}
-
-
-			// 페이징 처리
-			String listUrl = cp + "/syllabus/list.do";
-			String articleUrl = cp + "/syllabus/read.do?page="+current_page;
-			if(query.length()!=0) {
-				listUrl += "?" + query;
-				articleUrl += "&" + query;
-			}
-            
-
-			String paging = util.paging(current_page, total_page, listUrl);
-
-			// 포워딩할 JSP에 전달할 속성
-			req.setAttribute("list", list);
-			req.setAttribute("page", current_page);
-			req.setAttribute("subjectNo", subjectNo);
-			req.setAttribute("total_page", total_page);
-			req.setAttribute("dataCount", dataCount);
-			req.setAttribute("size", size);
-			req.setAttribute("paging", paging);
-			req.setAttribute("articleUrl", articleUrl);
-			// req.setAttribute("condition", condition);
-			// req.setAttribute("keyword", keyword);
+			req.setAttribute("dto", dto);
+			req.setAttribute("listRegister", listRegister);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+
 		forward(req, resp, "/WEB-INF/views/syllabus/list.jsp");
 	}
 
-	
-	protected void listProfessor(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void listProfessor(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		// 교수-과목리스트
 		SyllabusDAO dao = new SyllabusDAO();
 		MyUtil util = new MyUtilBootstrap();
-		
+
 		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		String id = info.getUserId();
 
 		String cp = req.getContextPath();
@@ -155,21 +114,21 @@ public class SyllabusServlet extends MyServlet {
 				offset = 0;
 
 			List<SyllabusDTO> list = null;
-			list = dao.listBoardProfessor(id, offset, size);
+			list = dao.listProfessor(id, offset, size);
 
 			String query = "";
 			/*
-			 if (keyword.length() != 0) { 
-			     query = "condition=" + condition + "&keyword=" +   URLEncoder.encode(keyword, "utf-8");
-			  }
+			 * if (keyword.length() != 0) { query = "condition=" + condition + "&keyword=" +
+			 * URLEncoder.encode(keyword, "utf-8"); }
 			 */
 
 			// 페이징 처리
 			String listUrl = cp + "/syllabus/listProfessor.do";
-			if(query.length() != 0) {
+			String articleUrl = cp + "/syllabus/readProfessor.do?page="+current_page;
+			if (query.length() != 0) {
 				listUrl += "?" + query;
+				articleUrl += "&" + query;
 			}
-
 
 			String paging = util.paging(current_page, total_page, listUrl);
 
@@ -180,6 +139,7 @@ public class SyllabusServlet extends MyServlet {
 			req.setAttribute("dataCount", dataCount);
 			req.setAttribute("size", size);
 			req.setAttribute("paging", paging);
+			req.setAttribute("articleUrl", articleUrl);
 			// req.setAttribute("condition", condition);
 			// req.setAttribute("keyword", keyword);
 
@@ -189,14 +149,9 @@ public class SyllabusServlet extends MyServlet {
 
 		forward(req, resp, "/WEB-INF/views/syllabus/listProfessor.jsp");
 	}
-	
-	protected void test1(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-	}
-	
-	
-	protected void read(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 학생-세부사항리스트
+	protected void readProfessor(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 교수-세부사항리스트
 		SyllabusDAO dao = new SyllabusDAO();
 
 		String cp = req.getContextPath();
@@ -204,33 +159,31 @@ public class SyllabusServlet extends MyServlet {
 		try {
 			String page = req.getParameter("page");
 			String subjectNo = req.getParameter("subjectNo");
-			String readNo = req.getParameter("readNo");
-			
-			String query = "page="+page;
-			if(subjectNo.length() != 0) {
+
+			String query = "page=" + page;
+			if (subjectNo.length() != 0) {
 				query += "&subjectNo=" + subjectNo;
 			}
-			
-			SyllabusDTO dto = dao.read(readNo);
-			if(dto == null) {
-				resp.sendRedirect(cp+"/syllabus/list.do?"+query);
+
+			SyllabusDTO dto = dao.readProfessor(subjectNo);
+			if (dto == null) {
+				resp.sendRedirect(cp + "/syllabus/list.do?" + query);
 				return;
 			}
-			
+
 			req.setAttribute("dto", dto);
 			req.setAttribute("query", query);
-			req.setAttribute("page", page);			
-			
+			req.setAttribute("page", page);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		forward(req, resp, "/WEB-INF/views/syllabus/read.jsp");
+		forward(req, resp, "/WEB-INF/views/syllabus/readProfessor.jsp");
 	}
-	
+
 	protected void test(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-	
 	}
-	
+
 }

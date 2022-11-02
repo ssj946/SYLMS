@@ -66,7 +66,7 @@ list-style: none;
 							<label>학년도 학기</label>
 							<select name="semester" class="form-control">
 								<option value="0" selected> -- 전체 -- </option>
-								<option value="1">2022년 2학기</option>
+								
 				
 							</select>
 						</div>
@@ -74,19 +74,12 @@ list-style: none;
 							<label>과목선택</label>
 							<select class="form-control">
 								<option> -- 전체 -- </option>
-								<option>컴퓨터구조</option>
+								
 							</select>
 						</div>
 					</form>
 					<hr>
-					<div class="panel panel-info">
-						<div class="panel-heading"><strong>시간표 및 수업계획서</strong></div>
-						<div class="panel-body">
-							<p>학기 : <strong>2022년 1학기</strong></p>
-							<p>과목 : <strong>컴퓨터구조</strong></p>
-							<p></p>
 						</div>
-					
 					<div class="body-main">
 		        <div class="row board-list-header">
 		            <div class="col-auto me-auto">${dataCount}개(${page}/${total_page} 페이지)</div>
@@ -109,7 +102,7 @@ list-style: none;
 					</thead>
 						<tbody>	
 						<c:forEach var="dto" items="${list}" varStatus="status">
-							<tr>
+							<tr onclick="javacript:location.href='${articleUrl}&subjectNo=${dto.subjectNo}';">
 								<td>${dataCount - (page-1) * size - status.index}</td>
 								<td class="left">
 									${dto.subjectName}
@@ -139,8 +132,6 @@ list-style: none;
 				</div>
 			<!-- 본문 끝 -->
 			</div>
-			</div>				
-				</div>
 		
 	
 	</section>

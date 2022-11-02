@@ -14,6 +14,15 @@
 list-style: none;
 
 </style>
+
+<script type="text/javascript">
+$(function(){
+	$(".subjectRegister").change(function(){
+		let subjectNo = $(this).val();
+		location.href="${pageContext.request.contextPath}/syllabus/list.do?subjectNo="+subjectNo;
+	});
+})
+</script>
 </head>
 
 <body>
@@ -64,16 +73,15 @@ list-style: none;
 					<form class="form-inline" action="">
 						<div class="form-group">
 							<label>학년도 학기</label>
-							<select name="semester" class="form-control">
-								<option value="0" selected> -- 전체 -- </option>
-				         
-				         
-							</select>
+							<label>${syear} 년도 </label>
+							<label>${semester }학기</label>
 						</div>
 						<div class="form-group">
 							<label>수업선택</label>
-							<select class="form-control">
-								<option> -- 전체 -- </option>
+							<select class="form-control subjectRegister" >
+								<c:forEach var="vo" items="${listRegister }">
+									<option value="${vo.subjectNo}" ${vo.subjectNo == dto.subjectNo ? "selected='selected'" :"" }> ${vo.subjectName } </option>
+								</c:forEach>
 							
 							</select>
 						</div>
@@ -81,55 +89,44 @@ list-style: none;
 					<hr>
 					
 					<div class="body-main">
-		        <div class="row board-list-header">
-		            <div class="col-auto me-auto">${dataCount}개(${page}/${total_page} 페이지)</div>
-		            <div class="col-auto">&nbsp;</div>
-		        </div>				
+		
 				
-				<table class="table table-hover board-list">
-					<thead class="table-light">
-						<tr>
-							<th class="no">번호</th>
-							<th class="subjectName">과목명</th>
-							<th class="name">담당교수</th>
-							<th class="openDate">개강일자</th>
-							<th class="semester">학기</th>
-							<th class="lecturePlace">강의실</th>
-							<th class="credit">학점</th>
-							<th class="assignmentRate">과제비율</th>
-							<th class="middleRate">중간고사비율</th>
-							<th class="finalRate">기말고사비율 </th>	
-						</tr>
-					</thead>		
-						<tbody>	
-						<c:forEach var="dto" items="${list}" varStatus="status">
-							<tr onclick="javacript:location.href='${articleUrl}&readNo=${dto.subjectNo}';">
-								<td>${dataCount - (page-1) * size - status.index}</td>
-								<td class="left">
-									${dto.subjectName}
-								</td>
-								<td>${dto.name}</td>
-								<td>${dto.openDate}</td>
-								<td>${dto.semester}</td>
-								<td>${dto.lecturePlace}</td>
-								<td>${dto.credit}</td>
-								<td>${dto.assignmentRate}</td>
-							    <td>${dto.middleRate}</td>
-								<td>${dto.finalRate}</td>
-									
-							</tr>
-						</c:forEach>
+				<table class="table">
+					<tr>
+						<td class="w-10 bg-light">과목명</td>
+						<td class="w-40">${dto.subjectName}</td>
+						<td class="w-10 bg-light">담당교수</td>
+						<td class="w-40">${dto.name}</td>						
+					</tr>
+
+					<tr>
+						<td class="bg-light">개강일자</td>
+						<td>${dto.openDate}</td>
+						<td class="bg-light">학기</td>
+						<td>${dto.semester}</td>						
+					</tr>
+					
+					<tr>
+						<td class="bg-light">강의실</td>
+						<td colspan="3">${dto.lecturePlace}</td>						
+					</tr>
 						
-														
-						</tbody>
-					</table>				
-				</div>
-				
-				<div class="page-navigation">
-					${dataCount == 0 ? "등록된 게시물이 없습니다." : paging}
-				</div>
-				
-							</div>
+					<tr>
+						<td class="bg-light">학점</td>
+						<td>${dto.credit}</td>
+						<td class="bg-light">과제비율</td>
+						<td>${dto.assignmentRate}</td>						
+					</tr>
+	
+					<tr>
+						<td class="bg-light">중간고사비율</td>
+						<td>${dto.middleRate}</td>
+						<td class="bg-light">기말고사비율</td>
+						<td>${dto.finalRate}</td>						
+					</tr>
+				</table>
+					</div>																				
+</div>
 				
 					</div>
 					
