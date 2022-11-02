@@ -761,7 +761,7 @@ public class LectureDAO {
 				pstmt.close();
 				
 				sql = "INSERT into ATTENDANCESUBMIT (at_submitNo, attendNo, eq_pass, attend_time, gradeCode) "
-						+ " select at_submitNo_seq.nextval, attendNo, null, SYSDATE, gradeCode  FROM grades g "
+						+ " select at_submitNo_seq.nextval, attendNo, '결석', SYSDATE, gradeCode  FROM grades g "
 						+ " JOIN ATTENDANCE a ON a.subjectNo = g.SUBJECTNO "
 						+ " WHERE a.subjectNo = ? AND TO_CHAR(gen_time,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')";
 				pstmt=conn.prepareStatement(sql);
