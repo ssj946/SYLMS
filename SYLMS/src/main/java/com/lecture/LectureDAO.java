@@ -746,6 +746,78 @@ public class LectureDAO {
 				}
 			}
 		}
+	//출석 코드 만들기
+		public void generate_attendcode(String subjectNo, int code) {
+			PreparedStatement pstmt = null;
+			String sql = "";
+			try {
+				conn.setAutoCommit(false);
+				sql = "INSERT INTO attendance (attendNo, attend_pass, subjectNo, gen_time) VALUES(attendance_seq.nextval, ?, ?, SYSDATE)";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setInt(1, code);
+				pstmt.setString(2, subjectNo);
+				
+				pstmt.executeUpdate();
+				pstmt.close();
+				
+				sql = "INSERT into ATTENDANCESUBMIT (at_submitNo, attendNo, eq_pass, attend_time, gradeCode) "
+						+ " select at_submitNo_seq.nextval, attendNo, null, SYSDATE, gradeCode  FROM grades g "
+						+ " JOIN ATTENDANCE a ON a.subjectNo = g.SUBJECTNO "
+						+ " WHERE a.subjectNo = ? AND TO_CHAR(gen_time,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setString(1, subjectNo);
+				pstmt.executeUpdate();
+				
+				conn.commit();
+				conn.setAutoCommit(true);
+				
+			} catch (Exception e) {
+				try {
+					conn.rollback();
+				} catch (Exception e2) {
+					e.printStackTrace();
+				}
+				
+				e.printStackTrace();
+			} finally {
+				if(pstmt!=null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+					}
+				}
+			}
+		}
+		
+
+	//최신 출석 내역 가져오기
+		public LectureDTO attending(String subjectNo) {
+			PreparedStatement pstmt = null;
+			String sql = "";
+			ResultSet rs = null;
+			LectureDTO dto = new LectureDTO();
+			try {
+				sql = "SELECT attendNo, attend_pass, gen_time FROM attendance WHERE subjectNo = ? AND SYSDATE<=end_time "
+						+ " ORDER BY attendNo DESC "
+						+ " FETCH FIRST 1 ROWS ONLY ";
+				pstmt =conn.prepareStatement(sql);
+				pstmt.setString(1, subjectNo);
+				rs=pstmt.executeQuery();
+				
+				if(rs.next()) {
+					
+					dto.setAttendNo(rs.getString("attendNo"));
+					dto.setAttend_pass(rs.getString("attend_pass"));
+					dto.setGen_time(rs.getString("gen_time"));
+				}
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		
+			return dto;
+		}
+		
 }
 
 
