@@ -11,7 +11,7 @@ public class NoticeDTO {
 	private int hitCount;
 	
 	
-	private String savefileName;
+	private String saveFilename;
 	private String originalFilename;
 	private String fileSize;
 	private String fileNo;
@@ -79,11 +79,11 @@ public class NoticeDTO {
 	public void setHitCount(int hitCount) {
 		this.hitCount = hitCount;
 	}
-	public String getSavefileName() {
-		return savefileName;
+	public String getSaveFilename() {
+		return saveFilename;
 	}
-	public void setSavefileName(String savefileName) {
-		this.savefileName = savefileName;
+	public void setSaveFilename(String saveFilename) {
+		this.saveFilename = saveFilename;
 	}
 	public String getOriginalFilename() {
 		return originalFilename;
