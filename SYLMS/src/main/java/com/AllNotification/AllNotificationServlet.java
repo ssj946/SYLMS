@@ -43,20 +43,18 @@ public class AllNotificationServlet extends MyServlet {
 
 	private void notice(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		AllNotificationDAO dao = new AllNotificationDAO();
-		List<AllNotificationDTO> alertList = null;
+		List<AllNotificationDTO> notiList = null;
 		// 알림내용출력	
 		
 		try {
-			alertList = dao.listAlert();
-			req.setAttribute("listAlert", alertList);
-
+			notiList = dao.listAlert();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		resp.setContentType("text/html;charset=utf-8");
 
 		JSONObject job = new JSONObject();
-		job.put("alert", alertList);
+		job.put("notiList", notiList);
 
 		PrintWriter out = resp.getWriter();
 		out.print(job.toString());

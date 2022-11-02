@@ -82,7 +82,7 @@ public class MainDAO {
 						+ " FROM REGISTERSUBJECT r JOIN subject s ON s.subjectNo=r.subjectNo  "
 						+ " JOIN account a ON a.id=studentcode "
 						+ " JOIN assignment ag ON ag.subjectNo = s.subjectNo "
-						+ " WHERE STUDENTcode = ? ";
+						+ " WHERE STUDENTcode = ?  AND TO_DATE(endDate, 'YYYY-MM-DD') - TO_DATE(startDate, 'YYYY-MM-DD') >= 0 ";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1,studentcode);
 				

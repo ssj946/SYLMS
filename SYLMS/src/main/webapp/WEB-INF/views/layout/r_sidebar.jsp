@@ -25,23 +25,27 @@ function ajaxFun(url, method, query, dataType, fn) {
 
 
 $(function () {	
+	let assignmentName = $("#assignmentName").val();
+	let dday = $("#dday").val();
 	let url = "${pageContext.request.contextPath}/r_sidebar/todo.do";
 	let query = "assignmentName="+assignmentName+"&dday="+dday;
+	
 	const fn = function todo(data){
-		let out;
-		for(let item of data.todolist){
+		let out="";
+		for(let item of data.todo){
 			let assignmentName = item.assignmentName;
 			let dday = item.dday;
 			
 			out += "<li class='list-group-item list-group-item-action d-flex justify-content-between align-items-start '>";
 			out += "<div class='ms-2 me-auto'>";
 			out += "<a href='#'>"+assignmentName+"</a></div>";
-			out += "<span class='badge bg-primary rounded-pill'>"+dday+"</span>";
+			out += "<span class='badge bg-primary rounded-pill'>"+"D-"+dday+"</span>";
 			out += "</li>";
 					
 		}
 		$(".todoList").append(out);		
 	}
+	ajaxFun(url, "get", query, "json", fn);
 });
 
 
