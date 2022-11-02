@@ -1,6 +1,7 @@
 package com.mypage;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -59,20 +60,26 @@ public class ScheduleServlet extends MyServlet{
 		
 		try {
 			
+			List<ScheduleDTO> list = null;
+			String id = info.getUserId();
+		         	
 			
+			list = dao.listSchedule(id);
 			
-			
-			
-			
-			
-			
-			
+		   req.setAttribute("list", list);
+	
+		   List<ScheduleDTO> plist = null;
+		   
+		   plist = dao.prolistSchedule(id);
+		   
+		   req.setAttribute("plist", plist);
+		   
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		String path = "/WEB-INF/views/mypage/assistant.jsp";
+		String path = "/WEB-INF/views/schedule/scheduleForm.jsp";
 		forward(req, resp, path);
 		
 	}
