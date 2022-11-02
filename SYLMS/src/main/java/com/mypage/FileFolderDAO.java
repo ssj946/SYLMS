@@ -14,7 +14,7 @@ public class FileFolderDAO {
 	private Connection conn = DBConn.getConnection();
 	
 	//데이터 카운터 
-	public int dataCount(int tyear, String id ) {
+	public int dataCount(String year, String id ) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -36,7 +36,7 @@ public class FileFolderDAO {
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, id);
-			pstmt.setInt(2, tyear);
+			pstmt.setString(2, year);
 			
 
 			rs = pstmt.executeQuery();
@@ -67,7 +67,7 @@ public class FileFolderDAO {
 	}
 	
 	//데이터 카운터 - 키워드 
-	public int dataCount(int tyear, String id, String keyword ) {
+	public int dataCount(String year, String id, String keyword ) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -95,7 +95,7 @@ public class FileFolderDAO {
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, id);
-			pstmt.setInt(2, tyear);
+			pstmt.setString(2, year);
 			pstmt.setString(3, keyword);
 			
 
@@ -127,7 +127,7 @@ public class FileFolderDAO {
 	}
 	
 	//리스트 
-	List<FileFolderDTO> listfile(int offset, int size,  int tyear ,  String id) {
+	List<FileFolderDTO> listfile(int offset, int size, String year ,  String id) {
 		List<FileFolderDTO> plist = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -152,7 +152,7 @@ public class FileFolderDAO {
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, id);
-			pstmt.setInt(2, tyear);
+			pstmt.setString(2, year);
 			pstmt.setInt(3, offset);
 			pstmt.setInt(4, size);
 
@@ -192,7 +192,7 @@ public class FileFolderDAO {
 	
 	//리스트 - 키워드 
 	
-	List<FileFolderDTO> listfile(int offset, int size,  int tyear ,  String id, String keyword) {
+	List<FileFolderDTO> listfile(int offset, int size,  String year ,  String id, String keyword) {
 		List<FileFolderDTO> plist = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -223,7 +223,7 @@ public class FileFolderDAO {
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, id);
-			pstmt.setInt(2, tyear);
+			pstmt.setString(2, year);
 			pstmt.setString(3, keyword);
 			pstmt.setInt(4, offset);
 			pstmt.setInt(5, size);

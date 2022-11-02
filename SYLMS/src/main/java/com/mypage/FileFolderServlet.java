@@ -78,9 +78,6 @@ public class FileFolderServlet extends MyUploadServlet {
 			//검색
 			
 			String year = req.getParameter("year");
-
-			int tyear = Integer.parseInt(year);
-
 		
 			
 			String keyword = req.getParameter("keyword");
@@ -105,9 +102,9 @@ public class FileFolderServlet extends MyUploadServlet {
 			String id = info.getUserId();
 			
 			if(keyword.length() != 0) {
-				dataCount = dao.dataCount(tyear, info.getUserId(), keyword);
+				dataCount = dao.dataCount(year, info.getUserId(), keyword);
 			} else {
-				dataCount = dao.dataCount(tyear, info.getUserId());
+				dataCount = dao.dataCount(year, info.getUserId());
 
 			}
 
@@ -126,9 +123,9 @@ public class FileFolderServlet extends MyUploadServlet {
 			List<FileFolderDTO> flist = null;
 
 			if (keyword.length() != 0) {
-				flist = dao.listfile(offset, size, tyear, info.getUserId(), keyword);
+				flist = dao.listfile(offset, size, year, info.getUserId(), keyword);
 			} else {
-				flist = dao.listfile(offset, size, tyear, info.getUserId());
+				flist = dao.listfile(offset, size, year, info.getUserId());
 			}
 			
 		
@@ -151,7 +148,7 @@ public class FileFolderServlet extends MyUploadServlet {
 			req.setAttribute("dataCount", dataCount);
 			req.setAttribute("size", size);
 			req.setAttribute("paging", paging);
-			req.setAttribute("tyear", tyear);
+			req.setAttribute("year", year);
 			req.setAttribute("keyword", keyword);;
 			
 			

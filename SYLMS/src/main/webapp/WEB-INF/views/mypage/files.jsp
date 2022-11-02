@@ -38,7 +38,7 @@
 							<div class="card-body">
 							<!-- 검색버튼  -->
 							<form class="row" name="searchForm"
-										action="${pageContext.request.contextPath}/mypage/file.do"
+										action="${pageContext.request.contextPath}/file/file.do"
 										method="post">
 								<div class="d-flex justify-content-center align-items-center">
 									<div class="s-1 p-1">
@@ -72,7 +72,6 @@
 											<tr>
 												<td>${dto.fname}</td>
 												<td>${dto.subjectName}</td>
-												<td>${dto.department}</td>
 												<td>${dto.submitDate}</td>
 											</tr>
 										</c:forEach>
