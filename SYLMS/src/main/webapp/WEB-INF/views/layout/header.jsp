@@ -5,12 +5,47 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <script type="text/javascript">
-$('#openModalBtn').on('click', function () {
-	$('#myModal').modal('show');
+$(function () {	
+	function ajaxFun(url, method, query, dataType, fn) {
+		$.ajax({
+			type : method,
+			url : url,
+			data : query,
+			dataType : dataType,
+			success : function(data) {
+				fn(data);
+			},
+			beforeSend : function(jqXHR) {
+				jqXHR.setRequestHeader("AJAX", true);
+			},
+			error : function(jqXHR) {
+				console.log(jqXHR.responseText);
+			}
+		});
+	}
+	
+	$(".btnBell").click(function(){
+		let url = "${pageContext.request.contextPath}/header/notice.do";
+		let query = null;
+		
+		const fn = function(data){
+			let out="";
+			for(let item of data.notiList){
+				let noticeCode = item.noticeCode;
+				let content = item.content;
+				let reg_date = item.reg_date;
+				
+				out += noticeCode+"<br>"+content+"<br>"+reg_date+"<hr>";
+			}
+			$("#alertModal .modal-body").html(out);
+			$("#alertModal").modal("show");
+		};
+		
+		ajaxFun(url, "get", query, "json", fn);
+	});
+	
 });
 
-
-	
 	$(function() {
 		url = "${pageContext.request.contextPath}/messege/count.do";
 		$.post(url, null, function(data) {
@@ -77,29 +112,13 @@ $('#openModalBtn').on('click', function () {
 
 
 						<li class="nav-item">
-						<a id="openModalBtn" href="#" class="position-relative nav-link btn-modal" data-toggle="modal"> &nbsp;&nbsp;
-							<i class="fas fa-bell text-muted fa-lg"></i> 
+							<a id="openModalBtn" href="#" class="position-relative nav-link btn-modal"
+							data-target="#staticBackdrop"> &nbsp;&nbsp; 
+							<i class="fas fa-bell text-muted fa-lg btnBell"></i> 
 							<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger alert-count">
 							</span>
 						</a> 
-						<!-- Modal -->
-							<div class="modal fade modal-dialog modal-dialog-scrollable" id="myModal" role="dialog"
-								data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-								aria-labelledby="staticBackdropLabel" aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="staticBackdropLabel">Modal
-												title</h5>
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-										</div>
-										<div class="modal-body">...</div>
-									</div>
-								</div>
-							</div>
 						</li>
-
 
 
 
@@ -199,6 +218,23 @@ $('#openModalBtn').on('click', function () {
 					<hr class="mt-3">
 				</div>
 
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="alertModal" tabindex="-1"
+	data-bs-backdrop="static" data-bs-keyboard="false"
+	aria-labelledby="alertModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="loginViewerModalLabel">알림</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
 			</div>
 		</div>
 	</div>

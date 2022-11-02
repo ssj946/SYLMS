@@ -64,9 +64,9 @@ $(function(){
 							</h3>
 						</div>
 						<div class="panel-body">
-							<p> 1. 교수명 클릭시,조회됩니다.</p>
+							<p> 1. 학생명 수업선택시,조회됩니다.</p>
 							<p> 2. 과목명 표시됩니다.</p>
-							<p> 3. The English title will be shown when you place your mouse pointer on Korean subject name.</p>
+							<p> 3. Students, please check</p>
 						</div>
 					</div>
 					

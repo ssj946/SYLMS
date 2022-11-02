@@ -22,7 +22,7 @@ public class AllNotificationDAO {
 		try {
 			sql = " SELECT noticeCode, content, reg_date "
 					+ " FROM notice "
-					+ " WHERE id = 'admin' AND TO_CHAR(reg_date,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD') "
+					+ " WHERE id = 'admin'"
 					+ " ORDER BY noticeCode DESC ";
 			
 			pstmt = conn.prepareStatement(sql);
