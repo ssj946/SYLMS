@@ -2,6 +2,7 @@
 <%@ page trimDirectiveWhitespaces ="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!-- 왼쪽 사이드바 -->
 	<div class="card mt-3 p-4">
 		<img src="${pageContext.request.contextPath}/resources/images/syuniv_logo.png" class="card-img-top">
@@ -17,10 +18,19 @@
 			</button>
 			<div class="collapse navbar-collapse" id="side_mypage" >
 			<ul style="list-style: none;">
-				<li><a href="${pageContext.request.contextPath}/mypage/pwd.do" class="nav-link text-white p-3 mb-2 current">개인정보수정</a></li>
+				<li><a href="${pageContext.request.contextPath}/mypage/pwd.do" class="nav-link text-white p-3 mb-2 current">개인정보관리</a></li>
+				<c:if test="${fn:length(sessionScope.member.userId) == 8}">
 				<li><a href="${pageContext.request.contextPath}/mypage/file.do" class="nav-link text-white p-3 mb-2 current">올린파일함</a></li>
-				<li><a href="${pageContext.request.contextPath}/schedule/schedule.do" class="nav-link text-white p-3 mb-2 current">수강과목</a></li>
+				</c:if>
+				
+				<li><a href="${pageContext.request.contextPath}/schedule/schedule.do" class="nav-link text-white p-3 mb-2 current">강의목록</a></li>
+				
+				<c:if test="${fn:length(sessionScope.member.userId) == 8}">
 				<li><a href="${pageContext.request.contextPath}/mypage/assistant.do" class="nav-link text-white p-3 mb-2 current">조교신청</a></li>
+				</c:if>
+				<c:if test="${fn:length(sessionScope.member.userId) != 8}">
+				<li><a href="${pageContext.request.contextPath}/mypage/assistant.do" class="nav-link text-white p-3 mb-2 current">조교관리</a></li>
+				</c:if>
 			</ul>
 			</div>
 		</li>
