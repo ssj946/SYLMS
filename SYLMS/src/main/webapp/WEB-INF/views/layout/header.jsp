@@ -34,8 +34,11 @@ $(function () {
 				let noticeCode = item.noticeCode;
 				let content = item.content;
 				let reg_date = item.reg_date;
+				let url = item.url;
 				
-				out += noticeCode+"<br>"+content+"<br>"+reg_date+"<hr>";
+				out += noticeCode+"<br>";
+				out += "<a href='"+url+"'>"+content+"</a>"+"<br>";
+				out += reg_date+"<hr>";
 			}
 			$("#alertModal .modal-body").html(out);
 			$("#alertModal").modal("show");

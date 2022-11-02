@@ -20,7 +20,7 @@ public class AllNotificationDAO {
 		String sql;
 		
 		try {
-			sql = " SELECT noticeCode, content, TO_CHAR(reg_date, 'YYYY-MM-DD') AS reg_date "
+			sql = " SELECT noticeCode, content, TO_CHAR(reg_date, 'YYYY-MM-DD') AS reg_date, url "
 					+ " FROM notice "
 					+ " WHERE reg_date >= TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'YYYY-MM-DD') "
 					+ " ORDER BY noticeCode DESC ";
@@ -35,6 +35,7 @@ public class AllNotificationDAO {
 				dto.setNoticeCode(rs.getString("noticeCode"));
 				dto.setContent(rs.getString("content"));
 				dto.setReg_date(rs.getString("reg_date"));
+				dto.setUrl(rs.getString("url"));
 				
 				list.add(dto);
 			}
