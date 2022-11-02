@@ -23,8 +23,32 @@ private String part;
 private String savefilename;
 private String alarmEnable;
 
+private String attendNo;
+private String attend_pass;
+private String gen_time;
 
 
+
+
+
+public String getAttendNo() {
+	return attendNo;
+}
+public void setAttendNo(String attendNo) {
+	this.attendNo = attendNo;
+}
+public String getAttend_pass() {
+	return attend_pass;
+}
+public void setAttend_pass(String attend_pass) {
+	this.attend_pass = attend_pass;
+}
+public String getGen_time() {
+	return gen_time;
+}
+public void setGen_time(String gen_time) {
+	this.gen_time = gen_time;
+}
 public String getAlarmEnable() {
 	return alarmEnable;
 }

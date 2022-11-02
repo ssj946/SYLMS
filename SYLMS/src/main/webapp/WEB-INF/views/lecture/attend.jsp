@@ -76,10 +76,42 @@ $(function(){
 });
 
 $(function(){
-	$("").click(function(){
+	$("#attendCode_gen").val(${dto.attend_pass});
+	
+	$(".attend_gen_btn").click(function(){
+		let url = "${pageContext.request.contextPath}/lecture/attend_gen.do?";
+		let query ="subjectNo=${subjectNo}";
+		
+		location.href=url+query;
+		
 		
 	});
 	
+	$(".attend_btn").click(function(){
+		
+		const now = new Date();
+		let year = now.getFullYear();
+		let month = now.getMonth()+1; 
+		
+		if(month<10){
+			month = month+"";
+			month = 0+month;
+		}
+		
+		let day = now.getDate();
+		
+		if(day<10){
+			day = day+"";
+			day = 0+day;
+		}
+		
+		let date = year+"-"+month+"-"+day;
+		let h = now.getHours();
+		let m = now.getMinutes();
+		let s = now.getSeconds();
+		
+		date = date+" "+h+":"+m+":"+s;
+	});
 	
 });
 
@@ -154,7 +186,7 @@ $(function(){
 											<br>
 												<input class="form-control" placeholder="출석코드를 입력하세요." id="attendCode_gen" readonly="readonly">
 											<br>
-												<button class="btn btn-outline-primary">생성하기</button>
+												<button class="btn btn-outline-primary attend_gen_btn">생성하기</button>
 											<br>
 											</div>
 										</div>
@@ -164,6 +196,7 @@ $(function(){
 								<br>
 								<br>
 							</c:if>
+							<c:if test="${ fn:length(sessionScope.member.userId) == 8 }">
 								<div class="row">
 									<div class="col-3">&nbsp;</div>
 									<div class="col-6">
@@ -182,6 +215,7 @@ $(function(){
 									</div>
 									<div class="col-3">&nbsp;</div>
 								</div>
+							</c:if>
 								<br>
 								<br>
 								<div class="row">
