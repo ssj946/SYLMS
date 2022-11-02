@@ -40,6 +40,18 @@ function sendOk() {
 	f.action = "${pageContext.request.contextPath}/notice/notice${mode}_ok.do"; 
     f.submit();
 }
+
+
+<c:if test="${mode=='update'}">
+function deleteFile(fileNum) {
+	if(! confirm("파일을 삭제 하시겠습니까 ?")) {
+		return;
+	}
+	let query = "articleNo=${dto.articleNo}&fileNo="+fileNo+"&page=${page}";
+	let url = "${pageContext.request.contextPath}/notice/deleteFile.do?" + query;
+	location.href = url;
+}
+</c:if>
 </script>
 
 </head>
@@ -80,7 +92,7 @@ function sendOk() {
 			</div>
 			
 			<div class="body-main">
-				<form name="boardForm" method="post">
+				<form name="boardForm" method="post"  enctype="multipart/form-data">
 					<table class="table write-form mt-5">
 						<tr>
 							<td class="table-light col-sm-2" scope="row">제 목</td>
@@ -102,6 +114,27 @@ function sendOk() {
 								<textarea name="content" id="content" class="form-control">${dto.content}</textarea>
 							</td>
 						</tr>
+						
+						<tr>
+							<td class="table-light col-sm-2">첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
+							<td> 
+								<input type="file" name="selectFile" multiple="multiple" class="form-control">
+							</td>
+						</tr>
+						<c:if test="${mode=='update'}">
+							<c:forEach var="vo" items="${listFile}">
+								<tr>
+									<td class="table-light col-sm-2" scope="row">첨부된파일</td>
+									<td> 
+										<p class="form-control-plaintext">
+											<a href="javascript:deleteFile('${vo.fileNo}');"><i class="bi bi-trash"></i></a>
+											${vo.originalFilename}
+										</p>
+									</td>
+								</tr>
+							</c:forEach> 
+						</c:if>
+					
 					</table>
 					
 					<table class="table table-borderless">

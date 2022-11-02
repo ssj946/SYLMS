@@ -87,18 +87,27 @@ function deleteBoard() {
 									${dto.reg_date} | 조회 ${dto.hitCount}
 								</td>
 							</tr>
-							
 							<tr>
 								<td colspan="2" valign="top" height="200">
 									${dto.content}
 								</td>
 							</tr>
+
+							<c:forEach var="vo" items="${listFile}">
+							<tr>
+								<td colspan="2">
+									파&nbsp;&nbsp;일 :
+									<a href="${pageContext.request.contextPath}/notice/download.do?fileNo=${vo.fileNo}">${vo.originalFilename}</a>
+								</td>
+							</tr>
+							</c:forEach>
+							
 							
 							<tr>
 								<td colspan="2">
 									이전글 :
 									<c:if test="${not empty preReadDto}">
-										<a href="${pageContext.request.contextPath}/lecture/notice/article.do?${query}&articleNo=${preReadDto.boardNum}">${preReadDto.subject}</a>
+										<a href="${pageContext.request.contextPath}/notice/noticeArticle.do?subjectNo=${subjectNo}&articleNo=${preReadDto.articleNo}">${preReadDto.title}</a>
 									</c:if>
 								</td>
 							</tr>
@@ -106,7 +115,7 @@ function deleteBoard() {
 								<td colspan="2">
 									다음글 :
 									<c:if test="${not empty nextReadDto}">
-										<a href="${pageContext.request.contextPath}/lecture/notice/article.do?${query}&articleNo=${nextReadDto.boardNum}">${nextReadDto.subject}</a>
+										<a href="${pageContext.request.contextPath}/notice/noticeArticle.do?subjectNo=${subjectNo}&articleNo=${nextReadDto.articleNo}">${nextReadDto.title}</a>
 									</c:if>
 								</td>
 							</tr>
@@ -118,7 +127,7 @@ function deleteBoard() {
 								
 								<c:choose>
 									<c:when test="${sessionScope.member.userId==dto.userId}">
-										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/notice/update.do?boardNum=${dto.articleNo}&page=${page}';">수정</button>
+										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/notice/update.do?articleNo=${dto.articleNo}&page=${page}';">수정</button>
 									</c:when>
 									<c:otherwise>
 										<button type="button" class="btn btn-light" disabled="disabled">수정</button>
@@ -135,7 +144,7 @@ function deleteBoard() {
 						    	</c:choose>
 							</td>
 							<td class="text-end">
-								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/notice/list.do?${query}';">리스트</button>
+								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/notice.do?subjectNo=${subjectNo}';">리스트</button>
 							</td>
 						</tr>
 					</table>

@@ -160,7 +160,7 @@ function searchList() {
 							
 							</div>
 								<div class=" col-2 text-end">
-										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/noticeWrite.do?subjectNo=${subjectNo}">글올리기</button>
+										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/noticeWrite.do?subjectNo=${subjectNo}';">글올리기</button>
 								</div>
 						</div>
 						</div>
