@@ -5,14 +5,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('[data-toggle=popover]').popover({
-			html : true,
-			content: function() {
-		        return $('#popover_content_wrapper').html();
-		      }
-		});
-	})
+$('#openModalBtn').on('click', function () {
+	$('#myModal').modal('show');
+});
+
+
 	
 	$(function() {
 		url = "${pageContext.request.contextPath}/messege/count.do";
@@ -27,8 +24,8 @@
 		$.post(url, null, function(data) {
 			let count = data.count;
 			$(".alert-count").html(data.count);
-			if(count>=1){
-			$(".alert-list").html("알람이 있습니다");
+			if (count >= 1) {
+				$(".alert-list").html("알람이 있습니다");
 			}
 		}, "json");
 	});
@@ -80,16 +77,27 @@
 
 
 						<li class="nav-item">
-						<a role="button" class="position-relative nav-link" data-toggle="popover"
-							data-bs-placement="bottom" data-bs-title="알림">
-								&nbsp;&nbsp;<i class="fas fa-bell text-muted fa-lg"></i> 
+						<a id="openModalBtn" href="#" class="position-relative nav-link btn-modal" data-toggle="modal"> &nbsp;&nbsp;
+							<i class="fas fa-bell text-muted fa-lg"></i> 
 							<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger alert-count">
 							</span>
-							
-							<div id="popover_content_wrapper" style="display: none">
-    						<div class= "alert-list"></div>
+						</a> 
+						<!-- Modal -->
+							<div class="modal fade modal-dialog modal-dialog-scrollable" id="myModal" role="dialog"
+								data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+								aria-labelledby="staticBackdropLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="staticBackdropLabel">Modal
+												title</h5>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">...</div>
+									</div>
+								</div>
 							</div>
-						</a>
 						</li>
 
 

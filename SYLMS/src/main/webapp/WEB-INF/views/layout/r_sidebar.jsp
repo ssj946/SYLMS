@@ -23,20 +23,12 @@ function ajaxFun(url, method, query, dataType, fn) {
 	});
 }
 
-$(function() {
-	url = "${pageContext.request.contextPath}/r_sidebar/todo.do";
-	$.post(url, null, function(data) {
-		let todo = data.todo;
-		$(".todoList").html(data.todo);
-	}, "json");
-});
 
-
-$(function () {
+$(function () {	
+	let url = "${pageContext.request.contextPath}/r_sidebar/todo.do";
+	let query = "assignmentName="+assignmentName+"&dday="+dday;
 	const fn = function todo(data){
 		let out;
-		let url = "${pageContext.request.contextPath}/r_sidebar/todo.do";
-		let query = "assignmentName="+assignmentName+"dday="+dday;
 		for(let item of data.todolist){
 			let assignmentName = item.assignmentName;
 			let dday = item.dday;
@@ -50,7 +42,6 @@ $(function () {
 		}
 		$(".todoList").append(out);		
 	}
-	ajaxFun(url, "GET", query, "JSON", fn);
 });
 
 
