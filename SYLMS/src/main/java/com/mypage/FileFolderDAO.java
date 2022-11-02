@@ -212,7 +212,7 @@ public class FileFolderDAO {
 					+ " WHERE r.studentCode = ? AND TO_CHAR(submitDate,'YYYY') = ? ";
 					
 					if ( keyword != null ) {
-						sql += " AND INSTR(s_name, ?) >= 1 ";
+						sql += " >= AND INSTR(s_name, ?) 1 ";
 		
 					} 
 					

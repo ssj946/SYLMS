@@ -20,7 +20,7 @@
 			<ul style="list-style: none;">
 				<li><a href="${pageContext.request.contextPath}/mypage/pwd.do" class="nav-link text-white p-3 mb-2 current">개인정보관리</a></li>
 				<c:if test="${fn:length(sessionScope.member.userId) == 8}">
-				<li><a href="${pageContext.request.contextPath}/mypage/file.do" class="nav-link text-white p-3 mb-2 current">올린파일함</a></li>
+				<li><a href="${pageContext.request.contextPath}/file/file.do" class="nav-link text-white p-3 mb-2 current">올린파일함</a></li>
 				</c:if>
 				
 				<li><a href="${pageContext.request.contextPath}/schedule/schedule.do" class="nav-link text-white p-3 mb-2 current">강의목록</a></li>

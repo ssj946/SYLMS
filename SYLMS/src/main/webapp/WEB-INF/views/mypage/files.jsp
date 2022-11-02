@@ -43,7 +43,7 @@
 								<div class="d-flex justify-content-center align-items-center">
 									<div class="s-1 p-1">
 										<select class="form-select" name="year" id="syear">
-											<option value="2023">2023년</option>
+											<option value="2022">2022년</option>
 										</select>
 									</div>
 									<div class="col-auto p-1">

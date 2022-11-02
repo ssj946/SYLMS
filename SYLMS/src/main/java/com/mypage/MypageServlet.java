@@ -50,7 +50,7 @@ public class MypageServlet extends MyUploadServlet {
 			pwdSubmit(req, resp);
 		} else if (uri.indexOf("update_ok.do") != -1) {
 			updateSubmit(req, resp);
-		} else if (uri.indexOf("file.do") != -1) {
+		}else if (uri.indexOf("file.do") != -1) {
 			fileuploadForm(req, resp);
 		} else if (uri.indexOf("class.do") != -1) {
 			scheduleForm(req, resp);
@@ -173,17 +173,6 @@ public class MypageServlet extends MyUploadServlet {
 	protected void fileuploadForm(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo) session.getAttribute("member");
-
-		String cp = req.getContextPath();
-		if (info == null) {
-			resp.sendRedirect(cp + "/member/login.do");
-			return;
-		}
-
-		String path = "/WEB-INF/views/mypage/files.jsp";
-		forward(req, resp, path);
 
 	}
 

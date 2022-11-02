@@ -1,6 +1,7 @@
 package com.mypage;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -60,9 +61,10 @@ public class FileFolderServlet extends MyUploadServlet {
 			resp.sendRedirect(cp + "/member/login.do");
 			return;
 		}
+		
 		String root = session.getServletContext().getRealPath("/");
 		pathname = root + "uploads" + File.separator + "assignment";
-
+        
 			
 						
 		try {
@@ -79,10 +81,14 @@ public class FileFolderServlet extends MyUploadServlet {
 
 			int tyear = Integer.parseInt(year);
 
+		
+			
 			String keyword = req.getParameter("keyword");
 			if (keyword == null) {
 				keyword = "";
 			}
+			
+		
 
 			// GET방식이라 디코딩
 			if (req.getMethod().equalsIgnoreCase("GET")) {
@@ -99,9 +105,9 @@ public class FileFolderServlet extends MyUploadServlet {
 			String id = info.getUserId();
 			
 			if(keyword.length() != 0) {
-				dataCount = dao.dataCount(tyear, id, keyword);
+				dataCount = dao.dataCount(tyear, info.getUserId(), keyword);
 			} else {
-				dataCount = dao.dataCount(tyear, id, keyword);
+				dataCount = dao.dataCount(tyear, info.getUserId());
 
 			}
 
@@ -120,9 +126,9 @@ public class FileFolderServlet extends MyUploadServlet {
 			List<FileFolderDTO> flist = null;
 
 			if (keyword.length() != 0) {
-				flist = dao.listfile(offset, size, tyear, id, keyword);
+				flist = dao.listfile(offset, size, tyear, info.getUserId(), keyword);
 			} else {
-				flist = dao.listfile(offset, size, tyear, id);
+				flist = dao.listfile(offset, size, tyear, info.getUserId());
 			}
 			
 		
