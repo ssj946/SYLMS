@@ -37,6 +37,9 @@
 							<h5 class="card-header">파일함</h5>
 							<div class="card-body">
 							<!-- 검색버튼  -->
+							<form class="row" name="searchForm"
+										action="${pageContext.request.contextPath}/mypage/file.do"
+										method="post">
 								<div class="d-flex justify-content-center align-items-center">
 									<div class="s-1 p-1">
 										<select class="form-select" name="year" id="syear">
@@ -65,12 +68,12 @@
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach var="dto" items="${list}" varStatus="status">
+										<c:forEach var="dto" items="${flist}" varStatus="status">
 											<tr>
-												<td>${dto.year}</td>
-												<td>${dto.semester}</td>
+												<td>${dto.fname}</td>
+												<td>${dto.subjectName}</td>
 												<td>${dto.department}</td>
-												<td>${dto.subject}</td>
+												<td>${dto.submitDate}</td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -79,7 +82,7 @@
 								<div class="page-navigation">${dataCount == 0 ? "신청할 과목이 없습니다." : paging}
 								</div>
 
-
+                             </form>
 							</div>
 						</div>
 					</div>

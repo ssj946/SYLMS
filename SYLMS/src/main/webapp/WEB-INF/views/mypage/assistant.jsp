@@ -48,8 +48,8 @@
 
 										<div class="s-1 p-1" >
 											<select class="form-select" name="semester" id="semester">
-												<option value="1">1학기</option>
-												<option value="2">2학기</option>
+												<option value="1" ${tsemester==1?"selected='selected'":""}>1학기</option>
+												<option value="2" ${tsemester==2?"selected='selected'":""}>2학기</option>
 											</select>
 										</div>
 										<div class="col-auto p-1">
