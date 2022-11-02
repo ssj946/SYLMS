@@ -69,7 +69,25 @@ $(function(){
 							<p> 3. The English title will be shown when you place your mouse pointer on Korean subject name.</p>
 						</div>
 					</div>
+					
+							 <p>
+                <input type="file" name="file_0"/>
+            </p> 
+			<table border = "1" style="border-collapse : collapse">
+				<tr>
+					<td style="background-color : #ede7e7"> 강의소개영상  </td>
+					<td>
+						<select id="movie_select" onchange="play();">
+			<!--select의 option에 변화가 생기면 onchange에 있는 play()가 실행됨   -->
+							<option>:::VIDEO PLAYLIST:::</option>
+						</select>				
+					</td>
+				</tr>	
+			</table>
 					<hr>
+					<div align="center">
+				<video src="" id="my_video" width="320" height="240" controls></video>	
+		</div>
 					<form class="form-inline" action="">
 						<div class="form-group">
 							<label>학년도 학기</label>
@@ -87,10 +105,6 @@ $(function(){
 						</div>
 					</form>
 					<hr>
-					
-					<div class="body-main">
-		
-				
 				<table class="table">
 					<tr>
 						<td class="w-10 bg-light">과목명</td>
@@ -125,6 +139,12 @@ $(function(){
 						<td>${dto.finalRate}</td>						
 					</tr>
 				</table>
+        </div>				
+		<div class="col-lg-10 gap-3 ms-auto">
+					
+					<div class="body-main">
+		
+				
 					</div>																				
 </div>
 				
