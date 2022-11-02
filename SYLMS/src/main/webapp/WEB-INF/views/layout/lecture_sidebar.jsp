@@ -2,6 +2,7 @@
 <%@ page trimDirectiveWhitespaces ="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!-- 강의실 사이드바 -->		
 	<ul class="nav navbar-nav flex-column mt-3 text-white">
 		<li class="nav-item">
@@ -14,9 +15,16 @@
 				<div class="collapse navbar-collapse" id="lec_info" >
 				<ul>
 					<li class="nav-item">
-						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/syllabus/list.do?subjectNo=10045"> 
-						 <i class="fas fa-map  fa-lg mr-3"></i>&nbsp;수업계획서
-						 </a>
+						<c:if test="${fn:length(sessionScope.member.userId) == 8 }">
+							<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/syllabus/list.do?subjectNo=${subjectNo}"> 
+							 <i class="fas fa-map  fa-lg mr-3"></i>&nbsp;수업계획서
+							 </a>
+						</c:if>
+						<c:if test="${fn:length(sessionScope.member.userId) != 8 }">
+							<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/syllabus/listProfessor.do"> 
+							 <i class="fas fa-map  fa-lg mr-3"></i>&nbsp;수업계획서
+							 </a>
+						</c:if>						
 					</li>	
 				</ul>
 				</div>
@@ -34,8 +42,8 @@
 				<ul>
 					<li class="nav-item">
 						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/attend.do?subjectNo=${subjectNo}">
-						 <i class="fas fa-hand  fa-lg mr-3"></i>&nbsp;출석조회
-						 </a>
+					 		<i class="fas fa-hand  fa-lg mr-3"></i>&nbsp;출석조회
+					 	</a>
 					</li>
 					
 					<li class="nav-item">

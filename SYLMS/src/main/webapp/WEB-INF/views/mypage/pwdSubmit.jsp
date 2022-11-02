@@ -47,7 +47,7 @@ function sendOk() {
 					</div>
 
 					<!-- 본문 -->
-							<div class="col-xl-10 col-lg-9 col-md-8 ps-5">
+							<div class="col-xl-10 col-lg-9 col-md-8 ps-5" style="min-height:100vh">
 
 
 						<div  class="row justify-content-center h-50" >

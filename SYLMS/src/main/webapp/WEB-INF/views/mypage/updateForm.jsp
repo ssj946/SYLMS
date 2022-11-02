@@ -140,7 +140,7 @@ form .img-viewer {
 
 				<div class="row">&nbsp;</div>
 				<div class="row">
-					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1"
+					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1 style="min-height:100vh""
 						style="height: 100vh">
 
 						<!-- 왼쪽 사이드바 자리 -->
@@ -148,7 +148,7 @@ form .img-viewer {
 					</div>
 
 					<!-- 본문 -->
-					<div class="col-xl-10 col-lg-9 col-md-8">
+					<div class="col-xl-10 col-lg-9 col-md-8" style="min-height:100vh">
 						<div class="card pt-2 pb-2 ps-2 pe-2">
 							<h5 class="card-header">
 								<i class="bi bi-person-square"></i>${title}</h5>

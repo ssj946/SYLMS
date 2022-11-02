@@ -26,12 +26,12 @@
 			<div class="container-fluid">
 				<div class="row">&nbsp;</div>
 				<div class="row">
-					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1">
+					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1"  style="height: 100vh">
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 					</div>
 					<!-- 본문 -->
-					<div class="col-xl-10 col-lg-9 col-md-8">
+					<div class="col-xl-10 col-lg-9 col-md-8" style="min-height:100vh">
 						<c:if test="${fn:length(sessionScope.member.userId) == 8}">
 							<div class="card pt-2 pb-2 ps-2 pe-2" style="margin: 50px 0px;">
 								<h5 class="card-header">조교신청</h5>
