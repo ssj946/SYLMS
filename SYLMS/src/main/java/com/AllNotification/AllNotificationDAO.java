@@ -12,7 +12,7 @@ import com.util.DBConn;
 public class AllNotificationDAO {
 	private Connection conn = DBConn.getConnection();
 	
-	//관리자가 보낸 공지리스트 가져오기
+	//관리자가 보낸 공지리스트 가져오기 (지금으로부터 한달전까지)
 	public List<AllNotificationDTO> listAlert() {
 		List<AllNotificationDTO> list = new ArrayList<AllNotificationDTO>();
 		PreparedStatement pstmt = null;
@@ -20,9 +20,9 @@ public class AllNotificationDAO {
 		String sql;
 		
 		try {
-			sql = " SELECT noticeCode, content, reg_date "
+			sql = " SELECT noticeCode, content, TO_CHAR(reg_date, 'YYYY-MM-DD') AS reg_date "
 					+ " FROM notice "
-					+ " WHERE id = 'admin'"
+					+ " WHERE reg_date >= TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'YYYY-MM-DD') "
 					+ " ORDER BY noticeCode DESC ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -61,7 +61,7 @@ public class AllNotificationDAO {
 		return list;
 	}	
 	
-	//오늘날짜의 알림이 있으면 알림 표시
+	//읽지 않은 알림 갯수만 표시
 	public int alertCount() {
 		int result = 0;
 		PreparedStatement pstmt = null;
@@ -70,7 +70,7 @@ public class AllNotificationDAO {
 
 		try {
 			sql = "SELECT COUNT(*) FROM notice "
-					+ "WHERE TO_CHAR(reg_date,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')";
+					+ " WHERE readDate IS NULL ";
 			pstmt = conn.prepareStatement(sql);
 			
 			rs = pstmt.executeQuery();
@@ -97,5 +97,30 @@ public class AllNotificationDAO {
 		}
 
 		return result;
+	}
+	
+	//알림버튼 누르면 읽은날짜 넣기
+	public void readDate() throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+
+		try {
+			sql = "UPDATE notice SET readDate = SYSDATE ";
+			pstmt = conn.prepareStatement(sql);
+			
+			//pstmt.setString(1, noticeCode);
+			
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+		}
 	}
 }

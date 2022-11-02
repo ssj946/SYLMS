@@ -70,7 +70,7 @@ public class MainDAO {
 			
 		}
 		
-		//학생 - 할일 목록 가져오기 (기간은 현재주 일주일치, 불러올것은 과제)
+		//학생 - 할일 목록 가져오기 (불러올것은 과제, 기간은 디데이당일까지)
 		public List<MainDTO> assignmentList(String studentcode) {
 			List<MainDTO> list = new ArrayList<MainDTO>();
 			PreparedStatement pstmt= null;

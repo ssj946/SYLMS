@@ -47,7 +47,12 @@ public class AllNotificationServlet extends MyServlet {
 		// 알림내용출력	
 		
 		try {
+			//String noticeCode = req.getParameter("noticeCode");
+			
 			notiList = dao.listAlert();
+			
+			dao.readDate();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -81,5 +86,7 @@ public class AllNotificationServlet extends MyServlet {
 		PrintWriter out = resp.getWriter();
 		out.print(job.toString());
 	}
+	
+	
 
 }
