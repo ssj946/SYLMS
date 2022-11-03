@@ -7,9 +7,30 @@ public class ExamDTO {
 	private String s_time;
 	private String e_time;
 	private String gradeCode;
+	
+	private int grade;
+	private String subjectNo;
+	private String studentCode;
 
-
-
+	
+	public int getGrade() {
+		return grade;
+	}
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
+	public String getSubjectNo() {
+		return subjectNo;
+	}
+	public void setSubjectNo(String subjectNo) {
+		this.subjectNo = subjectNo;
+	}
+	public String getStudentCode() {
+		return studentCode;
+	}
+	public void setStudentCode(String studentCode) {
+		this.studentCode = studentCode;
+	}
 	public String getExamCode() {
 		return examCode;
 	}

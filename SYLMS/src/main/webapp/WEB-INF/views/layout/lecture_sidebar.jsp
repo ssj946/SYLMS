@@ -68,10 +68,16 @@
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/exam.do">
-						 <i class="fas fa-fire  fa-lg mr-3"></i>&nbsp;시험성적
+						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/exam/exam.do">
+						 <i class="fas fa-fire  fa-lg mr-3"></i>&nbsp;시험성적조회
 						 </a>
 					</li>		
+					
+					<li class="nav-item">
+						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/exam/check.do">
+						 <i class="fas fa-fire  fa-lg mr-3"></i>&nbsp;시험성적관리
+						 </a>
+					</li>
 				</ul>
 				</div>
 		</li>
