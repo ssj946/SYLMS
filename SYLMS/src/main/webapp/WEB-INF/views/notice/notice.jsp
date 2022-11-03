@@ -42,6 +42,8 @@ list-style: none;
 }
 
 
+
+
 </style>
 
 <script type="text/javascript">
@@ -88,17 +90,17 @@ function searchList() {
 						<h3><i class="fas fa-microphone fa-1x"></i> 공지사항 </h3>
 						
 				    </div>
-			        <div class="card-body">
-			        <p class="text-end">${dataCount}개(${page}/${total_page} 페이지)</p>
+			        <div class="card-body py-5">
+			        <p class="text-end m-0 pe-5">${dataCount}개(${page}/${total_page} 페이지)</p>
 			        <br>
-			        	<div class="row card-body">
+			        	<div class="row card-body px-5 py-0">
 						<table class= "table text-center">
 							<tr>
-								<th>번호</th>
-								<th class="w-75">제목</th>
-								<th>작성자</th>
-								<th>작성일</th>
-								<th>조회수</th>
+								<th style="width: 10%">번호</th>
+								<th style="width: 55%">제목</th>
+								<th style="width: 10%">작성자</th>
+								<th style="width: 15%">작성일</th>
+								<th style="width: 10%">조회수</th>
 							</tr>
 					
 						<c:forEach var="dto" items="${list}" varStatus="status">
@@ -125,7 +127,7 @@ function searchList() {
 							<div class="col-8">
 							<form name="searchForm" action="${pageContext.request.contextPath}/notice/notice.do" method="post">
 							<div class="row">
-								<div class="col-2 p-1">
+								<div class="col-3 p-1">
 									<select name="condition" class="form-select">
 										<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>
 										<option value="reg_date" ${condition=="reg_date"?"selected='selected'":""}>등록일</option>
@@ -134,7 +136,7 @@ function searchList() {
 									</select>
 								</div>
 								
-								<div class="col-9 p-1">
+								<div class="col-7 p-1">
 									<input type="text" name="keyword" value="${keyword}" class="form-control">
 								</div>
 								<div class="col-auto p-1">
@@ -153,13 +155,13 @@ function searchList() {
 							<br>
 							<br>
 							<div class="row">
-							<div class="col-2">
+							<div class="col-2 m-auto">
 								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/notice.do?subjectNo=${subjectNo}';">새로고침</button>
 							</div>
-							<div class="col-8 text-center">
+							<div class="col-8 text-center p-0">
 							
 							</div>
-								<div class=" col-2 text-end">
+								<div class=" col-2 text-end m-auto">
 										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/noticeWrite.do?subjectNo=${subjectNo}';">글올리기</button>
 								</div>
 						</div>

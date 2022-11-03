@@ -145,6 +145,7 @@ function deleteFile(fileNo) {
 								<input type="hidden" name="subjectNo" value="${subjectNo}">
 								<c:if test="${mode=='update'}">
 									<input type="hidden" name="articleNo" value="${dto.articleNo}">
+									<input type="hidden" name="subjectNo" value="${dto.subjectNo}">
 									<input type="hidden" name="page" value="${page}">
 								</c:if>
 							</td>

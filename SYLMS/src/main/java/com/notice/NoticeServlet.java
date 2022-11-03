@@ -381,6 +381,7 @@ public class NoticeServlet extends MyUploadServlet {
 		NoticeDAO dao = new NoticeDAO();
 		
 		
+		
 		String subjectNo = req.getParameter("subjectNo");
 		String articleNo = req.getParameter("articleNo");
 		try {
@@ -446,6 +447,7 @@ public class NoticeServlet extends MyUploadServlet {
 		dto.setArticleNo(req.getParameter("articleNo"));
 		dto.setTitle(req.getParameter("title"));
 		dto.setContent(req.getParameter("content"));
+		dto.setSubjectNo(subjectNo);
 		
 		Map<String , String[]> map = doFileUpload(req.getParts(), pathname);
 		if(map != null) {
@@ -517,8 +519,8 @@ public class NoticeServlet extends MyUploadServlet {
 		String subjectNo = req.getParameter("subjectNo");
 
 		// 교수만 삭제
-		if (!info.getUserId().matches("\\d{8}")) {
-			resp.sendRedirect(cp + "/notice/list.do?subjectNo="+subjectNo);
+		if (!info.getUserId().matches("\\d{5}")) {
+			resp.sendRedirect(cp + "/notice/notice.do?subjectNo="+subjectNo);
 			return;
 		}
 		
@@ -543,7 +545,7 @@ public class NoticeServlet extends MyUploadServlet {
 
 			NoticeDTO dto = dao.readNotice(articleNo);
 			if (dto == null) {
-				resp.sendRedirect(cp + "/notice/list.do?" + query);
+				resp.sendRedirect(cp + "/notice/notice.do?" + query);
 				return;
 			}
 
