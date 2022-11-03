@@ -401,6 +401,7 @@ public class NoticeServlet extends MyUploadServlet {
 			List<NoticeDTO> listFile = dao.listNoticeFile(articleNo);
 			
 			req.setAttribute("dto", dto);
+			req.setAttribute("subjectNo", subjectNo);
 			req.setAttribute("listFile", listFile);
 			req.setAttribute("articleNo", articleNo);
 			
@@ -423,20 +424,20 @@ public class NoticeServlet extends MyUploadServlet {
 	SessionInfo info = (SessionInfo) session.getAttribute("member");
 	
 	String cp = req.getContextPath();
+	String subjectNo = req.getParameter("subjectNo");
 	
 	if(req.getMethod().equalsIgnoreCase("GET")) {
-		resp.sendRedirect(cp + "/notice/notice.do");
+		resp.sendRedirect(cp + "/notice/notice.do?subjectNo="+subjectNo);
 		return;
 	}
 	
 	if (!info.getUserId().matches("\\d{5}")) {
-		resp.sendRedirect(cp + "/notice/notice.do");
+		resp.sendRedirect(cp + "/notice/notice.do?subjectNo="+subjectNo);
 		return;
 	}
 	
 	NoticeDAO dao = new NoticeDAO();
 	
-	String subjectNo = req.getParameter("subjectNo");
 	String articleNo = req.getParameter("articleNo");
 	
 	try {
@@ -459,6 +460,7 @@ public class NoticeServlet extends MyUploadServlet {
 		e.printStackTrace();
 	}
 
+
 	resp.sendRedirect(cp + "/notice/notice.do?subjectNo=" + subjectNo+"&articleNo="+articleNo);
 	
 	}
@@ -469,19 +471,18 @@ public class NoticeServlet extends MyUploadServlet {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		String cp = req.getContextPath();
+		String subjectNo = req.getParameter("subjectNo");
 		
 		// 교수만
 		if (!info.getUserId().matches("\\d{5}")) {
-			resp.sendRedirect(cp + "/notice/notice.do");
+			resp.sendRedirect(cp + "/notice/notice.do?subjectNo="+subjectNo);
 			return;
 		}
 		
 		NoticeDAO dao = new NoticeDAO();
 		
-		String subjectNo = req.getParameter("subjectNo");
-		String articleNo = req.getParameter("articleNo");
 		try {
-			String articleNo1 = req.getParameter("articleNo");
+			String articleNo = req.getParameter("articleNo");
 			String fileNo = req.getParameter("fileNo");
 			
 			NoticeDTO dto = dao.readNoticeFile(fileNo);
@@ -494,12 +495,13 @@ public class NoticeServlet extends MyUploadServlet {
 			}
 			
 			// 다시 수정 화면으로
-			resp.sendRedirect(cp + "/notice/update.do?subjectNo=" + subjectNo+"&articleNo="+articleNo1);
+			resp.sendRedirect(cp + "/notice/update.do?subjectNo=" + subjectNo+"&articleNo="+articleNo);
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
+		String articleNo = req.getParameter("articleNo");
 		
 		resp.sendRedirect(cp + "/notice/notice.do?subjectNo=" + subjectNo+"&articleNo="+articleNo);
 		
@@ -512,17 +514,17 @@ public class NoticeServlet extends MyUploadServlet {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
 		String cp = req.getContextPath();
+		String subjectNo = req.getParameter("subjectNo");
 
 		// 교수만 삭제
 		if (!info.getUserId().matches("\\d{8}")) {
-			resp.sendRedirect(cp + "/notice/list.do");
+			resp.sendRedirect(cp + "/notice/list.do?subjectNo="+subjectNo);
 			return;
 		}
 		
 		NoticeDAO dao = new NoticeDAO();
 
 		//String page = req.getParameter("page");
-		String subjectNo = req.getParameter("subjectNo");
 		String query = "subjectNo=" + subjectNo;
 		
 		try {

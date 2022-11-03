@@ -290,15 +290,6 @@ public class NoticeDAO {
 	}
 
 	
-	/**
-	 * 
-	 * @param subjectNo
-	 * @param offset
-	 * @param size
-	 * @param condition
-	 * @param keyword
-	 * @return
-	 */
 	// 검색에서 리스트
 	public List<NoticeDTO> listNotice(String subjectNo, int offset, int size, String condition, String keyword) {
 		List<NoticeDTO> list = new ArrayList<NoticeDTO>();
@@ -734,7 +725,7 @@ public class NoticeDAO {
 
 	}
 
-	// 파일 첨부 보기
+	// 파일 첨부 보기 완료
 	public List<NoticeDTO> listNoticeFile(String articleNo) {
 		List<NoticeDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
@@ -780,7 +771,7 @@ public class NoticeDAO {
 		return list;
 	}
 	
-	// 파일첨부 읽어오기
+	// 파일첨부 읽어오기 완료
 	public NoticeDTO readNoticeFile(String fileNo) {
 		NoticeDTO dto = null;
 		PreparedStatement pstmt = null;
@@ -799,7 +790,6 @@ public class NoticeDAO {
 				dto = new NoticeDTO();
 
 				dto.setFileNo(rs.getString("fileNo"));
-//				dto.setNum(rs.getLong("num"));
 				dto.setSaveFilename(rs.getString("saveFilename"));
 				dto.setOriginalFilename(rs.getString("originalFilename"));
 			}
@@ -825,7 +815,7 @@ public class NoticeDAO {
 	}
 	
 	// 파일만 수정부분에서 삭제
-	public void deleteNoticeFile(String mode, String fileNo) throws SQLException {
+	public void deleteNoticeFile(String mode, String articleNo) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 
@@ -838,7 +828,7 @@ public class NoticeDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, fileNo);
+			pstmt.setString(1, articleNo);
 
 			pstmt.executeUpdate();
 
