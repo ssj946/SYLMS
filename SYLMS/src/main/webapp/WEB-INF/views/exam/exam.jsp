@@ -15,6 +15,16 @@ ul {
 	list-style: none;
 }
 </style>
+
+<script type="text/javascript">
+	function sendOk() {
+		const f = document.examForm;
+
+		f.action = "${pageContext.request.contextPath}/exam/send.do";
+		f.submit();
+	}
+</script>
+
 </head>
 
 <body>
@@ -46,67 +56,37 @@ ul {
 							<!-- 본문 -->
 							<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto ">
 								<div class="ms-1 me-1 pt-3 mt-3 mb-3">
-									<div class="card mb-3">
-										<!-- <c:if test="${fn:length(sessionScope.member.userId) != 8}"> -->
-										<div class="card-header fs-6 text-center p-2">
-											<h5 class="card-header">시험성적입력</h5>
-											<div class="card-body">
-												<form class="row" name="searchForm"
-													action="${pageContext.request.contextPath}/exam/exam.do"
-													method="post">
-													<div
-														class="d-flex justify-content-center align-items-center">
-														<div class="s-1 p-1">
-															<select class="form-select" name="year" id="syear">
-																<option value="2023">2023년</option>
-															</select>
+									<div class="card-body p-4 text-center">
+										<c:if test="${fn:length(sessionScope.member.userId) != 8}">
+											<div class="row">
+												<div class="col-3">&nbsp;</div>
+												<div class="col-6">
+													<div class="card">
+														<div class="card-header bg-navy bg-gradient text-white">
+															<h5>과목코드 입력</h5>
 														</div>
-														<div class="col-auto p-1">
-															<button type="submit" class="btn btn-light applybtn">
-																<i class="bi bi-search"></i>
-															</button>
-
+														<div class="card-body">
+															<br> <input class="form-control"
+																placeholder="과목코드를 입력하세요." id="attendCode_gen">
+															<br>
+															<button class="btn btn-outline-primary"
+																onclick="sendOk();">시험점수 입력하러가기</button>
+															<br>
 														</div>
 													</div>
-													<table class="table table-hover board-list ho-list"
-														style="margin-top: 50px;">
-														<thead class="table-light">
-															<tr style="text-align: center;">
-																<th class="" width="200px;">과목번호</th>
-																<th class="" width="200px;">학생학번</th>
-																<th class="prof" width="150px;">성적번호</th>
-																<th class="subname">시험종류</th>
-																<th class="" width="150px;">점수</th>																
-															</tr>
-														</thead>
-														<tbody>
-															<c:forEach var="dto" items="${list}" varStatus="status">
-																<tr>
-																	<td>${dto.year}</td>
-																	<td>${dto.semester}</td>
-																	<td>${dto.department}</td>
-																	<td>${dto.subject}</td>
-																	<td>${dto.professor}</td>
-																	<td><button type="submit" class="btn btn-light"
-																			onclick=" if(confirm('조교신청을 하시겠습니까?')) location.href='${pageContext.request.contextPath}/mypage/assistant_ok.do?subjectNo=${dto.subjectNo}&mode=apply';">신청</button></td>
-																</tr>
-															</c:forEach>
-														</tbody>
-													</table>
-													<div class="page-navigation">${dataCount == 0 ? "신청할 과목이 없습니다." : paging}
-													</div>
-
-												</form>
+												</div>
+												<div class="col-3">&nbsp;</div>
 											</div>
-										</div>
+											<br>
+											<br>
+										</c:if>
 									</div>
-									<!--</c:if>			-->
+									<!-- 본문 끝 -->
 								</div>
-								<!-- 본문 끝 -->
+
 							</div>
 
 						</div>
-
 					</div>
 				</div>
 			</div>

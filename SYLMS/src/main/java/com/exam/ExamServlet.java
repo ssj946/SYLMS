@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import com.member.SessionInfo;
 import com.util.MyServlet;
 
-
 @WebServlet("/exam/*")
 public class ExamServlet extends MyServlet {
 	private static final long serialVersionUID = 1L;
@@ -21,42 +20,62 @@ public class ExamServlet extends MyServlet {
 		req.setCharacterEncoding("utf-8");
 
 		String uri = req.getRequestURI();
-		
-		HttpSession session =req.getSession();
+
+		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
-		
-		if(info==null) {
-			forward(req,resp,"/WEB-INF/views/member/login.jsp");
+
+		if (info == null) {
+			forward(req, resp, "/WEB-INF/views/member/login.jsp");
 			return;
 		}
 
 		// uri에 따른 작업 구분
 		if (uri.indexOf("exam.do") != -1) {
-			examInsert(req, resp);
+			examForm(req, resp);
 		} else if (uri.indexOf("send.do") != -1) {
-			formSend(req, resp);		
-		}else if (uri.indexOf("check.do") != -1) {
-			examCheck(req, resp);		
+			fillForm(req, resp);
+		} else if (uri.indexOf("send_ok.do") != -1) {
+			formSend(req, resp);
+		} else if (uri.indexOf("check.do") != -1) {
+			examCheck(req, resp);
 		}
 	}
-		
-	
 
-		private void examInsert(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-			
-			forward(req, resp, "/WEB-INF/views/exam/exam.jsp");
+	private void examForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ExamDAO dao = new ExamDAO();
+		String cp =req.getContextPath();
+		
+		String subjectNo = req.getParameter("subjectNo");
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		if(info.getUserId().matches("\\d{8}")) {
+			resp.sendRedirect(cp + "/");
+			return;
 		}
 		
-		private void formSend(HttpServletRequest req, HttpServletResponse resp) {
-			
-			
-		}
+		try {
+			dao.codeList(subjectNo);
 
-		private void examCheck(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-			
-			forward(req, resp, "/WEB-INF/views/exam/examCheck.jsp");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		
+		resp.sendRedirect(cp + "/exam/send.do");
+	}
+
+	private void fillForm(HttpServletRequest req, HttpServletResponse resp) {
+
+	}
+
+	private void formSend(HttpServletRequest req, HttpServletResponse resp) {
+
+	}
+
+	private void examCheck(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		forward(req, resp, "/WEB-INF/views/exam/examCheck.jsp");
+	}
 
 }
-
-	
