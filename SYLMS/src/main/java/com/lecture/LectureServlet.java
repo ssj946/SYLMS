@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.tomcat.util.json.JSONParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -629,11 +628,13 @@ public class LectureServlet extends MyServlet {
 			JSONObject jobj = new JSONObject();
 			List<LectureDTO> mod_list = new ArrayList<>();
 			for(int i =0; i<jarr.length();i++) {
+				
 				jobj= jarr.getJSONObject(i);
+				
 				LectureDTO dto = new LectureDTO();
+				
 				dto.setAttendNo(jobj.getString("attendNo"));
 				dto.setStudentcode(jobj.getString("studentcode"));
-				System.out.println(dto.getStudentcode());
 				dto.setAttend_time(jobj.getString("attend_time"));
 				dto.setSubjectNo(subjectNo);
 				dto.setAttend_pass(jobj.getString("attend_pass"));

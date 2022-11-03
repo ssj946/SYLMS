@@ -1030,7 +1030,7 @@ public class LectureDAO {
 			
 			try {
 				sql ="UPDATE (SELECT eq_pass FROM ATTENDANCESUBMIT ats JOIN grades g ON ats.gradeCode = g.gradecode"
-						+ " WHERE attendNo =? AND studentcode = ? ) "
+						+ " WHERE attendNo = ? AND studentcode = ? ) "
 						+ " SET eq_pass = ?";
 				
 				pstmt = conn.prepareStatement(sql);
@@ -1043,7 +1043,6 @@ public class LectureDAO {
 				}
 				
 				pstmt.executeBatch();
-				System.out.println();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
