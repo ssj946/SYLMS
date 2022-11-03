@@ -233,14 +233,22 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
+			
 			sb.append(" SELECT articleNo, b.ID, title, hitCount, reg_date, a.name ");
 			sb.append(" FROM subject_bbs b ");
 			sb.append(" JOIN account a ON b.ID = a.ID ");
 			sb.append(" WHERE subjectNo = ?  ");
 			sb.append(" ORDER BY reg_date DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
-
-			
+			/*
+			sb.append(" SELECT b.articleNo, b.ID, title, hitCount, reg_date, f.fileNo ");
+			sb.append(" FROM subject_bbs b ");
+			sb.append(" JOIN account a ON b.ID = a.ID ");
+			sb.append(" JOIN subject_bbs_file f ON b.articleNo = f.articleNo ");
+			sb.append(" WHERE b.subjectNo = ?  ");
+			sb.append(" ORDER BY reg_date DESC ");
+			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
+*/
 			pstmt = conn.prepareStatement(sb.toString());
 			
 			pstmt.setString(1, subjectNo);
