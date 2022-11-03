@@ -39,30 +39,29 @@
 									<form class="row" name="searchForm"
 										action="${pageContext.request.contextPath}/mypage/assistant.do"
 										method="post">
-										<div class="s-1" style="display: inline-block; width: 150px;">
+										<div class="d-flex justify-content-center align-items-center">
+											<div class="s-1 p-1">
 											<select class="form-select" name="year" id="syear">
 												<option value="2023">2023년</option>
 											</select>
-										</div>
+										   </div>
 
-										<div class="s-1" style="display: inline-block; width: 150px;">
+										<div class="s-1 p-1" >
 											<select class="form-select" name="semester" id="semester">
-												<option value="1">1학기</option>
-												<option value="2">2학기</option>
+												<option value="1" ${tsemester==1?"selected='selected'":""}>1학기</option>
+												<option value="2" ${tsemester==2?"selected='selected'":""}>2학기</option>
 											</select>
 										</div>
-										<div class="col-auto p-1"
-											style="display: inline-block; width: 150px;">
+										<div class="col-auto p-1">
 											<input type="text" name="keyword" value="${keyword}"
 												class="form-control" placeholder="강좌명">
 										</div>
-										<div class="col-auto p-1"
-											style="display: inline-block; width: 150px;">
+										<div class="col-auto p-1">
 											<button type="submit" class="btn btn-light applybtn">
 											<i class="bi bi-search"></i></button>
 
 										</div>
-
+                                        </div>
 										<table class="table table-hover board-list ho-list"
 											style="margin-top: 50px;">
 											<thead class="table-light">

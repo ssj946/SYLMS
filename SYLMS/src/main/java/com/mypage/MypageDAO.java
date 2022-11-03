@@ -149,7 +149,7 @@ public class MypageDAO {
 
 	
 	
-	// 데이터 검색 기본 
+	// 데이터 검색 
 	public int dataCount(int tyear, int tsemester,  String keyword ) {
 		int result = 0;
 		PreparedStatement pstmt = null;

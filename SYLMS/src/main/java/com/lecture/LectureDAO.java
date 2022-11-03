@@ -746,6 +746,133 @@ public class LectureDAO {
 				}
 			}
 		}
+	//출석 코드 만들기
+		public void generate_attendcode(String subjectNo, int code) {
+			PreparedStatement pstmt = null;
+			String sql = "";
+			try {
+				conn.setAutoCommit(false);
+				sql = "INSERT INTO attendance (attendNo, attend_pass, subjectNo, gen_time) VALUES(attendance_seq.nextval, ?, ?, SYSDATE)";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setInt(1, code);
+				pstmt.setString(2, subjectNo);
+				
+				pstmt.executeUpdate();
+				pstmt.close();
+				
+				sql = "INSERT into ATTENDANCESUBMIT (at_submitNo, attendNo, eq_pass, attend_time, gradeCode) "
+						+ " select at_submitNo_seq.nextval, attendNo, '결석', SYSDATE, gradeCode  FROM grades g "
+						+ " JOIN ATTENDANCE a ON a.subjectNo = g.SUBJECTNO "
+						+ " WHERE a.subjectNo = ? AND TO_CHAR(gen_time,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD')";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setString(1, subjectNo);
+				pstmt.executeUpdate();
+				
+				conn.commit();
+				conn.setAutoCommit(true);
+				
+			} catch (Exception e) {
+				try {
+					conn.rollback();
+				} catch (Exception e2) {
+					e.printStackTrace();
+				}
+				
+				e.printStackTrace();
+			} finally {
+				if(pstmt!=null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+					}
+				}
+			}
+		}
+		
+
+	//최신 출석 내역 가져오기
+		public LectureDTO attending(String subjectNo) {
+			PreparedStatement pstmt = null;
+			String sql = "";
+			ResultSet rs = null;
+			LectureDTO dto = new LectureDTO();
+			try {
+				sql = "SELECT attendNo, attend_pass, gen_time FROM attendance WHERE subjectNo = ? AND SYSDATE<=end_time "
+						+ " ORDER BY attendNo DESC "
+						+ " FETCH FIRST 1 ROWS ONLY ";
+				pstmt =conn.prepareStatement(sql);
+				pstmt.setString(1, subjectNo);
+				rs=pstmt.executeQuery();
+				
+				if(rs.next()) {
+					
+					dto.setAttendNo(rs.getString("attendNo"));
+					dto.setAttend_pass(rs.getString("attend_pass"));
+					dto.setGen_time(rs.getString("gen_time"));
+				}
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		
+			return dto;
+		}
+		
+		//시험 성적입력
+		public void examInsert(LectureDTO dto, String subjectNo,String stuendtCode) throws SQLException{
+			PreparedStatement pstmt= null;
+			String sql;
+			try {
+				sql = "INSERT INTO exam (examCode, score, examType, s_time, e_time, gradeCode) "
+						+ " SELECT exam_seq.NEXTVAL, score, examType, s_time, e_time, gradeCode FROM grades g "
+						+ " WHERE a.subjectNo = ? AND stuendtCode = ? ";
+				
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setString(1, subjectNo);
+				pstmt.setString(2, stuendtCode);
+				pstmt.executeUpdate();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(pstmt!=null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+					}
+				}
+			}
+		}
+		
+		//시험 성적확인
+		public LectureDTO examCheck(String gradeCode) {
+			PreparedStatement pstmt = null;
+			String sql = "";
+			ResultSet rs = null;
+			LectureDTO dto = new LectureDTO();
+			try {
+				sql = "SELECT examCode, score, examType "
+						+ " FROM exam "
+						+ " WHERE gradeCode = ? "
+						+ " ORDER BY attendNo DESC "
+						+ " FETCH FIRST 1 ROWS ONLY ";
+				pstmt =conn.prepareStatement(sql);
+				pstmt.setString(1, gradeCode);
+				rs=pstmt.executeQuery();
+				
+				if(rs.next()) {
+					
+					dto.setExamCode(rs.getString("examCode"));
+					dto.setScore(Integer.parseInt(rs.getString("score")));
+					dto.setExamType(rs.getString("examType"));
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+			return dto;
+		}
 }
 
 

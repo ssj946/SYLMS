@@ -56,6 +56,8 @@ public class LectureServlet extends MyServlet {
 			contentDelete(req, resp);
 		} else if (uri.indexOf("attend.do") != -1) {
 			attendForm(req, resp);
+		}else if (uri.indexOf("attend_gen.do") != -1) {
+			attendGenerate(req, resp);
 		}
 	}
 
@@ -437,7 +439,8 @@ public class LectureServlet extends MyServlet {
 			req.setAttribute("credit", dto.getCredit());
 			req.setAttribute("syear", dto.getSyear());
 			
-			
+			LectureDTO dto2 = dao.attending(subjectNo);
+			req.setAttribute("dto", dto2);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -446,6 +449,36 @@ public class LectureServlet extends MyServlet {
 		
 		String path = "/WEB-INF/views/lecture/attend.jsp";
 		forward(req, resp, path);
+		
+	}
+	
+	protected void attendGenerate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		LectureDAO dao= new LectureDAO();
+		String cp =req.getContextPath();
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		if(info.getUserId().matches("\\d{8}")) {
+			resp.sendRedirect(cp + "/");
+			return;
+		}
+		
+		String subjectNo = req.getParameter("subjectNo");
+
+		
+		try {
+			double rd = Math.random();
+			
+			int code= (int) (rd*9001)+1000;
+			System.out.println(code);
+			dao.generate_attendcode(subjectNo, code);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		resp.sendRedirect(cp+"/lecture/attend.do?subjectNo="+subjectNo);
 		
 	}
 }
