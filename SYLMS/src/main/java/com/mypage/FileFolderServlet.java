@@ -104,7 +104,7 @@ public class FileFolderServlet extends MyUploadServlet {
 			if(keyword.length() != 0) {
 				dataCount = dao.dataCount(year, info.getUserId(), keyword);
 			} else {
-				dataCount = dao.dataCount(year, info.getUserId());
+				dataCount = dao.dataCount( info.getUserId());
 
 			}
 
@@ -125,7 +125,7 @@ public class FileFolderServlet extends MyUploadServlet {
 			if (keyword.length() != 0) {
 				flist = dao.listfile(offset, size, year, info.getUserId(), keyword);
 			} else {
-				flist = dao.listfile(offset, size, year, info.getUserId());
+				flist = dao.listfile(offset, size, info.getUserId());
 			}
 			
 		

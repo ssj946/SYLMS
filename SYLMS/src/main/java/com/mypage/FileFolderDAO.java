@@ -14,7 +14,7 @@ public class FileFolderDAO {
 	private Connection conn = DBConn.getConnection();
 	
 	//데이터 카운터 
-	public int dataCount(String year, String id ) {
+	public int dataCount(String id ) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -31,12 +31,12 @@ public class FileFolderDAO {
 					+ "ON am.assignmentNum  = a.assignmentNum "
 					+ "JOIN assignmentUploadFile au "
 					+ "ON am.assignmentNum  = au.assignmentNum "
-					+ "WHERE r.studentCode = ? AND TO_CHAR(submitDate,'YYYY') = ?  ";
+					+ "WHERE r.studentCode = ? ";
 
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, id);
-			pstmt.setString(2, year);
+		
 			
 
 			rs = pstmt.executeQuery();
@@ -127,7 +127,7 @@ public class FileFolderDAO {
 	}
 	
 	//리스트 
-	List<FileFolderDTO> listfile(int offset, int size, String year ,  String id) {
+	List<FileFolderDTO> listfile(int offset, int size, String id) {
 		List<FileFolderDTO> plist = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -144,7 +144,7 @@ public class FileFolderDAO {
 					+ " ON am.assignmentNum  = a.assignmentNum "
 					+ " JOIN assignmentUploadFile au "
 					+ " ON am.assignmentNum  = au.assignmentNum "
-					+ " WHERE r.studentCode = ? AND TO_CHAR(submitDate,'YYYY') = ? "
+					+ " WHERE r.studentCode = ? "
 					+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY "; 
 
 			
@@ -152,9 +152,8 @@ public class FileFolderDAO {
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, id);
-			pstmt.setString(2, year);
-			pstmt.setInt(3, offset);
-			pstmt.setInt(4, size);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, size);
 
 			rs = pstmt.executeQuery();
 
