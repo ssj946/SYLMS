@@ -224,13 +224,7 @@ public class NoticeDAO {
 		return result;
 	}
 	
-	/**
-	 * 
-	 * @param subjectNo
-	 * @param offset	건너뛸개수 ?개수를 건너뛰고 
-	 * @param size		가져올개수 몇개를 가져오겠읍니다
-	 * @return			게시글리스트
-	 */
+	
 	// 공지 리스트
 	public List<NoticeDTO> listNotice(String subjectNo, int offset, int size) {
 		List<NoticeDTO> list = new ArrayList<NoticeDTO>();
@@ -820,11 +814,14 @@ public class NoticeDAO {
 		String sql;
 
 		try {
+			/*
 			if (mode.equals("all")) {
 				sql = "DELETE FROM subject_bbs_file WHERE articleNo = ?";
 			} else {
 				sql = "DELETE FROM subject_bbs_file WHERE fileNo = ?";
-			}
+			}*/
+			
+			sql = "DELETE FROM subject_bbs_file WHERE fileNo = ?";
 			
 			pstmt = conn.prepareStatement(sql);
 			

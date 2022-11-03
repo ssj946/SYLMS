@@ -108,6 +108,9 @@ function searchList() {
 								<td>${dataCount - (page-1) * size - status.index}</td>
 								<td class="text-start">
 									<a href="${pageContext.request.contextPath}/notice/noticeArticle.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}" class="text-reset ps-4">${dto.title}</a>
+								<c:if test="${not empty dto.saveFilename}">
+									<img src="${pageContext.request.contextPath}/resources/images/paperclip.png" >
+								</c:if>	
 								<c:if test="${dto.gap<2}"><img src="${pageContext.request.contextPath}/resources/images/new.png" class="new"></c:if>
 								</td>
 								<td>${dto.name}</td>

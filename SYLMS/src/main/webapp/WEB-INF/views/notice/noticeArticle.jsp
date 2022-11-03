@@ -59,8 +59,8 @@ function deleteBoard() {
 			</div>
 			
 			<!-- 본문 -->
-				<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto">
-					<div class="ms-1 me-1 pt-3 mt-3 mb-5">
+				<div class="col-lg-10 gap-3 ms-auto">
+					<div class="ms-5 me-5 pt-3 mt-4 mb-5">
 					
 				<div class="body-title">
 					<h3><i class="fas fa-microphone fa-1x"></i> 공지사항 </h3>
@@ -72,7 +72,7 @@ function deleteBoard() {
 				
 						<thead>
 							<tr>
-								<td colspan="2" align="center">
+								<td colspan="2" align="center" style="font-weight: bold; font-size: medium;">
 									${dto.title}
 								</td>
 							</tr>
@@ -104,7 +104,7 @@ function deleteBoard() {
 							
 							
 							<tr>
-								<td colspan="2">
+								<td colspan="2" style="border-top-width:medium;  border-top-color: #5a5a5a;" >
 									이전글 :
 									<c:if test="${not empty preReadDto}">
 										<a href="${pageContext.request.contextPath}/notice/noticeArticle.do?subjectNo=${subjectNo}&articleNo=${preReadDto.articleNo}">${preReadDto.title}</a>

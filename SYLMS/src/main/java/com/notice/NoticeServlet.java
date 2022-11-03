@@ -159,6 +159,8 @@ public class NoticeServlet extends MyUploadServlet {
 				dto.setReg_date(dto.getReg_date().substring(0, 10));
 			}
 			
+			// 파일있으면 파일이미지
+			
 			String query = "";
 			if(keyword.length() != 0) {
 				query = "condition="+condition+"&keyword="+URLEncoder.encode(keyword, "utf-8");
