@@ -33,6 +33,7 @@ function ajaxFun(url, method, query, dataType, fn) {
 		data:query,
 		dataType:dataType,
 		success:function(data) {
+			console.log(data);
 			fn(data);
 		},
 		beforeSend:function(jqXHR) {
@@ -88,29 +89,45 @@ $(function(){
 	});
 	
 	$(".attend_btn").click(function(){
-		
-		const now = new Date();
-		let year = now.getFullYear();
-		let month = now.getMonth()+1; 
-		
-		if(month<10){
-			month = month+"";
-			month = 0+month;
+		let submitCode = $("#attendCode").val().trim();
+		if(!submitCode){
+			 $("#attendCode").focus();
+			 return false;
 		}
 		
-		let day = now.getDate();
 		
-		if(day<10){
-			day = day+"";
-			day = 0+day;
+		let url = "${pageContext.request.contextPath}/lecture/attend_ok.do?";
+		let query = "subjectNo=${subjectNo}&attendNo=${dto.attendNo}&submitCode="+submitCode;
+		
+		location.href=url+query;
+	});
+	
+	$(".btn_attend_list").click(function(){
+		let mode = $(this).val().trim();
+		let url="${pageContext.request.contextPath}/lecture/attend_list.do";
+		let query= "mode="+mode;
+		
+		const fn = function(data){
+			let out;
+			let page =1;
+			for(let item of data.list){
+				let subjectName = item.subjectName;
+				let studentcode = item.studentcode;
+				let attend_time = item.attend_time;
+				let attend_pass = item.attend_pass;
+				
+				out += "<tr class='attend_append'><td>"+page+"</td>";
+				out += "<td>"+subjectName+"</td>";
+				out += "<td>"+studentcode+"</td>";
+				out += "<td>"+attend_time+"</td>";
+				out += "<td>"+attend_pass+"</td></tr>";
+				page++;
+			}
+			$(".attend_append").remove();
+			$(".attend_list").append(out);
+			page=0;
 		}
-		
-		let date = year+"-"+month+"-"+day;
-		let h = now.getHours();
-		let m = now.getMinutes();
-		let s = now.getSeconds();
-		
-		date = date+" "+h+":"+m+":"+s;
+		ajaxFun(url, "GET", query, "JSON", fn);
 	});
 	
 });
@@ -208,7 +225,7 @@ $(function(){
 										<br>
 											<input class="form-control" placeholder="출석코드를 입력하세요." id="attendCode">
 										<br>
-											<button class="btn btn-outline-primary">출석하기</button>
+											<button class="btn btn-outline-primary attend_btn">출석하기</button>
 										<br>
 										</div>
 									</div>
@@ -222,9 +239,9 @@ $(function(){
 									<div class="col-2">&nbsp;</div>
 									<div class="col-8">
 									
-									<button class="btn"><i class="fas fa-check fa-3x text-success p-4"></i></button>
-									<button class="btn"><i class="fas fa-x fa-3x text-danger  p-4"></i></button>
-									<button class="btn"><i class="fas fa-person-running fa-3x text-warning  p-4"></i></button>
+									<button class="btn btn_attend_list" value="attend"><i class="fas fa-check fa-3x text-success p-4"></i></button>
+									<button class="btn btn_attend_list" value="absent"><i class="fas fa-x fa-3x text-danger  p-4"></i></button>
+									<button class="btn btn_attend_list" value="run"><i class="fas fa-person-running fa-3x text-warning  p-4"></i></button>
 
 									</div>
 									<div class="col-2">&nbsp;</div>
@@ -232,28 +249,18 @@ $(function(){
 								<div class="row">
 									<div class="col-2">&nbsp;</div>
 									<div class="col-8">&nbsp;
-										<c:if test="${empty list}">
+										<c:if test="${fn:length (sessionScope.member.userId) !=8}">
 										<h4>데이터가 없습니다.</h4>
 										</c:if>
-										<c:if test="${not empty list}">
-										<h4>${mode}회</h4>
-										<table class="table text-center">
+										<c:if test="${fn:length (sessionScope.member.userId) ==8}">
+										<table class="table text-center attend_list">
 											<tr>
 												<th style="width:5%">번호</th>
 												<th style="width:35%">강의명</th>
-												<th style="width:10%">교수명</th>
+												<th style="width:10%">학번</th>
 												<th style="width:40%">출석시간</th>
 												<th style="width:10%">처리</th>
 											</tr>
-										<c:forEach var="dto" items="list" varStatus="status">
-											<tr>
-												<td>페이징</td>
-												<td>${dto.subjectName}</td>
-												<td>${dto.professorname}</td>
-												<td>출석시간</td>
-												<td>처리</td>
-											</tr>
-										</c:forEach>
 										</table>
 										</c:if>
 									</div>									

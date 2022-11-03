@@ -27,7 +27,16 @@ private String attendNo;
 private String attend_pass;
 private String gen_time;
 
+private String attend_time;
 
+
+
+public String getAttend_time() {
+	return attend_time;
+}
+public void setAttend_time(String attend_time) {
+	this.attend_time = attend_time;
+}
 public String getAttendNo() {
 	return attendNo;
 }

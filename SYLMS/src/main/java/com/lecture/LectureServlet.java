@@ -58,6 +58,10 @@ public class LectureServlet extends MyServlet {
 			attendForm(req, resp);
 		}else if (uri.indexOf("attend_gen.do") != -1) {
 			attendGenerate(req, resp);
+		} else if (uri.indexOf("attend_ok.do") != -1) {
+			attend(req, resp);
+		} else if (uri.indexOf("attend_list.do") != -1) {
+			attendList(req, resp);
 		}
 	}
 
@@ -440,6 +444,7 @@ public class LectureServlet extends MyServlet {
 			req.setAttribute("syear", dto.getSyear());
 			
 			LectureDTO dto2 = dao.attending(subjectNo);
+			
 			req.setAttribute("dto", dto2);
 			
 		} catch (Exception e) {
@@ -479,6 +484,64 @@ public class LectureServlet extends MyServlet {
 		}
 		
 		resp.sendRedirect(cp+"/lecture/attend.do?subjectNo="+subjectNo);
+		
+	}
+	
+	protected void attend(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		LectureDAO dao= new LectureDAO();
+		String cp =req.getContextPath();
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		
+		String subjectNo = req.getParameter("subjectNo");
+		String attendNo = req.getParameter("attendNo");
+		String submitCode = req.getParameter("submitCode");
+		String studentCode = info.getUserId();
+		
+		try {
+			dao.attendSubmit(submitCode, studentCode, attendNo);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		resp.sendRedirect(cp+"/lecture/attend.do?subjectNo="+subjectNo);
+		
+	}
+	
+	protected void attendList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		LectureDAO dao= new LectureDAO();
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		String mode = req.getParameter("mode");
+		List<LectureDTO>list = null;
+		System.out.println(mode);
+		try {
+			if(mode.equals("attend")) {
+				list = dao.attendanceRecord_attend(info.getUserId());
+				
+			} else if (mode.equals("absent")) {
+				list = dao.attendanceRecord_absent(info.getUserId());
+				
+			} else if (mode.equals("run")) {
+				list = dao.attendanceRecord_run(info.getUserId());
+				
+			}
+			JSONObject job = new JSONObject();
+			job.put("list", list);
+			resp.setContentType("text/html;charset=utf-8");
+			PrintWriter out = resp.getWriter();
+			out.print(job.toString());
+			return;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		resp.sendError(400);
 		
 	}
 }
