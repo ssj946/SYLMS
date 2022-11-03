@@ -1,6 +1,7 @@
 package com.exam;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -65,12 +66,50 @@ public class ExamServlet extends MyServlet {
 		resp.sendRedirect(cp + "/exam/send.do");
 	}
 
-	private void fillForm(HttpServletRequest req, HttpServletResponse resp) {
-	
+	private void fillForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ExamDAO dao = new ExamDAO();
+		String cp =req.getContextPath();
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		String subjectNo = req.getParameter("subjectNo");
+		
+		if(info.getUserId().matches("\\d{8}")) {
+			resp.sendRedirect(cp + "/");
+			return;
+		}
+		
+		try {
+			ExamDTO dto = new ExamDTO();
+			
+			List<ExamDTO> list = dao.listBoard(subjectNo); 
+			
+			req.setAttribute("list", list);
+			
+			dto.setScore( Integer.parseInt(req.getParameter("score")));
+			dto.setExamType(req.getParameter("examType"));
+			dto.setGradeCode(req.getParameter("gradeCode"));
+			
+			dao.examInsert(dto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		forward(req, resp, "/WEB-INF/views/exam/examSend.jsp");
+		
 	}
 
-	private void formSend(HttpServletRequest req, HttpServletResponse resp) {
-
+	private void formSend(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ExamDAO dao = new ExamDAO();
+		String cp =req.getContextPath();
+		
+		try {
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		resp.sendRedirect(cp + "/messege/send_ok.do");
 	}
 
 	private void examCheck(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
