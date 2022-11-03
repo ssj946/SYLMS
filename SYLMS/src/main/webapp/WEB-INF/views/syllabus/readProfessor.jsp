@@ -2,6 +2,8 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,29 +36,14 @@
 							<h3 class="panel-title text-center">
 								<strong>수업전 수업계획서는 수정 반영은 포텔에서 해야합니다.</strong>
 							</h3>
-						</div>
-						
-						 <p>
-                <input type="file" name="file_0"/>
-            </p> 
-        </div>				
-		<div class="div1">
-			<table border = "1" style="border-collapse : collapse">
-				<tr>
-					<td style="background-color : #ede7e7"> 영상목록  </td>
-					<td>
-						<select id="movie_select" onchange="play();">
-			<!--select의 option에 변화가 생기면 onchange에 있는 play()가 실행됨   -->
-							<option>:::VIDEO PLAYLIST:::</option>
-						</select>				
-					</td>
-				</tr>	
-			</table>
-				<hr>	
-			<div align="center">
-				<video src="" id="my_video" width="320" height="240" controls></video>	
-		</div>
-		</div>
+						</div>				
+        </div>	
+								
+</body>
+        
+       				<body>	
+</body>			
+		
 		</body>					
 			<!-- 본문 -->
 		<div class="board" style="border-collapse : collapse">
