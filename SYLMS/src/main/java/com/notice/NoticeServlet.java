@@ -73,8 +73,8 @@ public class NoticeServlet extends MyUploadServlet {
 		}
 	}	
 
+	// 공지사항 리스트 완료
 	protected void noticeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 공지사항 리스트
 		NoticeDAO dao = new NoticeDAO();
 		String subjectNo = req.getParameter("subjectNo");
 		
@@ -197,6 +197,7 @@ public class NoticeServlet extends MyUploadServlet {
 		forward(req, resp, path);
 	}
 	
+	// 공지사항 작성폼 완료
 	protected void noticeWriteForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 공지사항 작성
 		HttpSession session = req.getSession();
@@ -207,7 +208,7 @@ public class NoticeServlet extends MyUploadServlet {
 		String size = req.getParameter("size");
 		
 		// 교수만 등록,,,
-		if (!info.getUserId().matches("\\d{8}")) {
+		if (!info.getUserId().matches("\\d{5}")) {
 			resp.sendRedirect(cp + "/");
 			return;
 		}
@@ -236,6 +237,7 @@ public class NoticeServlet extends MyUploadServlet {
 		forward(req, resp, "/WEB-INF/views/notice/noticeWrite.jsp");
 	}
 	
+	// 공지사항 작성보내기폼 완료
 	protected void noticeWriteSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 공지사항글 저장
 		NoticeDAO dao = new NoticeDAO();
@@ -252,7 +254,7 @@ public class NoticeServlet extends MyUploadServlet {
 		}
 		
 		// 교수만 등록,,,
-		if (!info.getUserId().matches("\\d{8}")) {
+		if (!info.getUserId().matches("\\d{5}")) {
 			resp.sendRedirect(cp + "/");
 			return;
 		}
@@ -282,7 +284,7 @@ public class NoticeServlet extends MyUploadServlet {
 		resp.sendRedirect(cp + "/notice/notice.do?subjectNo=" + subjectNo);
 	}
 	
-	
+	// 글 보기 폼 완료
 	protected void noticeArticleForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 공지사항 보기
 		String cp = req.getContextPath();
@@ -363,19 +365,147 @@ public class NoticeServlet extends MyUploadServlet {
 		resp.sendRedirect(cp + "/notice/notice.do?" + query);
 	}
 	
+	// 수정
 	protected void updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-	}
-	
-	protected void updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	
-
-	}
-	
-	protected void deleteFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		String cp = req.getContextPath();
+		
+		// 교수만 등록,,,
+		if (!info.getUserId().matches("\\d{5}")) {
+			resp.sendRedirect(cp + "/notice/notice.do");
+			return;
+		}
+		
+		NoticeDAO dao = new NoticeDAO();
+		
+		
+		String subjectNo = req.getParameter("subjectNo");
+		String articleNo = req.getParameter("articleNo");
+		try {
+			
+			NoticeDTO dto = dao.readNotice(articleNo);
+			if (dto == null) {
+				resp.sendRedirect(cp + "/notice/notice.do?subjectNo=" + subjectNo);
+				return;
+			}
+			
+			// 게시물을 올린 사용자가 아니면
+			if (! dto.getUserId().equals(info.getUserId())) {
+				resp.sendRedirect(cp + "/notice/notice.do?subjectNo=" + subjectNo);
+				return;
+			}
+			
+			// 파일
+			List<NoticeDTO> listFile = dao.listNoticeFile(articleNo);
+			
+			req.setAttribute("dto", dto);
+			req.setAttribute("listFile", listFile);
+			req.setAttribute("articleNo", articleNo);
+			
+			req.setAttribute("mode", "update");
+			
+			forward(req, resp, "/WEB-INF/views/notice/noticeWrite.jsp");
+			return;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		resp.sendRedirect(cp + "/notice/notice.do?subjectNo=" + subjectNo+"&articleNo="+articleNo);
+		
 		
 	}
 	
+	// 수정보내기
+	protected void updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	HttpSession session = req.getSession();
+	SessionInfo info = (SessionInfo) session.getAttribute("member");
+	
+	String cp = req.getContextPath();
+	
+	if(req.getMethod().equalsIgnoreCase("GET")) {
+		resp.sendRedirect(cp + "/notice/notice.do");
+		return;
+	}
+	
+	if (!info.getUserId().matches("\\d{5}")) {
+		resp.sendRedirect(cp + "/notice/notice.do");
+		return;
+	}
+	
+	NoticeDAO dao = new NoticeDAO();
+	
+	String subjectNo = req.getParameter("subjectNo");
+	String articleNo = req.getParameter("articleNo");
+	
+	try {
+		NoticeDTO dto = new NoticeDTO();
+		
+		dto.setArticleNo(req.getParameter("articleNo"));
+		dto.setTitle(req.getParameter("title"));
+		dto.setContent(req.getParameter("content"));
+		
+		Map<String , String[]> map = doFileUpload(req.getParts(), pathname);
+		if(map != null) {
+			String[] saveFiles = map.get("saveFilenames");
+			String[] originalFiles = map.get("originalFilenames");
+			dto.setSaveFiles(saveFiles);
+			dto.setOriginalFiles(originalFiles);
+		}
+		dao.updateNotice(dto);
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+
+	resp.sendRedirect(cp + "/notice/notice.do?subjectNo=" + subjectNo+"&articleNo="+articleNo);
+	
+	}
+	
+	// 파일만 지우기
+	protected void deleteFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		String cp = req.getContextPath();
+		
+		// 교수만
+		if (!info.getUserId().matches("\\d{5}")) {
+			resp.sendRedirect(cp + "/notice/notice.do");
+			return;
+		}
+		
+		NoticeDAO dao = new NoticeDAO();
+		
+		String subjectNo = req.getParameter("subjectNo");
+		String articleNo = req.getParameter("articleNo");
+		try {
+			String articleNo1 = req.getParameter("articleNo");
+			String fileNo = req.getParameter("fileNo");
+			
+			NoticeDTO dto = dao.readNoticeFile(fileNo);
+			if(dto != null) {
+				// 파일삭제
+				FileManager.doFiledelete(pathname, dto.getSaveFilename());
+				
+				// 테이블 파일 정보 삭제
+				dao.deleteNoticeFile("one", fileNo);
+			}
+			
+			// 다시 수정 화면으로
+			resp.sendRedirect(cp + "/notice/update.do?subjectNo=" + subjectNo+"&articleNo="+articleNo1);
+			return;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		resp.sendRedirect(cp + "/notice/notice.do?subjectNo=" + subjectNo+"&articleNo="+articleNo);
+		
+	}
+	
+	// 지우기 완료
 	protected void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException  {
 		// 삭제
 		HttpSession session = req.getSession();
@@ -391,13 +521,12 @@ public class NoticeServlet extends MyUploadServlet {
 		
 		NoticeDAO dao = new NoticeDAO();
 
-		String page = req.getParameter("page");
-		String size = req.getParameter("size");
-		String query = "page=" + page + "&size=" + size;
-
+		//String page = req.getParameter("page");
+		String subjectNo = req.getParameter("subjectNo");
+		String query = "subjectNo=" + subjectNo;
+		
 		try {
 			String articleNo = req.getParameter("articleNo");
-//			String subjectNo = req.getParameter("subjectNo");
 			String condition = req.getParameter("condition");
 			String keyword = req.getParameter("keyword");
 			if (condition == null) {
@@ -417,11 +546,11 @@ public class NoticeServlet extends MyUploadServlet {
 			}
 
 			// 파일삭제
-			/*List<NoticeDTO> listFile = dao.listNoticeFile(articleNo);
+			List<NoticeDTO> listFile = dao.listNoticeFile(articleNo);
 			for (NoticeDTO vo : listFile) {
 				FileManager.doFiledelete(pathname, vo.getSaveFilename());
 			}
-			dao.deleteNoticeFile("all", num);*/
+			dao.deleteNoticeFile("all", articleNo);
 
 			// 게시글 삭제
 			dao.deleteNotice(articleNo);
@@ -430,9 +559,10 @@ public class NoticeServlet extends MyUploadServlet {
 			e.printStackTrace();
 		}
 
-		resp.sendRedirect(cp + "/notice/notice.do?" + query);
+		resp.sendRedirect(cp + "/notice/notice.do?"+query);
 	}
 	
+	// 파일 다운로드 완료
 	protected void download(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 파일 다운로드 
 		NoticeDAO dao = new NoticeDAO();
@@ -457,9 +587,11 @@ public class NoticeServlet extends MyUploadServlet {
 		}
 	}
 	
+	// 리스트에서 지우기,,?
 	protected void deleteList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 	}
+	
 	
 	
 }	

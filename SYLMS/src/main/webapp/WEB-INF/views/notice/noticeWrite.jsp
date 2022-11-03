@@ -43,12 +43,11 @@ function sendOk() {
 
 
 <c:if test="${mode=='update'}">
-function deleteFile(fileNum) {
+function deleteFile(fileNo) {
 	if(! confirm("파일을 삭제 하시겠습니까 ?")) {
 		return;
 	}
-	let query = "articleNo=${dto.articleNo}&fileNo="+fileNo+"&page=${page}";
-	let url = "${pageContext.request.contextPath}/notice/deleteFile.do?" + query;
+	let url = "${pageContext.request.contextPath}/notice/deleteFile.do?articleNo=" + articleNo";
 	location.href = url;
 }
 </c:if>

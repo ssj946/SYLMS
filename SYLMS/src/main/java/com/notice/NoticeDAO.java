@@ -680,13 +680,15 @@ public class NoticeDAO {
 			pstmt = null;
 
 			if (dto.getSaveFiles() != null) {
-				sql = "INSERT INTO subject_bbs_File(fileNo, articleNo, saveFilename, originalFilename) VALUES (subject_bbs_file_seq.NEXTVAL, ?, ?, ?)";
+				sql = " INSERT INTO subject_bbs_file(fileNo, saveFilename, originalFilename, articleNo, bbsCode, subjectNo) "
+						+ " VALUES (subject_bbs_file_seq.NEXTVAL, ?, ? , ?, '00001', ? )";
 				pstmt = conn.prepareStatement(sql);
 				
-				for (int i = 0; i < dto.getSaveFiles().length; i++) {
-					pstmt.setString(1, dto.getArticleNo());
-					pstmt.setString(2, dto.getSaveFiles()[i]);
-					pstmt.setString(3, dto.getOriginalFiles()[i]);
+				for ( int i = 0; i< dto.getSaveFiles().length; i++) {
+					pstmt.setString(1, dto.getSaveFiles()[i]);
+					pstmt.setString(2, dto.getOriginalFiles()[i]);
+					pstmt.setString(3, dto.getArticleNo());
+					pstmt.setString(4, dto.getSubjectNo());
 					
 					pstmt.executeUpdate();
 				}
@@ -822,8 +824,8 @@ public class NoticeDAO {
 		return dto;
 	}
 	
-
-	public void deleteNoticeFile(String mode, String articleNo) throws SQLException {
+	// 파일만 수정부분에서 삭제
+	public void deleteNoticeFile(String mode, String fileNo) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 
@@ -836,7 +838,7 @@ public class NoticeDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, articleNo);
+			pstmt.setString(1, fileNo);
 
 			pstmt.executeUpdate();
 

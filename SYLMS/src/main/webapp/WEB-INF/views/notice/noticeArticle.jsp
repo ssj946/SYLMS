@@ -21,7 +21,7 @@ list-style: none;
 <c:if test="${sessionScope.member.userId==dto.userId || sessionScope.member.userId=='admin'}">
 function deleteBoard() {
     if(confirm("게시글을 삭제 하시 겠습니까 ? ")) {
-	    let query = "articleNo=${dto.articleNo}&${query}";
+	    let query = "articleNo=${dto.articleNo}&subjectNo=${subjectNo}";
 	    let url = "${pageContext.request.contextPath}/notice/delete.do?" + query;
     	location.href = url;
     }
@@ -127,7 +127,7 @@ function deleteBoard() {
 								
 								<c:choose>
 									<c:when test="${sessionScope.member.userId==dto.userId}">
-										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/notice/update.do?articleNo=${dto.articleNo}&page=${page}';">수정</button>
+										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/update.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}';">수정</button>
 									</c:when>
 									<c:otherwise>
 										<button type="button" class="btn btn-light" disabled="disabled">수정</button>
