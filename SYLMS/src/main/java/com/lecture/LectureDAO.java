@@ -752,6 +752,13 @@ public class LectureDAO {
 			String sql = "";
 			try {
 				conn.setAutoCommit(false);
+				sql ="DELETE FROM attendance WHERE subjectNo = ? AND TO_CHAR(gen_time,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD') ";
+						
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, subjectNo);
+				pstmt.executeUpdate();
+				pstmt.close();
+
 				sql = "INSERT INTO attendance (attendNo, attend_pass, subjectNo, gen_time) VALUES(LPAD(attendance_seq.nextval,8,'0'), ?, ?, SYSDATE)";
 				pstmt=conn.prepareStatement(sql);
 				pstmt.setInt(1, code);
@@ -770,7 +777,6 @@ public class LectureDAO {
 				
 				conn.commit();
 				conn.setAutoCommit(true);
-				
 			} catch (Exception e) {
 				try {
 					conn.rollback();
@@ -788,6 +794,7 @@ public class LectureDAO {
 					}
 				}
 			}
+			
 		}
 		
 
@@ -799,8 +806,7 @@ public class LectureDAO {
 			LectureDTO dto = new LectureDTO();
 			try {
 				sql = "SELECT attendNo, attend_pass, gen_time FROM attendance WHERE subjectNo = ? AND SYSDATE<=end_time "
-						+ " ORDER BY attendNo DESC "
-						+ " FETCH FIRST 1 ROWS ONLY ";
+						+ " ORDER BY attendNo DESC ";
 				pstmt =conn.prepareStatement(sql);
 				pstmt.setString(1, subjectNo);
 				rs=pstmt.executeQuery();
@@ -825,7 +831,7 @@ public class LectureDAO {
 			String sql = "";
 			try {
 				sql =" UPDATE( "
-						+ " SELECT a.attendno,eq_pass,attend_time, attend_pass, end_time,studentCode FROM ATTENDANCESUBMIT ats  "
+						+ " SELECT a.attendno, eq_pass, attend_time, attend_pass, end_time, studentCode FROM ATTENDANCESUBMIT ats  "
 						+ " JOIN attendance a ON ats.attendNo = a.ATTENDNO "
 						+ " JOIN grades g ON g.gradeCode = ats.GRADECODE "
 						+ " ) "
@@ -854,7 +860,7 @@ public class LectureDAO {
 						+ "        JOIN attendance a ON ats.attendNo = a.ATTENDNO "
 						+ "        JOIN grades g ON g.gradeCode = ats.GRADECODE "
 						+ "		   JOIN subject s ON s.subjectNo = g.subjectNo "
-						+ "        WHERE studentcode= ? AND EQ_pass = '출석' ";
+						+ "        WHERE studentcode= ? AND EQ_pass = '출석'";
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, studentCode);
@@ -922,7 +928,7 @@ public class LectureDAO {
 						+ "        JOIN attendance a ON ats.attendNo = a.ATTENDNO "
 						+ "        JOIN grades g ON g.gradeCode = ats.GRADECODE "
 						+ "		   JOIN subject s ON s.subjectNo = g.subjectNo "
-						+ "        WHERE studentcode= ? AND EQ_pass = '조퇴' ";
+						+ "        WHERE studentcode= ? AND EQ_pass = '조퇴'";
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, studentCode);
@@ -946,20 +952,22 @@ public class LectureDAO {
 		}
 		
 		// 출석 전체학생의 날짜별 명단 가져오기
-		public List<LectureDTO> attendanceRecord_all (String date) throws SQLException {
+		public List<LectureDTO> attendanceRecord_all (String subjectNo, String date) throws SQLException {
 			PreparedStatement pstmt = null;
 			String sql = "";
 			ResultSet rs=null;
 			List<LectureDTO> list = new ArrayList<>();
 			try {
 				sql =" SELECT A.ATTENDNO, AT_SUBMITNO, eq_pass, attend_time, subjectName, studentCode FROM ATTENDANCESUBMIT ats "
-						+ "        JOIN attendance a ON ats.attendNo = a.ATTENDNO "
-						+ "        JOIN grades g ON g.gradeCode = ats.GRADECODE "
-						+ "		   JOIN subject s ON s.subjectNo = g.subjectNo "
-						+ "        WHERE TO_CHAR(gen_time,'YYYY-MM-DD') = ?  ";
+						+ " JOIN attendance a ON ats.attendNo = a.ATTENDNO "
+						+ " JOIN grades g ON g.gradeCode = ats.GRADECODE "
+						+ " JOIN subject s ON s.subjectNo = g.subjectNo "
+						+ " WHERE TO_CHAR(gen_time,'YYYY-MM-DD') = ?  "
+						+ " AND g.subjectNo = ? ";
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, date);
+				pstmt.setString(2, subjectNo);
 				rs= pstmt.executeQuery();
 				
 				while(rs.next()) {
@@ -979,7 +987,67 @@ public class LectureDAO {
 			return list;
 		}
 		
+		// 출석 전체학생의 날짜별 명단 가져오기
+		public List<LectureDTO> attendanceRecord_update (String subjectNo, String date) throws SQLException {
+			PreparedStatement pstmt = null;
+			String sql = "";
+			ResultSet rs=null;
+			List<LectureDTO> list = new ArrayList<>();
+			try {
+				sql =" SELECT A.ATTENDNO, AT_SUBMITNO, eq_pass, attend_time, subjectName, studentCode FROM ATTENDANCESUBMIT ats "
+						+ " JOIN attendance a ON ats.attendNo = a.ATTENDNO "
+						+ " JOIN grades g ON g.gradeCode = ats.GRADECODE "
+						+ " JOIN subject s ON s.subjectNo = g.subjectNo "
+						+ " WHERE TO_CHAR(gen_time, 'YYYY-MM-DD') = ?  "
+						+ " AND g.subjectNo = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, date);
+				pstmt.setString(2, subjectNo);
+				rs= pstmt.executeQuery();
+				
+				while(rs.next()) {
+					LectureDTO dto = new LectureDTO();
+					dto.setAttendNo(rs.getString("attendNo"));
+					dto.setAttend_pass(rs.getString("eq_pass"));
+					dto.setAttend_time(rs.getString("attend_time"));
+					dto.setSubjectName(rs.getString("subjectName"));
+					dto.setStudentcode(rs.getString("studentCode"));
+					
+					list.add(dto);
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return list;
+		}
 		
+		// 출석 전체 수정
+		public void attendanceRecord_updateAll(List<LectureDTO> mod_list) throws SQLException {
+			PreparedStatement pstmt = null;
+			String sql = "";
+			
+			try {
+				sql ="UPDATE (SELECT eq_pass FROM ATTENDANCESUBMIT ats JOIN grades g ON ats.gradeCode = g.gradecode"
+						+ " WHERE attendNo =? AND studentcode = ? ) "
+						+ " SET eq_pass = ?";
+				
+				pstmt = conn.prepareStatement(sql);
+				for(LectureDTO dto:mod_list) {
+					pstmt.setString(1, dto.getAttendNo());
+					pstmt.setString(2,dto.getStudentcode());
+					pstmt.setString(3, dto.getAttend_pass());
+					
+					pstmt.addBatch();
+				}
+				
+				pstmt.executeBatch();
+				System.out.println();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
 }
 

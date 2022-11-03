@@ -33,7 +33,6 @@ function ajaxFun(url, method, query, dataType, fn) {
 		data:query,
 		dataType:dataType,
 		success:function(data) {
-			console.log(data);
 			fn(data);
 		},
 		beforeSend:function(jqXHR) {
@@ -78,6 +77,7 @@ $(function(){
 
 $(function(){
 	$("#attendCode_gen").val(${dto.attend_pass});
+	
 	
 	$(".attend_gen_btn").click(function(){
 		let url = "${pageContext.request.contextPath}/lecture/attend_gen.do?";
@@ -128,6 +128,8 @@ $(function(){
 			page=0;
 		}
 		ajaxFun(url, "GET", query, "JSON", fn);
+		
+		console.log(result_data);
 	});
 	
 });
@@ -203,7 +205,14 @@ $(function(){
 											<br>
 												<input class="form-control" placeholder="출석코드를 입력하세요." id="attendCode_gen" readonly="readonly">
 											<br>
+											<c:if test="${empty dto.attend_pass }">
 												<button class="btn btn-outline-primary attend_gen_btn">생성하기</button>
+											</c:if>
+											<c:if test="${not empty dto.attend_pass }">
+												<button class="btn btn-outline-primary attend_gen_btn" disabled>생성하기</button>
+											</c:if>
+												
+												
 											<br>
 											</div>
 										</div>
@@ -225,7 +234,7 @@ $(function(){
 										<br>
 											<input class="form-control" placeholder="출석코드를 입력하세요." id="attendCode">
 										<br>
-											<button class="btn btn-outline-primary attend_btn">출석하기</button>
+											<button class="btn btn-outline-primary attend_btn">출석하기</button>										
 										<br>
 										</div>
 									</div>

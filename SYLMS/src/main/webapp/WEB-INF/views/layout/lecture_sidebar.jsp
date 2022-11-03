@@ -45,12 +45,13 @@
 					 		<i class="fas fa-hand  fa-lg mr-3"></i>&nbsp;출석조회
 					 	</a>
 					</li>
-					
+					<c:if test="${fn:length(sessionScope.member.userId) !=8}">
 					<li class="nav-item">
-						<a class="nav-link  p-3 mb-2 current" href="#">
+						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/attend_manage.do?subjectNo=${subjectNo}">
 						 <i class="fas fa-list-check  fa-lg mr-3"></i>&nbsp;출석관리
 						 </a>
-					</li>		
+					</li>
+					</c:if>		
 				</ul>
 				</div>
 		</li>
@@ -68,16 +69,10 @@
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/exam/exam.do">
-						 <i class="fas fa-fire  fa-lg mr-3"></i>&nbsp;시험성적조회
+						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/exam.do">
+						 <i class="fas fa-fire  fa-lg mr-3"></i>&nbsp;시험성적
 						 </a>
 					</li>		
-					
-					<li class="nav-item">
-						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/exam/check.do">
-						 <i class="fas fa-fire  fa-lg mr-3"></i>&nbsp;시험성적관리
-						 </a>
-					</li>
 				</ul>
 				</div>
 		</li>

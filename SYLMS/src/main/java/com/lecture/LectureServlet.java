@@ -2,6 +2,7 @@ package com.lecture;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.util.json.JSONParser;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.member.SessionInfo;
@@ -56,12 +59,18 @@ public class LectureServlet extends MyServlet {
 			contentDelete(req, resp);
 		} else if (uri.indexOf("attend.do") != -1) {
 			attendForm(req, resp);
-		}else if (uri.indexOf("attend_gen.do") != -1) {
+		} else if (uri.indexOf("attend_gen.do") != -1) {
 			attendGenerate(req, resp);
 		} else if (uri.indexOf("attend_ok.do") != -1) {
 			attend(req, resp);
 		} else if (uri.indexOf("attend_list.do") != -1) {
 			attendList(req, resp);
+		}  else if (uri.indexOf("attend_manage.do") != -1) {
+			attendManager(req, resp);
+		}  else if (uri.indexOf("attend_manage_ok.do") != -1) {
+			attendList_all(req, resp);
+		} else if (uri.indexOf("attendance_modify.do") != -1) {
+			modify_attendance(req, resp);
 		}
 	}
 
@@ -538,12 +547,110 @@ public class LectureServlet extends MyServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
 		resp.sendError(400);
 		
 	}
+	
+	protected void attendManager(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		LectureDAO dao= new LectureDAO();
+		String subjectNo = req.getParameter("subjectNo");
+		
+		LectureDTO dto = new LectureDTO();
+
+		try {
+			dto= dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("credit", dto.getCredit());
+			req.setAttribute("syear", dto.getSyear());
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		
+		String path = "/WEB-INF/views/lecture/attend_check.jsp";
+		forward(req, resp, path);
+		
+	}
+	
+	protected void attendList_all(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		LectureDAO dao= new LectureDAO();
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		String cp = req.getContextPath();
+		
+		String subjectNo = req.getParameter("subjectNo");
+		
+		if(info.getUserId().length()==8) {
+			resp.sendRedirect(cp+"/lecture/classroom.do?subjectNo="+subjectNo);
+		}
+		
+		String date = req.getParameter("date");
+		System.out.println("날짜를 읽어왔습니다.");
+		List<LectureDTO>list = null;
+		
+		try {
+			list = dao.attendanceRecord_all(subjectNo, date);
+			
+			JSONObject job = new JSONObject();
+			job.put("list", list);
+			resp.setContentType("text/html;charset=utf-8");
+			PrintWriter out = resp.getWriter();
+			out.print(job.toString());
+			return;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		resp.sendError(400);
+		
+	}
+	
+	protected void modify_attendance(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		LectureDAO dao= new LectureDAO();
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		String cp = req.getContextPath();
+		
+		String subjectNo = req.getParameter("subjectNo");
+		
+		if(info.getUserId().length()==8) {
+			resp.sendRedirect(cp+"/lecture/classroom.do?subjectNo="+subjectNo);
+		}
+		
+		String list = req.getParameter("list");
+		
+		try {
+			JSONArray jarr =new JSONArray(list);
+			JSONObject jobj = new JSONObject();
+			List<LectureDTO> mod_list = new ArrayList<>();
+			for(int i =0; i<jarr.length();i++) {
+				jobj= jarr.getJSONObject(i);
+				LectureDTO dto = new LectureDTO();
+				dto.setAttendNo(jobj.getString("attendNo"));
+				dto.setStudentcode(jobj.getString("studentcode"));
+				System.out.println(dto.getStudentcode());
+				dto.setAttend_time(jobj.getString("attend_time"));
+				dto.setSubjectNo(subjectNo);
+				dto.setAttend_pass(jobj.getString("attend_pass"));
+				
+				mod_list.add(dto);
+			}
+			
+			dao.attendanceRecord_updateAll(mod_list);
+	       
+			return;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		resp.sendError(400);
+		
+	}
+	
 }
 
 

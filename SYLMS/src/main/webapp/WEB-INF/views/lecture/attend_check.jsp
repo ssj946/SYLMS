@@ -25,14 +25,15 @@ function goBack(){
 function login() {
 	location.href="${pageContext.request.contextPath}/member/login.do";
 }
-
-function ajaxFun(url, method, query, dataType, fn) {
+var list;
+function ajaxResult(url, method, query, dataType, fn) {
 	$.ajax({
 		type:method,
 		url:url,
 		data:query,
 		dataType:dataType,
 		success:function(data) {
+			list=data;
 			fn(data);
 		},
 		beforeSend:function(jqXHR) {
@@ -53,32 +54,98 @@ function ajaxFun(url, method, query, dataType, fn) {
 }
 
 $(function(){
-	const now = new Date();
-	
-	let year = now.getFullYear();
-	let month = now.getMonth()+1; 
-	
-	if(month<10){
-		month = month+"";
-		month = 0+month;
-	}
-	
-	let day = now.getDate();
-	
-	if(day<10){
-		day = day+"";
-		day = 0+day;
-	}
-	
-	let date = year+"-"+month+"-"+day;
-	$("#date").val(date);
-	
-});
-
-$(function(){
-	$("").click(function(){
+	$(".date_search").click(function(){
+		let date = $("#date").val().trim();
+		if(!date){
+			$("#date").focus();
+			return false;
+		}
+		let url="${pageContext.request.contextPath}/lecture/attend_manage_ok.do";
+		let query= "subjectNo="+${subjectNo}+"&date="+date;
+		
+		const fn = function(data){
+			let out;
+			let page =1;
+			for(let item of data.list){
+				let subjectName = item.subjectName;
+				let studentcode = item.studentcode;
+				let attend_time = item.attend_time;
+				let attend_pass = item.attend_pass;
+				
+				let attend;
+				let absent;
+				let run;
+				if(attend_pass == "출석"){
+					attend ="checked";
+				} else if(attend_pass == "결석"){
+					absent = "checked";
+				} else if(attend_pass == "조퇴"){
+					run = "checked";
+				}
+				
+				
+				out += "<tr class='attend_item'>";
+				out += "<td>"+page+"</td>";
+				out += "<td>"+subjectName+"</td>";
+				out += "<td><input class='form-check-input' name='attend"+page+"' "+attend+" value='출석' type='radio'></td>";
+				out += "<td><input class='form-check-input' name='attend"+page+"' "+absent+" value='결석' type='radio'></td>";
+				out += "<td><input class='form-check-input' name='attend"+page+"' "+run+" value='조퇴' type='radio'></td>";
+				out += "<td>"+studentcode+"</td>";
+				out += "<td>"+attend_time+"</td>";
+				out += "</tr>";
+				
+				page++;
+			}
+			$(".attend_item").remove();
+			$(".attend_list").append(out);
+			page=0;
+		}
+		ajaxResult(url, "GET", query, "JSON", fn);
+		
 		
 	});
+	
+$(function(){
+	$(".attend_save").click(function(){
+		let url = "${pageContext.request.contextPath}/lecture/attendance_modify.do";
+		let idx=1;
+		
+		for(let item of list.list){
+			let s= "attend";
+			s="input[name="+s+idx+"]:checked";
+			item.attend_pass = $(s).val();
+			idx++;
+		}
+		
+		query="list="+JSON.stringify(list.list)+"&subjectNo=${subjectNo}";
+		
+		$.ajax({
+			url:url,
+			type:"POST",
+			dataType:"JSON",
+			data: query,
+			crossDomain:true,
+			beforeSend:function(jqXHR) {
+				jqXHR.setRequestHeader("AJAX", true);
+			},
+			success : function(data){
+				alert('저장되었습니다.');
+			},
+			error: function(jqXHR){
+				if(jqXHR.status === 403) {
+					login();
+					return false;
+				} else if(jqXHR.status === 400) {
+					alert("요청 처리가 실패 했습니다.");
+					return false;
+				}
+				
+				console.log(jqXHR.responseText);
+			}
+		});
+	});
+	
+});
 	
 	
 });
@@ -134,58 +201,51 @@ $(function(){
 								<input class="form-control h-100" readonly value="${professorName}">
 							</div>
 							<label for="week" class="col-2 col-form-label text-center fw-bold fs-4">출석 날짜</label>
-							<div class="col-4 ">
-								<input class="form-control h-100" type="date" readonly id="date">
+							<div class="col-3 ">
+								<input class="form-control h-100" type="date" id="date">
+							</div>
+							<div class="col-1 text-center d-flex justify-content-center">
+								<button class="btn date_search"><i class="bi bi-search fa-lg"></i></button>
 							</div>
 							
 							</div>
 							<hr>
 							</div>
-							<div class="card-body p-4 text-center">
-								<br>
-								<br>
-								<div class="row">
-									<div class="col-2">&nbsp;</div>
-									<div class="col-8">
-										<button class="btn"><i class="fas fa-check fa-3x text-success p-4"></i></button>
-										<button class="btn"><i class="fas fa-x fa-3x text-danger  p-4"></i></button>
-										<button class="btn"><i class="fas fa-person-running fa-3x text-warning  p-4"></i></button>
-									</div>
-									<div class="col-2">&nbsp;</div>
-								</div>
+							<div class="card-body p-4 text-center">								
 								<div class="row">
 									<div class="col-2">&nbsp;</div>
 									<div class="col-8">&nbsp;
-										<c:if test="${empty list}">
-										<h4>데이터가 없습니다.</h4>
-										</c:if>
-										<c:if test="${not empty list}">
-										<h4>${mode}회</h4>
-										<table class="table text-center">
-											<tr>
+									<div class="card">
+										<div class="card-body">
+										<table class="table text-center attend_list">
+											<tr class="bg-navy bg-gradient text-white">
 												<th style="width:5%">번호</th>
-												<th style="width:35%">강의명</th>
-												<th style="width:10%">교수명</th>
-												<th style="width:40%">출석시간</th>
-												<th style="width:10%">처리</th>
+												<th style="width:30%">강의명</th>
+												<th style="width:5%"><i class="fas fa-check text-success fa-lg"></i></th>
+												<th style="width:5%"><i class="fas fa-x text-danger fa-lg"></i></th>
+												<th style="width:5%"><i class="fas fa-person-running text-warning fa-lg"></i></th>
+												<th style="width:20%">학번</th>
+												<th style="width:30%">출석시간</th>
 											</tr>
-										<c:forEach var="dto" items="list" varStatus="status">
-											<tr>
-												<td>페이징</td>
-												<td>${dto.subjectName}</td>
-												<td>${dto.professorname}</td>
-												<td>출석시간</td>
-												<td>처리</td>
+											<tr class="attend_item" >
+												<td class="attend_item" colspan="7"><br><br><br><h4>데이터가 없습니다.</h4><br><br><br></td>
 											</tr>
-										</c:forEach>
+
 										</table>
-										</c:if>
-									</div>									
+										</div>
+									</div>
+									<br>
+									<button class="d-block btn btn-primary ms-auto attend_save">저장</button>
+									</div>	
+									</div>								
 									<div class="col-2">&nbsp;</div>
 								</div>
+							
+								
+						
 								<br>
 								<br>
-							</div>
+							
 							</div>
 					</div>
 					<!-- 본문 끝 -->
