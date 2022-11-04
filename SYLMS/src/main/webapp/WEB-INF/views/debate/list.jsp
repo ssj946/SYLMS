@@ -106,11 +106,8 @@ function searchList() {
 							<tr>
 								<td>${dataCount - (page-1) * size - status.index}</td>
 								<td class="text-start">
-									<a href="${pageContext.request.contextPath}/notice/noticeArticle.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}" class="text-reset ps-4">${dto.title}</a>
-								<c:if test="${not empty dto.saveFilename}">
-									<img src="${pageContext.request.contextPath}/resources/images/paperclip.png" >
-								</c:if>	
-								<c:if test="${dto.gap<2}"><img src="${pageContext.request.contextPath}/resources/images/new.png" class="new"></c:if>
+									<a href="${pageContext.request.contextPath}/debate/article.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}" class="text-reset ps-4">${dto.title}</a>
+								<c:if test="${dto.gap<1}"><img src="${pageContext.request.contextPath}/resources/images/new.png" class="new"></c:if>
 								</td>
 								<td>${dto.name}</td>
 								<td>${dto.reg_date}</td>
@@ -127,7 +124,7 @@ function searchList() {
 							<div class="row text-center">
 							<div class="col-2"></div>
 							<div class="col-8">
-							<form name="searchForm" action="${pageContext.request.contextPath}/notice/notice.do" method="post">
+							<form name="searchForm" action="${pageContext.request.contextPath}/debate/list.do" method="post">
 							<div class="row">
 								<div class="col-3 p-1">
 									<select name="condition" class="form-select">
@@ -158,13 +155,13 @@ function searchList() {
 							<br>
 							<div class="row">
 							<div class="col-2 m-auto">
-								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/notice.do?subjectNo=${subjectNo}';">새로고침</button>
+								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/debate/list.do?subjectNo=${subjectNo}';">새로고침</button>
 							</div>
 							<div class="col-8 text-center p-0">
 							
 							</div>
 								<div class=" col-2 text-end m-auto">
-										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/noticeWrite.do?subjectNo=${subjectNo}';">글올리기</button>
+										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/debate/write.do?subjectNo=${subjectNo}';">글올리기</button>
 								</div>
 						</div>
 						</div>

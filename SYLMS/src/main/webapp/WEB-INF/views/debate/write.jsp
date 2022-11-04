@@ -37,20 +37,10 @@ function sendOk() {
         return;
     }
 
-	f.action = "${pageContext.request.contextPath}/notice/notice${mode}_ok.do"; 
+	f.action = "${pageContext.request.contextPath}/debate/${mode}_ok.do"; 
     f.submit();
 }
 
-
-<c:if test="${mode=='update'}">
-function deleteFile(fileNo) {
-	if(! confirm("파일을 삭제 하시겠습니까 ?")) {
-		return;
-	}
-	let url = "${pageContext.request.contextPath}/notice/deleteFile.do?articleNo=" + ${articleNo}+"&subjectNo=${subjectNo}";
-	location.href = url;
-}
-</c:if>
 </script>
 
 </head>
@@ -87,11 +77,11 @@ function deleteFile(fileNo) {
 				<div class="ms-5 me-5 pt-3 mt-4 mb-5">
 		
 			<div class="body-title">
-				<h3><i class="fas fa-microphone fa-1x"></i> 공지사항 작성 </h3>
+				<h3><i class="fa-solid fa-people-line fa-1x"></i> 토론의제 작성 </h3>
 			</div>
 			
 			<div class="body-main">
-				<form name="boardForm" method="post"  enctype="multipart/form-data">
+				<form name="boardForm" method="post">
 					<table class="table write-form mt-5">
 						<tr>
 							<td class="table-light col-sm-2" scope="row">제 목</td>
@@ -113,27 +103,6 @@ function deleteFile(fileNo) {
 								<textarea name="content" id="content" class="form-control">${dto.content}</textarea>
 							</td>
 						</tr>
-						
-						<tr>
-							<td class="table-light col-sm-2">첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
-							<td> 
-								<input type="file" name="selectFile" multiple="multiple" class="form-control">
-							</td>
-						</tr>
-						<c:if test="${mode=='update'}">
-							<c:forEach var="vo" items="${listFile}">
-								<tr>
-									<td class="table-light col-sm-2" scope="row">첨부된파일</td>
-									<td> 
-										<p class="form-control-plaintext">
-											<a href="javascript:deleteFile('${vo.fileNo}');"><i class="bi bi-trash"></i></a>
-											${vo.originalFilename}
-										</p>
-									</td>
-								</tr>
-							</c:forEach> 
-						</c:if>
-					
 					</table>
 					
 					<table class="table table-borderless">
@@ -141,11 +110,10 @@ function deleteFile(fileNo) {
 							<td class="text-center">
 								<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
 								<button type="reset" class="btn btn-light">다시입력</button>
-								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/notice.do?subjectNo=${subjectNo}';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
+								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/debate/list.do?subjectNo=${subjectNo}';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
 								<input type="hidden" name="subjectNo" value="${subjectNo}">
 								<c:if test="${mode=='update'}">
 									<input type="hidden" name="articleNo" value="${dto.articleNo}">
-									<input type="hidden" name="subjectNo" value="${dto.subjectNo}">
 									<input type="hidden" name="page" value="${page}">
 								</c:if>
 							</td>

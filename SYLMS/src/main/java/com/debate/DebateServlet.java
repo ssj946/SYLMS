@@ -498,8 +498,10 @@ public class DebateServlet extends MyServlet {
 		try {
 			ReplyDTO dto = new ReplyDTO();
 
-			// String articleNo = req.getParameter("articleNo");
+			
+			String articleNo = req.getParameter("articleNo");  
 			dto.setArticleNo("articleNo");
+			req.setAttribute("articleNo", articleNo);
 			dto.setUserId(info.getUserId());
 			dto.setContent(req.getParameter("content"));
 			String answer = req.getParameter("answer");
