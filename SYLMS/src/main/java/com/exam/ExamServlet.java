@@ -45,7 +45,7 @@ public class ExamServlet extends MyServlet {
 	private void examForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ExamDAO dao = new ExamDAO();
 		String cp = req.getContextPath();
-		
+
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
@@ -55,11 +55,7 @@ public class ExamServlet extends MyServlet {
 		}
 
 		try {
-			ExamDTO dto = new ExamDTO();			
-			
-			dto.setSubjectNo(req.getParameter("subjectNo"));
-			
-			dao.codeList(dto);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -74,27 +70,28 @@ public class ExamServlet extends MyServlet {
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
-
 		if (info.getUserId().matches("\\d{8}")) {
 			resp.sendRedirect(cp + "/lecture/main.do");
 			return;
 		}
 
-		try {	
+		try {
 			String subjectNo = req.getParameter("subjectNo");
-			
-			
-			
-			
+
+			ExamDTO dto = new ExamDTO();
+
+			dto.setSubjectNo(req.getParameter("subjectNo"));
+
+			dao.codeList(dto);
+
 			List<ExamDTO> list = null;
-			list= dao.listBoard(subjectNo);
+			list = dao.listBoard(subjectNo);
 
 			req.setAttribute("list", list);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+		}
 		forward(req, resp, "/WEB-INF/views/exam/examSend.jsp");
-		
 
 	}
 
@@ -102,48 +99,39 @@ public class ExamServlet extends MyServlet {
 		ExamDAO dao = new ExamDAO();
 		String cp = req.getContextPath();
 
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo) session.getAttribute("member");
-
-		if (info.getUserId().matches("\\d{8}")) {
-			resp.sendRedirect(cp + "/lecture/main.do");
-			return;
-		}
-		
 		if (req.getMethod().equalsIgnoreCase("GET")) {
 			resp.sendRedirect(cp + "/exam/exam.do");
 			return;
 		}
 
 		try {
+			String gradeCode = req.getParameter("gradeCode");
+			
 			ExamDTO dto = new ExamDTO();
 
 			dto.setScore(Integer.parseInt(req.getParameter("score")));
 			dto.setExamType(req.getParameter("examType"));
-			dto.setGradeCode(req.getParameter("gradeCode"));
 
-			dao.examInsert(dto);
+			dao.examInsert(dto, gradeCode);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		resp.sendRedirect(cp + "/exam/exam.do");
+		forward(req, resp, "/WEB-INF/views/exam/exam.jsp");
 	}
 
 	private void examCheck(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ExamDAO dao = new ExamDAO();
-		String cp = req.getContextPath();
 
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
-		
 
 		try {
 			List<ExamDTO> list = null;
 			list = dao.readExam(info.getUserId());
-			
+
 			req.setAttribute("list2", list);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

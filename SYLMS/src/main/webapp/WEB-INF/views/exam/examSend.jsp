@@ -19,16 +19,24 @@ ul {
 <script type="text/javascript">
 	function check() {
 		const f = document.searchForm;
-		
-		str = f.inputValue.value;
-		if (!f.inputValue.value.trim()) {
+
+		var extp = document.searchForm.extp.value;
+		var score = document.searchForm.score.value;
+
+		if (extp==null || expt=="") {
 			alert("시험종류를 입력 하세요. ");
-			f.inputValue.focus();
+			document.searchForm.extp.focus();
 			return;
 		}
-		
+
+		if (score=="") {
+			alert("시험종류를 입력 하세요. ");
+			document.searchForm.score.focus();
+			return;
+		}
+
 		f.action = "${pageContext.request.contextPath}/exam/send_ok.do";
-		f.submit();	
+		f.submit();
 	}
 </script>
 
@@ -68,29 +76,40 @@ ul {
 											<div class="card-header fs-6 text-center p-2">
 												<h5 class="card-header">시험성적입력</h5>
 												<div class="card-body">
-													<form class="row" name="searchForm" action="${pageContext.request.contextPath}/exam/send.do" method="post">
+													<form class="row" name="searchForm"
+														action="${pageContext.request.contextPath}/exam/send.do"
+														method="post">
 														<table class="table table-hover board-list ho-list"
 															style="margin-top: 50px;">
 															<thead class="table-light">
 																<tr style="text-align: center;">
-																	<th class="subNo" width="200px;">과목번호</th>
-																	<th class="stdNo" width="200px;">학생학번</th>
-																	<th class="grdNo" width="150px;">성적번호</th>
-																	<th class="extp">시험종류</th>
+																	<th class="subNo" width="150px;">과목번호</th>
+																	<th class="stdNo" width="150px;">학생학번</th>
+																	<th class="grdNo"width="150px;">성적번호</th>
+																	<th class="extp" width="50%">시험종류</th>
 																	<th class="score" width="150px;">점수</th>
 																</tr>
 															</thead>
 															<tbody>
 																<c:forEach var="dto" items="${list}" varStatus="status">
 																	<tr>
-																		<td><input type="text" name="subjectNo" value="${dto.subjectNo}" id="userId"
-																			class="form-control" style="width: 50%;" readonly="readonly"></td>
-																		<td><input type="text" name="studentCode" value="${dto.studentCode}" id="userId"
-																			class="form-control" style="width: 50%;" readonly="readonly"></td>
-																		<td><input type="text" name="gradeCode" value="${dto.gradeCode}" id="userId"
-																			class="form-control" style="width: 50%;" readonly="readonly"></td>
-																		<td><input type="text" name="inputValue" class="form-control" style="width: 50%;"></td>
-																		<td><input type="text" name="inputValue2" class="form-control" style="width: 50%;"></td>
+																		<td><input type="text" name="subjectNo"
+																			value="${dto.subjectNo}" id="userId"
+																			class="form-control" style="width: 60%;"
+																			readonly="readonly"></td>
+																		<td><input type="text" name="studentCode"
+																			value="${dto.studentCode}" id="userId"
+																			class="form-control" style="width: 60%;"
+																			readonly="readonly"></td>
+																		<td><input type="text" name="gradeCode"
+																			value="${dto.gradeCode}" id="userId"
+																			class="form-control" style="width: 60%;"
+																			readonly="readonly"></td>
+																		<td><input type="text" name="extp"
+																			class="form-control" value="${dto.examType }"></td>
+																		<td><input type="text" name="score"
+																			class="form-control" value="${dto.score }"
+																			style="width: 60%;"></td>
 																	</tr>
 																</c:forEach>
 															</tbody>
@@ -99,7 +118,8 @@ ul {
 														<table class="table">
 															<tr>
 																<td class="right">
-																	<button type="submit" class="btn" onclick="check()">시험 성적 등록</button>
+																	<button type="submit" class="btn" onclick="check()">시험
+																		성적 등록</button>
 																</td>
 															</tr>
 														</table>

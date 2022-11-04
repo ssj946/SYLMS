@@ -88,7 +88,7 @@ public class ExamDAO {
 		}	
 
 	// 시험 성적입력
-	public void examInsert(ExamDTO dto) throws SQLException {
+	public void examInsert(ExamDTO dto, String gradeCode) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		try {
@@ -97,7 +97,7 @@ public class ExamDAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, dto.getScore());
 			pstmt.setString(2, dto.getExamType());
-			pstmt.setString(3, dto.getGradeCode());
+			pstmt.setString(3,gradeCode);
 			pstmt.executeUpdate();
 
 		} catch (Exception e) {
