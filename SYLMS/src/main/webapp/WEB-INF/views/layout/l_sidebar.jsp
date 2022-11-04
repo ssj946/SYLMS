@@ -14,13 +14,13 @@
 		</li>
 		<li class="nav-item dropdown">
 			<button class="nav-link text-white p-3 mb-2 current navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#side_mypage" aria-controls="side_mypage" aria-expanded="false" aria-label="Toggle navigation">
-			 <i class="fas fa-address-card text-white fa-lg mr-3"></i>&nbsp;마이 페이지
+			 <i class="fas fa-address-card text-white fa-lg mr-3"></i>&nbsp;MY PAGE
 			</button>
 			<div class="collapse navbar-collapse" id="side_mypage" >
 			<ul style="list-style: none;">
-				<li><a href="${pageContext.request.contextPath}/mypage/pwd.do" class="nav-link text-white p-3 mb-2 current">개인정보관리</a></li>
+				<li><a href="${pageContext.request.contextPath}/mypage/pwd.do" class="nav-link text-white p-3 mb-2 current">개인정보 수정</a></li>
 				<c:if test="${fn:length(sessionScope.member.userId) == 8}">
-				<li><a href="${pageContext.request.contextPath}/file/file.do" class="nav-link text-white p-3 mb-2 current">올린파일함</a></li>
+				<li><a href="${pageContext.request.contextPath}/file/file.do" class="nav-link text-white p-3 mb-2 current">파일관리</a></li>
 				</c:if>
 				
 				<li><a href="${pageContext.request.contextPath}/schedule/schedule.do" class="nav-link text-white p-3 mb-2 current">강의목록</a></li>
@@ -36,6 +36,9 @@
 		</li>
 		<li class="nav-item">
 			<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/main.do"><i class="fas fa-chalkboard text-white fa-lg mr-3"></i>&nbsp;강의실</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/messege/receive.do"><i class="fa-regular fa-envelope"></i>&nbsp;메시지</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link text-white p-3 mb-2 current" href="#">
