@@ -13,7 +13,7 @@ public class ExamDAO {
 	private Connection conn = DBConn.getConnection();
 	
 	//해당 과목의 시험 기본폼 입력
-		public void codeList (String subjectNo){	
+		public void codeList (ExamDTO dto){	
 			PreparedStatement pstmt = null;
 			String sql;
 			
@@ -23,7 +23,7 @@ public class ExamDAO {
 						+ " WHERE g.subjectNo = ? ";
 
 				pstmt = conn.prepareStatement(sql);				
-				pstmt.setString(1, subjectNo);
+				pstmt.setString(1, dto.getSubjectNo());
 				pstmt.executeUpdate();
 				
 			} catch (Exception e) {

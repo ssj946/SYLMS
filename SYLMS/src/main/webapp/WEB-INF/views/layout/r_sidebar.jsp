@@ -29,12 +29,12 @@ $(function () {
 	let assignmentName = $("#asName").val();
 	let dday = $("#dday").val();
 	let url = "${pageContext.request.contextPath}/r_sidebar/todo.do";
-	let query = "assignmentName="+assignmentName+"&dday="+dday;
+	let query = "asName="+asName+"&dday="+dday;
 	
 	const fn = function todo(data){
 		let out="";
 		for(let item of data.todo){
-			let assignmentName = item.assignmentName;
+			let asName = item.asName;
 			let dday = item.dday;
 			
 			out += "<li class='list-group-item list-group-item-action d-flex justify-content-between align-items-start '>";

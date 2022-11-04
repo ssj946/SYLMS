@@ -19,9 +19,6 @@ ul {
 <script type="text/javascript">
 	function check() {
 		const f = document.updateForm;
-		var valueById = $('inputValue').val();
-		
-		f.action = "${pageContext.request.contextPath}/exam/exam.do";
 		f.submit();	
 	}
 </script>

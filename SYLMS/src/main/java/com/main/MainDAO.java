@@ -124,7 +124,7 @@ public class MainDAO {
 		}
 		
 		//학생 - 할일 목록 가져오기 (불러올것은 과제, 기간은 디데이당일까지)
-		public List<MainDTO> assignmentList(String studentcode) {
+		public List<MainDTO> assignmentList(String studentCode) {
 			List<MainDTO> list = new ArrayList<MainDTO>();
 			PreparedStatement pstmt= null;
 			String sql;
@@ -137,13 +137,13 @@ public class MainDAO {
 						+ " JOIN assignment ag ON ag.subjectNo = s.subjectNo "
 						+ " WHERE STUDENTcode = ?  AND TO_DATE(end_date, 'YYYY-MM-DD') - TO_DATE(SYSDATE, 'YYYY-MM-DD') >= 0 ";
 				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1,studentcode);
+				pstmt.setString(1,studentCode);
 				
 				rs= pstmt.executeQuery();
 				
 				while(rs.next()) {
 					MainDTO dto= new MainDTO();
-					dto.setAssignmentName(rs.getString("asName"));
+					dto.setAsName(rs.getString("asName"));
 					dto.setDday(Integer.parseInt(rs.getString("dday")));				
 					
 					list.add(dto);

@@ -62,7 +62,7 @@ public class MainDTO {
 	
 	
 	
-	private String assignmentName;
+	private String asName;
 	private int dday;
 	
 
@@ -72,11 +72,11 @@ public class MainDTO {
 	public void setDday(int dday) {
 		this.dday = dday;
 	}
-	public String getAssignmentName() {
-		return assignmentName;
+	public String getAsName() {
+		return asName;
 	}
-	public void setAssignmentName(String assignmentName) {
-		this.assignmentName = assignmentName;
+	public void setAsName(String asName) {
+		this.asName = asName;
 	}
 	
 }

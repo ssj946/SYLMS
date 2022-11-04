@@ -1,7 +1,6 @@
 package com.exam;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -58,20 +57,10 @@ public class ExamServlet extends MyServlet {
 		}
 
 		try {
-			dao.codeList(subjectNo);
-
-			List<ExamDTO> list = dao.listBoard(subjectNo);
-
-			req.setAttribute("list", list);
+			ExamDTO dto = new ExamDTO();			
 			
-			String query = "";
-			if (subjectNo.length() != 0) {
-				query = "subjectNo=" + subjectNo;
-			}
-			
-			String checkUrl = cp + "/messege/check.do?page=" + subjectNo;
-			checkUrl += "&" + query;
-
+			dto.setSubjectNo(subjectNo);
+			dao.codeList(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -94,7 +83,8 @@ public class ExamServlet extends MyServlet {
 		}
 
 		try {
-			List<ExamDTO> list = dao.listBoard(subjectNo);
+			List<ExamDTO> list = null;
+			list= dao.listBoard(subjectNo);
 
 			req.setAttribute("list", list);
 		} catch (Exception e) {
@@ -146,7 +136,8 @@ public class ExamServlet extends MyServlet {
 		
 
 		try {
-			List<ExamDTO> list = dao.readExam(info.getUserId());
+			List<ExamDTO> list = null;
+			list = dao.readExam(info.getUserId());
 			
 			req.setAttribute("list2", list);
 			
