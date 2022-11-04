@@ -12,7 +12,7 @@ import com.util.DBConn;
 public class ExamDAO {
 	private Connection conn = DBConn.getConnection();
 	
-	//해당 과목의 시험 기본폼 만들어주기
+	//해당 과목의 시험 기본폼 입력
 		public void codeList (String subjectNo){	
 			PreparedStatement pstmt = null;
 			String sql;
@@ -113,8 +113,8 @@ public class ExamDAO {
 	}
 	
 	//본인 시험성적 확인하기
-	public ExamDTO readExam(String userId) {
-		ExamDTO dto = null;
+	public List<ExamDTO> readExam(String userId) {
+		List<ExamDTO> list = new ArrayList<ExamDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
@@ -131,11 +131,13 @@ public class ExamDAO {
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				dto = new ExamDTO();
+				ExamDTO dto = new ExamDTO();
 				
 				dto.setScore(Integer.parseInt(rs.getString("score")));
 				dto.setStudentCode(rs.getString("studentCode"));
 				dto.setExamType(rs.getString("examType"));
+				
+				list.add(dto);
 			}
 			
 		} catch (Exception e) {
@@ -156,7 +158,7 @@ public class ExamDAO {
 			}
 		}
 		
-		return dto;
+		return list;
 	}
 	
 }

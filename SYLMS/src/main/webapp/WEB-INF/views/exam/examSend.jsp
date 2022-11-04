@@ -18,7 +18,11 @@ ul {
 
 <script type="text/javascript">
 	function check() {
-		window.location.href = "${pageContext.request.contextPath}/exam/send_ok.do";
+		const f = document.updateForm;
+		var valueById = $('inputValue').val();
+		
+		f.action = "${pageContext.request.contextPath}/exam/exam.do";
+		f.submit();	
 	}
 </script>
 
@@ -58,41 +62,29 @@ ul {
 											<div class="card-header fs-6 text-center p-2">
 												<h5 class="card-header">시험성적입력</h5>
 												<div class="card-body">
-													<form class="row" name="searchForm"
-														action="${pageContext.request.contextPath}/exam/send.do" method="post">
-														<div class="d-flex justify-content-center align-items-center">
-															<div class="s-1 p-1">
-																<select class="form-select" name="year" id="syear">
-																	<option value="2023">2023년</option>
-																</select>
-															</div>
-															<div class="col-auto p-1">
-																<button type="submit" class="btn btn-light applybtn">
-																	<i class="bi bi-search"></i>
-																</button>
-															</div>
-														</div>
+													<form class="row" name="searchForm" action="${pageContext.request.contextPath}/exam/send.do" method="post">
 														<table class="table table-hover board-list ho-list"
 															style="margin-top: 50px;">
 															<thead class="table-light">
 																<tr style="text-align: center;">
-																	<th class="" width="200px;">과목번호</th>
-																	<th class="" width="200px;">학생학번</th>
-																	<th class="prof" width="150px;">성적번호</th>
-																	<th class="subname">시험종류</th>
-																	<th class="" width="150px;">점수</th>
+																	<th class="subNo" width="200px;">과목번호</th>
+																	<th class="stdNo" width="200px;">학생학번</th>
+																	<th class="grdNo" width="150px;">성적번호</th>
+																	<th class="extp">시험종류</th>
+																	<th class="score" width="150px;">점수</th>
 																</tr>
 															</thead>
 															<tbody>
 																<c:forEach var="dto" items="${list}" varStatus="status">
 																	<tr>
-																		<td>${dto.year}</td>
-																		<td>${dto.semester}</td>
-																		<td>${dto.department}</td>
-																		<td>${dto.subject}</td>
-																		<td>${dto.professor}</td>
-																		<td><button type="submit" class="btn btn-light"
-																				onclick="">신청</button></td>
+																		<td><input type="text" name="subjectNo" value="${dto.subjectNo}" id="userId"
+																			class="form-control" style="width: 50%;" readonly="readonly"></td>
+																		<td><input type="text" name="studentCode" value="${dto.studentCode}" id="userId"
+																			class="form-control" style="width: 50%;" readonly="readonly"></td>
+																		<td><input type="text" name="gradeCode" value="${dto.gradeCode}" id="userId"
+																			class="form-control" style="width: 50%;" readonly="readonly"></td>
+																		<td><input type="text" id="inputValue" class="form-control" style="width: 50%;"></td>
+																		<td><input type="text" id="inputValue" class="form-control" style="width: 50%;"></td>
 																	</tr>
 																</c:forEach>
 															</tbody>
@@ -107,7 +99,7 @@ ul {
 														</table>
 													</form>
 												</div>
-											</div>									
+											</div>
 										</c:if>
 									</div>
 								</div>

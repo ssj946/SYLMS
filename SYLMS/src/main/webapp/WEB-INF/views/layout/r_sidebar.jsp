@@ -26,7 +26,7 @@ function ajaxFun(url, method, query, dataType, fn) {
 
 
 $(function () {	
-	let assignmentName = $("#assignmentName").val();
+	let assignmentName = $("#asName").val();
 	let dday = $("#dday").val();
 	let url = "${pageContext.request.contextPath}/r_sidebar/todo.do";
 	let query = "assignmentName="+assignmentName+"&dday="+dday;
@@ -39,7 +39,7 @@ $(function () {
 			
 			out += "<li class='list-group-item list-group-item-action d-flex justify-content-between align-items-start '>";
 			out += "<div class='ms-2 me-auto'>";
-			out += "<a href='#'>"+assignmentName+"</a></div>";
+			out += "<a href='#'>"+asName+"</a></div>";
 			out += "<span class='badge bg-primary rounded-pill'>"+"D-"+dday+"</span>";
 			out += "</li>";
 					

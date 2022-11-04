@@ -131,11 +131,11 @@ public class MainDAO {
 			ResultSet rs=null;
 			
 			try {
-				sql = " SELECT assignmentName, TO_DATE(endDate, 'YYYY-MM-DD') - TO_DATE(SYSDATE, 'YYYY-MM-DD') AS dday "
+				sql = " SELECT asName, TO_DATE(end_date, 'YYYY-MM-DD') - TO_DATE(SYSDATE, 'YYYY-MM-DD') AS dday "
 						+ " FROM REGISTERSUBJECT r JOIN subject s ON s.subjectNo=r.subjectNo  "
 						+ " JOIN account a ON a.id=studentcode "
 						+ " JOIN assignment ag ON ag.subjectNo = s.subjectNo "
-						+ " WHERE STUDENTcode = ?  AND TO_DATE(endDate, 'YYYY-MM-DD') - TO_DATE(SYSDATE, 'YYYY-MM-DD') >= 0 ";
+						+ " WHERE STUDENTcode = ?  AND TO_DATE(end_date, 'YYYY-MM-DD') - TO_DATE(SYSDATE, 'YYYY-MM-DD') >= 0 ";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1,studentcode);
 				
@@ -143,7 +143,7 @@ public class MainDAO {
 				
 				while(rs.next()) {
 					MainDTO dto= new MainDTO();
-					dto.setAssignmentName(rs.getString("assignmentName"));
+					dto.setAssignmentName(rs.getString("asName"));
 					dto.setDday(Integer.parseInt(rs.getString("dday")));				
 					
 					list.add(dto);

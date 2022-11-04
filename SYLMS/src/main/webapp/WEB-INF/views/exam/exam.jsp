@@ -17,12 +17,18 @@ ul {
 </style>
 
 <script type="text/javascript">
-	function sendOk() {
-		const f = document.examForm;
+function sendOk() {
+	const f = document.updateForm;
+	var valueById = $('#subjectNo').val();
+	
+	f.action = "${pageContext.request.contextPath}/exam/send.do";
+	f.submit();	
+}
 
-		f.action = "${pageContext.request.contextPath}/exam/send.do";
-		f.submit();
-	}
+function sendOk() {
+	const f = document.updateForm;
+	f.submit();
+}
 </script>
 
 </head>
@@ -62,17 +68,17 @@ ul {
 												<div class="col-3">&nbsp;</div>
 												<div class="col-6">
 													<div class="card">
+													<form name="updateForm" method="post" enctype="multipart/form-data">
 														<div class="card-header bg-navy bg-gradient text-white">
 															<h5>과목코드 입력</h5>
 														</div>
 														<div class="card-body">
-															<br> <input class="form-control"
-																placeholder="과목코드를 입력하세요." id="attendCode_gen">
+															<br> <input class="form-control" placeholder="과목코드를 입력하세요." id="subjectNo">
 															<br>
-															<button class="btn btn-outline-primary"
-																onclick="sendOk();">시험점수 입력하러가기</button>
+															<button type="button" class="btn btn-outline-primary codeBtn" id="sendOk">시험점수 입력하러가기</button>
 															<br>
 														</div>
+														</form>
 													</div>
 												</div>
 												<div class="col-3">&nbsp;</div>

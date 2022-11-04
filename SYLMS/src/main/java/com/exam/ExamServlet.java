@@ -1,6 +1,7 @@
 package com.exam;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -44,75 +45,114 @@ public class ExamServlet extends MyServlet {
 
 	private void examForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ExamDAO dao = new ExamDAO();
-		String cp =req.getContextPath();
-		
+		String cp = req.getContextPath();
+
 		String subjectNo = req.getParameter("subjectNo");
-		
-		HttpSession session =req.getSession();
+
+		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
-		
-		if(info.getUserId().matches("\\d{8}")) {
-			resp.sendRedirect(cp + "/");
+
+		if (info.getUserId().matches("\\d{8}")) {
+			resp.sendRedirect(cp + "/lecture/main.do");
 			return;
 		}
-		
+
 		try {
 			dao.codeList(subjectNo);
+
+			List<ExamDTO> list = dao.listBoard(subjectNo);
+
+			req.setAttribute("list", list);
+			
+			String query = "";
+			if (subjectNo.length() != 0) {
+				query = "subjectNo=" + subjectNo;
+			}
+			
+			String checkUrl = cp + "/messege/check.do?page=" + subjectNo;
+			checkUrl += "&" + query;
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		forward(req, resp, "/WEB-INF/views/exam/exam.jsp");
-		
+
 	}
 
 	private void fillForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ExamDAO dao = new ExamDAO();
-		String cp =req.getContextPath();
-		
-		HttpSession session =req.getSession();
+		String cp = req.getContextPath();
+
+		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
-		
+
 		String subjectNo = req.getParameter("subjectNo");
-		
-		if(info.getUserId().matches("\\d{8}")) {
-			resp.sendRedirect(cp + "/");
+
+		if (info.getUserId().matches("\\d{8}")) {
+			resp.sendRedirect(cp + "/lecture/main.do");
 			return;
 		}
-		
+
 		try {
-			ExamDTO dto = new ExamDTO();
-			
-			List<ExamDTO> list = dao.listBoard(subjectNo); 
-			
+			List<ExamDTO> list = dao.listBoard(subjectNo);
+
 			req.setAttribute("list", list);
-			
-			dto.setScore( Integer.parseInt(req.getParameter("score")));
-			dto.setExamType(req.getParameter("examType"));
-			dto.setGradeCode(req.getParameter("gradeCode"));
-			
-			dao.examInsert(dto);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}		
 		forward(req, resp, "/WEB-INF/views/exam/examSend.jsp");
 		
+
 	}
 
 	private void formSend(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ExamDAO dao = new ExamDAO();
-		String cp =req.getContextPath();
+		String cp = req.getContextPath();
+
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		if (info.getUserId().matches("\\d{8}")) {
+			resp.sendRedirect(cp + "/lecture/main.do");
+			return;
+		}
 		
+		if (req.getMethod().equalsIgnoreCase("GET")) {
+			resp.sendRedirect(cp + "/exam/exam.do");
+			return;
+		}
+
 		try {
+			ExamDTO dto = new ExamDTO();
+
+			dto.setScore(Integer.parseInt(req.getParameter("score")));
+			dto.setExamType(req.getParameter("examType"));
+			dto.setGradeCode(req.getParameter("gradeCode"));
+
+			dao.examInsert(dto);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		resp.sendRedirect(cp + "/exam/exam.do");
+	}
+
+	private void examCheck(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ExamDAO dao = new ExamDAO();
+		String cp = req.getContextPath();
+
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+
+		try {
+			List<ExamDTO> list = dao.readExam(info.getUserId());
+			
+			req.setAttribute("list2", list);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		resp.sendRedirect(cp + "/messege/send_ok.do");
-	}
-
-	private void examCheck(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		forward(req, resp, "/WEB-INF/views/exam/examCheck.jsp");
 	}
