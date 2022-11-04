@@ -62,8 +62,8 @@ public class ExamServlet extends MyServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		forward(req, resp, "/WEB-INF/views/exam/examSend.jsp");
 		
-		resp.sendRedirect(cp + "/exam/send.do");
 	}
 
 	private void fillForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -96,7 +96,7 @@ public class ExamServlet extends MyServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		forward(req, resp, "/WEB-INF/views/exam/examSend.jsp");
+		resp.sendRedirect(cp + "/exam/send_ok.do");
 		
 	}
 

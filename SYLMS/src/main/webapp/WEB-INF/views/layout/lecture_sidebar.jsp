@@ -74,9 +74,11 @@
 						 <i class="fas fa-fire  fa-lg mr-3"></i>&nbsp;시험성적입력
 						 </a>
 						 </c:if>
+						 <c:if test="${fn:length(sessionScope.member.userId) == 8 }">
 						 <a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/exam/exam_check.do">
 						 <i class="fas fa-fire  fa-lg mr-3"></i>&nbsp;시험성적확인
 						 </a>
+						 </c:if>
 					</li>		
 				</ul>
 				</div>
