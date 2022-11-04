@@ -62,7 +62,7 @@ public class ExamServlet extends MyServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		forward(req, resp, "/WEB-INF/views/exam/examSend.jsp");
+		forward(req, resp, "/WEB-INF/views/exam/exam.jsp");
 		
 	}
 
@@ -96,7 +96,7 @@ public class ExamServlet extends MyServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		resp.sendRedirect(cp + "/exam/send_ok.do");
+		forward(req, resp, "/WEB-INF/views/exam/examSend.jsp");
 		
 	}
 

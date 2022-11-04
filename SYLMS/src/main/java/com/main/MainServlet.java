@@ -39,13 +39,21 @@ public class MainServlet extends MyServlet {
 	protected void subjectList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		MainDAO dao = new MainDAO();
 		List<MainDTO> list = null;
+		List<MainDTO> list2 = null;
 		
 		HttpSession session =req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		try {
-			list = dao.subjectName(info.getUserId());
+			if(info.getUserId().matches("\\d{8}")){
+				list = dao.registerSubject(info.getUserId());
+			} else if (info.getUserId().matches("\\d{5}")) {
+				list = dao.registerSubject_pro(info.getUserId());
+			}
+			
+			
 			req.setAttribute("list", list);
+			req.setAttribute("list2", list2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -2,6 +2,7 @@
 <%@ page trimDirectiveWhitespaces ="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!-- 오른쪽 사이드바  -->
 
 <script type="text/javascript">
@@ -50,7 +51,7 @@ $(function () {
 
 
 </script>
-
+<c:if test="${fn:length(sessionScope.member.userId) == 8 }">
 <div class="row ms-1 me-1 pt-3 mt-3 mb-5 gap-3">
 	
 	<div class="card pt-2 pb-2 ">
@@ -68,5 +69,5 @@ $(function () {
 	
 	
 </div>
-
+</c:if>
 	<!-- 오른쪽 사이드바 끝 -->

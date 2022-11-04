@@ -12,8 +12,8 @@ import com.util.DBConn;
 public class MainDAO {
 	private Connection conn = DBConn.getConnection();
 	
-	//해당 학기 수강목록 불러오기
-		public List<MainDTO> subjectName(String studentcode) throws SQLException{
+	//해당 학기 수강목록 불러오기 - 학생
+		public List<MainDTO> registerSubject(String studentcode) throws SQLException{
 			PreparedStatement pstmt= null;
 			String sql;
 			ResultSet rs=null;
@@ -42,6 +42,59 @@ public class MainDAO {
 					dto.setSemester(Integer.parseInt(rs.getString("semester")));
 					dto.setStudentcode(rs.getString("studentcode"));
 					dto.setProfessorname(rs.getString("name"));
+					
+					
+					list.add(dto);
+				}
+				
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(rs!=null) {
+					try {
+						rs.close();
+					} catch (Exception e2) {
+					}
+				}
+				
+				if(pstmt!=null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+					}
+				}
+			}
+			
+			return list;
+			
+		}
+		
+		//해당 학기 수강목록 불러오기 - 교수
+		public List<MainDTO> registerSubject_pro(String id) throws SQLException{
+			PreparedStatement pstmt= null;
+			String sql;
+			ResultSet rs=null;
+			List<MainDTO> list = new ArrayList<>();
+			try {
+				sql= "SELECT subjectNo, subjectName, credit, TO_CHAR(syear,'YYYY') syear, semester FROM subject s "
+						+ " JOIN account a on s.id= a.id "
+						+ " WHERE a.id= ? "
+						+ " AND TO_CHAR(sYear,'YYYY')=TO_CHAR(SYSDATE,'YYYY') "
+						+ " AND sYear < SYSDATE "
+						+ " AND SYSDATE<sYear+(interval '4' month)";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1,id);
+				
+				rs= pstmt.executeQuery();
+				
+				while(rs.next()) {
+					MainDTO dto= new MainDTO();
+					dto.setSubjectNo(rs.getString("subjectNo"));
+					dto.setSubjectName(rs.getString("subjectName"));
+					dto.setCredit(Integer.parseInt(rs.getString("credit")));
+					dto.setSyear(Integer.parseInt(rs.getString("syear")));
+					dto.setSemester(Integer.parseInt(rs.getString("semester")));
 					
 					
 					list.add(dto);
