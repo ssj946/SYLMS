@@ -31,7 +31,7 @@
 						<div class="row">
 							<div class="col-9">
 					<!-- 본문 -->
-							<div class="card mt-3">
+							<div class="card mt-3 p-2">
 								<div class="accordion" id="lecture_all">
 									<div class="accordion-item">
 										<h2 class="accordion-header" id="lecture">

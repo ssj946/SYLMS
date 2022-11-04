@@ -21,7 +21,7 @@
 <body>
 
 
-<div class="container-fluid col-lg-12 py-5 px-5 " id=professor>
+<div class=" py-5 px-5 rounded mt-3 mb-3" id=professor>
 	 		<h6 class="text-start">&nbsp;&nbsp;${syear}년도 ${semester}학기</h6>
 				<img src="${pageContext.request.contextPath}/resources/images/profile.png" class="card-img">
 	 		<h1 class="fw-bold">${subjectName}</h1>
