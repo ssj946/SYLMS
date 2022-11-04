@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html; charset=UTF-8" %>
+﻿﻿<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -14,6 +14,13 @@
 .body-container {
 	max-width: 800px;
 }
+
+
+
+#style{
+background-color: #FFFFFF;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -39,59 +46,73 @@ function sendLogin() {
 </script>
 </head>
 <body>
+	<main>
+		<div class="container-fluid">
+			<div class="d-flex">
+				<div class="row">
+					<div class="col-9 p-0" >
+					<img style="width: 100%" alt="" src="${pageContext.request.contextPath}/resources/images/university_login.jpg">
+					
+					</div>
 
-<main>
-	<div class="container">
-		<div class="body-container">	
-
-	        <div class="row">
-	            <div class="col-md-6 offset-md-3">
-	                <div class="border mt-5 p-4">
-	                    <form name="loginForm" action="" method="post" class="row g-3">
-	                        <h3 class="text-center"><i class="bi bi-lock"></i> 회원 로그인</h3>
-	                        <div class="col-12">
-	                            <label class="mb-1">아이디</label>
-	                            <input type="text" name="userId" class="form-control" placeholder="아이디">
-	                        </div>
-	                        <div class="col-12">
-	                            <label class="mb-1">패스워드</label>
-	                            <input type="password" name="userPwd" class="form-control" placeholder="패스워드">
-	                        </div>
-	                        <div class="col-12">
-	                            <div class="form-check">
-	                                <input class="form-check-input" type="checkbox" id="rememberMe">
-	                                <label class="form-check-label" for="rememberMe"> 아이디 저장</label>
-	                            </div>
-	                        </div>
-	                        <div class="col-12">
-	                            <button type="button" class="btn btn-primary float-end" onclick="sendLogin();">&nbsp;Login&nbsp;<i class="bi bi-check2"></i></button>
-	                        </div>
-	                    </form>
-	                    <hr class="mt-4">
-	                    <div class="col-12">
-	                        <p class="text-center mb-0">
-	                        	<a href="#" class="text-decoration-none me-2">아이디 찾기</a>
-	                        	<a href="#" class="text-decoration-none me-2">패스워드 찾기</a>
-	                        </p>
-	                    </div>
-	                </div>
-
-	                <div class="d-grid">
+					<div class="col-3 p-0">
+						<div class="border  p-4" id="style">
+							<form name="loginForm" action="" method="post" class="row g-3">
+							<img alt="" src=""> <!-- 여기는 대학교 로고 넣는자리  -->
+								<h3 class="text-center">
+									<i class="bi bi-lock"></i> 통합관리 시스템 로그인
+								</h3>
+								<hr class="mt-4" style="width: 90%; margin:0 auto;">
+								<div class="col-12">
+									 <input type="text"
+										name="userId" class="form-control" placeholder="아이디를 입력해주세요" style="width: 90%; margin:0 auto;">
+								</div>
+								<div class="col-12">
+						  <input type="password"
+										name="userPwd" class="form-control" placeholder="패스워드를 입력해주세요" style="width: 90%; margin:0 auto;">
+								</div>
+								<div class="col-12">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox"
+											id="rememberMe"> <label class="form-check-label"
+											for="rememberMe"> 아이디 저장</label>
+									</div>
+								</div>
+								<div class="col-12">
+									<button type="button" class="btn btn-primary float-end"
+										onclick="sendLogin();">
+										&nbsp;Login&nbsp;<i class="bi bi-check2"></i>
+									</button>
+								</div>
+							</form>
+							<div class="col-12">
+								<p class="text-center mb-0">
+									<a href="#" class="text-decoration-none me-2">아이디 찾기</a> <a
+										href="#" class="text-decoration-none me-2">패스워드 찾기</a>
+								</p>
+							</div>
+						</div>
+						<div class="d-grid">
 							<p class="form-control-plaintext text-center text-primary">${message}</p>
-	                </div>
+						</div>
+						<div>
+					   </div>
+					</div>
+				</div>
+			</div>
 
-	            </div>
-	        </div>
+
+
 
 		</div>
-	</div>
-</main>
 
-<footer>
-	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
-</footer>
+	</main>
 
-<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
+	<footer>
+		<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+	</footer>
+
+	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 
 </body>
 </html>
