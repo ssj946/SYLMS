@@ -19,22 +19,7 @@ ul {
 <script type="text/javascript">
 	function check() {
 		const f = document.searchForm;
-
-		var extp = document.searchForm.extp.value;
-		var score = document.searchForm.score.value;
-
-		if (extp==null || expt=="") {
-			alert("시험종류를 입력 하세요. ");
-			document.searchForm.extp.focus();
-			return;
-		}
-
-		if (score=="") {
-			alert("시험종류를 입력 하세요. ");
-			document.searchForm.score.focus();
-			return;
-		}
-
+		
 		f.action = "${pageContext.request.contextPath}/exam/send_ok.do";
 		f.submit();
 	}

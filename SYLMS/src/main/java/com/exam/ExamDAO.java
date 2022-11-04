@@ -95,6 +95,7 @@ public class ExamDAO {
 			sql = "UPDATE exam SET score = ?, examtype = ? WHERE gradecode = ? ";
 
 			pstmt = conn.prepareStatement(sql);
+			
 			pstmt.setInt(1, dto.getScore());
 			pstmt.setString(2, dto.getExamType());
 			pstmt.setString(3,gradeCode);
