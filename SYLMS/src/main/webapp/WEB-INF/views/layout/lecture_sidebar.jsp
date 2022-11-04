@@ -91,7 +91,7 @@
 				<div class="collapse navbar-collapse" id="lec_community" >
 				<ul>
 					<li class="nav-item">
-						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/qna.do">
+						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/qna/qna.do?subjectNo=${subjectNo}"> 
 						 <i class="fas fa-clipboard-question  fa-lg mr-3"></i>&nbsp;질의응답
 						 </a>
 					</li>
