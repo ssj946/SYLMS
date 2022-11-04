@@ -38,7 +38,7 @@
 			<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/main.do"><i class="fas fa-chalkboard text-white fa-lg mr-3"></i>&nbsp;강의실</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/messege/receive.do"><i class="fa-regular fa-envelope"></i>&nbsp;메시지</a>
+			<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/messege/receive.do"><i class="fa-regular fa-envelope fa-lg"></i>&nbsp;메시지</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link text-white p-3 mb-2 current" href="#">

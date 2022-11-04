@@ -51,23 +51,15 @@ $(function () {
 
 
 </script>
-<c:if test="${fn:length(sessionScope.member.userId) == 8 }">
-<div class="row ms-1 me-1 pt-3 mt-3 mb-5 gap-3">
-	
-	<div class="card pt-2 pb-2 ">
-	
-		<div class="card-header text-center fw-bold fs-5">
-		할 일
-		</div>
-		
-		
-		<ul class="todoList  list-group list-group-flush list-group-numbered list-group-item-action active" aria-current="true">
-			
-		</ul>
-		
+	<div class="card">
+				<div class="card-header bg-primary text-white text-center fw-bold fs-5">
+				할 일
+				</div>
+				<ul class="todoList  list-group list-group-flush list-group-numbered list-group-item-action active" aria-current="true">
+					<c:if test="${fn:length(sessionScope.member.userId) == 8 }">	
+								
+							
+					</c:if>
+				</ul>
 	</div>
-	
-	
-</div>
-</c:if>
 	<!-- 오른쪽 사이드바 끝 -->
