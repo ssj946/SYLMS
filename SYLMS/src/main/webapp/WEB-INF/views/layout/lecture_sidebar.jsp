@@ -103,7 +103,7 @@
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/debate.do">
+						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/debate/list.do?subjectNo=${subjectNo}">
 						 <i class="fas fa-comments  fa-lg mr-3"></i>&nbsp;토론게시판
 						 </a>
 					</li>		
