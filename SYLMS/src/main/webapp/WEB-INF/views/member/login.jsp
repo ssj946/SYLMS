@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>spring</title>
+<title>통합관리 시스템</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
 
 <style type="text/css">
@@ -94,7 +94,7 @@ function sendLogin() {
 							<!-- 여기는 대학교 로고 넣는자리  -->
 							<div>
 							<h3 class="text-center">
-								<i class="bi bi-lock"></i> 통합관리 시스템 로그인
+								<i class="bi bi-lock"></i> 통합관리시스템 로그인
 							</h3>
 							</div>
 							<div>
