@@ -45,9 +45,7 @@ public class ExamServlet extends MyServlet {
 	private void examForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ExamDAO dao = new ExamDAO();
 		String cp = req.getContextPath();
-
-		String subjectNo = req.getParameter("subjectNo");
-
+		
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
@@ -59,7 +57,8 @@ public class ExamServlet extends MyServlet {
 		try {
 			ExamDTO dto = new ExamDTO();			
 			
-			dto.setSubjectNo(subjectNo);
+			dto.setSubjectNo(req.getParameter("subjectNo"));
+			
 			dao.codeList(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,14 +74,14 @@ public class ExamServlet extends MyServlet {
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
-		String subjectNo = req.getParameter("subjectNo");
 
 		if (info.getUserId().matches("\\d{8}")) {
 			resp.sendRedirect(cp + "/lecture/main.do");
 			return;
 		}
 
-		try {
+		try {	
+			String subjectNo = req.getParameter("subjectNo");			
 			List<ExamDTO> list = null;
 			list= dao.listBoard(subjectNo);
 

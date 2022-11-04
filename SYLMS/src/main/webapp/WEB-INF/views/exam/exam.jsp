@@ -20,6 +20,13 @@ ul {
 function sendOk() {
 	const f = document.updateForm;
 	
+	str = f.subjectNo.value;
+	if (!f.subjectNo.value.trim()) {
+		alert("과목코드를 다시 입력 하세요. ");
+		f.subjectNo.focus();
+		return;
+	}
+	
 	f.action = "${pageContext.request.contextPath}/exam/send.do";
 	f.submit();
 }
@@ -67,9 +74,9 @@ function sendOk() {
 															<h5>과목코드 입력</h5>
 														</div>
 														<div class="card-body">
-															<br> <input class="form-control" placeholder="과목코드를 입력하세요." value="${dto.subjectNo}">
+															<br> <input name="subjectNo" class="form-control" placeholder="과목코드를 입력하세요." value="${dto.subjectNo}">
 															<br>
-															<button type="button" class="btn btn-outline-primary codeBtn" id="sendOk">시험점수 입력하러가기</button>
+															<button type="button" class="btn btn-outline-primary codeBtn" onclick="sendOk()">시험점수 입력하러가기</button>
 															<br>
 														</div>
 														</form>
