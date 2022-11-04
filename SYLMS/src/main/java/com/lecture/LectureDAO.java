@@ -1159,7 +1159,7 @@ public class LectureDAO {
 		PreparedStatement pstmt = null;
 		String sql = "";
 		try {
-			
+			sql = "INSERT INTO (SELECT as_submitNo, content, submit_date, assignmentScore, gradeCode, asNo assignmentsubmit a ";
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
