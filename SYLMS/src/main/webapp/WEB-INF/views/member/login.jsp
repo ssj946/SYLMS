@@ -11,9 +11,6 @@
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
 
 <style type="text/css">
-.body-container {
-	max-width: 800px;
-}
 
 #style {
 	background-color: #FFFFFF;
@@ -48,11 +45,11 @@ background-position: center;
 
 .login_image{
 width: 100%;
-min-height: 100%;
+height:100%;
 background-image: url('${pageContext.request.contextPath}/resources/images/university_login.jpg');
 background-repeat: no-repeat;
-background-size: contain;
-
+background-size: cover;
+background-position: center;
 }
 
 </style>
@@ -79,16 +76,16 @@ function sendLogin() {
 }
 </script>
 </head>
+
 <body>
-	<main>
+<main>
 		<div class="container-fluid fixed-top">
-			<div class="d-flex">
-				<div class="row">
-					<div class="col-9 ">
-					<div class="login_image"></div>
+			<div class="row">
+					<div class="p-0 col-9">
+					<div class=" login_image"></div>
 					</div>
 
-					<div class="col-3">
+					<div class="col-3" style="min-height: 100vh">
 						<div class="d-flex justify-content-center" id="style">
 							<form name="loginForm" action="" method="post" class="row g-3">
 							<div>
@@ -146,7 +143,6 @@ function sendLogin() {
 						<div class="notice">
 							<table class="table-borderless  table" >
 								<tr><td class="w-75">대학 디폴트</td><td>2001-10-01</td></tr>
-								
 								<tr><td>대학 디폴트</td><td>2001-10-01</td></tr>
 								<tr><td>대학 디폴트</td><td>2001-10-01</td></tr>
 								<tr><td>대학 디폴트</td><td>2001-10-01</td></tr>
@@ -156,14 +152,8 @@ function sendLogin() {
 						</div>
 					</div>
 				</div>
-				</div>
-	</main>
 
-	<footer>
-		<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
-	</footer>
-
-	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
-
+</main>
 </body>
+	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </html>
