@@ -64,13 +64,21 @@ public class LectureServlet extends MyServlet {
 			attend(req, resp);
 		} else if (uri.indexOf("attend_list.do") != -1) {
 			attendList(req, resp);
-		}  else if (uri.indexOf("attend_manage.do") != -1) {
+		} else if (uri.indexOf("attend_manage.do") != -1) {
 			attendManager(req, resp);
-		}  else if (uri.indexOf("attend_manage_ok.do") != -1) {
+		} else if (uri.indexOf("attend_manage_ok.do") != -1) {
 			attendList_all(req, resp);
 		} else if (uri.indexOf("attendance_modify.do") != -1) {
 			modify_attendance(req, resp);
+		} else if (uri.indexOf("assignment.do") != -1) {
+			assignmentList(req, resp);
+		} else if (uri.indexOf("assignment_view.do") != -1) {
+			assignmentContent(req, resp);
+		} else if (uri.indexOf("assignment_ok.do") != -1) {
+			assignmentSubmit(req, resp);
 		}
+		
+		
 	}
 
 	protected void lectureNavForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -643,12 +651,102 @@ public class LectureServlet extends MyServlet {
 			}
 			
 			dao.attendanceRecord_updateAll(mod_list);
+			System.out.println(subjectNo+"의 출석이 수정되었습니다.");
 	       
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		resp.sendError(400);
+		
+	}
+	
+	protected void assignmentList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		LectureDAO dao= new LectureDAO();
+		String subjectNo = req.getParameter("subjectNo");
+		
+		LectureDTO dto = new LectureDTO();
+
+		try {
+			dto= dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("credit", dto.getCredit());
+			req.setAttribute("syear", dto.getSyear());
+			
+			List<LectureDTO> list = dao.list_assignment(subjectNo);
+			
+			req.setAttribute("list", list);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		
+		String path = "/WEB-INF/views/lecture/assignment.jsp";
+		forward(req, resp, path);
+		
+	}
+	
+	protected void assignmentContent(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		LectureDAO dao= new LectureDAO();
+		String subjectNo = req.getParameter("subjectNo");
+		String asNo = req.getParameter("asNo");
+		
+		LectureDTO dto = new LectureDTO();
+
+		try {
+			dto= dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("credit", dto.getCredit());
+			req.setAttribute("syear", dto.getSyear());
+			
+			
+			LectureDTO adto = dao.read_assignment(asNo);
+			
+			req.setAttribute("adto", adto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		
+		String path = "/WEB-INF/views/lecture/assign_content.jsp";
+		forward(req, resp, path);
+		
+	}
+	
+	protected void assignmentSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 과제 제출
+		LectureDAO dao= new LectureDAO();
+		
+		String cp =req.getContextPath();
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		String subjectNo = req.getParameter("subjectNo");
+		String asNo = req.getParameter("asNo");
+		String content = req.getParameter("content");
+		LectureDTO dto = new LectureDTO();
+		
+		try {
+			dto.setSubjectNo(subjectNo);
+			dto.setAsNo(asNo);
+			dto.setContent(content);
+			dto.setStudentcode(info.getUserId());
+			dao.insert_assignment(dto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		resp.sendRedirect(cp+"/lecture/assignment.do?subjectNo="+subjectNo);
 		
 	}
 	

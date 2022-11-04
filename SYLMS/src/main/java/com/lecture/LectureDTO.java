@@ -29,8 +29,45 @@ private String gen_time;
 
 private String attend_time;
 
+private String asNo;
+private String as_submitNo;
+private String submit_date;
+private String score;
+
+private String enable;
 
 
+
+public String getEnable() {
+	return enable;
+}
+public void setEnable(String enable) {
+	this.enable = enable;
+}
+public String getAsNo() {
+	return asNo;
+}
+public void setAsNo(String asNo) {
+	this.asNo = asNo;
+}
+public String getAs_submitNo() {
+	return as_submitNo;
+}
+public void setAs_submitNo(String as_submitNo) {
+	this.as_submitNo = as_submitNo;
+}
+public String getSubmit_date() {
+	return submit_date;
+}
+public void setSubmit_date(String submit_date) {
+	this.submit_date = submit_date;
+}
+public String getScore() {
+	return score;
+}
+public void setScore(String score) {
+	this.score = score;
+}
 public String getAttend_time() {
 	return attend_time;
 }

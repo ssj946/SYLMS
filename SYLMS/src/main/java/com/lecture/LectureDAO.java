@@ -1047,6 +1047,123 @@ public class LectureDAO {
 				e.printStackTrace();
 			}
 		}
+		
+		//과제 만들기
+		public void making_assignment(LectureDTO dto) throws SQLException {
+			PreparedStatement pstmt = null;
+			String sql = "";
+			try {
+				sql = "INSERT INTO assignment (asNo, asName, asContent, subjectNo, end_date) "
+						+ " VALUES(LPAD(assignment_seq.nextval,8,'0'), ?, ?, ?, ?) ";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setString(1, dto.getTitle());
+				pstmt.setString(2, dto.getContent());
+				pstmt.setString(3, dto.getSubjectNo());
+				pstmt.setString(4, dto.getEnd_date());
+				
+				pstmt.executeUpdate();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(pstmt!=null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+					}
+				}
+			}
+			
+		}
+		
+		//과제 리스트 읽어오기
+		public List<LectureDTO> list_assignment(String subjectNo) throws SQLException {
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = "";
+			List<LectureDTO> list =new ArrayList<>();
+			try {
+				sql = "SELECT asNo, asName, asContent,TO_CHAR(reg_date,'YYYY-MM-DD') reg_date "
+						+ " , TO_CHAR(end_date,'YYYY-MM-DD') end_date, as_score, enable, subjectNo "
+						+ "  FROM assignment WHERE subjectNo = ?";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setString(1, subjectNo);
+				
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					LectureDTO dto =new LectureDTO();
+					dto.setAsNo(rs.getString("asNo"));
+					dto.setTitle(rs.getString("asName"));
+					dto.setContent(rs.getString("asContent"));
+					dto.setReg_date(rs.getString("reg_date"));
+					dto.setEnd_date(rs.getString("end_date"));
+					dto.setScore(rs.getString("as_score"));
+					dto.setEnable(rs.getString("enable"));
+					dto.setSubjectNo(rs.getString("subjectNo"));
+					list.add(dto);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(pstmt!=null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+					}
+				}
+			}
+			return list;
+		}
+		
+		//과제 하나 읽어오기
+		public LectureDTO read_assignment(String asNo) throws SQLException {
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = "";
+			LectureDTO dto =new LectureDTO();
+			try {
+				sql = "SELECT asNo, asName, asContent,TO_CHAR(reg_date,'YYYY-MM-DD') reg_date "
+						+ " , TO_CHAR(end_date,'YYYY-MM-DD') end_date, as_score, enable, subjectNo "
+						+ "  FROM assignment WHERE asNo = ?";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setString(1, asNo);
+				
+				rs = pstmt.executeQuery();
+				
+				
+				if(rs.next()) {
+					dto.setAsNo(rs.getString("asNo"));
+					dto.setTitle(rs.getString("asName"));
+					dto.setContent(rs.getString("asContent"));
+					dto.setReg_date(rs.getString("reg_date"));
+					dto.setEnd_date(rs.getString("end_date"));
+					dto.setScore(rs.getString("as_score"));
+					dto.setEnable(rs.getString("enable"));
+					dto.setSubjectNo(rs.getString("subjectNo"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(pstmt!=null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+					}
+				}
+			}
+			return dto;
+		}
+		
+	public void insert_assignment(LectureDTO dto)throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql = "";
+		try {
+			sql = "INSERT INTO (SELECT as_submitNo, content, submit_date, assignmentScore, gradeCode, asNo assignmentsubmit a ";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }
 
