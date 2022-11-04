@@ -63,7 +63,7 @@
 				<div class="collapse navbar-collapse" id="lec_assign" >
 				<ul>
 					<li class="nav-item">
-						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/assignment.do">
+						<a class="nav-link  p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/assignment.do?subjectNo=${subjectNo}">
 						 <i class="fas fa-pen-ruler  fa-lg mr-3"></i>&nbsp;과제게시판
 						 </a>
 					</li>
