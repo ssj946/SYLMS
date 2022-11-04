@@ -32,59 +32,61 @@ $(function(){
 </header>
 	
 <main>
-<section>
-	<div class="container-fluid">
-		<div class="row" style="line-height: 1.5rem">&nbsp;</div>
-		<div class="row">
-			<div class="col-lg-1 bg-dark bg-gradient" >
-			<!-- brief 사이드바 자리 -->
-			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
-			</div>
-			<div class="col-lg-11 ms-auto">
+	<section>
+		<div class="container-fluid">
+			<div class="row" style="line-height: 1.5rem">&nbsp;</div>
 			<div class="row">
-			<!-- classroom header 자리 -->
-			<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
-			</div>
-			<div class="row">
-			<!-- 강의 사이드바 자리 -->
-			<div class="col-lg-2 bg-dark bg-gradient" style="box-shadow: none; height: 150vh;">
-			<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
-			</div>
+				<div class="col-lg-1 bg-dark bg-gradient" >
+				<!-- brief 사이드바 자리 -->
+				<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
+				</div>
+				<div class="col-lg-11 ms-auto">
+				<div class="row">
+				<!-- classroom header 자리 -->
+				<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
+				</div>
+				<div class="row">
+				<!-- 강의 사이드바 자리 -->
+				<div class="col-lg-2 bg-dark bg-gradient" style="box-shadow: none; height: 150vh;">
+				<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
+				</div>
+				
+				<!-- 본문 -->
+	<div class="col-lg-10 gap-3 ms-auto">
+	
+		<div class="ms-1 me-1 pt-3 mt-3 mb-5">
+			<h3><i class="fas fa-map  fa-lg mr-3"></i> 수업계획서 </h3>			
+		</div>
+			<div class="panel panel-info">
 			
-			<!-- 본문 -->
-			 	<div class="col-lg-10 gap-3 ms-auto">
-				<div class="ms-1 me-1 pt-3 mt-3 mb-5">
-					<h3><i class="fas fa-map  fa-lg mr-3"></i> 수업계획서 </h3>
-					
-					</div>
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<h3 class="panel-title text-center">
-								<strong>강의 전 알림사항</strong>
-							</h3>
-						</div>
-						<div class="panel-body">
-							<p> 1. 학생명 수업선택시,조회됩니다.</p>
-							<p> 2. 과목명 표시됩니다.</p>
-							<p> 3. Students, please check</p>
-						</div>
-					</div>
+				<div class="panel-heading">
+					<h3 class="panel-title text-center"><strong>강의 전 알림사항</strong></h3>
+				</div>
+				
+				<div class="panel-body">
+					<p> 1. 학생명 수업선택시,조회됩니다.</p>
+					<p> 2. 과목명 표시됩니다.</p>
+					<p> 3. Students, please check</p>
+				</div>
+			</div>
 			
 					<form class="form-inline" action="">
+					
 						<div class="form-group">
 							<label>학년도 학기</label>
 							<label>${syear} 년도 </label>
 							<label>${semester }학기</label>
 						</div>
+						
 						<div class="form-group">
 							<label>수업선택</label>
 							<select class="form-control subjectRegister" >
 								<c:forEach var="vo" items="${listRegister }">
 									<option value="${vo.subjectNo}" ${vo.subjectNo == dto.subjectNo ? "selected='selected'" :"" }> ${vo.subjectName } </option>
-								</c:forEach>
-							
+								</c:forEach>					
 							</select>
 						</div>
+						
 					</form>
 					<hr>
 				<table class="table">
@@ -133,17 +135,15 @@ $(function(){
 						<td>${dto.finalRate}%</td>						
 					</tr>
 				</table>
-        </div>				
-
-					
-				</div>
-				</div>
-				</div>
+        </div>								
 			<!-- 본문 끝 -->
-					
 				
-	
+				</div>
+			</div>
+			</div>
+		</div>
 	</section>
+	
 </main>
 <jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
 </body>

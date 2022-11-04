@@ -49,7 +49,7 @@ none
 							<div class="col-lg-10 gap-3 ms-auto">
 								<div class="ms-1 me-1 pt-3 mt-3 mb-5">
 									<h3>
-										<i class="fas fa-clipboard-question  fa-lg mr-3"></i> 수업계획서
+										<i class="fas fa-map  fa-lg mr-3"></i> 수업계획서
 									</h3>
 
 								</div>
