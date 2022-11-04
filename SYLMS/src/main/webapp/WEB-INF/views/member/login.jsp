@@ -15,8 +15,6 @@
 	max-width: 800px;
 }
 
-
-
 #style{
 background-color: #FFFFFF;
 }
@@ -47,7 +45,7 @@ function sendLogin() {
 </head>
 <body>
 	<main>
-		<div class="container-fluid">
+		<div class="container-fluid fixed-top">
 			<div class="d-flex">
 				<div class="row">
 					<div class="col-9 p-0" >
@@ -62,10 +60,14 @@ function sendLogin() {
 								<h3 class="text-center">
 									<i class="bi bi-lock"></i> 통합관리 시스템 로그인
 								</h3>
-								<hr class="mt-4" style="width: 90%; margin:0 auto;">
+								<hr class="mt-3" style="width: 90%; margin:0 auto;">
+							
+								<h6 style="font-size: small; text-align: center;">초기 아이디와 비밀번호는 학번과 생년월일입니다.</h6>
+								
 								<div class="col-12">
+				          
 									 <input type="text"
-										name="userId" class="form-control" placeholder="아이디를 입력해주세요" style="width: 90%; margin:0 auto;">
+										name="userId" class="form-control" placeholder="아이디를 입력해주세요" style="width: 90%; margin:0 auto; background-image: ">
 								</div>
 								<div class="col-12">
 						  <input type="password"
@@ -78,15 +80,15 @@ function sendLogin() {
 											for="rememberMe"> 아이디 저장</label>
 									</div>
 								</div>
-								<div class="col-12">
-									<button type="button" class="btn btn-primary float-end"
-										onclick="sendLogin();">
+								<div class="col-12" style="text-align: center;">
+									<button type="button" class="btn btn-primary opacity-75"
+										onclick="sendLogin();" style="width: 90%; margin: 0 auto;">
 										&nbsp;Login&nbsp;<i class="bi bi-check2"></i>
 									</button>
 								</div>
 							</form>
 							<div class="col-12">
-								<p class="text-center mb-0">
+								<p class="text-center mb-0 mt-2">
 									<a href="#" class="text-decoration-none me-2">아이디 찾기</a> <a
 										href="#" class="text-decoration-none me-2">패스워드 찾기</a>
 								</p>
