@@ -50,7 +50,7 @@ $(function(){
 			<div class="col-lg-2 bg-dark bg-gradient" style="box-shadow: none; height: 150vh;">
 			<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
 			</div>
-			
+			</div>
 			<!-- 본문 -->
 			 	<div class="col-lg-10 gap-3 ms-auto">
 				<div class="ms-1 me-1 pt-3 mt-3 mb-5">
