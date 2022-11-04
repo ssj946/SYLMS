@@ -137,7 +137,7 @@ public class NoticeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM subject_bbs WHERE subjectNo = ? ";
+			sql = "SELECT NVL(COUNT(*), 0) FROM subject_bbs WHERE subjectNo = ? AND bbsCode = '00001' ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, subjectNo);
 			
@@ -178,7 +178,7 @@ public class NoticeDAO {
 		try {
 			sql = "SELECT NVL(COUNT(*), 0) FROM subject_bbs s "
 					+ " JOIN account a ON s.ID=a.ID "
-					+ " WHERE subjectNo = ? ";
+					+ " WHERE subjectNo = ? AND bbsCode = '00001' ";
 			if (condition.equals("all")) {
 				sql += " AND INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ";
 			} else if (condition.equals("reg_date")) {
@@ -237,7 +237,7 @@ public class NoticeDAO {
 			sb.append(" SELECT articleNo, b.ID, title, hitCount, reg_date, a.name ");
 			sb.append(" FROM subject_bbs b ");
 			sb.append(" JOIN account a ON b.ID = a.ID ");
-			sb.append(" WHERE subjectNo = ?  ");
+			sb.append(" WHERE subjectNo = ? AND bbsCode = '00001' ");
 			sb.append(" ORDER BY reg_date DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			/*

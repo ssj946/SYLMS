@@ -97,7 +97,7 @@ public class DebateDAO {
 		String sql;
 
 		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM subject_bbs WHERE subjectNo = ? ";
+			sql = "SELECT NVL(COUNT(*), 0) FROM subject_bbs WHERE subjectNo = ? AND bbsCode = '00002'";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, subjectNo);
 
@@ -137,7 +137,7 @@ public class DebateDAO {
 		try {
 			sql = "SELECT NVL(COUNT(*), 0) FROM subject_bbs s "
 					+ " JOIN account a ON s.ID=a.ID "
-					+ " WHERE subjectNo = ? ";
+					+ " WHERE subjectNo = ? AND bbsCode = '00002' ";
 			if (condition.equals("all")) {
 				sql += " AND INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ";
 			} else if (condition.equals("reg_date")) {
@@ -544,7 +544,7 @@ public class DebateDAO {
 		return dto;
 	}
 
-	// 게시물 수정 흠,,pstmt.id 부분,,,
+	// 게시물 수정 
 	public void updateBoard(DebateDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
@@ -575,7 +575,7 @@ public class DebateDAO {
 
 	}
 
-	// 게시물 삭제 userId인지,, Id인지,,
+	// 게시물 삭제 
 	public void deleteBoard(String articleNo, String userId) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;

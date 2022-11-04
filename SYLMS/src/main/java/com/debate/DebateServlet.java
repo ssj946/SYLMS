@@ -1,14 +1,14 @@
 package com.debate;
 
 import java.io.IOException;
-/*
+
 import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-*/
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,12 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-//import org.json.JSONObject;
+import org.json.JSONObject;
 
 import com.member.SessionInfo;
 import com.util.MyServlet;
-//import com.util.MyUtil;
-//import com.util.MyUtilBootstrap;
+import com.util.MyUtil;
+import com.util.MyUtilBootstrap;
 
 @WebServlet("/debate/*")
 public class DebateServlet extends MyServlet {
@@ -31,7 +31,7 @@ public class DebateServlet extends MyServlet {
 	protected void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
 		
-		//String uri = req.getRequestURI();
+		String uri = req.getRequestURI();
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
@@ -39,7 +39,7 @@ public class DebateServlet extends MyServlet {
 			forward(req, resp, "/WEB-INF/views/member/login.jsp");
 			return;
 		}
-		/*
+		
 		
 		if (uri.indexOf("list.do") != -1) {
 			list(req, resp);
@@ -55,9 +55,6 @@ public class DebateServlet extends MyServlet {
 			updateSubmit(req, resp);
 		} else if (uri.indexOf("delete.do") != -1) {
 			delete(req, resp);
-		} else if (uri.indexOf("insertBoardLike.do") != -1) {
-			// 게시물 공감 저장
-			insertBoardLike(req, resp);
 		} else if (uri.indexOf("insertReply.do") != -1) {
 			// 댓글 추가
 			insertReply(req, resp);
@@ -91,11 +88,21 @@ public class DebateServlet extends MyServlet {
 	protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 게시물 리스트
 		DebateDAO dao = new DebateDAO();
+		String subjectNo = req.getParameter("subjectNo");
+		
+		DebateDTO dto1 = new DebateDTO();
 		MyUtil util = new MyUtilBootstrap();
-
 		String cp = req.getContextPath();
 		
+		
 		try {
+			dto1 = dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto1.getProfessorname());
+			req.setAttribute("semester", dto1.getSemester());
+			req.setAttribute("subjectName", dto1.getSubjectName());
+			req.setAttribute("syear", dto1.getSyear());
+			
 			String page = req.getParameter("page");
 			int current_page = 1;
 			if (page != null) {
@@ -118,9 +125,9 @@ public class DebateServlet extends MyServlet {
 			// 전체 데이터 개수
 			int dataCount;
 			if (keyword.length() == 0) {
-				dataCount = dao.dataCount();
+				dataCount = dao.dataCount(subjectNo, condition, keyword);
 			} else {
-				dataCount = dao.dataCount(condition, keyword);
+				dataCount = dao.dataCount(subjectNo);
 			}
 			
 			// 전체 페이지 수
@@ -136,9 +143,9 @@ public class DebateServlet extends MyServlet {
 			
 			List<DebateDTO> list = null;
 			if (keyword.length() == 0) {
-				list = dao.listBoard(offset, size);
+				list = dao.listBoard(subjectNo, offset, size);
 			} else {
-				list = dao.listBoard(offset, size, condition, keyword);
+				list = dao.listBoard(subjectNo, offset, size, condition, keyword);
 			}
 
 			String query = "";
@@ -147,8 +154,8 @@ public class DebateServlet extends MyServlet {
 			}
 
 			// 페이징 처리
-			String listUrl = cp + "/bbs/list.do";
-			String articleUrl = cp + "/bbs/article.do?page=" + current_page;
+			String listUrl = cp + "/debate/list.do?subjectNo=" + subjectNo;
+			String articleUrl = cp + "/debate/article.do?subjectNo="+subjectNo+"page=" + current_page;
 			if (query.length() != 0) {
 				listUrl += "?" + query;
 				articleUrl += "&" + query;
@@ -167,18 +174,48 @@ public class DebateServlet extends MyServlet {
 			req.setAttribute("condition", condition);
 			req.setAttribute("keyword", keyword);
 			
+			// 걍,,넣어봄
+			req.setAttribute("subjectNo", subjectNo );
+			req.setAttribute("list", list);
+			req.setAttribute("dataCount", dataCount);
+			req.setAttribute("size", size);
+			req.setAttribute("page", current_page);
+			req.setAttribute("total_page", total_page);
+			req.setAttribute("paging", paging);
+			req.setAttribute("condition", condition);
+			req.setAttribute("keyword", keyword);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// JSP로 포워딩
-		forward(req, resp, "/WEB-INF/views/bbs/list.jsp");
+		forward(req, resp, "/WEB-INF/views/debate/list.jsp");
 	}
 
 	protected void writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 글쓰기 폼
-		req.setAttribute("mode", "write");
-		forward(req, resp, "/WEB-INF/views/bbs/write.jsp");
+		try {
+			
+			String subjectNo = req.getParameter("subjectNo");
+			
+			DebateDAO dao = new DebateDAO();
+			DebateDTO dto1 = new DebateDTO();
+			
+			dto1 = dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto1.getProfessorname());
+			req.setAttribute("semester", dto1.getSemester());
+			req.setAttribute("subjectName", dto1.getSubjectName());
+			req.setAttribute("syear", dto1.getSyear());
+			
+			req.setAttribute("subjectNo", subjectNo );
+			req.setAttribute("mode", "write");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		forward(req, resp, "/WEB-INF/views/debate/write.jsp");
 	}
 
 	protected void writeSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -189,8 +226,10 @@ public class DebateServlet extends MyServlet {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		String cp = req.getContextPath();
+		String subjectNo = req.getParameter("subjectNo");
+		
 		if (req.getMethod().equalsIgnoreCase("GET")) {
-			resp.sendRedirect(cp + "/bbs/list.do");
+			resp.sendRedirect(cp + "/debate/list.do");
 			return;
 		}
 		
@@ -203,13 +242,14 @@ public class DebateServlet extends MyServlet {
 			// 파라미터
 			dto.setTitle(req.getParameter("title"));
 			dto.setContent(req.getParameter("content"));
+			dto.setSubjectNo(req.getParameter(subjectNo));
 
 			dao.insertBoard(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		resp.sendRedirect(cp + "/bbs/list.do");
+		resp.sendRedirect(cp + "/debate/list.do?subjectNo="+subjectNo);
 	}
 
 	protected void article(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -223,7 +263,18 @@ public class DebateServlet extends MyServlet {
 		String query = "page=" + page;
 
 		try {
-			long num = Long.parseLong(req.getParameter("num"));
+			String articleNo = req.getParameter("articleNo");
+			String subjectNo = req.getParameter("subjectNo");
+			
+			DebateDTO dto1 = new DebateDTO();
+			
+			dto1 = dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto1.getProfessorname());
+			req.setAttribute("semester", dto1.getSemester());
+			req.setAttribute("subjectName", dto1.getSubjectName());
+			req.setAttribute("syear", dto1.getSyear());
+			
 			String condition = req.getParameter("condition");
 			String keyword = req.getParameter("keyword");
 			if (condition == null) {
@@ -237,24 +288,20 @@ public class DebateServlet extends MyServlet {
 			}
 
 			// 조회수 증가
-			dao.updateHitCount(num);
+			dao.updateHitCount(articleNo, subjectNo);
 
 			// 게시물 가져오기
-			DebateDTO dto = dao.readBoard(num);
+			DebateDTO dto = dao.readBoard(articleNo, subjectNo);
 			if (dto == null) { // 게시물이 없으면 다시 리스트로
-				resp.sendRedirect(cp + "/bbs/list.do?" + query);
+				resp.sendRedirect(cp + "/debate/list.do?subjectNo=" +subjectNo + query);
 				return;
 			}
 			dto.setContent(util.htmlSymbols(dto.getContent()));
 			
-			// 로그인 유저의 게시글 공감 여부
-			HttpSession session = req.getSession();
-			SessionInfo info = (SessionInfo)session.getAttribute("member");
-			boolean isLike = dao.isUserBoardLike(num, info.getUserId());
 
 			// 이전글 다음글
-			DebateDTO preReadDto = dao.preReadBoard(dto.getNum(), condition, keyword);
-			DebateDTO nextReadDto = dao.nextReadBoard(dto.getNum(), condition, keyword);
+			DebateDTO preReadDto = dao.preReadBoard(dto.getSubjectNo(), dto.getArticleNo(), condition, keyword);
+			DebateDTO nextReadDto = dao.nextReadBoard(dto.getSubjectNo(), dto.getArticleNo(), condition, keyword);
 
 			// JSP로 전달할 속성
 			req.setAttribute("dto", dto);
@@ -263,16 +310,15 @@ public class DebateServlet extends MyServlet {
 			req.setAttribute("preReadDto", preReadDto);
 			req.setAttribute("nextReadDto", nextReadDto);
 			
-			req.setAttribute("isUserLike", isLike);
 
 			// 포워딩
-			forward(req, resp, "/WEB-INF/views/bbs/article.jsp");
+			forward(req, resp, "/WEB-INF/views/debate/article.jsp");
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		resp.sendRedirect(cp + "/bbs/list.do?" + query);
+		resp.sendRedirect(cp + "/debate/list.do?" + query);
 	}
 
 	protected void updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -286,32 +332,35 @@ public class DebateServlet extends MyServlet {
 
 		String page = req.getParameter("page");
 
+			String subjectNo = req.getParameter("subjectNo");
+			String articleNo = req.getParameter("articleNo");
 		try {
-			long num = Long.parseLong(req.getParameter("num"));
-			DebateDTO dto = dao.readBoard(num);
+			DebateDTO dto = dao.readBoard(articleNo, subjectNo);
 
 			if (dto == null) {
-				resp.sendRedirect(cp + "/bbs/list.do?page=" + page);
+				resp.sendRedirect(cp + "/debate/list.do?subjectNo="+subjectNo+"page=" + page);
 				return;
 			}
 
 			// 게시물을 올린 사용자가 아니면
 			if (! dto.getUserId().equals(info.getUserId())) {
-				resp.sendRedirect(cp + "/bbs/list.do?page=" + page);
+				resp.sendRedirect(cp + "/debate/list.do?subjectNo="+subjectNo+"page=" + page);
 				return;
 			}
 
 			req.setAttribute("dto", dto);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("articleNo", articleNo);
 			req.setAttribute("page", page);
 			req.setAttribute("mode", "update");
 
-			forward(req, resp, "/WEB-INF/views/bbs/write.jsp");
+			forward(req, resp, "/WEB-INF/views/debate/write.jsp");
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		resp.sendRedirect(cp + "/bbs/list.do?page=" + page);
+		resp.sendRedirect(cp + "/debate/list.do?subjectNo="+subjectNo+"page=" + page);
 	}
 
 	protected void updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -322,17 +371,20 @@ public class DebateServlet extends MyServlet {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		String cp = req.getContextPath();
+		
+		String subjectNo = req.getParameter("subjectNo");
+		String page = req.getParameter("page");
+
 		if (req.getMethod().equalsIgnoreCase("GET")) {
-			resp.sendRedirect(cp + "/bbs/list.do");
+			resp.sendRedirect(cp + "/debate/list.do?subjectNo="+subjectNo+"page=" + page);
 			return;
 		}
 
-		String page = req.getParameter("page");
 		try {
 			DebateDTO dto = new DebateDTO();
 			
-			dto.setNum(Long.parseLong(req.getParameter("num")));
-			dto.setSubject(req.getParameter("subject"));
+			dto.setArticleNo(req.getParameter("articleNo"));
+			dto.setTitle(req.getParameter("title"));
 			dto.setContent(req.getParameter("content"));
 
 			dto.setUserId(info.getUserId());
@@ -342,7 +394,7 @@ public class DebateServlet extends MyServlet {
 			e.printStackTrace();
 		}
 
-		resp.sendRedirect(cp + "/bbs/list.do?page=" + page);
+		resp.sendRedirect(cp + "/debate/list.do?subjectNo="+subjectNo+"page=" + page);
 	}
 
 	protected void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -354,11 +406,12 @@ public class DebateServlet extends MyServlet {
 		
 		String cp = req.getContextPath();
 		
+		String subjectNo = req.getParameter("subjectNo");
 		String page = req.getParameter("page");
 		String query = "page=" + page;
 
 		try {
-			long num = Long.parseLong(req.getParameter("num"));
+			String articleNo = req.getParameter("articleNo");
 			String condition = req.getParameter("condition");
 			String keyword = req.getParameter("keyword");
 			if (condition == null) {
@@ -371,52 +424,14 @@ public class DebateServlet extends MyServlet {
 				query += "&condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "UTF-8");
 			}
 
-			dao.deleteBoard(num, info.getUserId());
+			dao.deleteBoard(articleNo, info.getUserId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		resp.sendRedirect(cp + "/bbs/list.do?" + query);
+		resp.sendRedirect(cp + "/debate/list.do?subjectNo="+ subjectNo + query);
 	}
 	
-	// 게시물 공감 저장 - AJAX:JSON
-	protected void insertBoardLike(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		DebateDAO dao = new DebateDAO();
-
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo) session.getAttribute("member");
-
-		String state = "false";
-		int boardLikeCount = 0;
-
-		try {
-			long num = Long.parseLong(req.getParameter("num"));
-			String isNoLike = req.getParameter("isNoLike");
-			
-			if(isNoLike.equals("true")) {
-				dao.insertBoardLike(num, info.getUserId()); // 공감
-			} else {
-				dao.deleteBoardLike(num, info.getUserId()); // 공감 취소
-			}
-			
-			boardLikeCount = dao.countBoardLike(num);
-
-			state = "true";
-		} catch (SQLException e) {
-			state = "liked";
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		JSONObject job = new JSONObject();
-		job.put("state", state);
-		job.put("boardLikeCount", boardLikeCount);
-
-		resp.setContentType("text/html;charset=utf-8");
-		PrintWriter out = resp.getWriter();
-		out.print(job.toString());
-	}
 
 	// 리플 리스트 - AJAX:TEXT
 	protected void listReply(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -424,7 +439,7 @@ public class DebateServlet extends MyServlet {
 		MyUtil util = new MyUtilBootstrap();
 
 		try {
-			long num = Long.parseLong(req.getParameter("num"));
+			String articleNo = req.getParameter("articleNo");
 			String pageNo = req.getParameter("pageNo");
 			int current_page = 1;
 			if (pageNo != null) {
@@ -435,7 +450,7 @@ public class DebateServlet extends MyServlet {
 			int total_page = 0;
 			int replyCount = 0;
 
-			replyCount = dao.dataCountReply(num);
+			replyCount = dao.dataCountReply(articleNo);
 			total_page = util.pageCount(replyCount, size);
 			if (current_page > total_page) {
 				current_page = total_page;
@@ -445,7 +460,7 @@ public class DebateServlet extends MyServlet {
 			int offset = (current_page - 1) * size;
 			if(offset < 0) offset = 0;
 			
-			List<ReplyDTO> listReply = dao.listReply(num, offset, size);
+			List<ReplyDTO> listReply = dao.listReply(articleNo, offset, size);
 
 			// 엔터를 <br>
 			for (ReplyDTO dto : listReply) {
@@ -460,6 +475,7 @@ public class DebateServlet extends MyServlet {
 			req.setAttribute("replyCount", replyCount);
 			req.setAttribute("total_page", total_page);
 			req.setAttribute("paging", paging);
+			req.setAttribute("articleNo", articleNo);
 			
 			forward(req, resp, "/WEB-INF/views/bbs/listReply.jsp");
 			return;
@@ -482,8 +498,8 @@ public class DebateServlet extends MyServlet {
 		try {
 			ReplyDTO dto = new ReplyDTO();
 
-			long num = Long.parseLong(req.getParameter("num"));
-			dto.setNum(num);
+			// String articleNo = req.getParameter("articleNo");
+			dto.setArticleNo("articleNo");
 			dto.setUserId(info.getUserId());
 			dto.setContent(req.getParameter("content"));
 			String answer = req.getParameter("answer");
@@ -515,9 +531,9 @@ public class DebateServlet extends MyServlet {
 		String state = "false";
 
 		try {
-			long replyNum = Long.parseLong(req.getParameter("replyNum"));
-
-			dao.deleteReply(replyNum, info.getUserId());
+			String replyNo = req.getParameter("replyNo");
+			
+			dao.deleteReply(replyNo, info.getUserId());
 			
 			state = "true";
 		} catch (Exception e) {
@@ -545,18 +561,18 @@ public class DebateServlet extends MyServlet {
 		int disLikeCount = 0;
 
 		try {
-			long replyNum = Long.parseLong(req.getParameter("replyNum"));
+			String replyNo = req.getParameter("replyNo");
 			int replyLike = Integer.parseInt(req.getParameter("replyLike"));
 
 			ReplyDTO dto = new ReplyDTO();
 
-			dto.setReplyNum(replyNum);
+			dto.setReplyNo(replyNo);
 			dto.setUserId(info.getUserId());
 			dto.setReplyLike(replyLike);
 
 			dao.insertReplyLike(dto);
 
-			Map<String, Integer> map = dao.countReplyLike(replyNum);
+			Map<String, Integer> map = dao.countReplyLike(replyNo);
 
 			if (map.containsKey("likeCount")) {
 				likeCount = map.get("likeCount");
@@ -593,8 +609,8 @@ public class DebateServlet extends MyServlet {
 		int disLikeCount = 0;
 
 		try {
-			long replyNum = Long.parseLong(req.getParameter("replyNum"));
-			Map<String, Integer> map = dao.countReplyLike(replyNum);
+			String replyNo = req.getParameter("replyNo");
+			Map<String, Integer> map = dao.countReplyLike(replyNo);
 
 			if (map.containsKey("likeCount")) {
 				likeCount = map.get("likeCount");
@@ -674,6 +690,4 @@ public class DebateServlet extends MyServlet {
 		PrintWriter out = resp.getWriter();
 		out.print(job.toString());
 	}
-		 */
-	} // 얘도 같이 지우기
 }
