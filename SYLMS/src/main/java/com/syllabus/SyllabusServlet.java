@@ -38,6 +38,8 @@ public class SyllabusServlet extends MyServlet {
 			listProfessor(req, resp);
 		} else if (uri.indexOf("readProfessor.do") != -1) {
 			readProfessor(req, resp);
+		} else if(uri.indexOf("updateCurriculum_ok.do") != -1) {
+			updateCurriculumSubmit(req, resp);
 		}
 	}
 
@@ -133,6 +135,12 @@ public class SyllabusServlet extends MyServlet {
 			String paging = util.paging(current_page, total_page, listUrl);
 
 			// 포워딩할 JSP에 전달할 속성
+			req.setAttribute("professorName",info.getUserName());
+			if(list.size()>=1) {
+				req.setAttribute("semester", list.get(0).getSemester());
+				req.setAttribute("syear", list.get(0).getSyear());
+			}
+			
 			req.setAttribute("list", list);
 			req.setAttribute("page", current_page);
 			req.setAttribute("total_page", total_page);
@@ -161,16 +169,17 @@ public class SyllabusServlet extends MyServlet {
 			String subjectNo = req.getParameter("subjectNo");
 
 			String query = "page=" + page;
-			if (subjectNo.length() != 0) {
-				query += "&subjectNo=" + subjectNo;
-			}
 
 			SyllabusDTO dto = dao.readProfessor(subjectNo);
 			if (dto == null) {
-				resp.sendRedirect(cp + "/syllabus/list.do?" + query);
+				resp.sendRedirect(cp + "/syllabus/listProfessor.do?" + query);
 				return;
 			}
 
+			req.setAttribute("professorName",dto.getName());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("syear", dto.getSyear().substring(0, 4));
+			
 			req.setAttribute("dto", dto);
 			req.setAttribute("query", query);
 			req.setAttribute("page", page);
@@ -182,8 +191,48 @@ public class SyllabusServlet extends MyServlet {
 		forward(req, resp, "/WEB-INF/views/syllabus/readProfessor.jsp");
 	}
 
-	protected void test(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void updateCurriculumSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//HttpSession session = req.getSession();
+		// SessionInfo info = (SessionInfo) session.getAttribute("member");
+			
+		String cp = req.getContextPath();
+		
+		if (req.getMethod().equalsIgnoreCase("GET")) {
+			resp.sendRedirect(cp + "/syllabus/listProfessor.do");
+			return;
+		}
+		
+		
+	    SyllabusDAO dao = new SyllabusDAO();
+		
+		// String page = req.getParameter("page");
 
-	}
 
-}
+		try {
+			SyllabusDTO dto = new SyllabusDTO();
+			
+			dto.setAssignmentRate(Integer.parseInt(req.getParameter("assignmentRate")));
+			dto.setMiddleRate(Integer.parseInt(req.getParameter("middleRate")));
+			dto.setFinalRate(Integer.parseInt(req.getParameter("finalRate")));
+			
+			// dto.setSubjectName(req.getParameter("subjectName"));
+			// dto.setSemester(Integer.parseInt(req.getParameter("semester")));
+			// dto.setLecturePlace(req.getParameter("lecturePlace"));
+			
+			dto.setLectureType(req.getParameter("lectureType"));
+			dto.setPrecondition(req.getParameter("precondition"));
+			dto.setTextbook(req.getParameter("textbook"));
+			dto.setSubjectNo(req.getParameter("subjectNo"));
+			
+			
+			dao.updateCurriculum(dto);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			resp.sendRedirect(cp + "/syllabus/listProfessor.do");
+  
+		}
+   }
+    

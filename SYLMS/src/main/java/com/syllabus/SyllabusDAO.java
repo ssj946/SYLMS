@@ -3,6 +3,7 @@ package com.syllabus;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +21,12 @@ public class SyllabusDAO {
 		String sql;
 
 		try {
-			sql = "SELECT COUNT(*) FROM curriculum c " + " JOIN subject s ON c.subjectNo = s.subjectNo "
-					+ " JOIN account a ON s.id = a.id " + " WHERE s.id = ? ";
+			sql = "SELECT COUNT(*) FROM curriculum c "
+					+ " JOIN subject s ON c.subjectNo = s.subjectNo "
+					+ " JOIN account a ON s.id = a.id " 
+					+ " WHERE s.id = ? "
+					+ " AND TO_CHAR(sYear,'YYYY')=TO_CHAR(SYSDATE,'YYYY') "
+					+ " AND SYSDATE<sYear+(interval '4' month)";			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 
@@ -60,13 +65,13 @@ public class SyllabusDAO {
 		String sql;
 
 		try {
-			sql = "SELECT b.subjectNo,subjectName,b.lecturePlace, b.semester, b.assignmentRate, b.middleRate,b.finalRate, "
+			sql = "SELECT b.subjectNo,subjectName,sYear, b.lecturePlace, b.semester, b.assignmentRate, b.middleRate,b.finalRate,"
+					+ "b.lectureType, b.precondition,b.textbook, "
 					+ " TO_CHAR(b.openDate, 'YYYY-MM-DD') openDate, credit, s.id, a.name "
 					+ " FROM curriculum b"
 					+ " JOIN subject s ON b.subjectNo = s.subjectNo"
 					+ " JOIN account a ON s.id = a.id "
-				 	+ " WHERE b.subjectNo = ? ";
-
+					+ " WHERE b.subjectNo = ? ";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, subjectNo);
@@ -75,18 +80,25 @@ public class SyllabusDAO {
 
 			if (rs.next()) {
 				dto = new SyllabusDTO();
-				dto.setSubjectNo(rs.getString("subjectNo"));
+
+				dto.setSubjectNo(rs.getString("SubjectNo"));
 				dto.setSubjectName(rs.getString("subjectName"));
-				dto.setLecturePlace(rs.getString("lecturePlace"));
 				dto.setOpenDate(rs.getString("openDate"));
 				dto.setSemester(rs.getInt("semester"));
 				dto.setAssignmentRate(rs.getInt("assignmentRate"));
 				dto.setMiddleRate(rs.getInt("middleRate"));
 				dto.setFinalRate(rs.getInt("finalRate"));
 				dto.setCredit(rs.getInt("credit")); // 학점
+				dto.setSyear(rs.getString("sYear"));
+				dto.setLecturePlace(rs.getString("lecturePlace"));
 
 				dto.setId(rs.getString("id")); // 교수아이디
 				dto.setName(rs.getString("name")); // 교수이름
+				
+                dto.setLectureType(rs.getString("lectureType")); //강의타임
+                dto.setPrecondition(rs.getString("precondition")); //선수과목
+                dto.setTextbook(rs.getString("textbook")); //주교재			
+			
 
 			}
 
@@ -120,6 +132,7 @@ public class SyllabusDAO {
 		String sql;
 		
 		try {
+			
 			sql= "SELECT s.subjectNo, subjectName, credit, TO_CHAR(sYear,'YYYY') sYear, semester, studentcode, name "
 					+ " FROM REGISTERSUBJECT r"
 					+ " JOIN subject s ON s.subjectNo=r.subjectNo "
@@ -171,10 +184,16 @@ public class SyllabusDAO {
 		String sql;
 
 		try {
-			sql = "SELECT b.subjectNo,subjectName,b.lecturePlace, b.semester, b.assignmentRate, b.middleRate,b.finalRate, "
-					+ " TO_CHAR(b.openDate, 'YYYY-MM-DD') openDate, credit, s.id, a.name " + " FROM curriculum b"
-					+ " JOIN subject s ON b.subjectNo = s.subjectNo" + " JOIN account a ON s.id = a.id "
-					+ " WHERE s.id = ? " + " ORDER BY b.subjectNo DESC " + " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+			sql = "SELECT b.subjectNo,TO_CHAR(sYear,'YYYY') sYear, subjectName,b.lecturePlace, b.semester, b.assignmentRate, b.middleRate,b.finalRate, "
+					+ " TO_CHAR(b.openDate, 'YYYY-MM-DD') openDate, credit, s.id, a.name "
+					+ " FROM curriculum b"
+					+ " JOIN subject s ON b.subjectNo = s.subjectNo"
+					+ " JOIN account a ON s.id = a.id "
+					+ " WHERE s.id = ? "
+					+ "   AND TO_CHAR(sYear,'YYYY')=TO_CHAR(SYSDATE,'YYYY') "
+					+ "   AND SYSDATE<sYear+(interval '4' month) "
+					+ " ORDER BY b.subjectNo DESC "
+					+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
@@ -187,6 +206,7 @@ public class SyllabusDAO {
 				SyllabusDTO dto = new SyllabusDTO();
 				dto.setSubjectNo(rs.getString("subjectNo"));
 				dto.setSubjectName(rs.getString("subjectName"));
+				dto.setSyear(rs.getString("sYear"));
 				dto.setLecturePlace(rs.getString("lecturePlace"));
 				dto.setOpenDate(rs.getString("openDate"));
 				dto.setSemester(rs.getInt("semester"));
@@ -230,9 +250,13 @@ public class SyllabusDAO {
 		String sql;
 
 		try {
-			sql = "SELECT b.subjectNo,subjectName,b.lecturePlace, b.semester, b.assignmentRate, b.middleRate,b.finalRate, "
-					+ " TO_CHAR(b.openDate, 'YYYY-MM-DD') openDate, credit, s.id, a.name " + " FROM curriculum b"
-					+ " JOIN subject s ON b.subjectNo = s.subjectNo" + " JOIN account a ON s.id = a.id "
+			//
+			sql = "SELECT b.subjectNo,subjectName,sYear, b.lecturePlace, b.semester, b.assignmentRate, b.middleRate,b.finalRate,"
+					+ "b.lectureType, b.precondition,b.textbook, "
+					+ " TO_CHAR(b.openDate, 'YYYY-MM-DD') openDate, credit, s.id, a.name "
+					+ " FROM curriculum b"
+					+ " JOIN subject s ON b.subjectNo = s.subjectNo"
+					+ " JOIN account a ON s.id = a.id "
 					+ " WHERE b.subjectNo = ? ";
 
 			pstmt = conn.prepareStatement(sql);
@@ -246,14 +270,21 @@ public class SyllabusDAO {
 				dto.setSubjectNo(rs.getString("SubjectNo"));
 				dto.setSubjectName(rs.getString("subjectName"));
 				dto.setOpenDate(rs.getString("openDate"));
+				dto.setSemester(rs.getInt("semester"));
 				dto.setAssignmentRate(rs.getInt("assignmentRate"));
 				dto.setMiddleRate(rs.getInt("middleRate"));
 				dto.setFinalRate(rs.getInt("finalRate"));
 				dto.setCredit(rs.getInt("credit")); // 학점
+				dto.setSyear(rs.getString("sYear"));
+				dto.setLecturePlace(rs.getString("lecturePlace"));
 
 				dto.setId(rs.getString("id")); // 교수아이디
 				dto.setName(rs.getString("name")); // 교수이름
-
+				
+                dto.setLectureType(rs.getString("lectureType")); //강의타임
+                dto.setPrecondition(rs.getString("precondition")); //선수과목
+                dto.setTextbook(rs.getString("textbook")); //주교재
+				//
 			}
 
 		} catch (Exception e) {
@@ -277,7 +308,39 @@ public class SyllabusDAO {
 		return dto;
 	}
 	
-	
-	
+	public void updateCurriculum(SyllabusDTO dto) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			// 
+			sql = "UPDATE  curriculum SET assignmentRate=?, middleRate=?,  finalRate=?,  "
+					+ " lectureType=?,precondition=?, textbook=?  WHERE subjectNo = ? ";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, dto.getAssignmentRate());
+			pstmt.setLong(2, dto.getMiddleRate());
+			pstmt.setLong(3, dto.getFinalRate());
+			pstmt.setString(4,dto.getLectureType());
+			pstmt.setString(5, dto.getPrecondition());
+			pstmt.setString(6, dto.getTextbook());
+            pstmt.setString(7, dto.getSubjectNo());
+
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+	}
 	
 }
+	
+

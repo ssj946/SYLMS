@@ -12,6 +12,10 @@ public class SyllabusDTO {
 	private int credit;
 	private String id;
 	private String name;
+	private String syear;
+	private String lectureType;
+	private String precondition;
+	private String textbook;
 	
 	public String getSubjectNo() {
 		return subjectNo;
@@ -79,5 +83,30 @@ public class SyllabusDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getSyear() {
+		return syear;
+	}
+	public void setSyear(String syear) {
+		this.syear = syear;
+	}
+	public String getLectureType() {
+		return lectureType;
+	}
+	public void setLectureType(String lectureType) {
+		this.lectureType = lectureType;
+	}
+	public String getPrecondition() {
+		return precondition;
+	}
+	public void setPrecondition(String precondition) {
+		this.precondition = precondition;
+	}
+	public String getTextbook() {
+		return textbook;
+	}
+	public void setTextbook(String textbook) {
+		this.textbook = textbook;
+	}
+
 
 }

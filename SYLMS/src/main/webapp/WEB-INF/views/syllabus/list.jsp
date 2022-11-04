@@ -69,25 +69,7 @@ $(function(){
 							<p> 3. Students, please check</p>
 						</div>
 					</div>
-					
-							 <p>
-                <input type="file" name="file_0"/>
-            </p> 
-			<table border = "1" style="border-collapse : collapse">
-				<tr>
-					<td style="background-color : #ede7e7"> 강의소개영상  </td>
-					<td>
-						<select id="movie_select" onchange="play();">
-			<!--select의 option에 변화가 생기면 onchange에 있는 play()가 실행됨   -->
-							<option>:::VIDEO PLAYLIST:::</option>
-						</select>				
-					</td>
-				</tr>	
-			</table>
-					<hr>
-					<div align="center">
-				<video src="" id="my_video" width="320" height="240" controls></video>	
-		</div>
+			
 					<form class="form-inline" action="">
 						<div class="form-group">
 							<label>학년도 학기</label>
@@ -124,31 +106,35 @@ $(function(){
 						<td class="bg-light">강의실</td>
 						<td colspan="3">${dto.lecturePlace}</td>						
 					</tr>
-						
+					
+					<tr>
+						<td class="bg-light">강의타임</td>
+						<td>${dto.lectureType}</td>
+						<td class="bg-light">선수과목</td>
+						<td>${dto.precondition}</td>						
+					</tr>
+
+					<tr>
+						<td class="bg-light">주교제</td>
+						<td colspan="3">${dto.textbook}</td>						
+					</tr>
+																
 					<tr>
 						<td class="bg-light">학점</td>
 						<td>${dto.credit}</td>
 						<td class="bg-light">과제비율</td>
-						<td>${dto.assignmentRate}</td>						
+						<td>${dto.assignmentRate}%</td>						
 					</tr>
 	
 					<tr>
 						<td class="bg-light">중간고사비율</td>
-						<td>${dto.middleRate}</td>
+						<td>${dto.middleRate}%</td>
 						<td class="bg-light">기말고사비율</td>
-						<td>${dto.finalRate}</td>						
+						<td>${dto.finalRate}%</td>						
 					</tr>
 				</table>
         </div>				
-		<div class="col-lg-10 gap-3 ms-auto">
-					
-					<div class="body-main">
-		
-				
-					</div>																				
-</div>
-				
-					</div>
+
 					
 				</div>
 				</div>
@@ -156,7 +142,6 @@ $(function(){
 			<!-- 본문 끝 -->
 					
 				
-		
 	
 	</section>
 </main>
