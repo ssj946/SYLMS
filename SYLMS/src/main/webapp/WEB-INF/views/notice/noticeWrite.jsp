@@ -47,7 +47,7 @@ function deleteFile(fileNo) {
 	if(! confirm("파일을 삭제 하시겠습니까 ?")) {
 		return;
 	}
-	let url = "${pageContext.request.contextPath}/notice/deleteFile.do?articleNo=" + ${articleNo}+"&subjectNo=${subjectNo}";
+	let url = "${pageContext.request.contextPath}/notice/deleteFile.do?articleNo=" + ${dto.articleNo}+"&subjectNo=${subjectNo}&fileNo="+fileNo;
 	location.href = url;
 }
 </c:if>

@@ -5,15 +5,59 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-//import java.util.HashMap;
+import java.util.HashMap;
 import java.util.List;
-//import java.util.Map;
+import java.util.Map;
 
 import com.util.DBConn;
 
 public class DebateDAO {
 	private Connection conn = DBConn.getConnection();
 
+	// 과목정보 불러오기
+	public DebateDTO readSubject(String subjectNo) throws SQLException{
+			
+			PreparedStatement pstmt= null;
+			String sql;
+			ResultSet rs=null;
+			DebateDTO dto = new DebateDTO();
+			try {
+				sql= "SELECT s.id, name, subjectname, credit, TO_CHAR(syear,'YYYY')syear, semester FROM subject s "
+						+ " JOIN account a ON a.id=s.id "
+						+ " WHERE subjectNo= ?";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, subjectNo);
+				rs= pstmt.executeQuery();
+				if(rs.next()) {
+					dto.setProfessorname(rs.getString("name"));
+					dto.setSubjectName(rs.getString("subjectname"));
+					dto.setCredit(Integer.parseInt(rs.getString("credit")));
+					dto.setSemester(Integer.parseInt(rs.getString("semester")));
+					dto.setSyear(Integer.parseInt(rs.getString("syear")));
+				}
+		
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(rs!=null) {
+					try {
+						rs.close();
+					} catch (Exception e2) {
+					}
+				}
+				
+				if(pstmt!=null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+					}
+				}
+			}
+			
+			return dto; 
+		}
+		
 	// 데이터 추가 00002 - 토론게시판
 	public void insertBoard(DebateDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
@@ -196,7 +240,7 @@ public class DebateDAO {
 
 		return list;
 	}
-/*
+
 	// 검색에서 리스트
 	public List<DebateDTO> listBoard(String subjectNo, int offset, int size, String condition, String keyword) {
 		List<DebateDTO> list = new ArrayList<DebateDTO>();
@@ -205,39 +249,37 @@ public class DebateDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT b.num, userName, subject, hitCount, ");
-			sb.append("       TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, ");
-			sb.append("        NVL(replyCount, 0) replyCount ");
-			sb.append(" FROM bbs b ");
-			sb.append(" JOIN member1 m ON b.userId = m.userId ");
-			sb.append(" LEFT OUTER JOIN ( ");
-			sb.append("     SELECT num, COUNT(*) replyCount ");
-			sb.append("     FROM bbsReply ");
-			sb.append("     WHERE answer=0 ");
-			sb.append("     GROUP BY num");
-			sb.append(" ) c ON b.num = c.num");
+			sb.append(" SELECT b.articleNo, b.Id, title, hitCount, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, NVL(replyCount, 0) replyCount");
+			sb.append("FROM subject_bbs b ");
+			sb.append("JOIN account a ON a.Id = b.Id ");
+			sb.append("LEFT OUTER JOIN ( SELECT  articleNo, COUNT(*) replyCount FROM subject_bbs_Reply WHERE answer=0 GROUP BY articleNo) c ON b.articleNo = c.articleNo");
+			sb.append("WHERE b.subjectNo = ? AND b.bbscode='00002'");
+			
+			
 			if (condition.equals("all")) {
-				sb.append(" WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ");
+				sb.append(" AND INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ");
 			} else if (condition.equals("reg_date")) {
 				keyword = keyword.replaceAll("(\\-|\\/|\\.)", "");
-				sb.append(" WHERE TO_CHAR(reg_date, 'YYYYMMDD') = ?");
+				sb.append(" AND TO_CHAR(reg_date, 'YYYYMMDD') = ?");
 			} else {
-				sb.append(" WHERE INSTR(" + condition + ", ?) >= 1 ");
+				sb.append(" AND INSTR(" + condition + ", ?) >= 1 ");
 			}
-			sb.append(" ORDER BY num DESC ");
+			sb.append(" ORDER BY articleNo DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 
 			pstmt = conn.prepareStatement(sb.toString());
 			
 			if (condition.equals("all")) {
-				pstmt.setString(1, keyword);
+				pstmt.setString(1, subjectNo);
+				pstmt.setString(2, keyword);
+				pstmt.setString(3, keyword);
+				pstmt.setInt(4, offset);
+				pstmt.setInt(5, size);
+			} else {
+				pstmt.setString(1, subjectNo);
 				pstmt.setString(2, keyword);
 				pstmt.setInt(3, offset);
 				pstmt.setInt(4, size);
-			} else {
-				pstmt.setString(1, keyword);
-				pstmt.setInt(2, offset);
-				pstmt.setInt(3, size);
 			}
 
 			rs = pstmt.executeQuery();
@@ -245,9 +287,9 @@ public class DebateDAO {
 			while (rs.next()) {
 				DebateDTO dto = new DebateDTO();
 
-				dto.setNum(rs.getLong("num"));
-				dto.setUserName(rs.getString("userName"));
-				dto.setSubject(rs.getString("subject"));
+				dto.setArticleNo(rs.getString("articleNo"));
+				dto.setName(rs.getString("name"));
+				dto.setTitle(rs.getString("title"));
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setReg_date(rs.getString("reg_date"));
 				
@@ -276,15 +318,16 @@ public class DebateDAO {
 	}
 
 	// 조회수 증가하기
-	public void updateHitCount(long num) throws SQLException {
+	public void updateHitCount(String articleNo, String subjectNo) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 
 		try {
-			sql = "UPDATE bbs SET hitCount=hitCount+1 WHERE num=?";
+			sql = "UPDATE subject_bbs SET hitCount=hitCount+1 WHERE articleNo=? AND subjectNo=? ";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setLong(1, num);
+			pstmt.setString(1, articleNo);
+			pstmt.setString(2, subjectNo);
 			
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -302,40 +345,35 @@ public class DebateDAO {
 	}
 
 	// 해당 게시물 보기
-	public DebateDTO readBoard(long num) {
+	public DebateDTO readBoard(String articleNo, String subjectNo) {
 		DebateDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 
 		try {
-			sql = "SELECT b.num, b.userId, userName, subject, content, reg_date, hitCount, "
-					+ "    NVL(boardLikeCount, 0) boardLikeCount "
-					+ " FROM bbs b "
-					+ " JOIN member1 m ON b.userId=m.userId "
-					+ " LEFT OUTER JOIN ("
-					+ "      SELECT num, COUNT(*) boardLikeCount FROM bbsLike"
-					+ "      GROUP BY num"
-					+ " ) bc ON b.num = bc.num"
-					+ " WHERE b.num = ? ";
+			sql = " SELECT b.articleNo, b.Id, a.Name, title, content, reg_date, hitCount "
+					+ " FROM subject_bbs b "
+					+ " JOIN account a ON a.Id = b.Id "
+					+ " WHERE b.articleNo = ? AND b.subjectNo =? AND b.bbscode='00002'";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setLong(1, num);
+			pstmt.setString(1, articleNo);
+			pstmt.setString(2, subjectNo);
 
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				dto = new DebateDTO();
 				
-				dto.setNum(rs.getLong("num"));
-				dto.setUserId(rs.getString("userId"));
-				dto.setUserName(rs.getString("userName"));
-				dto.setSubject(rs.getString("subject"));
+				dto.setArticleNo(rs.getString("articleNo"));
+				dto.setUserId(rs.getString("id"));
+				dto.setName(rs.getString("name"));
+				dto.setTitle(rs.getString("title"));
 				dto.setContent(rs.getString("content"));
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setReg_date(rs.getString("reg_date"));
 				
-				dto.setBoardLikeCount(rs.getInt("boardLikeCount"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -358,49 +396,8 @@ public class DebateDAO {
 		return dto;
 	}
 
-	// 로그인 유저의 게시글 공감 유무
-	public boolean isUserBoardLike(long num, String userId) {
-		boolean result = false;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql;
-		
-		try {
-			sql = "SELECT num, userId FROM bbsLike WHERE num = ? AND userId = ?";
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setLong(1, num);
-			pstmt.setString(2, userId);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				result = true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(rs != null) {
-				try {
-					rs.close();
-				} catch (Exception e2) {
-				}
-			}
-			
-			if(pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (Exception e2) {
-				}
-			}
-			
-		}
-		
-		return result;
-	}
-	
 	// 이전글
-	public DebateDTO preReadBoard(long num, String condition, String keyword) {
+	public DebateDTO preReadBoard(String subjectNo, String articleNo, String condition, String keyword) {
 		DebateDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -408,37 +405,39 @@ public class DebateDAO {
 
 		try {
 			if (keyword != null && keyword.length() != 0) {
-				sb.append(" SELECT num, subject ");
-				sb.append(" FROM bbs b ");
-				sb.append(" JOIN member1 m ON b.userId = m.userId ");
-				sb.append(" WHERE ( num > ? ) ");
+				sb.append(" SELECT articleNo, title ");
+				sb.append(" FROM subject_bbs b ");
+				sb.append(" JOIN account a ON b.Id = a.Id ");
+				sb.append(" WHERE ( articleNo > ? AND subjectNo = ? ) ");
 				if (condition.equals("all")) {
-					sb.append("   AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
+					sb.append("   AND ( INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
 				} else if (condition.equals("reg_date")) {
 					keyword = keyword.replaceAll("(\\-|\\/|\\.)", "");
 					sb.append("   AND ( TO_CHAR(reg_date, 'YYYYMMDD') = ? ) ");
 				} else {
 					sb.append("   AND ( INSTR(" + condition + ", ?) >= 1 ) ");
 				}
-				sb.append(" ORDER BY num ASC ");
+				sb.append(" ORDER BY articleNo ASC ");
 				sb.append(" FETCH FIRST 1 ROWS ONLY ");
 
 				pstmt = conn.prepareStatement(sb.toString());
 				
-				pstmt.setLong(1, num);
-				pstmt.setString(2, keyword);
+				pstmt.setString(1, articleNo);
+				pstmt.setString(2, subjectNo);
+				pstmt.setString(3, keyword);
 				if (condition.equals("all")) {
-					pstmt.setString(3, keyword);
+					pstmt.setString(4, keyword);
 				}
-			} else {
-				sb.append(" SELECT num, subject FROM bbs ");
-				sb.append(" WHERE num > ? ");
-				sb.append(" ORDER BY num ASC ");
+			}else {
+				sb.append(" SELECT articleNo, title FROM subject_bbs ");
+				sb.append(" WHERE articleNo > ? AND subjectNo = ?");
+				sb.append(" ORDER BY articleNo ASC ");
 				sb.append(" FETCH FIRST 1 ROWS ONLY ");
 
 				pstmt = conn.prepareStatement(sb.toString());
 				
-				pstmt.setLong(1, num);
+				pstmt.setString(1, articleNo);
+				pstmt.setString(2, subjectNo);
 			}
 
 			rs = pstmt.executeQuery();
@@ -446,8 +445,8 @@ public class DebateDAO {
 			if (rs.next()) {
 				dto = new DebateDTO();
 				
-				dto.setNum(rs.getLong("num"));
-				dto.setSubject(rs.getString("subject"));
+				dto.setArticleNo(rs.getString("articleNo"));
+				dto.setTitle(rs.getString("title"));
 			}
 			
 		} catch (SQLException e) {
@@ -472,7 +471,7 @@ public class DebateDAO {
 	}
 
 	// 다음글
-	public DebateDTO nextReadBoard(long num, String condition, String keyword) {
+	public DebateDTO nextReadBoard(String subjectNo, String articleNo, String condition, String keyword) {
 		DebateDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -480,37 +479,39 @@ public class DebateDAO {
 
 		try {
 			if (keyword != null && keyword.length() != 0) {
-				sb.append(" SELECT num, subject ");
-				sb.append(" FROM bbs b ");
-				sb.append(" JOIN member1 m ON b.userId = m.userId ");
-				sb.append(" WHERE ( num < ? ) ");
+				sb.append(" SELECT articleNo, title ");
+				sb.append(" FROM subject_bbs b ");
+				sb.append(" JOIN account a ON b.Id = a.Id ");
+				sb.append(" WHERE ( articleNo < ? ) AND subjectNo = ? ");
 				if (condition.equals("all")) {
-					sb.append("   AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
+					sb.append("   AND ( INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
 				} else if (condition.equals("reg_date")) {
 					keyword = keyword.replaceAll("(\\-|\\/|\\.)", "");
 					sb.append("   AND ( TO_CHAR(reg_date, 'YYYYMMDD') = ? ) ");
 				} else {
 					sb.append("   AND ( INSTR(" + condition + ", ?) >= 1 ) ");
 				}
-				sb.append(" ORDER BY num DESC ");
+				sb.append(" ORDER BY articleNo DESC ");
 				sb.append(" FETCH FIRST 1 ROWS ONLY ");
 
 				pstmt = conn.prepareStatement(sb.toString());
 				
-				pstmt.setLong(1, num);
-				pstmt.setString(2, keyword);
+				pstmt.setString(1, articleNo);
+				pstmt.setString(2, subjectNo);
+				pstmt.setString(3, keyword);
 				if (condition.equals("all")) {
-					pstmt.setString(3, keyword);
+					pstmt.setString(4, keyword);
 				}
 			} else {
-				sb.append(" SELECT num, subject FROM bbs ");
-				sb.append(" WHERE num < ? ");
-				sb.append(" ORDER BY num DESC ");
+				sb.append(" SELECT articleNo, title FROM subject_bbs ");
+				sb.append(" WHERE articleNo < ? AND subjectNo = ?");
+				sb.append(" ORDER BY articleNo DESC ");
 				sb.append(" FETCH FIRST 1 ROWS ONLY ");
 
 				pstmt = conn.prepareStatement(sb.toString());
 				
-				pstmt.setLong(1, num);
+				pstmt.setString(1, articleNo);
+				pstmt.setString(2, subjectNo);
 			}
 
 			rs = pstmt.executeQuery();
@@ -518,9 +519,10 @@ public class DebateDAO {
 			if (rs.next()) {
 				dto = new DebateDTO();
 				
-				dto.setNum(rs.getLong("num"));
-				dto.setSubject(rs.getString("subject"));
+				dto.setArticleNo(rs.getString("articleNo"));
+				dto.setTitle(rs.getString("title"));
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -542,19 +544,19 @@ public class DebateDAO {
 		return dto;
 	}
 
-	// 게시물 수정
+	// 게시물 수정 흠,,pstmt.id 부분,,,
 	public void updateBoard(DebateDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 
 		try {
-			sql = "UPDATE bbs SET subject=?, content=? WHERE num=? AND userId=?";
+			sql = "UPDATE subject_bbs SET title=?, content=? WHERE articleno=? AND Id=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, dto.getSubject());
+			pstmt.setString(1, dto.getTitle());
 			pstmt.setString(2, dto.getContent());
-			pstmt.setLong(3, dto.getNum());
+			pstmt.setString(3, dto.getArticleNo());
 			pstmt.setString(4, dto.getUserId());
 			
 			pstmt.executeUpdate();
@@ -573,25 +575,25 @@ public class DebateDAO {
 
 	}
 
-	// 게시물 삭제
-	public void deleteBoard(long num, String userId) throws SQLException {
+	// 게시물 삭제 userId인지,, Id인지,,
+	public void deleteBoard(String articleNo, String userId) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 
 		try {
 			if (userId.equals("admin")) {
-				sql = "DELETE FROM bbs WHERE num=?";
+				sql = "DELETE FROM subject_bbs WHERE articleNo=?";
 				pstmt = conn.prepareStatement(sql);
 				
-				pstmt.setLong(1, num);
+				pstmt.setString(1, articleNo);
 				
 				pstmt.executeUpdate();
 			} else {
-				sql = "DELETE FROM bbs WHERE num=? AND userId=?";
+				sql = "DELETE FROM subject_bbs WHERE articleNo=? AND Id=?";
 				
 				pstmt = conn.prepareStatement(sql);
 				
-				pstmt.setLong(1, num);
+				pstmt.setString(1, articleNo);
 				pstmt.setString(2, userId);
 				
 				pstmt.executeUpdate();
@@ -610,114 +612,21 @@ public class DebateDAO {
 
 	}
 
-	// 게시물의 공감 추가
-	public void insertBoardLike(long num, String userId) throws SQLException {
-		PreparedStatement pstmt = null;
-		String sql;
-		
-		try {
-			sql = "INSERT INTO bbsLike(num, userId) VALUES (?, ?)";
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setLong(1, num);
-			pstmt.setString(2, userId);
-			
-			pstmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if(pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-				}
-			}
-		}
-		
-	}
-	
-	// 게시글 공감 삭제
-	public void deleteBoardLike(long num, String userId) throws SQLException {
-		PreparedStatement pstmt = null;
-		String sql;
-		
-		try {
-			sql = "DELETE FROM bbsLike WHERE num = ? AND userId = ?";
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setLong(1, num);
-			pstmt.setString(2, userId);
-			
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if(pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (Exception e2) {
-				}
-			}
-		}
-		
-	}
-	
-	// 게시물의 공감 개수
-	public int countBoardLike(long num) {
-		int result = 0;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql;
-		
-		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM bbsLike WHERE num=?";
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setLong(1, num);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				result = rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if(rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-				}
-			}
-				
-			if(pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-				}
-			}
-		}
-		
-		return result;
-	}
-
 	// 게시물의 댓글 및 답글 추가
 	public void insertReply(ReplyDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
 		try {
-			sql = "INSERT INTO bbsReply(replyNum, num, userId, content, answer, reg_date) "
-					+ " VALUES (bbsReply_seq.NEXTVAL, ?, ?, ?, ?, SYSDATE)";
+			sql = "INSERT INTO subject_bbs_Reply(replyNo, Id, content, reg_date, articleNo, answer, bbsCode, subjectNo) "
+					+ " VALUES (subject_bbs_Reply_seq.NEXTVAL, ?, ?, SYSDATE, ?, ?, '00002', ?)";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setLong(1, dto.getNum());
-			pstmt.setString(2, dto.getUserId());
-			pstmt.setString(3, dto.getContent());
+			pstmt.setString(1, dto.getUserId());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setString(3, dto.getArticleNo());
 			pstmt.setLong(4, dto.getAnswer());
+			pstmt.setString(5, dto.getSubjectNo());
 			
 			pstmt.executeUpdate();
 			
@@ -735,17 +644,17 @@ public class DebateDAO {
 	}
 
 	// 게시물의 댓글 개수
-	public int dataCountReply(long num) {
+	public int dataCountReply(String articleNo) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 		
 		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM bbsReply WHERE num=? AND answer=0";
+			sql = "SELECT NVL(COUNT(*), 0) FROM subject_bbs_Reply WHERE articleNo=? AND answer=0";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setLong(1, num);
+			pstmt.setString(1, articleNo);
 			
 			rs = pstmt.executeQuery();
 			
@@ -774,39 +683,25 @@ public class DebateDAO {
 	}
 
 	// 게시물 댓글 리스트
-	public List<ReplyDTO> listReply(long num, int offset, int size) {
+	public List<ReplyDTO> listReply(String articleNo, int offset, int size) {
 		List<ReplyDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append(" SELECT r.replyNum, r.userId, userName, num, content, r.reg_date, ");
-			sb.append("     NVL(answerCount, 0) answerCount, ");
-			sb.append("     NVL(likeCount, 0) likeCount, ");
-			sb.append("     NVL(disLikeCount, 0) disLikeCount ");
-			sb.append(" FROM bbsReply r ");
-			sb.append(" JOIN member1 m ON r.userId = m.userId ");
-			sb.append(" LEFT OUTER  JOIN (");
-			sb.append("	    SELECT answer, COUNT(*) answerCount ");
-			sb.append("     FROM bbsReply ");
-			sb.append("     WHERE answer != 0 ");
-			sb.append("     GROUP BY answer ");
-			sb.append(" ) a ON r.replyNum = a.answer ");
-			sb.append(" LEFT OUTER  JOIN ( ");
-			sb.append("	    SELECT replyNum, ");
-			sb.append("         COUNT(DECODE(replyLike, 1, 1)) likeCount, ");
-			sb.append("         COUNT(DECODE(replyLike, 0, 1)) disLikeCount ");
-			sb.append("     FROM bbsReplyLike ");
-			sb.append("     GROUP BY replyNum ");
-			sb.append(" ) b ON r.replyNum = b.replyNum  ");
-			sb.append(" WHERE num = ? AND r.answer=0 ");
-			sb.append(" ORDER BY r.replyNum DESC ");
+			sb.append(" SELECT r.replyNo, r.Id, a.Name, articleNo, content, r.reg_date, NVL(answerCount, 0) answerCount, NVL(likeCount, 0) likeCount, NVL(disLikeCount, 0) disLikeCount  ");
+			sb.append(" FROM subject_bbs_reply r  ");
+			sb.append(" JOIN account a ON r.Id = a.Id ");
+			sb.append(" LEFT OUTER  JOIN ( SELECT answer, COUNT(*) answerCount FROM subject_bbs_reply WHERE answer != 0 GROUP BY answer) b ON r.replyNo = b.answer  ");
+			sb.append(" LEFT OUTER  JOIN ( SELECT replyNo, COUNT(DECODE(replyLike, 1, 1)) likeCount, COUNT(DECODE(replyLike, 0, 1)) disLikeCount FROM bbs_Reply_Like GROUP BY replyNo ) c ON r.replyNo = c.replyNo  "); 
+			sb.append(" WHERE articleNo = ? AND r.answer=0  ");
+			sb.append(" ORDER BY r.replyNo DESC  ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			
 			pstmt = conn.prepareStatement(sb.toString());
 			
-			pstmt.setLong(1, num);
+			pstmt.setString(1, articleNo);
 			pstmt.setInt(2, offset);
 			pstmt.setInt(3, size);
 
@@ -815,10 +710,10 @@ public class DebateDAO {
 			while(rs.next()) {
 				ReplyDTO dto = new ReplyDTO();
 				
-				dto.setReplyNum(rs.getLong("replyNum"));
-				dto.setNum(rs.getLong("num"));
-				dto.setUserId(rs.getString("userId"));
-				dto.setUserName(rs.getString("userName"));
+				dto.setReplyNo(rs.getString("replyNo"));
+				dto.setArticleNo(rs.getString("articleNo"));
+				dto.setUserId(rs.getString("Id"));
+				dto.setName(rs.getString("Name"));
 				dto.setContent(rs.getString("content"));
 				dto.setReg_date(rs.getString("reg_date"));
 				dto.setAnswerCount(rs.getInt("answerCount"));
@@ -848,29 +743,29 @@ public class DebateDAO {
 		return list;
 	}
 
-	public ReplyDTO readReply(long replyNum) {
+	public ReplyDTO readReply(String replyNo) {
 		ReplyDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 		
 		try {
-			sql = "SELECT replyNum, num, r.userId, userName, content ,r.reg_date "
-					+ " FROM bbsReply r JOIN member1 m ON r.userId=m.userId  "
-					+ " WHERE replyNum = ? ";
+			sql = "SELECT replyNo, articleNo, r.Id, a.Name, content ,r.reg_date "
+					+ " FROM subject_bbs_Reply r JOIN account a ON r.Id=a.Id  "
+					+ " WHERE replyNo = ? ";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setLong(1, replyNum);
+			pstmt.setString(1, replyNo);
 
 			rs=pstmt.executeQuery();
 			
 			if(rs.next()) {
 				dto=new ReplyDTO();
 				
-				dto.setReplyNum(rs.getLong("replyNum"));
-				dto.setNum(rs.getLong("num"));
-				dto.setUserId(rs.getString("userId"));
-				dto.setUserName(rs.getString("userName"));
+				dto.setReplyNo(rs.getString("replyNo"));
+				dto.setArticleNo(rs.getString("articleNo"));
+				dto.setUserId(rs.getString("Id"));
+				dto.setName(rs.getString("Name"));
 				dto.setContent(rs.getString("content"));
 				dto.setReg_date(rs.getString("reg_date"));
 			}
@@ -896,25 +791,25 @@ public class DebateDAO {
 	}
 	
 	// 게시물의 댓글 삭제
-	public void deleteReply(long replyNum, String userId) throws SQLException {
+	public void deleteReply(String replyNo, String userId) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
 		if(! userId.equals("admin")) {
-			ReplyDTO dto = readReply(replyNum);
+			ReplyDTO dto = readReply(replyNo);
 			if(dto == null || (! userId.equals(dto.getUserId()))) {
 				return;
 			}
 		}
 		
 		try {
-			sql = "DELETE FROM bbsReply "
-					+ " WHERE replyNum IN  "
-					+ " (SELECT replyNum FROM bbsReply START WITH replyNum = ?"
-					+ "     CONNECT BY PRIOR replyNum = answer)";
+			sql = "DELETE FROM subject_bbs_Reply "
+					+ " WHERE replyNo IN  "
+					+ " (SELECT replyNo FROM subject_bbs_Reply START WITH replyNo = ?"
+					+ "     CONNECT BY PRIOR replyNo = answer)";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setLong(1, replyNum);
+			pstmt.setString(1, replyNo);
 			
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -939,11 +834,11 @@ public class DebateDAO {
 		StringBuilder sb=new StringBuilder();
 		
 		try {
-			sb.append(" SELECT replyNum, num, r.userId, userName, content, reg_date, answer ");
-			sb.append(" FROM bbsReply r ");
-			sb.append(" JOIN member1 m ON r.userId=m.userId ");
+			sb.append(" SELECT replyNo, articleNo, r.Id, a.Name, content, reg_date, answer ");
+			sb.append(" FROM subject_bbs_Reply r ");
+			sb.append(" JOIN account a ON r.userId=a.Id ");
 			sb.append(" WHERE answer=? ");
-			sb.append(" ORDER BY replyNum DESC ");
+			sb.append(" ORDER BY replyNo DESC ");
 			pstmt = conn.prepareStatement(sb.toString());
 			
 			pstmt.setLong(1, answer);
@@ -953,10 +848,10 @@ public class DebateDAO {
 			while(rs.next()) {
 				ReplyDTO dto=new ReplyDTO();
 				
-				dto.setReplyNum(rs.getLong("replyNum"));
-				dto.setNum(rs.getLong("num"));
-				dto.setUserId(rs.getString("userId"));
-				dto.setUserName(rs.getString("userName"));
+				dto.setReplyNo(rs.getString("replyNo"));
+				dto.setArticleNo(rs.getString("articleNo"));
+				dto.setUserId(rs.getString("Id"));
+				dto.setName(rs.getString("Name"));
 				dto.setContent(rs.getString("content"));
 				dto.setReg_date(rs.getString("reg_date"));
 				dto.setAnswer(rs.getLong("answer"));
@@ -992,7 +887,7 @@ public class DebateDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM bbsReply WHERE answer=?";
+			sql = "SELECT NVL(COUNT(*), 0) FROM subject_bbs_Reply WHERE answer=?";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setLong(1, answer);
@@ -1029,10 +924,10 @@ public class DebateDAO {
 		String sql;
 		
 		try {
-			sql = "INSERT INTO bbsReplyLike(replyNum, userId, replyLike) VALUES (?, ?, ?)";
+			sql = "INSERT INTO bbs_Reply_Like(replyNo, Id, replyLike) VALUES (?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setLong(1, dto.getReplyNum());
+			pstmt.setString(1, dto.getReplyNo());
 			pstmt.setString(2, dto.getUserId());
 			pstmt.setInt(3, dto.getReplyLike());
 			
@@ -1053,7 +948,7 @@ public class DebateDAO {
 	}
 	
 	// 댓글의 좋아요 / 싫어요 개수
-	public Map<String, Integer> countReplyLike(long replyNum) {
+	public Map<String, Integer> countReplyLike(String replyNo) {
 		Map<String, Integer> map = new HashMap<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -1062,10 +957,10 @@ public class DebateDAO {
 		try {
 			sql = " SELECT COUNT(DECODE(replyLike, 1, 1)) likeCount,  "
 				+ "     COUNT(DECODE(replyLike, 0, 1)) disLikeCount  "
-				+ " FROM bbsReplyLike WHERE replyNum = ? ";
+				+ " FROM bbs_Reply_Like WHERE replyNo = ? ";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setLong(1, replyNum);
+			pstmt.setString(1, replyNo);
 			
 			rs = pstmt.executeQuery();
 			
@@ -1093,5 +988,4 @@ public class DebateDAO {
 		
 		return map;
 	}	
-	*/
 }

@@ -86,7 +86,7 @@ function searchList() {
 			<div class="ms-5 me-5 pt-3 mt-4 mb-5">
 				<div class="card">
 					<div class= "card-header fw-bold">
-						<h3><i class="fas fa-microphone fa-1x"></i> 공지사항 </h3>
+						<h3><i class="fa-solid fa-people-line fa-1x"></i> 토론게시판 </h3>
 						
 				    </div>
 			        <div class="card-body py-5">
