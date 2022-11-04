@@ -22,7 +22,7 @@ function sendOk() {
 	
 	str = f.subjectNo.value;
 	if (!f.subjectNo.value.trim()) {
-		alert("과목코드를 다시 입력 하세요. ");
+		alert("과목코드를 입력 하세요. ");
 		f.subjectNo.focus();
 		return;
 	}

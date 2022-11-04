@@ -81,7 +81,11 @@ public class ExamServlet extends MyServlet {
 		}
 
 		try {	
-			String subjectNo = req.getParameter("subjectNo");			
+			String subjectNo = req.getParameter("subjectNo");
+			
+			
+			
+			
 			List<ExamDTO> list = null;
 			list= dao.listBoard(subjectNo);
 

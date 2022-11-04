@@ -49,6 +49,7 @@ public class ToDoListServlet extends MyServlet {
 
 		try {
 			todolist = dao.assignmentList(info.getUserId());
+
 			req.setAttribute("todolist", todolist);
 		} catch (Exception e) {
 			e.printStackTrace();

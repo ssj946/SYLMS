@@ -18,11 +18,11 @@ ul {
 
 <script type="text/javascript">
 	function check() {
-		const f = document.updateForm;
+		const f = document.searchForm;
 		
 		str = f.inputValue.value;
 		if (!f.inputValue.value.trim()) {
-			alert("과목코드를 다시 입력 하세요. ");
+			alert("시험종류를 입력 하세요. ");
 			f.inputValue.focus();
 			return;
 		}
@@ -90,7 +90,7 @@ ul {
 																		<td><input type="text" name="gradeCode" value="${dto.gradeCode}" id="userId"
 																			class="form-control" style="width: 50%;" readonly="readonly"></td>
 																		<td><input type="text" name="inputValue" class="form-control" style="width: 50%;"></td>
-																		<td><input type="text" name="inputValue" class="form-control" style="width: 50%;"></td>
+																		<td><input type="text" name="inputValue2" class="form-control" style="width: 50%;"></td>
 																	</tr>
 																</c:forEach>
 															</tbody>

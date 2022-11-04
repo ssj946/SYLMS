@@ -26,7 +26,7 @@ function ajaxFun(url, method, query, dataType, fn) {
 
 
 $(function () {	
-	let assignmentName = $("#asName").val();
+	let asName = $("#asName").val();
 	let dday = $("#dday").val();
 	let url = "${pageContext.request.contextPath}/r_sidebar/todo.do";
 	let query = "asName="+asName+"&dday="+dday;
