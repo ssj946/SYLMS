@@ -124,12 +124,13 @@ public class DebateServlet extends MyServlet {
 
 			// 전체 데이터 개수
 			int dataCount;
-			if (keyword.length() == 0) {
+			if (keyword.length() != 0) {
 				dataCount = dao.dataCount(subjectNo, condition, keyword);
 			} else {
 				dataCount = dao.dataCount(subjectNo);
 			}
 			
+			System.out.println(dataCount);
 			// 전체 페이지 수
 			int size = 10;
 			int total_page = util.pageCount(dataCount, size);

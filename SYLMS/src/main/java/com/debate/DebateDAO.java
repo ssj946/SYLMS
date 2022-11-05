@@ -66,14 +66,13 @@ public class DebateDAO {
 		try {
 			sql = "INSERT INTO subject_bbs(articleNo, bbsCode, subjectNo,  "
 					+ " ID, title, content, reg_date, hitCount) "
-					+ " VALUES ( ?,'00002', ?, ?, ?, ?, SYSDATE, 0)";
+					+ " VALUES ( subject_bbs_seq.NEXTVAL,'00002', ?, ?, ?, ?, SYSDATE, 0)";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, dto.getArticleNo());
-			pstmt.setString(2, dto.getSubjectNo());
-			pstmt.setString(3, dto.getUserId());
-			pstmt.setString(4, dto.getTitle());
-			pstmt.setString(5, dto.getContent());
+			pstmt.setString(1, dto.getSubjectNo());
+			pstmt.setString(2, dto.getUserId());
+			pstmt.setString(3, dto.getTitle());
+			pstmt.setString(4, dto.getContent());
 			
 			pstmt.executeUpdate();
 
