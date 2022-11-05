@@ -2,6 +2,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -124,24 +125,13 @@ function deleteBoard() {
 					<table class="table table-borderless">
 						<tr>
 							<td width="50%">
-								
-								<c:choose>
-									<c:when test="${sessionScope.member.userId==dto.userId}">
-										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/update.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}';">수정</button>
-									</c:when>
-									<c:otherwise>
-										<button type="button" class="btn btn-light" disabled="disabled">수정</button>
-									</c:otherwise>
-								</c:choose>
-						    	
-								<c:choose>
-						    		<c:when test="${sessionScope.member.userId==dto.userId || sessionScope.member.userId=='admin'}">
-						    			<button type="button" class="btn btn-light" onclick="deleteBoard();">삭제</button>
-						    		</c:when>
-						    		<c:otherwise>
-						    			<button type="button" class="btn btn-light" disabled="disabled">삭제</button>
-						    		</c:otherwise>
-						    	</c:choose>
+								<c:if test="${fn:length(sessionScope.member.userId) == 5}">
+									<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/update.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}';">수정</button>
+								</c:if>
+					    	
+					    		<c:if test="${fn:length(sessionScope.member.userId) == 5}">
+					    			<button type="button" class="btn btn-light" onclick="deleteBoard();">삭제</button>
+					    		</c:if>
 							</td>
 							<td class="text-end">
 								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/notice.do?subjectNo=${subjectNo}';">목록</button>

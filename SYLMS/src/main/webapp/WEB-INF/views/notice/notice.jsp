@@ -3,6 +3,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,6 +52,8 @@ function searchList() {
 	const f = document.searchForm;
 	f.submit();
 }
+
+
 </script>
 
 </head>
@@ -165,7 +168,9 @@ function searchList() {
 							
 							</div>
 								<div class=" col-2 text-end m-auto">
+									<c:if test="${fn:length(sessionScope.member.userId) == 5}">
 										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/noticeWrite.do?subjectNo=${subjectNo}';">글올리기</button>
+									</c:if>	
 								</div>
 						</div>
 						</div>
