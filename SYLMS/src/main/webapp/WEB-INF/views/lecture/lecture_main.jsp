@@ -47,8 +47,8 @@ function content_write(){
 						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-primary bg-gradient text-light ps-4 p-2" id="thisweek_lec">
-					   <h5 class="d-inline"> <i class="fas fa-pen fa-lg bg-primary"></i>&nbsp;이번주 강의</h5>
+					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-light ps-4 p-2" id="thisweek_lec">
+					   <h5 class="d-inline"> <i class="fas fa-pen fa-lg bg-navy"></i>&nbsp;이번주 강의</h5>
 					  </div>
 					  <div class="card-body">
 					  <c:forEach var="dto" items="${thisweekList}" varStatus="status">
@@ -74,9 +74,11 @@ function content_write(){
 						    </div>
 					    </c:forEach>
 					    <c:if test="${empty thisweekList}"> 
+					    <div class= "card">
 					    <br>
 					    <h4 class="text-center"> 강의가 없습니다.</h4>
 					    <br>
+					    </div>
 					    </c:if>
 					    </div>
 					</div>
@@ -84,13 +86,17 @@ function content_write(){
 					
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-primary bg-gradient text-light ps-4 p-2" id="all_lecture">
+					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-light ps-4 p-2" id="all_lecture">
 					    <h5 class="d-inline"><i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동</h5>
 					</div>
 					  <div class="card-body">
 					    <div class="resultLayout">
 					    <c:if test="${empty lectureList}">
-					   	<p class="fs-5 fw-bold text-center"> 강의가 없습니다.</p>
+					    <div class= "card">
+					    <br>
+					   	<h4 class="text-center"> 강의가 없습니다.</h4>
+					   	<br>
+					   	</div>
 					    </c:if>
 					    
 					    <c:forEach var="dto" items="${lectureList}" varStatus="status">

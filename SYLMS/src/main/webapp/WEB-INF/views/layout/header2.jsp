@@ -68,7 +68,7 @@ $(function () {
 		}, "json");
 	});
 </script>
-<div class="card p-2 bg-primary bg-gradient">
+<div class="card p-2 bg-navy bg-gradient">
 <div class="d-flex justify-content-end align-items-center">
 	<c:if test="${empty sessionScope.member}">
 		<div  class="p-2"><a href="javascript:dialogLogin();" title="로그인"><i class="fas fa-lock text-light fa-lg text-warning"></i></a></div>

@@ -51,15 +51,16 @@ $(function () {
 
 
 </script>
-	<div class="card p-2" style="min-height: 100vh">
-				<div class="card-header bg-primary text-white text-center fw-bold fs-5">
+	<div class="card p-2" style="min-height: 30vh">
+				<div class="card-header bg-navy text-white text-center fw-bold fs-5 rounded">
 				할 일
 				</div>
-				<ul class="todoList  list-group list-group-flush list-group-numbered list-group-item-action active" aria-current="true">
+				<ul class="todoList  list-group list-group-numbered list-group-item-action active" aria-current="true">
 					<c:if test="${fn:length(sessionScope.member.userId) == 8 }">	
 								
 							
 					</c:if>
 				</ul>
+
 	</div>
 	<!-- 오른쪽 사이드바 끝 -->

@@ -129,7 +129,9 @@ $(function(){
 							</c:forEach>
 							</table>
 							<div class="d-flex justify-content-end">
+								<c:if test="${fn:length(sessionScope.member.userId) !=8 }">
 								<button class="btn btn-primary m-2 as_write">과제작성</button>
+								</c:if>
 								<button class="btn m-2">돌아가기</button>
 							</div>
 							</div>

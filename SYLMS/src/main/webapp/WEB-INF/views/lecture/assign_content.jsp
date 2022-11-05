@@ -65,7 +65,7 @@ function ajaxFun(url, method, query, dataType, fn) {
 $(function(){
 	$(".save_btn").click(function(){
 		const f = document.assignment_submit;
-		f.action() = "";
+		f.action() = "${pageContext.request.contextPath}/lecture/assignment_ok.do";
 		f.submit();
 	});
 });
@@ -140,8 +140,8 @@ $(function(){
 						  <textarea name="content" class="form-control" placeholder="내용을 입력해주세요." rows="10">${contentDTO.content}</textarea>
 						  <br>
 						 <h4 class="mb-3 fw-bold">제출 파일</h4> <input name="file" type="file" class="form-control">
-						 <input class="invisible" name="subjectNo"  value="${subjectNo}">
-						 <input class="invisible" name="asNo"  value="${adto.asNo}">
+						 <input type="hidden" name="subjectNo"  value="${subjectNo}">
+						 <input type="hidden" name="asNo"  value="${adto.asNo}">
 						 </form>
 						 </c:if>
 						  <br>

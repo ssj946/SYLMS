@@ -184,7 +184,7 @@ public class LectureDAO {
 					+ " JOIN subject s "
 					+ " ON s.subjectNo=r.subjectNo "
 					+ " JOIN account a "
-					+ " ON a.id=studentcode "
+					+ " ON a.id=s.id "
 					+ " WHERE STUDENTcode = ? AND TO_CHAR(sYear,'YYYY') = ? AND semester = ? "
 					+ " ORDER BY syear, semester ";
 
