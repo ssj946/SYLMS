@@ -10,7 +10,7 @@ body {
 }
 
 a { color: #222; text-decoration: none; cursor: pointer; }
-a:active, a:hover { color: #f28011; text-decoration: underline; }
+a:active, a:hover { color: #555555; text-decoration: none; }
 
 /* form-control */
 .btn {

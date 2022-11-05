@@ -106,16 +106,15 @@ function sendLogin() {
 						</h3>
 						</div>
 						<div class="m-4">
-						<h6 style="font-size: small; text-align: center;">초기 아이디와
-							비밀번호는 학번과 생년월일입니다.</h6>
+						<h6 style="font-size: small; text-align: center;">초기 비밀번호는 생년월일입니다.</h6>
 						</div>
 						<div class="m-auto w-75">
 						<form name="loginForm" action="" method="post">
-								<input type="text" name="userId" class="form-control m-2" placeholder="아이디를 입력해주세요">
+								<input type="text" name="userId" class="form-control m-2" placeholder="학번을 입력해주세요">
 								<input type="password" name="userPwd" class="form-control m-2" placeholder="패스워드를 입력해주세요">
 								<div class="d-flex align-items-center m-2">
 									<input class="form-check-input" type="checkbox" id="rememberMe">
-									<label class="form-check-label" for="rememberMe">&nbsp;아이디 저장</label>
+									<label class="form-check-label" for="rememberMe">&nbsp;학번 저장</label>
 									</div>
 								<button type="button" class="btn btn-primary opacity-75 d-inline w-100 m-2" onclick="sendLogin();">
 								&nbsp;Login&nbsp;<i class="bi bi-check2"></i>
@@ -124,7 +123,7 @@ function sendLogin() {
 						</div>
 						<div >
 							<p class="text-center mb-0 mt-2">
-								<a href="#" class="text-decoration-none me-2">아이디 찾기</a><span>|</span> <a
+								<a href="#" class="text-decoration-none me-2">학번 찾기</a><span>|</span> <a
 									href="#" class="text-decoration-none me-2">&nbsp;	패스워드 찾기</a>
 							</p>
 						</div>
