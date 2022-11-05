@@ -68,17 +68,17 @@ $(function () {
 		}, "json");
 	});
 </script>
-<div class="card p-2">
+<div class="card p-2 bg-primary bg-gradient">
 <div class="d-flex justify-content-end align-items-center">
 	<c:if test="${empty sessionScope.member}">
-		<div  class="p-2"><a href="javascript:dialogLogin();" title="로그인"><i class="fas fa-lock text-muted fa-lg text-warning"></i></a></div>
+		<div  class="p-2"><a href="javascript:dialogLogin();" title="로그인"><i class="fas fa-lock text-light fa-lg text-warning"></i></a></div>
 	</c:if>
 
 
 	<c:if test="${sessionScope.member.userId == 'admin'}">
 		<div class=" p-2 dropdown">
 		<a class=" dropdown-toggle" href="#" title="관리" id="administrator" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-		<i class="fas fa-gear text-muted fa-lg"></i>&nbsp;
+		<i class="fas fa-gear text-light fa-lg"></i>&nbsp;
 		</a>
 			<ul class="dropdown-menu" aria-labelledby="administrator">
 				<li><a class="dropdown-item" href="#">관리자님, 환영합니다.</a></li>
@@ -92,7 +92,7 @@ $(function () {
 		<span class="badge rounded-pill text-bg-dark p-2">${sessionScope.member.userName}</span>
 		</div>
 		<div>
-		<a class="p-2" href="#" id="mypage" title="마이페이지">&nbsp;&nbsp;<i class="fas fa-user text-muted fa-lg"></i></a>
+		<a class="p-2" href="#" id="mypage" title="마이페이지">&nbsp;&nbsp;<i class="fas fa-user text-light fa-lg"></i></a>
 		</div>
 
 
@@ -102,7 +102,7 @@ $(function () {
 		<div class="p-2" >
 			<a id="openModalBtn" href="#" class="position-relative  btn-modal"
 			data-target="#staticBackdrop"> &nbsp;&nbsp; 
-			<i class="fas fa-bell text-muted fa-lg btnBell"></i> 
+			<i class="fas fa-bell text-light fa-lg btnBell"></i> 
 			<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger alert-count">
 			</span>
 		</a> 
@@ -111,7 +111,7 @@ $(function () {
 		<div class="p-2"><a class=" position-relative"
 			href="${pageContext.request.contextPath}/messege/send.do"
 			title="메시지">&nbsp;&nbsp;&nbsp;&nbsp;<i
-				class="fas fa-comments text-muted fa-lg"></i> <span
+				class="fas fa-comments text-light fa-lg"></i> <span
 				class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger message-count"></span>
 		</a>&nbsp;&nbsp;</div>
 

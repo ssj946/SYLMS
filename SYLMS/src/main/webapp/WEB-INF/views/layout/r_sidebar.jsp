@@ -51,7 +51,7 @@ $(function () {
 
 
 </script>
-	<div class="card">
+	<div class="card p-2" style="min-height: 100vh">
 				<div class="card-header bg-primary text-white text-center fw-bold fs-5">
 				할 일
 				</div>

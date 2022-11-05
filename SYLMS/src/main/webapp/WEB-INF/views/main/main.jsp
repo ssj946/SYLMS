@@ -21,13 +21,16 @@
 			<div class="row">
 				<div class="col-1"></div>
 				<div class="col-10">
-					<div class="row">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
 					<div class="col-2 bg-dark bg-gradient rounded" style="min-height: 100vh">
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 					</div>
 					<div class="col-10">
 						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+
+
 						<div class="row">
 							<div class="col-9">
 					<!-- 본문 -->
@@ -82,6 +85,7 @@
 					</div>
 				</div>
 				<div class="col-1"></div>
+			</div>
 			</div>
 		</div>
 				

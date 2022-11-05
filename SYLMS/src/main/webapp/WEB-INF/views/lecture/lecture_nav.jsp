@@ -75,7 +75,8 @@ $(function(){
 			<div class="row">
 				<div class="col-1"></div>
 				<div class="col-10">
-					<div class="row">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
 					<div class="col-2 bg-dark bg-gradient rounded" style="min-height: 100vh">
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
@@ -85,7 +86,7 @@ $(function(){
 						<div class="row">
 							<div class="col-9">
 					<!-- 본문 -->
-							<div class="card mt-2 mb-2 p-2">
+							<div class="card mt-3 mb-3 p-2">
 								<div class="accordion" id="lecture_all">
 									<div class="accordion-item">
 										<h2 class="accordion-header" id="lecture">
@@ -129,7 +130,7 @@ $(function(){
 								</div>
 							</div>
 							
-							<div class="card mt-2 mb-2 p-2">
+							<div class="card mt-3 mb-3 p-2">
 								<div class="accordion">
 									<div class="accordion-item">
 										<h2 class="accordion-header">
@@ -196,14 +197,15 @@ $(function(){
 							</div>
 						</div>
 							<!-- 오른쪽 사이드바 자리 -->
-						<div class="col-3 mt-3"><jsp:include page="/WEB-INF/views/layout/r_sidebar.jsp" /></div>
-					</div>
+						<div class="col-3 mt-3 ">
+						<jsp:include page="/WEB-INF/views/layout/r_sidebar.jsp" /></div></div>
 					</div>
 					</div>
 				</div>
+				</div>
+				</div>
 				<div class="col-1"></div>
 			</div>
-		</div>
 				
 				<!-- 본문 끝 -->
 	</section>

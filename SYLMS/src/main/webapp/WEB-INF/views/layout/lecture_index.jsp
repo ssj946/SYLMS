@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!-- 강의실 사이드바 -->		
 <div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2">
+					  <div class="card-header fw-bold fs-6 bg-primary bg-gradient text-light ps-4 p-2">
 					    <h5 class="d-inline"><i class="fas fa-rectangle-list fa-lg bg-navy"></i>&nbsp;강좌 개요</h5>
 					  </div>
 					  <div class="card-body m-auto">

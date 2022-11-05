@@ -35,7 +35,8 @@ function content_write(){
 			<div class="row">
 				<div class="col-1"></div>
 				<div class="col-10">
-					<div class="row">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
 					<div class="col-auto bg-dark bg-gradient rounded" style="min-height: 100vh">
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp" />
@@ -46,8 +47,8 @@ function content_write(){
 						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2" id="thisweek_lec">
-					   <h5 class="d-inline"> <i class="fas fa-pen fa-lg bg-navy"></i>&nbsp;이번주 강의</h5>
+					  <div class="card-header fw-bold fs-6 bg-primary bg-gradient text-light ps-4 p-2" id="thisweek_lec">
+					   <h5 class="d-inline"> <i class="fas fa-pen fa-lg bg-primary"></i>&nbsp;이번주 강의</h5>
 					  </div>
 					  <div class="card-body">
 					  <c:forEach var="dto" items="${thisweekList}" varStatus="status">
@@ -83,7 +84,7 @@ function content_write(){
 					
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-white ps-4 p-2" id="all_lecture">
+					  <div class="card-header fw-bold fs-6 bg-primary bg-gradient text-light ps-4 p-2" id="all_lecture">
 					    <h5 class="d-inline"><i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동</h5>
 					</div>
 					  <div class="card-body">
@@ -145,6 +146,7 @@ function content_write(){
 			</div>
 
 				<div class="col-1"></div>
+			</div>
 			</div>
 		</div>
 				
