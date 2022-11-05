@@ -92,7 +92,7 @@ public class ExamDAO {
 		String sql;
 
 		try {
-			sql = "UPDATE exam SET score = ?, examtype = ? WHERE gradecode = ? ";
+			sql = "UPDATE exam SET score = ?, examtype = ? WHERE gradecode = ? AND examType = '미정' ";
 
 			pstmt = conn.prepareStatement(sql);
 			
@@ -124,8 +124,10 @@ public class ExamDAO {
 		String sql;
 
 		try {
-			sql = " SELECT score, studentCode, examType " + " FROM exam e "
-					+ " JOIN grades g ON g.gradeCode = e.gradeCode " + " WHERE studentCode = ? ";
+			sql = " SELECT score, studentCode, examType " 
+					+ " FROM exam e "
+					+ " JOIN grades g ON g.gradeCode = e.gradeCode " 
+					+ " WHERE studentCode = ? ";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userId);
