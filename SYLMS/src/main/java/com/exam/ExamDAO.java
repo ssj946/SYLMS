@@ -124,7 +124,7 @@ public class ExamDAO {
 		String sql;
 
 		try {
-			sql = " SELECT score, studentCode, examType " 
+			sql = " SELECT score, studentCode, examType, e.gradeCode " 
 					+ " FROM exam e "
 					+ " JOIN grades g ON g.gradeCode = e.gradeCode " 
 					+ " WHERE studentCode = ? ";
@@ -139,6 +139,7 @@ public class ExamDAO {
 				dto.setScore(Integer.parseInt(rs.getString("score")));
 				dto.setStudentCode(rs.getString("studentCode"));
 				dto.setExamType(rs.getString("examType"));
+				dto.setGradeCode(rs.getString("gradeCode"));
 
 				list.add(dto);
 			}
@@ -219,14 +220,16 @@ public class ExamDAO {
 
 			try {
 				sql = " update exam SET score = ? WHERE examType = ? AND gradeCode = ? ";
-
+				
 				pstmt = conn.prepareStatement(sql);
 				
-					pstmt.setInt(1, dto.getScore());
-					pstmt.setString(2, dto.getExamType());
-					pstmt.setString(3, dto.getGradeCode());
+				for(int i=0; i<dto.getGradeCodes().length; i++) {
+					pstmt.setInt(1, dto.getScores()[i]);
+					pstmt.setString(2, dto.getExamTypes()[i]);
+					pstmt.setString(3, dto.getGradeCodes()[i]);
 					
 					pstmt.executeUpdate();
+				}
 
 			} catch (Exception e) {
 				e.printStackTrace();

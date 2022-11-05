@@ -34,7 +34,7 @@ function sendOk() {
 		return;
 	}
 	
-	f.action = "${pageContext.request.contextPath}/exam/update.do";
+	f.action = "${pageContext.request.contextPath}/exam/updateScore.do";
 	f.submit();
 }
 </script>
@@ -76,9 +76,9 @@ function sendOk() {
 												<div class="col-3">&nbsp;</div>
 												<div class="col-6">
 													<div class="card">
-													<form name="updateForm" method="post" action="${pageContext.request.contextPath}/exam/send.do">
+													<form name="updateForm" method="post" action = "${pageContext.request.contextPath}/exam/updateScore.do";>
 														<div class="card-header bg-navy bg-gradient text-white">
-															<h5>과목코드 입력</h5>
+															<h5>수정코드 입력</h5>
 														</div>
 														<div class="card-body">
 															<br> <input name="gradeCode" class="form-control" placeholder="해당 학생의 성적코드를 입력하세요." value="${dto.gradeCode}">

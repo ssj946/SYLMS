@@ -63,7 +63,7 @@ ul {
 											<div class="card-header fs-6 text-center p-2">
 												<h5 class="card-header">시험성적입력</h5>
 												<div class="card-body">
-													<form class="row" name="searchForm" method="post">
+													<form class="row" name="searchForm" method="post" >
 														<table class="table table-hover board-list ho-list"
 															style="margin-top: 50px;">
 															<thead class="table-light">
@@ -74,17 +74,19 @@ ul {
 																</tr>
 															</thead>
 															<tbody>
+															<c:forEach var="dto" items="${list}" varStatus="status">
 																	<tr>
-																		<td><input type="text" name="gradeCode"
+																		<td><input type="text" name="gradeCodes"
 																			value="${dto.gradeCode}"
 																			class="form-control" style="width: 60%;"
 																			readonly="readonly"></td>
-																		<td><input type="text" name="examType"
+																		<td><input type="text" name="examTypes"
 																			class="form-control" value="${dto.examType }"></td>
 																		<td><input type="text" name="scores"
 																			class="form-control" value="${dto.score }"
 																			style="width: 60%;"></td>
 																	</tr>
+																	</c:forEach>
 
 															</tbody>
 														</table>

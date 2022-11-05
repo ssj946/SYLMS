@@ -172,7 +172,7 @@ public class ExamServlet extends MyServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		forward(req, resp, "/WEB-INF/views/exam/exam.jsp");
+		forward(req, resp, "/WEB-INF/views/exam/examUpdateCode.jsp");
 	}
 	
 	private void examUpdateScore(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -193,7 +193,7 @@ public class ExamServlet extends MyServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		forward(req, resp, "/WEB-INF/views/exam/updateScore.jsp");
+		forward(req, resp, "/WEB-INF/views/exam/examUpdate.jsp");
 		
 	}
 
@@ -212,16 +212,21 @@ public class ExamServlet extends MyServlet {
 
 		try {
 			ExamDTO dto = new ExamDTO();
+			
+			dto.setGradeCodes(req.getParameterValues("gradeCodes"));
+			String[] ss = req.getParameterValues("scores");
+			int[] a = new int[ss.length];
+			for (int i = 0; i < ss.length; i++) {
+				a[i] = Integer.parseInt(ss[i]);
+			}
+			dto.setScores(a);
+			dto.setExamTypes(req.getParameterValues("examTypes"));
 
-			dto.setScore(Integer.parseInt(req.getParameter("score")));
-			dto.setExamType(req.getParameter("examType"));
-			dto.setGradeCode(req.getParameter("gradeCode"));
-
-			dao.codeList(dto);
+			dao.examUpdate(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		forward(req, resp, "/WEB-INF/views/exam/update.jsp");
+		forward(req, resp, "/WEB-INF/views/exam/examUpdateCode.jsp");
 	}
 
 }

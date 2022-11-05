@@ -66,6 +66,7 @@ ul {
 																<tr style="text-align: center;">
 																	<th class="subtp">시험종류</th>
 																	<th class="score">점수</th>
+																	<th class="gradeCode">성적코드</th>
 																</tr>
 															</thead>
 															<tbody>
@@ -73,6 +74,7 @@ ul {
 																	<tr>
 																		<td>${dto.examType }</td>
 																		<td>${dto.score }</td>
+																		<td>${dto.gradeCode }</td>
 																	</tr>
 																</c:forEach>
 															</tbody>
