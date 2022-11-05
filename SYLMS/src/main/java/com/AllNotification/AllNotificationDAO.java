@@ -21,7 +21,7 @@ public class AllNotificationDAO {
 		
 		try {
 			sql = " SELECT noticeCode, content, TO_CHAR(reg_date, 'YYYY-MM-DD') AS reg_date, url "
-					+ " FROM notice "
+					+ " FROM notice1 "
 					+ " WHERE reg_date >= TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'YYYY-MM-DD') "
 					+ " ORDER BY noticeCode DESC ";
 			
@@ -70,7 +70,7 @@ public class AllNotificationDAO {
 		String sql;
 
 		try {
-			sql = "SELECT COUNT(*) FROM notice "
+			sql = "SELECT COUNT(*) FROM notice1 "
 					+ " WHERE readDate IS NULL ";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -106,7 +106,7 @@ public class AllNotificationDAO {
 		String sql;
 
 		try {
-			sql = "UPDATE notice SET readDate = SYSDATE ";
+			sql = "UPDATE notice1 SET readDate = SYSDATE ";
 			pstmt = conn.prepareStatement(sql);
 			
 			//pstmt.setString(1, noticeCode);
