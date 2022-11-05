@@ -9,28 +9,14 @@ public class ExamDTO {
 	private String gradeCode;
 	
 	private int grade;
-	private String subjectNo;
 	private String studentCode;
 
+	private String subjectNo;
+	private String[] studentCodes;
+	private String[] gradeCodes;
+	private String[] examTypes;
+	private int[] scores;
 	
-	public int getGrade() {
-		return grade;
-	}
-	public void setGrade(int grade) {
-		this.grade = grade;
-	}
-	public String getSubjectNo() {
-		return subjectNo;
-	}
-	public void setSubjectNo(String subjectNo) {
-		this.subjectNo = subjectNo;
-	}
-	public String getStudentCode() {
-		return studentCode;
-	}
-	public void setStudentCode(String studentCode) {
-		this.studentCode = studentCode;
-	}
 	public String getExamCode() {
 		return examCode;
 	}
@@ -66,5 +52,47 @@ public class ExamDTO {
 	}
 	public void setGradeCode(String gradeCode) {
 		this.gradeCode = gradeCode;
+	}
+	public int getGrade() {
+		return grade;
+	}
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
+	public String getStudentCode() {
+		return studentCode;
+	}
+	public void setStudentCode(String studentCode) {
+		this.studentCode = studentCode;
+	}
+	public String getSubjectNo() {
+		return subjectNo;
+	}
+	public void setSubjectNo(String subjectNo) {
+		this.subjectNo = subjectNo;
+	}
+	public String[] getGradeCodes() {
+		return gradeCodes;
+	}
+	public void setGradeCodes(String[] gradeCodes) {
+		this.gradeCodes = gradeCodes;
+	}
+	public String[] getExamTypes() {
+		return examTypes;
+	}
+	public void setExamTypes(String[] examTypes) {
+		this.examTypes = examTypes;
+	}
+	public int[] getScores() {
+		return scores;
+	}
+	public void setScores(int[] scores) {
+		this.scores = scores;
+	}
+	public String[] getStudentCodes() {
+		return studentCodes;
+	}
+	public void setStudentCodes(String[] studentCodes) {
+		this.studentCodes = studentCodes;
 	}
 }

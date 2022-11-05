@@ -97,7 +97,6 @@ public class ExamServlet extends MyServlet {
 	private void formSend(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ExamDAO dao = new ExamDAO();
 		String cp = req.getContextPath();
-		
 
 		if (req.getMethod().equalsIgnoreCase("GET")) {
 			resp.sendRedirect(cp + "/exam/exam.do");
@@ -105,12 +104,19 @@ public class ExamServlet extends MyServlet {
 		}
 
 		try {
-			String gradeCode = req.getParameter("gradeCode");
+			
 			ExamDTO dto = new ExamDTO();
-			dto.setGradeCode(req.getParameter("gradeCode"));
-			dto.setScore(Integer.parseInt(req.getParameter("score")));
-			dto.setExamType(req.getParameter("extp"));
-			dao.examInsert(dto, gradeCode);
+			
+			dto.setGradeCodes(req.getParameterValues("gradeCodes"));
+			String []ss = req.getParameterValues("scores");
+			int[] a = new int[ss.length];
+			for(int i = 0; i<ss.length; i++) {
+				a[i] = Integer.parseInt(ss[i]);
+			}
+			dto.setScores(a);
+			dto.setExamTypes(req.getParameterValues("examTypes"));
+			
+			dao.examInsert(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
