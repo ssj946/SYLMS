@@ -89,7 +89,7 @@ ul {
 									<div class="card">
 										<div class="card-header fw-bold">
 											<h3>
-												<i class="fas fa-microphone fa-1x"></i> 공지사항
+												<i class="fa-solid fa-user-group"></i> 자유게시판
 											</h3>
 
 										</div>
@@ -111,7 +111,7 @@ ul {
 														<tr>
 															<td>${dataCount - (page-1) * size - status.index}</td>
 															<td class="text-start"><a
-																href="${pageContext.request.contextPath}/notice/noticeArticle.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}"
+																href="${pageContext.request.contextPath}/freebbs/freebbsArticle.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}"
 																class="text-reset ps-4">${dto.title}</a> <c:if
 																	test="${not empty dto.saveFilename}">
 																	<img
@@ -136,7 +136,7 @@ ul {
 												<div class="col-2"></div>
 												<div class="col-8">
 													<form name="searchForm"
-														action="${pageContext.request.contextPath}/notice/notice.do"
+														action="${pageContext.request.contextPath}/freebbs/freebbs.do"
 														method="post">
 														<div class="row">
 															<div class="col-3 p-1">
@@ -177,12 +177,12 @@ ul {
 											<div class="row">
 												<div class="col-2 m-auto">
 													<button type="button" class="btn btn-light"
-														onclick="location.href='${pageContext.request.contextPath}/notice/notice.do?subjectNo=${subjectNo}';">새로고침</button>
+														onclick="location.href='${pageContext.request.contextPath}/freebbs/freebbs.do?subjectNo=${subjectNo}';">새로고침</button>
 												</div>
 												<div class="col-8 text-center p-0"></div>
 												<div class=" col-2 text-end m-auto">
 													<button type="button" class="btn btn-light"
-														onclick="location.href='${pageContext.request.contextPath}/notice/noticeWrite.do?subjectNo=${subjectNo}';">글올리기</button>
+														onclick="location.href='${pageContext.request.contextPath}/freebbs/freebbsWrite.do?subjectNo=${subjectNo}';">글올리기</button>
 												</div>
 											</div>
 										</div>
