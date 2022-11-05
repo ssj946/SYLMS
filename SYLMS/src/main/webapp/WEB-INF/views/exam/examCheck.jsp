@@ -69,10 +69,10 @@ ul {
 																</tr>
 															</thead>
 															<tbody>
-																<c:forEach var="vo" items="${list2}" varStatus="status">
+																<c:forEach var="dto" items="${list2}" varStatus="status">
 																	<tr>
-																		<td>${vo.examType }</td>
-																		<td>${vo.score }</td>
+																		<td>${dto.examType }</td>
+																		<td>${dto.score }</td>
 																	</tr>
 																</c:forEach>
 															</tbody>

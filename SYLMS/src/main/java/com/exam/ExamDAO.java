@@ -133,7 +133,7 @@ public class ExamDAO {
 			pstmt.setString(1, userId);
 
 			rs = pstmt.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				ExamDTO dto = new ExamDTO();
 
 				dto.setScore(Integer.parseInt(rs.getString("score")));
