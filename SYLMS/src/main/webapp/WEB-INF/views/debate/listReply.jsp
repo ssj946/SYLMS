@@ -12,7 +12,7 @@
 	<c:forEach var="vo" items="${listReply}">
 		<tr class='list-header'>
 			<td width='50%'>
-				<span class='bold'>${vo.userName}</span>
+				<span class='bold'>${vo.name}</span>
 			</td>
 			<td width='50%' align='right'>
 				<span>${vo.reg_date}</span> |
@@ -32,11 +32,11 @@
 
 		<tr>
 			<td>
-				<button type='button' class='btn btn-light btnReplyAnswerLayout' data-replyNum='${vo.replyNo}'>답글 <span id="answerCount${vo.replyNo}">${vo.answerCount}</span></button>
+				<button type='button' class='btn btn-light btnReplyAnswerLayout' data-replyNo='${vo.replyNo}'>답글 <span id="answerCount${vo.replyNo}">${vo.answerCount}</span></button>
 			</td>
 			<td align='right'>
-				<button type='button' class='btn btn-light btnSendReplyLike' data-replyNum='${vo.replyNo}' data-replyLike='1' title="좋아요"><i class="bi bi-hand-thumbs-up"></i> <span>${vo.likeCount}</span></button>
-				<button type='button' class='btn btn-light btnSendReplyLike' data-replyNum='${vo.replyNo}' data-replyLike='0' title="싫어요"><i class="bi bi-hand-thumbs-down"></i> <span>${vo.disLikeCount}</span></button>	        
+				<button type='button' class='btn btn-light btnSendReplyLike' data-replyNo='${vo.replyNo}' data-replyLike='1' title="좋아요"><i class="bi bi-hand-thumbs-up"></i> <span>${vo.likeCount}</span></button>
+				<button type='button' class='btn btn-light btnSendReplyLike' data-replyNo='${vo.replyNo}' data-replyLike='0' title="싫어요"><i class="bi bi-hand-thumbs-down"></i> <span>${vo.disLikeCount}</span></button>	        
 			</td>
 		</tr>
 	
@@ -48,7 +48,7 @@
 	                <div class='answer-right'><textarea class='form-control'></textarea></div>
 	            </div>
 	             <div class='answer-footer'>
-	                <button type='button' class='btn btn-light btnSendReplyAnswer' data-replyNum='${vo.replyNo}'>답글 등록</button>
+	                <button type='button' class='btn btn-light btnSendReplyAnswer' data-replyNo='${vo.replyNo}'>답글 등록</button>
 	            </div>
 			</td>
 	    </tr>

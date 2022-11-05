@@ -5,7 +5,7 @@ public class ReplyDTO {
 	private String articleNo;
 
 	private String userId;
-	private String Name;
+	private String name;
 	private String content;
 	private String reg_date;
 	private long answer;
@@ -42,10 +42,10 @@ public class ReplyDTO {
 		this.userId = userId;
 	}
 	public String getName() {
-		return Name;
+		return name;
 	}
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 	public String getContent() {
 		return content;

@@ -300,6 +300,7 @@ public class DebateServlet extends MyServlet {
 			req.setAttribute("dto", dto);
 			req.setAttribute("page", page);
 			req.setAttribute("query", query);
+			req.setAttribute("subjectNo", subjectNo);
 
 			// 포워딩
 			forward(req, resp, "/WEB-INF/views/debate/article.jsp");
@@ -467,7 +468,7 @@ public class DebateServlet extends MyServlet {
 			req.setAttribute("paging", paging);
 			req.setAttribute("articleNo", articleNo);
 			
-			forward(req, resp, "/WEB-INF/views/bbs/listReply.jsp");
+			forward(req, resp, "/WEB-INF/views/debate/listReply.jsp");
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -490,10 +491,11 @@ public class DebateServlet extends MyServlet {
 
 			
 			String articleNo = req.getParameter("articleNo");  
-			dto.setArticleNo("articleNo");
-			req.setAttribute("articleNo", articleNo);
+			String subjectNo = req.getParameter("subjectNo");
 			dto.setUserId(info.getUserId());
 			dto.setContent(req.getParameter("content"));
+			dto.setSubjectNo(subjectNo);
+			dto.setArticleNo(articleNo);
 			String answer = req.getParameter("answer");
 			if (answer != null) {
 				dto.setAnswer(Long.parseLong(answer));
@@ -647,7 +649,7 @@ public class DebateServlet extends MyServlet {
 
 			req.setAttribute("listReplyAnswer", listReplyAnswer);
 
-			forward(req, resp, "/WEB-INF/views/bbs/listReplyAnswer.jsp");
+			forward(req, resp, "/WEB-INF/views/debate/listReplyAnswer.jsp");
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();

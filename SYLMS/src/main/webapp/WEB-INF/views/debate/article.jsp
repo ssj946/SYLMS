@@ -16,6 +16,7 @@ ul{
 list-style: none;
 }
 </style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board2.css" type="text/css">
 
 <script type="text/javascript">
 <c:if test="${sessionScope.member.userId==dto.userId || sessionScope.member.userId=='admin'}">
@@ -89,7 +90,7 @@ $(function(){
 		content = encodeURIComponent(content);
 		
 		let url = "${pageContext.request.contextPath}/debate/insertReply.do";
-		let query = "articleNo=" + articleNo + "&content=" + content + "&answer=0";
+		let query = "subjectNo=${subjectNo}&articleNo=" + articleNo + "&content=" + content + "&answer=0";
 		
 		const fn = function(data){
 			$tb.find("textarea").val("");
@@ -113,7 +114,7 @@ $(function(){
 		    return false;
 		}
 		
-		let replyNum = $(this).attr("data-replyNo");
+		let replyNo = $(this).attr("data-replyNo");
 		let page = $(this).attr("data-pageNo");
 		
 		let url = "${pageContext.request.contextPath}/debate/deleteReply.do";
@@ -145,8 +146,8 @@ $(function(){
 			return false;
 		}
 		
-		let url = "${pageContext.request.contextPath}/bbs/insertReplyLike.do";
-		let query = "replyNum=" + replyNum + "&replyLike=" + replyLike;
+		let url = "${pageContext.request.contextPath}/debate/insertReplyLike.do";
+		let query = "replyNo=" + replyNo + "&replyLike=" + replyLike;
 		
 		const fn = function(data){
 			let state = data.state;
@@ -238,7 +239,7 @@ $(function(){
 		content = encodeURIComponent(content);
 		
 		let url = "${pageContext.request.contextPath}/debate/insertReply.do";
-		let query = "subjectNo="+subjectNo+ "&articleNo=" + articleNo + "&content=" + content + "&answer=" + replyNo;
+		let query = "subjectNo=${subjectNo}&articleNo=" + articleNo + "&content=" + content + "&answer=" + replyNo;
 		
 		const fn = function(data){
 			$td.find("textarea").val("");

@@ -688,7 +688,7 @@ public class DebateDAO {
 		try {
 			sb.append(" SELECT replyNo, articleNo, r.Id, a.Name, content, reg_date, answer ");
 			sb.append(" FROM subject_bbs_Reply r ");
-			sb.append(" JOIN account a ON r.userId=a.Id ");
+			sb.append(" JOIN account a ON r.Id=a.Id ");
 			sb.append(" WHERE answer=? ");
 			sb.append(" ORDER BY replyNo DESC ");
 			pstmt = conn.prepareStatement(sb.toString());

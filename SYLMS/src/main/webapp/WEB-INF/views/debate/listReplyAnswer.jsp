@@ -8,12 +8,12 @@
 		<div class='answer-article-header'>
 			<div class='answer-left'>└</div>
 			<div class='answer-right'>
-				<div style='float: left;'><span class='bold'>${vo.userName}</span></div>
+				<div style='float: left;'><span class='bold'>${vo.name}</span></div>
 				<div style='float: right;'>
 					<span>${vo.reg_date}</span> |
 					<c:choose>
 						<c:when test="${sessionScope.member.userId==vo.userId || sessionScope.member.userId=='admin'}">
-							<span class='deleteReplyAnswer' data-replyNum='${vo.replyNo}' data-answer='${vo.answer}'>삭제</span>
+							<span class='deleteReplyAnswer' data-replyNo='${vo.replyNo}' data-answer='${vo.answer}'>삭제</span>
 						</c:when>
 						<c:otherwise>
 							<span class='notifyReply'>신고</span>
