@@ -65,7 +65,8 @@ function ajaxFun(url, method, query, dataType, fn) {
 $(function(){
 	$(".save_btn").click(function(){
 		const f = document.assignment_submit;
-		f.action() = "${pageContext.request.contextPath}/lecture/assignment_ok.do";
+		f.action = "${pageContext.request.contextPath}/lecture/assignment_ok.do";
+		f.method = "POST";
 		f.submit();
 	});
 });

@@ -56,6 +56,12 @@ public class ExamServlet extends MyServlet {
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
+		if (!info.getUserId().matches("\\d{5}")) {
+			resp.sendRedirect(cp + "/");
+			return;
+		}	
+		
+		
 		if (info.getUserId().matches("\\d{8}")) {
 			resp.sendRedirect(cp + "/lecture/main.do");
 			return;
@@ -157,7 +163,7 @@ public class ExamServlet extends MyServlet {
 		String cp = req.getContextPath();
 
 		if (!info.getUserId().matches("\\d{5}")) {
-			resp.sendRedirect(cp + "/notice/notice.do");
+			resp.sendRedirect(cp + "/");
 			return;
 		}
 

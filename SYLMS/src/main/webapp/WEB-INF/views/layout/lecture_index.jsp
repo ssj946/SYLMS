@@ -53,7 +53,7 @@
 						 	</a>
 						  </li>
 							<li class="nav-item">
-							<c:if test="${fn:length(sessionScope.member.userId) != 8 }">
+							<c:if test="${fn:length(sessionScope.member.userId) == 5 }">
 								<a class="nav-link text-body  p-3 mb-2 " href="${pageContext.request.contextPath}/exam/exam.do">
 								 <i class="fas fa-fire  fa-lg mr-3"></i>&nbsp;시험성적입력
 								 </a>
@@ -64,6 +64,13 @@
 								 </a>
 								 </c:if>
 							</li>	
+							<li class="nav-item">
+							<c:if test="${fn:length(sessionScope.member.userId) == 5 }">
+								<a class="nav-link text-body  p-3 mb-2 " href="${pageContext.request.contextPath}/exam/update.do">
+								 <i class="fas fa-fire  fa-lg mr-3"></i>&nbsp;시험성적수정
+								 </a>
+								 </c:if>
+								 </li>
 							</ul>
 						  </li>
 						  
@@ -84,7 +91,7 @@
 					
 					<li class="nav-item">
 						<a class="nav-link text-body  p-3 mb-2 " href="${pageContext.request.contextPath}/debate/list.do?subjectNo=${subjectNo}">
-						 <i class="fas fa-comments  fa-lg mr-3"></i>&nbsp;토론게시판
+						 <i class="fa-solid fa-people-line fa-lg mr-3"></i>&nbsp;토론게시판
 						 </a>
 					</li>		
 							</ul>
