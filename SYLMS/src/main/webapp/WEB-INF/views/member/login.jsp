@@ -51,15 +51,7 @@ background-repeat: no-repeat;
 background-size: cover;
 background-position: center;
 }
-.logo{
-width: 100%;
-height: 100px;
-background-image: url('${pageContext.request.contextPath}/resources/images/s_logo.png');
-background-repeat: no-repeat;
-background-size: contain;
-background-position: center;
-margin: 1rem;
-}
+
 
 </style>
 
@@ -97,12 +89,18 @@ function sendLogin() {
 
 					<div class="col-3" style="min-height: 100vh">
 						<div class="loginform" style="margin-top: 6rem;">
-						<div class="logo">
+						<div class="d-flex justify-content-center mb-4">
+						<img class="w-50" src="${pageContext.request.contextPath}/resources/images/s_logo.png">
 						</div>
 						<!-- 여기는 대학교 로고 넣는자리  -->
 						<div>
 						<h3 class="text-center">
-							<i class="fas fa-lock"></i> 통합관리 시스템 로그인
+							e-Class 시스템
+						</h3>
+						</div>
+						<div>
+						<h3 class="text-center">
+							<i class="fas fa-lock"></i>&nbsp;로그인
 						</h3>
 						</div>
 						<div class="m-4">
