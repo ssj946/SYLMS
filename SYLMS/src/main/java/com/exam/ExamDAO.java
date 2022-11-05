@@ -163,5 +163,81 @@ public class ExamDAO {
 
 		return list;
 	}
+	
+	//선택한 학생의 점수 불러오기
+	public List<ExamDTO> stdExam(String examType, String gradeCode) {
+		List<ExamDTO> list = new ArrayList<ExamDTO>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+
+		try {
+			sql = " SELECT score, examType, gradeCode "
+					+ "from exam "
+					+ "WHERE examType = ? AND gradeCode = ? ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, examType);
+			pstmt.setString(2, gradeCode);
+
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				ExamDTO dto = new ExamDTO();
+
+				dto.setScore(Integer.parseInt(rs.getString("score")));
+				dto.setExamType(rs.getString("examType"));
+				dto.setGradeCode(rs.getString("gradeCode"));
+
+				list.add(dto);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (Exception e2) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+
+		return list;
+	}
+	
+	// 시험 성적수정
+		public void examUpdate(ExamDTO dto) throws SQLException {
+			PreparedStatement pstmt = null;
+			String sql;
+
+			try {
+				sql = " update exam SET score = ? WHERE examType = ? AND gradeCode = ? ";
+
+				pstmt = conn.prepareStatement(sql);
+				
+					pstmt.setInt(1, dto.getScore());
+					pstmt.setString(2, dto.getExamType());
+					pstmt.setString(3, dto.getGradeCode());
+					
+					pstmt.executeUpdate();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (Exception e2) {
+					}
+				}
+			}
+		}
 
 }
