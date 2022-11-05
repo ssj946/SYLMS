@@ -144,7 +144,7 @@ function deleteBoard() {
 						    	</c:choose>
 							</td>
 							<td class="text-end">
-								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/notice.do?subjectNo=${subjectNo}';">리스트</button>
+								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/notice/notice.do?subjectNo=${subjectNo}';">목록</button>
 							</td>
 						</tr>
 					</table>

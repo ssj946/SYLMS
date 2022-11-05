@@ -89,7 +89,7 @@ $(function(){
 		content = encodeURIComponent(content);
 		
 		let url = "${pageContext.request.contextPath}/debate/insertReply.do";
-		let query = "subjectNo="+subjectNo+ "&articleNo=" + articleNo + "&content=" + content + "&answer=0";
+		let query = "subjectNo="+subjectNo+ "articleNo=" + articleNo + "&content=" + content + "&answer=0";
 		
 		const fn = function(data){
 			$tb.find("textarea").val("");
@@ -342,22 +342,6 @@ $(function(){
 									${dto.content}
 								</td>
 							</tr>
-							<tr>
-								<td colspan="2" style="border-top-width:medium;  border-top-color: #5a5a5a;" >
-									이전글 :
-									<c:if test="${not empty preReadDto}">
-										<a href="${pageContext.request.contextPath}/debate/article.do?subjectNo=${subjectNo}&articleNo=${preReadDto.articleNo}">${preReadDto.title}</a>
-									</c:if>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									다음글 :
-									<c:if test="${not empty nextReadDto}">
-										<a href="${pageContext.request.contextPath}/debate/article.do?subjectNo=${subjectNo}&articleNo=${nextReadDto.articleNo}">${nextReadDto.title}</a>
-									</c:if>
-								</td>
-							</tr>
 						</tbody>
 					</table>
 					<table class="table table-borderless">
@@ -383,7 +367,7 @@ $(function(){
 						    	</c:choose>
 							</td>
 							<td class="text-end">
-								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/debate/list.do?subjectNo=${subjectNo}';">리스트</button>
+								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/debate/list.do?subjectNo=${subjectNo}';">목록</button>
 							</td>
 						</tr>
 					</table>

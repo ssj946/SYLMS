@@ -130,7 +130,6 @@ public class DebateServlet extends MyServlet {
 				dataCount = dao.dataCount(subjectNo);
 			}
 			
-			System.out.println(dataCount);
 			// 전체 페이지 수
 			int size = 10;
 			int total_page = util.pageCount(dataCount, size);
@@ -194,10 +193,10 @@ public class DebateServlet extends MyServlet {
 		forward(req, resp, "/WEB-INF/views/debate/list.jsp");
 	}
 
+	// 글쓰기 폼
 	protected void writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 글쓰기 폼
+		
 		try {
-			
 			String subjectNo = req.getParameter("subjectNo");
 			
 			DebateDAO dao = new DebateDAO();
@@ -219,8 +218,8 @@ public class DebateServlet extends MyServlet {
 		forward(req, resp, "/WEB-INF/views/debate/write.jsp");
 	}
 
+	// 글 저장
 	protected void writeSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 글 저장
 		DebateDAO dao = new DebateDAO();
 		
 		HttpSession session = req.getSession();
@@ -230,22 +229,20 @@ public class DebateServlet extends MyServlet {
 		String subjectNo = req.getParameter("subjectNo");
 		
 		if (req.getMethod().equalsIgnoreCase("GET")) {
-			resp.sendRedirect(cp + "/debate/list.do");
+			resp.sendRedirect(cp + "/debate/list.do?subjectNo=" +subjectNo);
 			return;
 		}
 		
 		try {
 			DebateDTO dto = new DebateDTO();
 
-			// userId는 세션에 저장된 정보
 			dto.setUserId(info.getUserId());
-
-			// 파라미터
 			dto.setTitle(req.getParameter("title"));
 			dto.setContent(req.getParameter("content"));
-			dto.setSubjectNo(req.getParameter(subjectNo));
+			dto.setSubjectNo(req.getParameter("subjectNo"));
 
 			dao.insertBoard(dto);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -298,19 +295,11 @@ public class DebateServlet extends MyServlet {
 				return;
 			}
 			dto.setContent(util.htmlSymbols(dto.getContent()));
-			
-
-			// 이전글 다음글
-			DebateDTO preReadDto = dao.preReadBoard(dto.getSubjectNo(), dto.getArticleNo(), condition, keyword);
-			DebateDTO nextReadDto = dao.nextReadBoard(dto.getSubjectNo(), dto.getArticleNo(), condition, keyword);
 
 			// JSP로 전달할 속성
 			req.setAttribute("dto", dto);
 			req.setAttribute("page", page);
 			req.setAttribute("query", query);
-			req.setAttribute("preReadDto", preReadDto);
-			req.setAttribute("nextReadDto", nextReadDto);
-			
 
 			// 포워딩
 			forward(req, resp, "/WEB-INF/views/debate/article.jsp");
@@ -398,19 +387,19 @@ public class DebateServlet extends MyServlet {
 		resp.sendRedirect(cp + "/debate/list.do?subjectNo="+subjectNo+"page=" + page);
 	}
 
+	// 삭제
 	protected void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 삭제
-		DebateDAO dao = new DebateDAO();
-
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		String cp = req.getContextPath();
-		
 		String subjectNo = req.getParameter("subjectNo");
-		String page = req.getParameter("page");
-		String query = "page=" + page;
+		
 
+		DebateDAO dao = new DebateDAO();
+		
+		String query = "subjectNo=" + subjectNo;
+		
 		try {
 			String articleNo = req.getParameter("articleNo");
 			String condition = req.getParameter("condition");
@@ -430,7 +419,7 @@ public class DebateServlet extends MyServlet {
 			e.printStackTrace();
 		}
 
-		resp.sendRedirect(cp + "/debate/list.do?subjectNo="+ subjectNo + query);
+		resp.sendRedirect(cp + "/debate/list.do?"+ query);
 	}
 	
 

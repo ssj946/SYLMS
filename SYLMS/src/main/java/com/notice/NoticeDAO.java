@@ -303,7 +303,7 @@ public class NoticeDAO {
 			sb.append(" SELECT articleNo, b.ID, title, hitCount, reg_date, a.name");
 			sb.append(" FROM subject_bbs b ");
 			sb.append(" JOIN account a ON b.ID = a.ID ");
-			sb.append(" WHERE subjectNo = ?  ");
+			sb.append(" WHERE subjectNo = ? AND bbsCode = '00001' ");
 			
 			if (condition.equals("all")) {
 				sb.append(" AND INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ");
@@ -379,7 +379,7 @@ public class NoticeDAO {
 			sb.append(" SELECT articleNo, b.ID, title, hitCount, reg_date ");
 			sb.append(" FROM subject_bbs b ");
 			sb.append(" JOIN account a ON b.ID = a.ID ");
-			sb.append(" WHERE subjectNo = ? ");
+			sb.append(" WHERE subjectNo = ? AND bbsCode = '00001' ");
 			sb.append(" ORDER BY reg_date DESC ");
 
 			pstmt = conn.prepareStatement(sb.toString());
@@ -489,7 +489,7 @@ public class NoticeDAO {
 				sb.append(" SELECT articleNo, title ");
 				sb.append(" FROM subject_bbs b ");
 				sb.append(" JOIN account a ON b.Id = a.Id ");
-				sb.append(" WHERE ( articleNo > ? ) AND subjectNo = ? ");
+				sb.append(" WHERE ( articleNo > ? ) AND subjectNo = ? AND bbsCode = '00001' ");
 				if (condition.equals("all")) {
 					sb.append("   AND ( INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
 				} else if (condition.equals("reg_date")) {
@@ -563,7 +563,7 @@ public class NoticeDAO {
 				sb.append(" SELECT articleNo, title ");
 				sb.append(" FROM subject_bbs b ");
 				sb.append(" JOIN account a ON b.Id = a.Id ");
-				sb.append(" WHERE ( articleNo < ? ) AND subjectNo = ? ");
+				sb.append(" WHERE ( articleNo < ? ) AND subjectNo = ? AND bbsCode = '00001' ");
 				if (condition.equals("all")) {
 					sb.append("   AND ( INSTR(title, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
 				} else if (condition.equals("reg_date")) {

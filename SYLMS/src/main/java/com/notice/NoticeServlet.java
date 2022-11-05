@@ -73,7 +73,7 @@ public class NoticeServlet extends MyUploadServlet {
 		}
 	}	
 
-	// 공지사항 리스트 완료
+	// 공지사항 리스트
 	protected void noticeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		NoticeDAO dao = new NoticeDAO();
 		String subjectNo = req.getParameter("subjectNo");
@@ -199,9 +199,8 @@ public class NoticeServlet extends MyUploadServlet {
 		forward(req, resp, path);
 	}
 	
-	// 공지사항 작성폼 완료
+	// 공지사항 작성
 	protected void noticeWriteForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 공지사항 작성
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
@@ -239,9 +238,8 @@ public class NoticeServlet extends MyUploadServlet {
 		forward(req, resp, "/WEB-INF/views/notice/noticeWrite.jsp");
 	}
 	
-	// 공지사항 작성보내기폼 완료
+	// 공지사항 작성보내기
 	protected void noticeWriteSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 공지사항글 저장
 		NoticeDAO dao = new NoticeDAO();
 		
 		HttpSession session = req.getSession();
@@ -511,9 +509,8 @@ public class NoticeServlet extends MyUploadServlet {
 		
 	}
 	
-	// 지우기 완료
+	// 삭제
 	protected void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException  {
-		// 삭제
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
