@@ -77,7 +77,7 @@
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link  p-3 mb-2 " href="${pageContext.request.contextPath}/lecture/general.do">
+						<a class="nav-link  p-3 mb-2 " href="${pageContext.request.contextPath}/freebbs/freebbs.do?subjectNo=${subjectNo}">
 						 <i class="fas fa-poo  fa-lg mr-3"></i>&nbsp;자유게시판
 						 </a>
 					</li>

@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 
 import com.member.SessionInfo;
 import com.util.MyUploadServlet;
+import com.util.MyUtil;
+import com.util.MyUtilBootstrap;
 
 @MultipartConfig
 @WebServlet("/freebbs/*")
@@ -129,8 +131,25 @@ public class FreebbsServlet extends MyUploadServlet {
 	}
 
 
-	private void freebbsForm(HttpServletRequest req, HttpServletResponse resp) {
+	private void freebbsForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		FreebbsDAO dao = new FreebbsDAO();
+		String subjectNo = req.getParameter("subjectNo");
 		
+		FreebbsDTO dto =  new FreebbsDTO();
+		MyUtil util = new MyUtilBootstrap();
+		String cp = req.getContextPath();
+		
+		
+		try {
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			
+		}
+		
+		String path = "/WEB-INF/views/freebbs/list.jsp";
+		forward(req, resp, path);
 		
 	}
 	
