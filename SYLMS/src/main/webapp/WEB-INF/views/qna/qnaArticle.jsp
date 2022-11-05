@@ -22,6 +22,7 @@ list-style: none;
 function deleteBoard() {
     if(confirm("게시글을 삭제 하시 겠습니까 ? ")) {
 	    let query = "articleNo=${dto.articleNo}&${query}";
+	    alert(query);
 	    let url = "${pageContext.request.contextPath}/qna/delete.do?" + query;
     	location.href = url;
     }
@@ -96,7 +97,7 @@ function deleteBoard() {
 								<td colspan="2">
 									이전글 :
 									<c:if test="${not empty preReadDto}">
-										<a href="${pageContext.request.contextPath}/qna/qnaArticle.do?subjectNo=${subjectNo}&articleNo=${preReadDto.articleNo}">${preReadDto.title}</a>
+										<a href="${pageContext.request.contextPath}/qna/qnaArticle.do?${query}&articleNo=${preReadDto.articleNo}">${preReadDto.title}</a>
 									</c:if>
 								</td>
 							</tr>
@@ -104,7 +105,7 @@ function deleteBoard() {
 								<td colspan="2">
 									다음글 :
 									<c:if test="${not empty nextReadDto}">
-										<a href="${pageContext.request.contextPath}/qna/qnaArticle.do?subjectNo=${subjectNo}&articleNo=${nextReadDto.articleNo}">${nextReadDto.title}</a>
+										<a href="${pageContext.request.contextPath}/qna/qnaArticle.do?${query}&articleNo=${nextReadDto.articleNo}">${nextReadDto.title}</a>
 									</c:if>
 								</td>
 							</tr>
@@ -116,7 +117,7 @@ function deleteBoard() {
 								
 								<c:choose>
 									<c:when test="${sessionScope.member.userId==dto.userId}">
-										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/notice/update.do?articleNo=${dto.articleNo}&page=${page}';">수정</button>
+										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/qna/qnaUpdate.do?articleNo=${dto.articleNo}&page=${page}&subjectNo=${subjectNo}';">수정</button>
 									</c:when>
 									<c:otherwise>
 										<button type="button" class="btn btn-light" disabled="disabled">수정</button>
@@ -133,7 +134,7 @@ function deleteBoard() {
 						    	</c:choose>
 							</td>
 							<td class="text-end">
-								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/qna/qna.do?subjectNo=${subjectNo}';">리스트</button>
+								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/qna/qna.do?${query}';">리스트</button>
 							</td>
 						</tr>
 					</table>

@@ -2,6 +2,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,18 +94,18 @@ function searchList() {
 			        	<div class="row card-body">
 						<table class= "table text-center">
 							<tr>
-								<th>번호</th>
-								<th class="w-75">제목</th>
-								<th>작성자</th>
-								<th>작성일</th>
-								<th>조회수</th>
+								<th width="50">번호</th>
+								<th>제목</th>
+								<th width="90">작성자</th>
+								<th width="90">작성일</th>
+								<th width="70">조회수</th>
 							</tr>
 					
 						<c:forEach var="dto" items="${list}" varStatus="status">
 							<tr>
 								<td>${dataCount - (page-1) * size - status.index}</td>
 								<td class="text-start">
-									<a href="${pageContext.request.contextPath}/qna/qnaArticle.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}" class="text-reset ps-4">${dto.title}</a>
+									<a href="${articleUrl}&articleNo=${dto.articleNo}" class="text-reset ps-4">${dto.title}</a>
 								<c:if test="${dto.gap<2}"><img src="${pageContext.request.contextPath}/resources/images/new.png" class="new"></c:if>
 								</td>
 								<td>${dto.name}</td>
@@ -159,7 +160,10 @@ function searchList() {
 							
 							</div>
 								<div class=" col-2 text-end">
+
+									<c:if test="${fn:length(sessionScope.member.userId) == 8 }">
 										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/qna/qnaWrite.do?subjectNo=${subjectNo}';">글올리기</button>
+									</c:if>
 								</div>
 						</div>
 						</div>

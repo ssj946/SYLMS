@@ -47,7 +47,7 @@ function deleteFile(fileNum) {
 	if(! confirm("파일을 삭제 하시겠습니까 ?")) {
 		return;
 	}
-	let query = "articleNo=${dto.articleNo}&fileNo="+fileNo+"&page=${page}";
+	let query = "subjectNo=${subjectNo}&articleNo=${dto.articleNo}&fileNo="+fileNo+"&page=${page}";
 	let url = "${pageContext.request.contextPath}/qna/deleteFile.do?" + query;
 	location.href = url;
 }
@@ -124,11 +124,11 @@ function deleteFile(fileNum) {
 					<table class="table table-borderless">
 	 					<tr>
 							<td class="text-center">
-								<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
+								<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='Update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
 								<button type="reset" class="btn btn-light">다시입력</button>
-								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/qna/qna.do?subjectNo=${subjectNo}';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
+								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/qna/qna.do?subjectNo=${subjectNo}';">${mode=='Update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
 								<input type="hidden" name="subjectNo" value="${subjectNo}">
-								<c:if test="${mode=='update'}">
+								<c:if test="${mode=='Update'}">
 									<input type="hidden" name="articleNo" value="${dto.articleNo}">
 									<input type="hidden" name="page" value="${page}">
 								</c:if>

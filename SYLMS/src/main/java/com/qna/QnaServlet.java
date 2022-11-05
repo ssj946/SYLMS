@@ -50,24 +50,22 @@ public class QnaServlet extends MyUploadServlet {
 			qnaForm(req, resp);
 		} else if (uri.indexOf("qnaWrite.do") != -1) {
 			qnaWriteForm(req, resp);
-		} else if (uri.indexOf("qnawrite_ok.do") != -1) {
+		} else if (uri.indexOf("qnaWrite_ok.do") != -1) {
 			qnaWriteSubmit(req, resp);
 		} else if (uri.indexOf("qnaArticle.do") != -1) {
 			qnaArticleForm(req, resp);
-		} else if (uri.indexOf("update.do") != -1) {
+		} else if (uri.indexOf("qnaUpdate.do") != -1) {
 			updateForm(req, resp);
-		} else if (uri.indexOf("update_ok.do") != -1) {
+		} else if (uri.indexOf("qnaUpdate_ok.do") != -1) {
 			updateSubmit(req, resp);
 		} else if (uri.indexOf("deleteFile.do") != -1) {
 			deleteFile(req, resp);
 		} else if (uri.indexOf("delete.do") != -1) {
 			delete(req, resp);
-		} else if (uri.indexOf("deleteList.do") != -1) {
-			deleteList(req, resp);
 		}
 	}
 
-	// 질문과 대답 리스트 완료
+	// 질문 리스트 완료
 	protected void qnaForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		QnaDAO dao = new QnaDAO();
 		String subjectNo = req.getParameter("subjectNo");
@@ -76,6 +74,13 @@ public class QnaServlet extends MyUploadServlet {
 		MyUtil util = new MyUtilBootstrap();
 		String cp = req.getContextPath();
 
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		String id = null;
+		if(info.getUserId().length() == 8) {
+			id = info.getUserId();
+		}
+		
 		try {
 			dto1 = dao.readSubject(subjectNo);
 			req.setAttribute("subjectNo", subjectNo);
@@ -105,14 +110,13 @@ public class QnaServlet extends MyUploadServlet {
 			// 전체 데이터 개수
 			int dataCount;
 			if (keyword.length() != 0) {
-				dataCount = dao.dataCount(subjectNo, condition, keyword);
+				dataCount = dao.dataCount(subjectNo, condition, keyword, id);
 			} else {
-				dataCount = dao.dataCount(subjectNo);
+				dataCount = dao.dataCount(subjectNo, id);
 			}
 
 			// 한페이지 표시할 데이터 개수
-			String pageSize = req.getParameter("size");
-			int size = pageSize == null ? 10 : Integer.parseInt(pageSize);
+			int size = 10;
 
 			// 전체 페이지 수
 			int total_page = util.pageCount(dataCount, size);
@@ -128,19 +132,10 @@ public class QnaServlet extends MyUploadServlet {
 
 			List<QnaDTO> list;
 			if (keyword.length() != 0) {
-				list = dao.listQna(subjectNo, offset, size, condition, keyword);
+				list = dao.listQna(subjectNo, offset, size, condition, keyword, id);
 			} else {
-				list = dao.listQna(subjectNo, offset, size);
+				list = dao.listQna(subjectNo, offset, size, id);
 			}
-
-			// Qna리스트
-			List<QnaDTO> listQna = null;
-			listQna = dao.listQna(subjectNo);
-			for (QnaDTO dto : listQna) {
-				dto.setReg_date(dto.getReg_date().substring(0, 10));
-			}
-
-			// 파일
 
 			String query = "";
 			if (keyword.length() != 0) {
@@ -149,10 +144,10 @@ public class QnaServlet extends MyUploadServlet {
 
 			// 페이징처리
 			String listUrl = cp + "/qna/qna.do?subjectNo=" + subjectNo;
-			String qnaUrl = cp + "/qna/qna.do?subjectNo=" + subjectNo + "?page=" + current_page;
+			String articleUrl = cp + "/qna/qnaArticle.do?subjectNo=" + subjectNo + "&page=" + current_page;
 			if (query.length() != 0) {
-				listUrl += "?" + query;
-				qnaUrl += "&" + query;
+				listUrl += "&" + query;
+				articleUrl += "&" + query;
 			}
 
 			String paging = util.paging(current_page, total_page, listUrl);
@@ -160,7 +155,6 @@ public class QnaServlet extends MyUploadServlet {
 			req.setAttribute("query", query);
 			req.setAttribute("subjectNo", subjectNo);
 			req.setAttribute("list", list);
-			req.setAttribute("listQna", listQna);
 			req.setAttribute("dataCount", dataCount);
 			req.setAttribute("size", size);
 			req.setAttribute("page", current_page);
@@ -168,7 +162,7 @@ public class QnaServlet extends MyUploadServlet {
 			req.setAttribute("paging", paging);
 			req.setAttribute("condition", condition);
 			req.setAttribute("keyword", keyword);
-			req.setAttribute("qnaUrl", qnaUrl);
+			req.setAttribute("articleUrl", articleUrl);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -178,28 +172,25 @@ public class QnaServlet extends MyUploadServlet {
 		forward(req, resp, path);
 	}
 
-	// 질문과 대답 작성폼
+	// 질문 작성폼
 	protected void qnaWriteForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 질문과 대답
+		// 질문
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
-
 		String cp = req.getContextPath();
 
-		String size = req.getParameter("size");
+		String subjectNo = req.getParameter("subjectNo");
 
 		// 교수
-		if (!info.getUserId().matches("\\d{5}")) {
-			resp.sendRedirect(cp + "/");
+		if (info.getUserId().matches("\\d{5}")) {
+			resp.sendRedirect(cp + "/qna/qna.do?subject?subjectNo=" + subjectNo);
 			return;
 		}
 
 		try {
 
-			String subjectNo = req.getParameter("subjectNo");
-
 			QnaDAO dao = new QnaDAO();
-			QnaDTO dto1 = new QnaDTO();
+			QnaDTO dto1 = null;
 
 			dto1 = dao.readSubject(subjectNo);
 			req.setAttribute("subjectNo", subjectNo);
@@ -207,10 +198,9 @@ public class QnaServlet extends MyUploadServlet {
 			req.setAttribute("semester", dto1.getSemester());
 			req.setAttribute("subjectName", dto1.getSubjectName());
 			req.setAttribute("syear", dto1.getSyear());
-			req.setAttribute("size", size);
 
 			req.setAttribute("subjectNo", subjectNo);
-			req.setAttribute("mode", "write");
+			req.setAttribute("mode", "Write");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -218,10 +208,9 @@ public class QnaServlet extends MyUploadServlet {
 		forward(req, resp, "/WEB-INF/views/qna/qnaWrite.jsp");
 	}
 
-	// 질문과대답 작성보내기
+	// 질문 저장
 	protected void qnaWriteSubmit(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// 질문과대답 저장
 		QnaDAO dao = new QnaDAO();
 
 		HttpSession session = req.getSession();
@@ -235,9 +224,9 @@ public class QnaServlet extends MyUploadServlet {
 			return;
 		}
 
-		// 교수만 등록,,,
-		if (!info.getUserId().matches("\\d{5}")) {
-			resp.sendRedirect(cp + "/");
+		// 학생만만 등록
+		if (info.getUserId().matches("\\d{5}")) {
+			resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo);
 			return;
 		}
 
@@ -267,28 +256,25 @@ public class QnaServlet extends MyUploadServlet {
 	}
 
 	// 글 보기 폼 완료
-	protected void qnaArticleForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void qnaArticleForm(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		// 공지사항 보기
 		String cp = req.getContextPath();
 
 		String page = req.getParameter("page");
-		String size = req.getParameter("size");
-		String query = "page=" + page + "&size=" + size;
+		String subjectNo = req.getParameter("subjectNo");
+		String query = "page=" + page + "&subjectNo=" + subjectNo;
 
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		String id = null;
+		if(info.getUserId().length() == 8) {
+			id = info.getUserId();
+		}
+		
 		QnaDAO dao = new QnaDAO();
 
 		try {
-			String subjectNo = req.getParameter("subjectNo");
-			
-			QnaDTO dto1 = new QnaDTO();
-			
-			dto1 = dao.readSubject(subjectNo);
-			req.setAttribute("subjectNo", subjectNo);
-			req.setAttribute("professorName", dto1.getProfessorname());
-			req.setAttribute("semester", dto1.getSemester());
-			req.setAttribute("subjectName", dto1.getSubjectName());
-			req.setAttribute("syear", dto1.getSyear());
-			
 			String articleNo = req.getParameter("articleNo");
 
 			String condition = req.getParameter("condition");
@@ -302,49 +288,53 @@ public class QnaServlet extends MyUploadServlet {
 			if (keyword.length() != 0) {
 				query += "&condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "UTF-8");
 			}
-				// 조회수
-				dao.updateHitCount(articleNo, subjectNo);
+			// 조회수
+			dao.updateHitCount(articleNo);
 
-				// 게시물 가져오기
-				QnaDTO dto = dao.readQna(articleNo);
-				if (dto == null) {
-					resp.sendRedirect(cp + "/notice/notice.do?" + query);
-					return;
-				}
-
-				dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
-				
-				// 이전글/다음글
-			    QnaDTO preReadDto = dao.preReadQna(dto.getSubjectNo(), dto.getArticleNo(), condition, keyword);
-				QnaDTO nextReadDto = dao.nextReadQna(dto.getSubjectNo(), dto.getArticleNo(), condition, keyword);
-
-				// 파일
-				
-				List<QnaDTO> listFile = dao.listQnaFile(articleNo);
-				
-				
-				req.setAttribute("dto", dto);
-				req.setAttribute("subjectNo", subjectNo );
-				req.setAttribute("condition", condition);
-				req.setAttribute("keyword", keyword);
-				req.setAttribute("query", query);
-				req.setAttribute("page", page);
-				req.setAttribute("size", size);
-				req.setAttribute("name", dto.getName());
-				req.setAttribute("preReadDto", preReadDto);
-				req.setAttribute("nextReadDto", nextReadDto);
-				req.setAttribute("listFile",listFile);
-				
-				
-				
-				forward(req, resp, "/WEB-INF/views/qna/qnaArticle.jsp");
+			// 게시물 가져오기
+			QnaDTO dto = dao.readQna(articleNo);
+			if (dto == null) {
+				resp.sendRedirect(cp + "/qna/qna.do?" + query);
 				return;
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
-		
-			resp.sendRedirect(cp + "/qna/qna.do?" + query);
+
+			dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
+
+			// 이전글/다음글
+			QnaDTO preReadDto = dao.preReadQna(dto.getSubjectNo(), dto.getArticleNo(), condition, keyword, id);
+			QnaDTO nextReadDto = dao.nextReadQna(dto.getSubjectNo(), dto.getArticleNo(), condition, keyword, id);
+
+			// 파일
+
+			List<QnaDTO> listFile = dao.listQnaFile(articleNo);
+
+			req.setAttribute("dto", dto);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("condition", condition);
+			req.setAttribute("keyword", keyword);
+			req.setAttribute("query", query);
+			req.setAttribute("page", page);
+			req.setAttribute("name", dto.getName());
+			req.setAttribute("preReadDto", preReadDto);
+			req.setAttribute("nextReadDto", nextReadDto);
+			req.setAttribute("listFile", listFile);
+
+			QnaDTO dto1 = null;
+			dto1 = dao.readSubject(subjectNo);
+
+			req.setAttribute("professorName", dto1.getProfessorname());
+			req.setAttribute("semester", dto1.getSemester());
+			req.setAttribute("subjectName", dto1.getSubjectName());
+			req.setAttribute("syear", dto1.getSyear());
+
+			forward(req, resp, "/WEB-INF/views/qna/qnaArticle.jsp");
+			return;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
+		resp.sendRedirect(cp + "/qna/qna.do?" + query);
+	}
 
 	// 수정
 	protected void updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -352,40 +342,49 @@ public class QnaServlet extends MyUploadServlet {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
 		String cp = req.getContextPath();
+		String subjectNo = req.getParameter("subjectNo");
+		String page = req.getParameter("page");
 
-		// 교수만 등록,,,
-		if (!info.getUserId().matches("\\d{5}")) {
-			resp.sendRedirect(cp + "/qna/qna.do");
+		// 교수
+		if (info.getUserId().matches("\\d{5}")) {
+			resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo + "&page=" + page);
 			return;
 		}
 
 		QnaDAO dao = new QnaDAO();
 
-		String subjectNo = req.getParameter("subjectNo");
 		String articleNo = req.getParameter("articleNo");
 		try {
 
-			QnaDTO dto = dao.readQnaFile(articleNo);
+			QnaDTO dto = dao.readQna(articleNo);
 			if (dto == null) {
-				resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo);
+				resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo + "&page=" + page);
 				return;
 			}
 
 			// 게시물을 올린 사용자가 아니면
 			if (!dto.getUserId().equals(info.getUserId())) {
-				resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo);
+				resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo + "&page=" + page);
 				return;
 			}
 
 			// 파일
 			List<QnaDTO> listFile = dao.listQnaFile(articleNo);
 
-			req.setAttribute("dto", dto);
-			req.setAttribute("subjectNo", subjectNo);
-			req.setAttribute("listFile", listFile);
-			req.setAttribute("articleNo", articleNo);
+			QnaDTO dto1 = null;
 
-			req.setAttribute("mode", "update");
+			dto1 = dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto1.getProfessorname());
+			req.setAttribute("semester", dto1.getSemester());
+			req.setAttribute("subjectName", dto1.getSubjectName());
+			req.setAttribute("syear", dto1.getSyear());
+
+			req.setAttribute("dto", dto);
+			req.setAttribute("page", page);
+			req.setAttribute("listFile", listFile);
+
+			req.setAttribute("mode", "Update");
 
 			forward(req, resp, "/WEB-INF/views/qna/qnaWrite.jsp");
 			return;
@@ -393,7 +392,7 @@ public class QnaServlet extends MyUploadServlet {
 			e.printStackTrace();
 		}
 
-		resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo + "&articleNo=" + articleNo);
+		resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo + "&page=" + page);
 
 	}
 
@@ -404,20 +403,19 @@ public class QnaServlet extends MyUploadServlet {
 
 		String cp = req.getContextPath();
 		String subjectNo = req.getParameter("subjectNo");
+		String page = req.getParameter("page");
 
 		if (req.getMethod().equalsIgnoreCase("GET")) {
-			resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo);
+			resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo + "&page=" + page);
 			return;
 		}
 
-		if (!info.getUserId().matches("\\d{5}")) {
-			resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo);
+		if (info.getUserId().matches("\\d{5}")) {
+			resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo + "&page=" + page);
 			return;
 		}
 
 		QnaDAO dao = new QnaDAO();
-
-		String articleNo = req.getParameter("articleNo");
 
 		try {
 			QnaDTO dto = new QnaDTO();
@@ -440,7 +438,7 @@ public class QnaServlet extends MyUploadServlet {
 			e.printStackTrace();
 		}
 
-		resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo + "&articleNo=" + articleNo);
+		resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo + "&page=" + page);
 
 	}
 
@@ -451,10 +449,11 @@ public class QnaServlet extends MyUploadServlet {
 
 		String cp = req.getContextPath();
 		String subjectNo = req.getParameter("subjectNo");
+		String page = req.getParameter("page");
 
-		// 교수만
-		if (!info.getUserId().matches("\\d{5}")) {
-			resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo);
+		// 교수
+		if (info.getUserId().matches("\\d{5}")) {
+			resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo + "&page=" + page);
 			return;
 		}
 
@@ -474,15 +473,14 @@ public class QnaServlet extends MyUploadServlet {
 			}
 
 			// 다시 수정 화면으로
-			resp.sendRedirect(cp + "/qna/update.do?subjectNo=" + subjectNo + "&articleNo=" + articleNo);
+			resp.sendRedirect(
+					cp + "/qna/update.do?subjectNo=" + subjectNo + "&articleNo=" + articleNo + "&page=" + page);
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		String articleNo = req.getParameter("articleNo");
-
-		resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo + "&articleNo=" + articleNo);
+		resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo + "&page=" + page);
 
 	}
 
@@ -494,17 +492,18 @@ public class QnaServlet extends MyUploadServlet {
 
 		String cp = req.getContextPath();
 		String subjectNo = req.getParameter("subjectNo");
+		String page = req.getParameter("page");
 
-		// 교수만 삭제
-		if (!info.getUserId().matches("\\d{5}")) {
-			resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo);
+		// 교수
+		if (info.getUserId().matches("\\d{5}")) {
+			resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo + "&page=" + page);
 			return;
 		}
 
 		QnaDAO dao = new QnaDAO();
 
 		// String page = req.getParameter("page");
-		String query = "subjectNo=" + subjectNo;
+		String query = "subjectNo=" + subjectNo + "&page=" + page;
 
 		try {
 			String articleNo = req.getParameter("articleNo");
@@ -520,7 +519,7 @@ public class QnaServlet extends MyUploadServlet {
 				query += "&condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "UTF-8");
 			}
 
-			QnaDTO dto = dao.readQnaFile(articleNo);
+			QnaDTO dto = dao.readQna(articleNo);
 			if (dto == null) {
 				resp.sendRedirect(cp + "/qna/qna.do?" + query);
 				return;
@@ -567,8 +566,4 @@ public class QnaServlet extends MyUploadServlet {
 		}
 	}
 
-	// 리스트에서 지우기
-	protected void deleteList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-	}
 }
