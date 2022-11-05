@@ -99,6 +99,7 @@ function searchList() {
 								<th width="90">작성자</th>
 								<th width="90">작성일</th>
 								<th width="70">조회수</th>
+								<th width="70">처리결과</th>
 							</tr>
 					
 						<c:forEach var="dto" items="${list}" varStatus="status">
@@ -111,6 +112,7 @@ function searchList() {
 								<td>${dto.name}</td>
 								<td>${dto.reg_date}</td>
 								<td>${dto.hitCount}</td>
+								<td>${dto.replyCount==0?"답변대기":"답변완료"}</td>
 							</tr>
 						</c:forEach>
 						</table>
@@ -136,12 +138,10 @@ function searchList() {
 								
 								<div class="col-9 p-1">
 									<input type="text" name="keyword" value="${keyword}" class="form-control">
-								</div>
-								<div class="col-auto p-1">
 									<input type="hidden" name="subjectNo" value="${subjectNo}">
 								</div>
 								<div class="col-auto p-1">
-								<button type="button" class="btn btn-light" onclick="searchList()"> <i class="bi bi-search"></i> </button>
+									<button type="button" class="btn btn-light" onclick="searchList()"> <i class="bi bi-search"></i> </button>
 								</div>
 							
 							</div>

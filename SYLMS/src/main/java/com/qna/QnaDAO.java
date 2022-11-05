@@ -12,14 +12,14 @@ import com.util.DBConn;
 public class QnaDAO {
 	private Connection conn = DBConn.getConnection();
 
-public QnaDTO readSubject(String subjectNo) throws SQLException{
+	public QnaDTO readSubject(String subjectNo) throws SQLException{
 		
 		PreparedStatement pstmt= null;
 		String sql;
 		ResultSet rs=null;
 		QnaDTO dto = new QnaDTO();
 		try {
-			sql= "SELECT s.id, name, subjectname, credit, TO_CHAR(syear,'YYYY')syear, semester FROM subject s "
+			sql= "SELECT s.id, name, subjectname, credit, TO_CHAR(syear,'YYYY') syear, semester FROM subject s "
 					+ " JOIN account a ON a.id=s.id "
 					+ " WHERE subjectNo= ?";
 			pstmt = conn.prepareStatement(sql);
@@ -125,7 +125,7 @@ public QnaDTO readSubject(String subjectNo) throws SQLException{
 		}
 	}
 	
-	//질문과답변 개수
+	// 질문과답변 개수
 	public int dataCount(String subjectNo, String id) {
 		int result = 0;
 		PreparedStatement pstmt = null;
@@ -247,9 +247,12 @@ public QnaDTO readSubject(String subjectNo) throws SQLException{
 		StringBuilder sb = new StringBuilder();
 	
 		try {
-			sb.append(" SELECT articleNo, b.ID, title, hitCount, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, a.name ");
+			sb.append(" SELECT b.articleNo, b.ID, title, hitCount, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, a.name, NVL(replyCount, 0) replyCount ");
 			sb.append(" FROM subject_bbs b ");
 			sb.append(" JOIN account a ON b.ID = a.ID ");
+			sb.append(" LEFT OUTER JOIN ( ");
+			sb.append("      SELECT articleNo, COUNT(*) replyCount FROM SUBJECT_BBS_REPLY GROUP BY articleNo ");
+			sb.append(" ) r ON b.articleNo = r.articleNo ");
 			sb.append(" WHERE bbsCode = '00003' AND subjectNo = ?  ");
 			if(id != null && id.length() != 0) {
 				sb.append(" AND b.id = ? ");
@@ -282,6 +285,7 @@ public QnaDTO readSubject(String subjectNo) throws SQLException{
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setReg_date(rs.getString("reg_date"));
 				dto.setName(rs.getString("name"));
+				dto.setReplyCount(rs.getInt("replyCount"));
 	
 				list.add(dto);
 			}
@@ -315,9 +319,12 @@ public QnaDTO readSubject(String subjectNo) throws SQLException{
 		StringBuilder sb = new StringBuilder();
 	
 		try {
-			sb.append(" SELECT articleNo, b.ID, title, hitCount, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, a.name");
+			sb.append(" SELECT b.articleNo, b.ID, title, hitCount, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, a.name, NVL(replyCount, 0) replyCount ");
 			sb.append(" FROM subject_bbs b ");
 			sb.append(" JOIN account a ON b.ID = a.ID ");
+			sb.append(" LEFT OUTER JOIN ( ");
+			sb.append("      SELECT articleNo, COUNT(*) replyCount FROM SUBJECT_BBS_REPLY GROUP BY articleNo ");
+			sb.append(" ) r ON b.articleNo = r.articleNo ");
 			sb.append(" WHERE bbsCode = '00003' AND subjectNo = ?  ");
 			
 			if (condition.equals("all")) {
@@ -378,6 +385,7 @@ public QnaDTO readSubject(String subjectNo) throws SQLException{
 				dto.setTitle(rs.getString("title"));
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setReg_date(rs.getString("reg_date")); // yyyy-MM-dd HH:mm:ss
+				dto.setReplyCount(rs.getInt("replyCount"));
 	
 				list.add(dto);
 			}
@@ -508,7 +516,7 @@ public QnaDTO readSubject(String subjectNo) throws SQLException{
 			} else {
 				sb.append(" SELECT articleNo, title FROM subject_bbs b ");
 				sb.append(" JOIN account a ON b.Id = a.Id ");
-				sb.append(" WHERE articleNo > ? AND subjectNo = ?");
+				sb.append(" WHERE articleNo > ? AND subjectNo = ? AND bbsCode = '00003' ");
 				if(id != null && id.length() != 0) {
 					sb.append(" AND b.id = ? ");
 				}
@@ -601,7 +609,7 @@ public QnaDTO readSubject(String subjectNo) throws SQLException{
 			} else {
 				sb.append(" SELECT articleNo, title FROM subject_bbs b ");
 				sb.append(" JOIN account a ON b.Id = a.Id ");
-				sb.append(" WHERE articleNo < ? AND subjectNo = ?");
+				sb.append(" WHERE articleNo < ? AND subjectNo = ? AND bbsCode = '00003' ");
 				if(id != null && id.length() != 0) {
 					sb.append(" AND b.id = ? ");
 				}
@@ -861,4 +869,141 @@ public QnaDTO readSubject(String subjectNo) throws SQLException{
 
 	}
 
+	// 답변 등록
+	public void insertReply(ReplyDTO dto) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = "INSERT INTO SUBJECT_BBS_REPLY(replyNo, subjectNo, content, articleNo, id, reg_date, answer, bbscode) "
+					+ " VALUES (SUBJECT_BBS_REPLY_seq.NEXTVAL, ?, ?, ?, ?, SYSDATE, 0, '00003')";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getSubjectNo());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setString(3, dto.getArticleNo());
+			pstmt.setString(4, dto.getId());
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+		}
+	}
+	
+	// 답변 수정
+	public void updateReply(ReplyDTO dto) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = "UPDATE SUBJECT_BBS_REPLY SET content = ? WHERE replyNo = ? AND id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getContent());
+			pstmt.setString(2, dto.getReplyNo());
+			pstmt.setString(3, dto.getId());
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+		}
+	}	
+	
+	// 답변
+	public ReplyDTO readReply(String replyNo, String mode) {
+		ReplyDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT replyNo, subjectNo, content, articleNo, a.id, name, reg_date "
+					+ " FROM SUBJECT_BBS_REPLY r JOIN account a ON r.id=a.id  ";
+			
+			if(mode.equals("reply")) {
+				sql += " WHERE replyNo = ? ";
+			} else {
+				sql += " WHERE articleNo = ? ";
+			}
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, replyNo);
+
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto=new ReplyDTO();
+				
+				dto.setReplyNo(rs.getString("replyNo"));
+				dto.setId(rs.getString("id"));
+				dto.setName(rs.getString("name"));
+				dto.setSubjectNo(rs.getString("subjectNo"));
+				dto.setContent(rs.getString("content"));
+				dto.setReg_date(rs.getString("reg_date"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if(rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+				
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		
+		return dto;
+	}
+	
+	// 답변 삭제
+	public void deleteReply(String replyNo, String id) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = "DELETE FROM SUBJECT_BBS_REPLY "
+					+ " WHERE replyNo = ? AND id = ?  ";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, replyNo);
+			pstmt.setString(2, id);
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}		
+		
+	}	
+	
 }

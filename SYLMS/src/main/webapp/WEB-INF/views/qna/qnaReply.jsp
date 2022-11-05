@@ -23,13 +23,6 @@ function sendOk() {
     const f = document.boardForm;
 	let str;
 	
-    str = f.title.value.trim();
-    if(!str) {
-        alert("제목을 입력하세요. ");
-        f.subject.focus();
-        return;
-    }
-
     str = f.content.value.trim();
     if(!str) {
         alert("내용을 입력하세요. ");
@@ -37,21 +30,10 @@ function sendOk() {
         return;
     }
 
-	f.action = "${pageContext.request.contextPath}/qna/qna${mode}_ok.do"; 
+	f.action = "${pageContext.request.contextPath}/qna/${mode}_ok.do"; 
     f.submit();
 }
 
-
-<c:if test="${mode=='update'}">
-function deleteFile(fileNum) {
-	if(! confirm("파일을 삭제 하시겠습니까 ?")) {
-		return;
-	}
-	let query = "subjectNo=${subjectNo}&articleNo=${dto.articleNo}&fileNo="+fileNo+"&page=${page}";
-	let url = "${pageContext.request.contextPath}/qna/deleteFile.do?" + query;
-	location.href = url;
-}
-</c:if>
 </script>
 
 </head>
@@ -88,45 +70,55 @@ function deleteFile(fileNum) {
 				<div class="ms-5 me-5 pt-3 mt-4 mb-5">
 					<div class="card">
 						<div class= "card-header fw-bold">
-							<h3><i class="fas fa-clipboard-question  fa-lg mr-3"></i> 질문등록 </h3>
+							<h3><i class="fas fa-clipboard-question  fa-lg mr-3"></i> 답변등록 </h3>
 						</div>
 						
 						<div class="card-body">
-
+						
 							<form name="boardForm" method="post"  enctype="multipart/form-data">
 								<table class="table write-form mt-5">
 									<tr>
-										<td class="table-light col-sm-2" scope="row">제 목</td>
+										<td class="table-light col-sm-2" scope="row">질문 제목</td>
 										<td>
-											<input type="text" name="title" maxlength="100" class="form-control" value="${dto.title}">
+											<p class="form-control-planntext">${dto.title}</p>
 										</td>
 									</tr>
 				        
 									<tr>
-										<td class="table-light col-sm-2" scope="row">작성자명</td>
+										<td class="table-light col-sm-2" scope="row">질문 학생</td>
 				 						<td>
-											<p class="form-control-plaintext">${sessionScope.member.userName}</p>
+											<p class="form-control-plaintext">${dto.name}</p>
 										</td>
 									</tr>
 				
 									<tr>
-										<td class="table-light col-sm-2" scope="row">내 용</td>
+										<td class="table-light col-sm-2">질문 내용</td>
 										<td>
-											<textarea name="content" id="content" class="form-control">${dto.content}</textarea>
+											<p class="form-control-planntext" style="white-space: pre-wrap;">${dto.content}</p>
 										</td>
 									</tr>
+									
+									<tr>
+										<td class="table-light col-sm-2">답변 내용</td>
+										<td>
+											<textarea name="content" class="form-control">${replyDto.content}</textarea>
+										</td>
+									</tr>
+									
+								
 								</table>
 								
 								<table class="table table-borderless">
 				 					<tr>
 										<td class="text-center">
-											<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='Update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
+											<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='qnaReplyUpdate'?'수정완료':'답변등록'}&nbsp;<i class="bi bi-check2"></i></button>
 											<button type="reset" class="btn btn-light">다시입력</button>
 											<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/qna/qna.do?subjectNo=${subjectNo}';">${mode=='Update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
 											<input type="hidden" name="subjectNo" value="${subjectNo}">
-											<c:if test="${mode=='Update'}">
-												<input type="hidden" name="articleNo" value="${dto.articleNo}">
-												<input type="hidden" name="page" value="${page}">
+											<input type="hidden" name="articleNo" value="${articleNo}">
+											<input type="hidden" name="page" value="${page}">
+											<c:if test="${mode=='qnaReplyUpdate'}">
+												<input type="hidden" name="replyNo" value="${replyDto.replyNo}">
 											</c:if>
 										</td>
 									</tr>
@@ -137,7 +129,6 @@ function deleteFile(fileNum) {
 					</div>
 				</div>
 			</div>			
-			
 			
 			<!-- 본문 끝 -->
 			</div>

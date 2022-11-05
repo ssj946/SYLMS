@@ -29,7 +29,7 @@ public class QnaDTO {
 		private int syear; // 년도
 		private int credit; //취득학점
 		
-
+		private int replyCount;
 
 		public String getArticleNo() {
 			return articleNo;
@@ -166,6 +166,12 @@ public class QnaDTO {
 		}
 		public void setCredit(int credit) {
 			this.credit = credit;
+		}
+		public int getReplyCount() {
+			return replyCount;
+		}
+		public void setReplyCount(int replyCount) {
+			this.replyCount = replyCount;
 		}
 		
 	}

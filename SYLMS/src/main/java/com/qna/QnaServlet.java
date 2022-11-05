@@ -62,6 +62,16 @@ public class QnaServlet extends MyUploadServlet {
 			deleteFile(req, resp);
 		} else if (uri.indexOf("delete.do") != -1) {
 			delete(req, resp);
+		} else if (uri.indexOf("qnaReply.do") != -1) {
+			qnaReplyForm(req, resp);
+		} else if (uri.indexOf("qnaReply_ok.do") != -1) {
+			qnaReplySubmit(req, resp);
+		} else if (uri.indexOf("qnaReplyUpdate.do") != -1) {
+			qnaReplyUpdateForm(req, resp);
+		} else if (uri.indexOf("qnaReplyUpdate_ok.do") != -1) {
+			qnaReplyUpdateSubmit(req, resp);
+		} else if (uri.indexOf("qnaReplyDelete.do") != -1) {
+			qnaReplyDelete(req, resp);
 		}
 	}
 
@@ -255,7 +265,7 @@ public class QnaServlet extends MyUploadServlet {
 		resp.sendRedirect(cp + "/qna/qna.do?subjectNo=" + subjectNo);
 	}
 
-	// 글 보기 폼 완료
+	// 글 보기
 	protected void qnaArticleForm(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// 공지사항 보기
@@ -299,6 +309,11 @@ public class QnaServlet extends MyUploadServlet {
 			}
 
 			dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
+			
+			ReplyDTO replyDto = dao.readReply(dto.getArticleNo(), "qna");
+			if(replyDto != null) {
+				replyDto.setContent(replyDto.getContent().replaceAll("\n", "<br>"));
+			}
 
 			// 이전글/다음글
 			QnaDTO preReadDto = dao.preReadQna(dto.getSubjectNo(), dto.getArticleNo(), condition, keyword, id);
@@ -315,6 +330,7 @@ public class QnaServlet extends MyUploadServlet {
 			req.setAttribute("query", query);
 			req.setAttribute("page", page);
 			req.setAttribute("name", dto.getName());
+			req.setAttribute("replyDto", replyDto);
 			req.setAttribute("preReadDto", preReadDto);
 			req.setAttribute("nextReadDto", nextReadDto);
 			req.setAttribute("listFile", listFile);
@@ -473,8 +489,7 @@ public class QnaServlet extends MyUploadServlet {
 			}
 
 			// 다시 수정 화면으로
-			resp.sendRedirect(
-					cp + "/qna/update.do?subjectNo=" + subjectNo + "&articleNo=" + articleNo + "&page=" + page);
+			resp.sendRedirect(cp + "/qna/update.do?subjectNo=" + subjectNo + "&articleNo=" + articleNo + "&page=" + page);
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -564,6 +579,148 @@ public class QnaServlet extends MyUploadServlet {
 			PrintWriter out = resp.getWriter();
 			out.print("<script>alert('파일다운로드가 실패 했습니다.');history.back();</script>");
 		}
+	}
+	
+	protected void qnaReplyForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		QnaDAO dao = new QnaDAO();
+		String cp = req.getContextPath();
+		String subjectNo = req.getParameter("subjectNo");
+		String page = req.getParameter("page");
+		String query = "subjectNo=" + subjectNo + "&page=" + page;
+		
+		try {
+			String articleNo = req.getParameter("articleNo");
+			
+			QnaDTO dto = dao.readQna(articleNo);
+			if(dto == null) {
+				resp.sendRedirect(cp + "/qna/qna.do?" + query);
+				return;
+			}
+		
+			req.setAttribute("mode", "qnaReply");
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("articleNo", articleNo);
+			req.setAttribute("dto", dto);
+			req.setAttribute("page", page);
+			
+			forward(req, resp, "/WEB-INF/views/qna/qnaReply.jsp");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+		
+	protected void qnaReplySubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		QnaDAO dao = new QnaDAO();
+		String cp = req.getContextPath();
+		String subjectNo = req.getParameter("subjectNo");
+		String page = req.getParameter("page");
+		String query = "subjectNo=" + subjectNo + "&page=" + page;
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		try {
+			ReplyDTO replyDto = new ReplyDTO();
+			
+			replyDto.setId(info.getUserId());
+			replyDto.setSubjectNo(subjectNo);
+			replyDto.setArticleNo(req.getParameter("articleNo"));
+			replyDto.setContent(req.getParameter("content"));
+			
+			dao.insertReply(replyDto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		resp.sendRedirect(cp + "/qna/qna.do?" + query);
+	}
+
+	protected void qnaReplyUpdateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		QnaDAO dao = new QnaDAO();
+		String cp = req.getContextPath();
+		String subjectNo = req.getParameter("subjectNo");
+		String page = req.getParameter("page");
+		String query = "subjectNo=" + subjectNo + "&page=" + page;
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		try {
+			String articleNo = req.getParameter("articleNo");
+			QnaDTO dto = dao.readQna(articleNo);
+			if(dto == null) {
+				resp.sendRedirect(cp + "/qna/qna.do?" + query);
+				return;
+			}
+			
+			String replyNo = req.getParameter("replyNo");
+			ReplyDTO replyDto = dao.readReply(replyNo, "reply");
+			
+			if(dto == null || ! replyDto.getId().equals(info.getUserId())) {
+				resp.sendRedirect(cp + "/qna/qna.do?" + query);
+				return;
+			}
+			
+			req.setAttribute("mode", "qnaReplyUpdate");
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("articleNo", articleNo);
+			req.setAttribute("dto", dto);
+			req.setAttribute("replyDto", replyDto);
+			req.setAttribute("page", page);
+			
+			forward(req, resp, "/WEB-INF/views/qna/qnaReply.jsp");
+			return;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		resp.sendRedirect(cp + "/qna/qna.do?" + query);
+	}
+
+	protected void qnaReplyUpdateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		QnaDAO dao = new QnaDAO();
+		String cp = req.getContextPath();
+		String subjectNo = req.getParameter("subjectNo");
+		String page = req.getParameter("page");
+		String query = "subjectNo=" + subjectNo + "&page=" + page;
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		try {
+			ReplyDTO replyDto = new ReplyDTO();
+			
+			replyDto.setId(info.getUserId());
+			replyDto.setReplyNo(req.getParameter("replyNo"));
+			replyDto.setContent(req.getParameter("content"));
+			
+			dao.updateReply(replyDto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		resp.sendRedirect(cp + "/qna/qna.do?" + query);
+	}
+
+	protected void qnaReplyDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		QnaDAO dao = new QnaDAO();
+		String cp = req.getContextPath();
+		String subjectNo = req.getParameter("subjectNo");
+		String page = req.getParameter("page");
+		String query = "subjectNo=" + subjectNo + "&page=" + page;
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		try {
+			String replyNp = req.getParameter("replyNo");
+			dao.deleteReply(replyNp, info.getUserId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		resp.sendRedirect(cp + "/qna/qna.do?" + query);
 	}
 
 }
