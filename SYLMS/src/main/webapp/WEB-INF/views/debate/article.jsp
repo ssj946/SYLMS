@@ -79,7 +79,7 @@ function listPage(page) {
 //댓글 등록
 $(function(){
 	$(".btnSendReply").click(function(){
-		String articleNo = "${dto.articleNo}";
+		let articleNo = "${dto.articleNo}";
 		const $tb = $(this).closest("table");
 		let content = $tb.find("textarea").val().trim();
 		if(! content) {
@@ -89,7 +89,7 @@ $(function(){
 		content = encodeURIComponent(content);
 		
 		let url = "${pageContext.request.contextPath}/debate/insertReply.do";
-		let query = "subjectNo="+subjectNo+ "articleNo=" + articleNo + "&content=" + content + "&answer=0";
+		let query = "articleNo=" + articleNo + "&content=" + content + "&answer=0";
 		
 		const fn = function(data){
 			$tb.find("textarea").val("");
@@ -132,7 +132,7 @@ $(function(){
 //댓글 좋아요 / 싫어요
 $(function(){
 	$("body").on("click", ".btnSendReplyLike", function(){
-		String replyNo = $(this).attr("data-replyNo");
+		let replyNo = $(this).attr("data-replyNo");
 		let replyLike = $(this).attr("data-replyLike");
 		const $btn = $(this);
 		
