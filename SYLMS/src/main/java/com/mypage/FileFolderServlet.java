@@ -59,10 +59,10 @@ public class FileFolderServlet extends MyUploadServlet {
 		boolean b = false;
 		
 		try {
-			String fileNo = req.getParameter("fileNo");
+			String fileNum = req.getParameter("fileNum");
 			
-			FileFolderDTO dto = dao.filedownload(fileNo);
-			System.out.println(fileNo);
+			FileFolderDTO dto = dao.filedownload(fileNum);
+			System.out.println(fileNum);
 			
 			
 			if (dto != null) {
