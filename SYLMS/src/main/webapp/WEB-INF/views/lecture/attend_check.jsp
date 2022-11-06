@@ -155,34 +155,22 @@ $(function(){
 
 <body>
 
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
-	
 <main>
-<section>
-	<div class="container-fluid">
-		<div class="row" style="line-height: 1.5rem">&nbsp;</div>
-		<div class="row">
-			<div class="col-lg-1 bg-dark bg-gradient" >
-			<!-- brief 사이드바 자리 -->
-			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
-			</div>
-			<div class="col-lg-11 ms-auto">
-			
-			<!-- classroom header 자리 -->
+	<section>
+		<div class="container-fluid">
 			<div class="row">
-			<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
-			</div>
-			<div class="row">
-				<!-- 강의 사이드바 자리 -->
-				<div class="col-xl-2 col-md-2 col-lg-2 bg-black bg-gradient" style="box-shadow: none;">
-				<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
-				</div>
-				
-				<!-- 본문 -->
-				<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto " style="min-height:100vh">
-					<div class="ms-1 me-1 pt-3 mt-3 mb-5">
+				<div class="col-1"></div>
+				<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-auto bg-dark bg-gradient rounded" style="min-height: 100vh">
+						<!-- 왼쪽 사이드바 자리 -->
+						<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp" />
+					</div>
+					<div class="col">
+						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
 						<div class="card mb-3">
 							<div class="card-header fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
 							   <h5> <i class="fas fa-clipboard-user fa-lg bg-navy"></i>&nbsp;</h5>
@@ -212,33 +200,30 @@ $(function(){
 							<hr>
 							</div>
 							<div class="card-body p-4 text-center">								
-								<div class="row">
-									<div class="col-2">&nbsp;</div>
-									<div class="col-8">&nbsp;
-									<div class="card">
-										<div class="card-body">
+								<div class="row p-2">
+									<div class="card p-3">
 										<table class="table text-center attend_list">
 											<tr class="bg-navy bg-gradient text-white">
-												<th style="width:5%">번호</th>
-												<th style="width:30%">강의명</th>
+												<th style="width:10%">번호</th>
+												<th style="width:40%">강의명</th>
 												<th style="width:5%"><i class="fas fa-check text-success fa-lg"></i></th>
 												<th style="width:5%"><i class="fas fa-x text-danger fa-lg"></i></th>
 												<th style="width:5%"><i class="fas fa-person-running text-warning fa-lg"></i></th>
-												<th style="width:20%">학번</th>
-												<th style="width:30%">출석시간</th>
+												<th style="width:15%">학번</th>
+												<th style="width:20%">출석시간</th>
 											</tr>
 											<tr class="attend_item" >
 												<td class="attend_item" colspan="7"><br><br><br><h4>데이터가 없습니다.</h4><br><br><br></td>
 											</tr>
 
 										</table>
-										</div>
 									</div>
 									<br>
-									<button class="d-block btn btn-primary ms-auto attend_save">저장</button>
+									<div class="d-flex justify-content-end mt-2 p-0">
+									<button class="btn btn-primary attend_save">저장</button>
+									</div>
 									</div>	
 									</div>								
-									<div class="col-2">&nbsp;</div>
 								</div>
 							
 								
@@ -247,17 +232,19 @@ $(function(){
 								<br>
 							
 							</div>
+					<!-- 본문 -->
 					</div>
-					<!-- 본문 끝 -->
-			</div>
-			</div>
-			</div>
+					</div>
+					</div>
+				</div>
+				<div class="col-1"></div>
 			</div>
 		</div>
+				
+				<!-- 본문 끝 -->
 	</section>
 </main>
-
-
-<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
+<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
+
