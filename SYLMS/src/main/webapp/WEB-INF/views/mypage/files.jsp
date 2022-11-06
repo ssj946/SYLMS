@@ -1,4 +1,4 @@
-﻿﻿<%@ page contentType="text/html; charset=UTF-8"%>
+﻿﻿﻿<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -16,7 +16,6 @@
 
 <body>
 
-<<<<<<< HEAD
 <main>
 	<section>
 		<div class="container-fluid">
@@ -26,20 +25,6 @@
 					<div class="card p-2">
 					<div class="row ps-3 pe-1">
 					<div class="col-2 bg-dark bg-gradient rounded" style="min-height: 100vh">
-=======
-	<header>
-		<jsp:include page="/WEB-INF/views/layout/header.jsp" />
-	</header>
-
-	<main>
-		<section>
-			<div class="container-fluid">
-
-				<div class="row">&nbsp;</div>
-				<div class="row">
-					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1"
-						style="height: 100vh">
->>>>>>> branch 'main' of https://github.com/ssj946/SYLMS.git
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 					</div>
@@ -48,14 +33,12 @@
 						<div class="row">
 							<div class="col-9">
 					<!-- 본문 -->
-							<div class="card p-2">
+							<div class="card mt-3 p-2">
 							<h5 class="d-inline card-header bg-navy bg-gradient text-white">파일함</h5>
 							<div class="card-body">
-<<<<<<< HEAD
+
 							<!-- 검색버튼  -->
-							<form class="row" name="searchForm"
-										action="${pageContext.request.contextPath}/file/file.do"
-										method="post">
+							<form class="row" name="searchForm" action="${pageContext.request.contextPath}/file/file.do" method="post">
 								<div class="d-flex justify-content-center align-items-center">
 									<div class="col-auto p-1">
 										<select class="form-select" name="year" id="syear">
@@ -70,30 +53,11 @@
 										<button type="submit" class="btn btn-light applybtn">
 											<i class="bi bi-search"></i>
 										</button>
-=======
-								<!-- 검색버튼  -->
-								<form class="row" name="searchForm"
-									action="${pageContext.request.contextPath}/file/file.do"
-									method="post">
-									<div class="d-flex justify-content-center align-items-center">
-										<div class="s-1 p-1">
-											<select class="form-select" name="year" id="syear">
-												<option value="2022">2022년</option>
-											</select>
-										</div>
-										<div class="col-auto p-1">
-											<input type="text" name="keyword" value="${keyword}"
-												class="form-control" placeholder="파일명">
-										</div>
-										<div class="col-auto p-1">
-											<button type="submit" class="btn btn-light applybtn">
-												<i class="bi bi-search"></i>
-											</button>
->>>>>>> branch 'main' of https://github.com/ssj946/SYLMS.git
 
 										</div>
 									</div>
-<<<<<<< HEAD
+
+								</form>
 								</div>
 								<!-- 검색버튼  끝 -->
 								<table class="table  mt-4">
@@ -103,44 +67,23 @@
 											<th class="subname">등록일</th>
 										</tr>
 
-									<tbody>
 										<c:forEach var="dto" items="${flist}" varStatus="status">
 											<tr>
 												<td><a href="${pageContext.request.contextPath}/file/download.do?fileNo=${dto.fileNo}">${dto.originName}</a></td>
 												<td>${dto.subjectName}</td>
 												<td>${dto.submitDate}</td>
-=======
-									<!-- 검색버튼  끝 -->
-									<table class="table  mt-4">
-										<thead class="table-light">
-											<tr style="text-align: center;">
-												<th class="year">파일</th>
-												<th class="semester">과목</th>
-												<th class="subname">등록일</th>
->>>>>>> branch 'main' of https://github.com/ssj946/SYLMS.git
 											</tr>
-										</thead>
-										<tbody>
-											<c:forEach var="dto" items="${flist}" varStatus="status">
-												<tr>
-													<td><a
-														href="${pageContext.request.contextPath}/file/download.do?fileNo=${dto.fileNo}">${dto.originName}</a></td>
-													<td>${dto.subjectName}</td>
-													<td>${dto.submitDate}</td>
-												</tr>
 											</c:forEach>
-										</tbody>
 									</table>
 
 									<div class="page-navigation">${dataCount == 0 ? "파일이 없습니다." : paging}
 									</div>
 
-								</form>
 							</div>
-						</div>
 						</div>
 							<!-- 오른쪽 사이드바 자리 -->
 						<div class="col-3 mt-3"><jsp:include page="/WEB-INF/views/layout/r_sidebar.jsp" /></div>
+						</div>
 					</div>
 					</div>
 					</div>
@@ -148,7 +91,6 @@
 				<div class="col-1"></div>
 			</div>
 			</div>
-		</div>
 				
 				<!-- 본문 끝 -->
 	</section>
