@@ -1048,30 +1048,25 @@ public class LectureDAO {
 			}
 		}
 		
-		//과제 만들기
-		public void making_assignment(LectureDTO dto) throws SQLException {
+		//과제 생성
+		public void create_assignment(LectureDTO dto)throws SQLException{
 			PreparedStatement pstmt = null;
 			String sql = "";
 			try {
-				sql = "INSERT INTO assignment (asNo, asName, asContent, subjectNo, end_date) "
-						+ " VALUES(LPAD(assignment_seq.nextval,8,'0'), ?, ?, ?, ?) ";
-				pstmt=conn.prepareStatement(sql);
+				sql=" INSERT INTO assignment (asno, asname,ascontent, reg_date, end_date, enable, subjectNo) VALUES "
+						+ " (LPAD(assignment_seq.nextval,6,'0'), ? , ? , ?, ?, 0, ?)";
+				
+				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, dto.getTitle());
 				pstmt.setString(2, dto.getContent());
-				pstmt.setString(3, dto.getSubjectNo());
+				pstmt.setString(3, dto.getStart_date());
 				pstmt.setString(4, dto.getEnd_date());
+				pstmt.setString(5, dto.getSubjectNo());
 				
 				pstmt.executeUpdate();
-
+				
 			} catch (Exception e) {
 				e.printStackTrace();
-			} finally {
-				if(pstmt!=null) {
-					try {
-						pstmt.close();
-					} catch (Exception e2) {
-					}
-				}
 			}
 			
 		}
@@ -1115,45 +1110,49 @@ public class LectureDAO {
 			}
 			return list;
 		}
+	
 		
-		//과제 하나 읽어오기
-		public LectureDTO read_assignment(String asNo) throws SQLException {
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			String sql = "";
-			LectureDTO dto =new LectureDTO();
-			try {
-				sql = "SELECT asNo, asName, asContent,TO_CHAR(reg_date,'YYYY-MM-DD') reg_date "
-						+ " , TO_CHAR(end_date,'YYYY-MM-DD') end_date, as_score, enable, subjectNo "
-						+ "  FROM assignment WHERE asNo = ?";
-				pstmt=conn.prepareStatement(sql);
-				pstmt.setString(1, asNo);
-				
-				rs = pstmt.executeQuery();
-				
-				
-				if(rs.next()) {
-					dto.setAsNo(rs.getString("asNo"));
-					dto.setTitle(rs.getString("asName"));
-					dto.setContent(rs.getString("asContent"));
-					dto.setReg_date(rs.getString("reg_date"));
-					dto.setEnd_date(rs.getString("end_date"));
-					dto.setScore(rs.getString("as_score"));
-					dto.setEnable(rs.getString("enable"));
-					dto.setSubjectNo(rs.getString("subjectNo"));
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				if(pstmt!=null) {
-					try {
-						pstmt.close();
-					} catch (Exception e2) {
-					}
+	//과제 하나 읽어오기
+	public LectureDTO read_assignment(String asNo) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "";
+		LectureDTO dto =new LectureDTO();
+		try {
+			sql = "SELECT asNo, asName, asContent,TO_CHAR(reg_date,'YYYY-MM-DD') reg_date "
+					+ " , TO_CHAR(end_date,'YYYY-MM-DD') end_date, as_score, enable, subjectNo "
+					+ "  FROM assignment WHERE asNo = ?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, asNo);
+			
+			rs = pstmt.executeQuery();
+			
+			
+			if(rs.next()) {
+				dto.setAsNo(rs.getString("asNo"));
+				dto.setTitle(rs.getString("asName"));
+				dto.setContent(rs.getString("asContent"));
+				dto.setReg_date(rs.getString("reg_date"));
+				dto.setEnd_date(rs.getString("end_date"));
+				dto.setScore(rs.getString("as_score"));
+				dto.setEnable(rs.getString("enable"));
+				dto.setSubjectNo(rs.getString("subjectNo"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
 				}
 			}
-			return dto;
 		}
+		return dto;
+	}
+		
+	
+	//과제 제출 하나 읽어오기
 	public LectureDTO read_assignmentSubmit(String asNo, String studentcode) throws SQLException{
 		PreparedStatement pstmt = null;
 		ResultSet rs =null;
@@ -1194,6 +1193,7 @@ public class LectureDAO {
 		
 		return dto;
 	}
+	
 	//과제 제출
 	public void insert_assignment(LectureDTO dto)throws SQLException {
 		PreparedStatement pstmt = null;
@@ -1378,6 +1378,7 @@ public class LectureDAO {
 	}
 	
 }
+
 
 
 

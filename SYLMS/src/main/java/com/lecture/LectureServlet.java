@@ -85,8 +85,12 @@ public class LectureServlet extends MyUploadServlet {
 			assignmentList(req, resp);
 		} else if (uri.indexOf("assignment_view.do") != -1) {
 			assignmentContent(req, resp);
+		}  else if (uri.indexOf("assignContent.do") != -1) {
+			assignmentWrite(req, resp);
 		} else if (uri.indexOf("assignment_ok.do") != -1) {
 			assignmentSubmit(req, resp);
+		} else if (uri.indexOf("assignment_write.do") != -1) {
+			assignmentWrite_ok(req, resp);
 		} else if (uri.indexOf("download.do") != -1) {
 			download(req, resp);
 		}  else if (uri.indexOf("file_delete.do") != -1) {
@@ -768,6 +772,76 @@ public class LectureServlet extends MyUploadServlet {
 		forward(req, resp, path);
 		
 	}
+	
+	//과제작성창
+	protected void assignmentWrite(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		req.setCharacterEncoding("UTF-8");
+		
+		LectureDAO dao= new LectureDAO();
+		String subjectNo = req.getParameter("subjectNo");
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		LectureDTO dto = new LectureDTO();
+
+		try {
+			dto= dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("credit", dto.getCredit());
+			req.setAttribute("syear", dto.getSyear());
+			
+			
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		
+		String path = "/WEB-INF/views/lecture/assign_write.jsp";
+		forward(req, resp, path);
+		
+	}
+		
+		//과제작성창
+		protected void assignmentWrite_ok(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+			req.setCharacterEncoding("UTF-8");
+			
+			LectureDAO dao= new LectureDAO();
+			String subjectNo = req.getParameter("subjectNo");
+			
+			HttpSession session =req.getSession();
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			
+			if(!info.getUserId().matches("\\d{5}")) {
+				resp.sendRedirect(req.getContextPath()+"/lecture/assignment.do?subjectNo="+subjectNo);
+				return;
+			}
+			
+
+			try {
+				
+				LectureDTO adto = new LectureDTO();
+				adto.setStart_date(req.getParameter("s_date"));
+				adto.setEnd_date(req.getParameter("e_date"));
+				adto.setTitle(req.getParameter("title"));
+				adto.setContent(req.getParameter("content"));
+				adto.setSubjectNo(subjectNo);
+				dao.create_assignment(adto);
+				
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+			
+			
+			resp.sendRedirect(req.getContextPath()+"/lecture/assignment.do?subjectNo="+subjectNo);
+			
+		}
 	
 	protected void assignmentSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 과제 제출
