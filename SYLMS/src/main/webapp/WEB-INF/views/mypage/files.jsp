@@ -69,7 +69,7 @@
 
 										<c:forEach var="dto" items="${flist}" varStatus="status">
 											<tr>
-												<td><a href="${pageContext.request.contextPath}/file/download.do?fileNo=${dto.fileNo}">${dto.originName}</a></td>
+												<td><a href="${pageContext.request.contextPath}/file/download.do?fileNum=${dto.fileNum}">${dto.originName}</a></td>
 												<td>${dto.subjectName}</td>
 												<td>${dto.submitDate}</td>
 											</tr>

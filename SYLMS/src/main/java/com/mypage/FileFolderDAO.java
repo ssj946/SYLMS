@@ -162,7 +162,7 @@ public class FileFolderDAO {
 
 		  dto.setFileNum(rs.getString("fileNum"));	
 		  dto.setSubjectName(rs.getString("subjectName"));
-		  dto.setFname(rs.getString("o_name"));
+		  dto.setOriginName(rs.getString("o_name"));
 		  dto.setSubmitDate(rs.getString("submit_date"));
 
 			
@@ -236,7 +236,7 @@ public class FileFolderDAO {
 
 		 	  dto.setFileNum(rs.getString("fileNum"));	
 			  dto.setSubjectName(rs.getString("subjectName"));
-			  dto.setFname(rs.getString("o_name"));
+			  dto.setOriginName(rs.getString("o_name"));
 			  dto.setSubmitDate(rs.getString("submit_date"));
 			
 		  plist.add(dto);

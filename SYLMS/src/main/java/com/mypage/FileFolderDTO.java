@@ -8,9 +8,9 @@ public class FileFolderDTO {
    private String  fname; //파일이름 
    private String  submitDate; //등록일 
    private String  subjectNo; //과목번호
-   private String fileNum;
-   private String originName;
-   private String saveName;
+   private String fileNum; //파일번호
+   private String originName; //원래이름
+   private String saveName; //저장이름
    
    
 public String getId() {
