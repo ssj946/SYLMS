@@ -501,7 +501,7 @@ public class FreebbsDAO {
 
 			} else {
 				sb.append(" SELECT articleNo, title FROM subject_bbs ");
-				sb.append(" WHERE articleNo > ? AND subjectNo = ?");
+				sb.append(" WHERE articleNo > ? AND subjectNo = ?  AND  bbsCode = '00004' ");
 				sb.append(" ORDER BY articleNo ASC ");
 				sb.append(" FETCH FIRST 1 ROWS ONLY ");
 
@@ -576,7 +576,7 @@ public class FreebbsDAO {
 				}
 			} else {
 				sb.append(" SELECT articleNo, title FROM subject_bbs ");
-				sb.append(" WHERE articleNo < ? AND subjectNo = ?");
+				sb.append(" WHERE articleNo < ? AND subjectNo = ?  AND  bbsCode = '00004' ");
 				sb.append(" ORDER BY articleNo DESC ");
 				sb.append(" FETCH FIRST 1 ROWS ONLY ");
 
