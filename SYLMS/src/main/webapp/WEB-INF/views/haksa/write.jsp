@@ -60,13 +60,29 @@ function deleteFile(fileNum) {
 </header>
 	
 <main>
-	<div class="container">
-		<div class="body-container">	
-			<div class="body-title">
-				<h3><i class="bi bi-clipboard"></i> 공지사항 </h3>
+<section>
+	<div class="container-fluid">
+		<div class="row">
+		<div class="col-1"></div>
+		<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-2 bg-dark bg-gradient rounded" style="min-height: 100vh">
+			<!-- 왼쪽 사이드바 자리 -->
+			<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 			</div>
+			<div class="col-10">
+				<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+				<div class="row">
+					<div class="col-12">
+			<!-- 본문 -->
+			<div class="col-lg-12">
+			<div class="card mt-3">
+					<div class= "card-header fw-bold">
+						<h3><i class="fa-solid fa-landmark fa-1x"></i> 학사공지 </h3>
+				    </div>
 			
-			<div class="body-main">
+			<div class="card-body py-3">   
 				<form name="noticeForm" method="post" enctype="multipart/form-data">
 					<table class="table write-form mt-5">
 						<tr>
@@ -139,6 +155,15 @@ function deleteFile(fileNum) {
 			</div>
 		</div>
 	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</section>
 </main>
 
 <footer>
