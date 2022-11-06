@@ -29,7 +29,8 @@ list-style: none;
 			<div class="row">
 				<div class="col-1"></div>
 				<div class="col-10">
-					<div class="row">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
 					<div class="col-auto bg-dark bg-gradient rounded" style="min-height: 100vh">
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp" />
@@ -38,8 +39,9 @@ list-style: none;
 						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
 						<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
 						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
-
+						
 					<!-- 본문 -->
+					</div>
 					</div>
 					</div>
 				</div>
