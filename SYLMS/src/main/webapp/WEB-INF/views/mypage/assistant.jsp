@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+﻿﻿<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -11,69 +11,69 @@
 <title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
 <style type="text/css">
-.body-container {
-	max-width: 800px;
-}
 </style>
-
 </head>
+
 <body>
-	<header>
-		<jsp:include page="/WEB-INF/views/layout/header.jsp" />
-	</header>
-	<main>
-		<section>
-			<div class="container-fluid">
-				<div class="row">&nbsp;</div>
-				<div class="row">
-					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1"  style="height: 100vh">
+
+<main>
+	<section>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-1"></div>
+				<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-2 bg-dark bg-gradient rounded" style="min-height: 100vh">
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 					</div>
+					<div class="col-10">
+						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+						<div class="row">
+							<div class="col-9">
 					<!-- 본문 -->
-					<div class="col-xl-10 col-lg-9 col-md-8" style="min-height:100vh">
-						<c:if test="${fn:length(sessionScope.member.userId) == 8}">
-							<div class="card pt-2 pb-2 ps-2 pe-2" style="margin: 50px 0px;">
-								<h5 class="card-header">조교신청</h5>
+							<c:if test="${fn:length(sessionScope.member.userId) == 8}">
+							<div class="card mt-3">
+								<h5 class="card-header bg-navy bg-gradient text-light">조교신청</h5>
 								<div class="card-body">
-									<form class="row" name="searchForm"
-										action="${pageContext.request.contextPath}/mypage/assistant.do"
-										method="post">
+									<form class="row" name="searchForm" action="${pageContext.request.contextPath}/mypage/assistant.do" method="post">
 										<div class="d-flex justify-content-center align-items-center">
-											<div class="s-1 p-1">
-											<select class="form-select" name="year" id="syear">
-												<option value="2023">2023년</option>
-											</select>
-										   </div>
+											<div class="col-auto p-1">
+												<select class="form-select" name="year" id="syear">
+													<option value="2023">2023년</option>
+												</select>
+										   	</div>
 
-										<div class="s-1 p-1" >
-											<select class="form-select" name="semester" id="semester">
-												<option value="1" ${tsemester==1?"selected='selected'":""}>1학기</option>
-												<option value="2" ${tsemester==2?"selected='selected'":""}>2학기</option>
-											</select>
-										</div>
-										<div class="col-auto p-1">
-											<input type="text" name="keyword" value="${keyword}"
-												class="form-control" placeholder="강좌명">
-										</div>
-										<div class="col-auto p-1">
-											<button type="submit" class="btn btn-light applybtn">
-											<i class="bi bi-search"></i></button>
-
-										</div>
+											<div class="col-auto p-1" >
+												<select class="form-select" name="semester" id="semester">
+													<option value="1" ${tsemester==1?"selected='selected'":""}>1학기</option>
+													<option value="2" ${tsemester==2?"selected='selected'":""}>2학기</option>
+												</select>
+											</div>
+											<div class="col p-1">
+												<input type="text" name="keyword" value="${keyword}"
+													class="form-control" placeholder="강좌명">
+											</div>
+											<div class="col-auto p-1">
+												<button type="submit" class="btn btn-light applybtn">
+												<i class="bi bi-search"></i></button>
+	
+											</div>
                                         </div>
-										<table class="table table-hover board-list ho-list"
-											style="margin-top: 50px;">
-											<thead class="table-light">
-												<tr style="text-align: center;">
-													<th class="year" width="60px;">연도</th>
-													<th class="semester" width="60px;">학기</th>
-													<th class="department" width="150px;">학과</th>
+											</form>
+                                        <div class="card p-2 m-2">
+										<table class="table table-hover board-list ho-list text-center">
+										
+												<tr class="bg-navy bg-gradient text-light">
+													<th class="year" width="10%">연도</th>
+													<th class="semester" width="10%">학기</th>
+													<th class="department" width="10%">학과</th>
 													<th class="subname">과목명</th>
-													<th class="prof" width="80px;">교수</th>
-													<th class="apply" width="200px;">조교신청</th>
+													<th class="prof" width="10%">교수</th>
+													<th class="apply" width="20%">조교신청</th>
 												</tr>
-											</thead>
+						
 											<tbody>
 												<c:forEach var="dto" items="${list}" varStatus="status">
 													<tr>
@@ -90,54 +90,55 @@
 										</table>
 										<div class="page-navigation">${dataCount == 0 ? "신청할 과목이 없습니다." : paging}
 										</div>
+										</div>
 
-									</form>
+									
 								</div>
 							</div>
 						</c:if>
 						<c:if test="${fn:length(sessionScope.member.userId) != 8}">
-							<div class="card pt-2 pb-2 ps-2 pe-2" style="margin: 50px 0px;">
-								<h5 class="card-header">조교신청내역</h5>
+							<div class="card mt-3">
+								<h5 class="card-header bg-navy bg-gradient text-light">조교신청내역</h5>
 								<div class="card-body">
 								<form method="post" class="row" name="searchForm" action="${pageContext.request.contextPath}/mypage/assistant.do">
-									<div class="s-1" style="display: inline-block; width: 150px;">
-										<select class="form-select" id="syear" name="year">
+								<div class="d-flex justify-content-center align-items-center">
+									<div class="col-auto p-1">
+										<select class="col-auto form-select" id="syear" name="year">
 											<option value="1">2023년</option>
 										</select>
 									</div>
 
-									<div class="s-1" style="display: inline-block; width: 150px;">
+									<div class="col-auto p-1">
 										<select class="form-select" id="semester" name="semester">
 											<option value="1">1학기</option>
 											<option value="2">2학기</option>
 										</select>
 									</div>
-										<div class="col-auto p-1"
-											style="display: inline-block; width: 150px;">
+										<div class="col p-1">
 											<input type="text" name="keyword" value="${keyword}"
 												class="form-control" placeholder="강좌명">
 										</div>
-									<div class="col-auto p-1"
-										style="display: inline-block; width: 150px;">
+									<div class="col-auto p-1">
 										<button type="submit" class="btn btn-light">
 											<i class="bi bi-search"></i>
 										</button>
 									</div>
-
-									<table class="table table-hover board-list"
-										style="margin-top: 50px;">
-										<thead class="table-light">
-											<tr style="text-align: center;">
-												<th class="year" width="60px;">연도</th>
-												<th class="semester" width="60px;">학기</th>
-												<th class="department" width="150px;">학과</th>
+									</div>
+									</form>
+									<div class="card p-2 m-2">
+									<table class="table table-hover board-list text-center">
+									
+											<tr class="bg-navy bg-gradient text-white">
+												<th class="year" width="10%">연도</th>
+												<th class="semester" width="10%">학기</th>
+												<th class="department" width="10%">학과</th>
 												<th class="subname">과목명</th>
-												<th class="name" width="80px;">이름</th>
-												<th class="reg_date" width="80px;">신청일</th>
-												<th class="station" width="80px;">상태</th>
-												<th class="apply" width="200px;">조교신청</th>
+												<th class="name" width="10%">이름</th>
+												<th class="reg_date" width="15%">신청일</th>
+												<th class="station" width="10%">상태</th>
+												<th class="apply" width="20%">조교신청</th>
 											</tr>
-										</thead>
+							
 										<tbody>
 											<c:forEach var="dto" items="${aplist}" varStatus="status">
 												<tr>
@@ -156,102 +157,92 @@
 									</table>
 									<div class="page-navigation">${dataCount == 0 ? "승인할 신청목록이 없습니다." : paging}
 									</div>
-									</form>
+									</div>
 								</div>
 							</div>
 						</c:if>
 						<c:if test="${fn:length(sessionScope.member.userId) == 8 }">
-							<div class="card pt-2 pb-2 ps-2 pe-2" style="margin: 50px 0px;">
-								<h5 class="card-header">신청내역 · 승인내역</h5>
+							<div class="card mt-3">
+								<h5 class="card-header bg-navy bg-gradient text-light">신청내역 · 승인내역</h5>
 								<div class="card-body">
-									<form class="row" name="searchForm"
-										action="${pageContext.request.contextPath}/mypage/assistant.do"
-										method="post">
-
-										<table class="table table-hover board-list"
-											style="margin-top: 50px;">
-											<thead class="table-light">
-												<tr style="text-align: center;">
-													<th class="year" width="60px;">연도</th>
-													<th class="semester" width="60px;">학기</th>
-													<th class="department" width="150px;">학과</th>
-													<th class="subname">과목명</th>
-													<th class="prof" width="80px;">교수</th>
-													<th class="apply" width="200px;">상태</th>
+								<div class="card p-2">
+									<table class="table table-hover board-list text-center">
+							
+											<tr class="bg-navy bg-gradient text-white">
+												<th class="year" width="10%">연도</th>
+												<th class="semester" width="10%">학기</th>
+												<th class="department" width="10%">학과</th>
+												<th class="subname">과목명</th>
+												<th class="prof" width="10%">교수</th>
+												<th class="apply" width="10%">상태</th>
+											</tr>
+							
+	
+										<tbody>
+											<c:forEach var="dto" items="${alist}" varStatus="status">
+												<tr>
+													<td>${dto.year}</td>
+													<td>${dto.semester}</td>
+													<td>${dto.department}</td>
+													<td>${dto.subject}</td>
+													<td>${dto.professor}</td>
+													<c:if test="${dto.ENABLE == 1 }">
+														<td>승인</td>
+													</c:if>
+													<c:if test="${dto.ENABLE == 2 }">
+														<td>반려</td>
+													</c:if>
+													<c:if test="${dto.ENABLE == 0 }">
+														<td>신청</td>
+													</c:if>
 												</tr>
-											</thead>
-
-											<tbody>
-												<c:forEach var="dto" items="${alist}" varStatus="status">
-													<tr>
-														<td>${dto.year}</td>
-														<td>${dto.semester}</td>
-														<td>${dto.department}</td>
-														<td>${dto.subject}</td>
-														<td>${dto.professor}</td>
-														<c:if test="${dto.ENABLE == 1 }">
-															<td>승인</td>
-														</c:if>
-														<c:if test="${dto.ENABLE == 2 }">
-															<td>반려</td>
-														</c:if>
-														<c:if test="${dto.ENABLE == 0 }">
-															<td>신청</td>
-														</c:if>
-													</tr>
-												</c:forEach>
-											</tbody>
-										</table>
-									</form>
+											</c:forEach>
+										</tbody>
+									</table>
+								</div>
 								</div>
 							</div>
 						</c:if>
 						<c:if test="${fn:length(sessionScope.member.userId) != 8}">
-							<div class="card pt-2 pb-2 ps-2 pe-2" style="margin: 50px 0px;">
-								<h5 class="card-header">조교내역</h5>
+							<div class="card mt-3">
+								<h5 class="card-header bg-navy bg-gradient text-light">조교내역</h5>
 								<div class="card-body">
 									<form class="row" name="searchForm" 
 										action="${pageContext.request.contextPath}/mypage/assistant.do"
 										method="post">
-
-										<div class="s-1" style="display: inline-block; width: 150px;">
+										<div class="d-flex justify-content-center align-items-center ">
+										<div class="col-auto p-1">
 											<select class="form-select" id="syear" name="year">
 												<option value="1">2023년</option>
 											</select>
 										</div>
 
-										<div class="s-1" style="display: inline-block; width: 150px;">
+										<div class="col-auto p-1">
 											<select class="form-select" id="semester" name="semester">
 												<option value="1">1학기</option>
 												<option value="2">2학기</option>
 											</select>
 										</div>
-										<div class="col-auto p-1"
-											style="display: inline-block; width: 150px;">
-											<input type="text" name="keyword" value="${keyword}"
-												class="form-control" placeholder="강좌명">
+										<div class="col p-1">
+											<input type="text" name="keyword" value="${keyword}" class="form-control" placeholder="강좌명">
 										</div>
-										<div class="col-auto p-1"
-											style="display: inline-block; width: 150px;">
-											<button type="submit" class="btn btn-light"
-												onclick="searchList()">
-												<i class="bi bi-search"></i>
+										<div class="col-auto p-1">
+											<button type="submit" class="btn btn-light" onclick="searchList()"><i class="bi bi-search"></i>
 											</button>
 										</div>
-
-										<table class="table table-hover board-list"
-											style="margin-top: 50px;">
-											<thead class="table-light">
-												<tr style="text-align: center;">
-													<th class="year" width="60px;">연도</th>
-													<th class="semester" width="60px;">학기</th>
-													<th class="department" width="150px;">학과</th>
+										</div>
+									</form>
+										<div class="card p-2 m-2">
+										<table class="table table-hover board-list text-center" >
+												<tr class="bg-navy bg-gradient text-light">
+													<th class="year" width="10%">연도</th>
+													<th class="semester" width="10%">학기</th>
+													<th class="department" width="10%">학과</th>
 													<th class="subname">과목명</th>
-													<th class="name" width="80px;">이름</th>
-													<th class="station" width="80px;">상태</th>
-													<th class="apply" width="200px;">조교신청</th>
+													<th class="name" width="10%">이름</th>
+													<th class="station" width="10%">상태</th>
+													<th class="apply" width="15%">조교신청</th>
 												</tr>
-											</thead>
 											<tbody>
 												<c:forEach var="dto" items="${aslist}" varStatus="status">
 													<tr>
@@ -272,16 +263,25 @@
 										</table>
 										<div class="page-navigation">${dataCount == 0 ? "확인할 조교가 없습니다." : paging}
 										</div>
-									</form>
+										</div>
 								</div>
 							</div>
 						</c:if>
+						</div>
+							<!-- 오른쪽 사이드바 자리 -->
+						<div class="col-3 mt-3"><jsp:include page="/WEB-INF/views/layout/r_sidebar.jsp" /></div>
 					</div>
-					<!-- 본문 끝 -->
+					</div>
+					</div>
+				</div>
+				<div class="col-1"></div>
 				</div>
 			</div>
-		</section>
-	</main>
-	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
+		</div>
+				
+				<!-- 본문 끝 -->
+	</section>
+</main>
+<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>

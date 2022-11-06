@@ -1,7 +1,8 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+﻿﻿<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,6 @@
 <title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
 <style type="text/css">
- max-width: 800px;
 </style>
 <script type="text/javascript">
 function sendOk() {
@@ -31,26 +31,24 @@ function sendOk() {
 
 <body>
 
-	<header>
-		<jsp:include page="/WEB-INF/views/layout/header.jsp" />
-	</header>
-
-	<main>
-		<section>
-			<div class="container-fluid">
-
-				<div class="row">&nbsp;</div>
-				<div class="row">
-					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1" style="height: 100vh">
+<main>
+	<section>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-1"></div>
+				<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-2 bg-dark bg-gradient rounded" style="min-height: 100vh">
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 					</div>
-
+					<div class="col-10">
+						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+						<div class="row">
+							<div class="col-9">
 					<!-- 본문 -->
-							<div class="col-xl-10 col-lg-9 col-md-8 ps-5" style="min-height:100vh">
-
-
-						<div  class="row justify-content-center h-50" >
+							<div  class="row justify-content-center h-50" >
 							<div class="col-6 align-self-center">
 								<div class="border mt-5 p-4">
 									<form name="pwdForm" method="post">
@@ -82,15 +80,21 @@ function sendOk() {
 								</div>
 							</div>
 						</div>
-
+						</div>
+							<!-- 오른쪽 사이드바 자리 -->
+						<div class="col-3 mt-3"><jsp:include page="/WEB-INF/views/layout/r_sidebar.jsp" /></div>
 					</div>
-					<!-- 본문 끝 -->
-					
+					</div>
+					</div>
 				</div>
+				<div class="col-1"></div>
 			</div>
-		</section>
-	</main>
-	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
+			</div>
+		</div>
+				
+				<!-- 본문 끝 -->
+	</section>
+</main>
+<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
-
