@@ -47,7 +47,7 @@ function content_write(){
 						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-light ps-4 p-2" id="thisweek_lec">
+					  <div class="card-header rounded fw-bold fs-6 bg-navy bg-gradient text-light ps-4 p-2" id="thisweek_lec">
 					   <h5 class="d-inline"> <i class="fas fa-pen fa-lg bg-navy"></i>&nbsp;이번주 강의</h5>
 					  </div>
 					  <div class="card-body">
@@ -86,7 +86,7 @@ function content_write(){
 					
 					
 					<div class="card mb-3">
-					  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-light ps-4 p-2" id="all_lecture">
+					  <div class="card-header rounded fw-bold fs-6 bg-navy bg-gradient text-light ps-4 p-2" id="all_lecture">
 					    <h5 class="d-inline"><i class="fas fa-calendar fa-lg"></i>&nbsp;주차 별 학습 활동</h5>
 					</div>
 					  <div class="card-body">

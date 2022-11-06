@@ -89,16 +89,17 @@ $(function(){
 						<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
 						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
 						<div class="card">
-							<div class="card-header fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
-							   <h5 class="d-inline"><i class="fas fa-book-skull fa-lg bg-navy"></i>&nbsp;</h5>
+							<div class="card-header bg-navy bg-gradient text-white rounded p-2">
+							   <h5 class="d-inline ps-3"><i class="fas fa-book-skull fa-lg bg-navy"></i>&nbsp;&nbsp;과제목록</h5>
 							</div>
 							<div class= "card-body">
+							<div class="card">
 							<table class="table text-center">
 							<tr class="bg-light">
 								<th style="width: 10%">번호</th>
-								<th style="width: 70%">과제명</th>
-								<th style="width: 10%">등록일</th>
-								<th style="width: 10%">마감일</th>
+								<th style="width: 60%">과제명</th>
+								<th style="width: 15%">등록일</th>
+								<th style="width: 15%">마감일</th>
 							</tr>
 							<c:if test="${empty list}">
 								<tr>
@@ -115,11 +116,12 @@ $(function(){
 								<tr>					
 							</c:forEach>
 							</table>
+							</div>
 							<div class="d-flex justify-content-end">
 								<c:if test="${fn:length(sessionScope.member.userId) !=8 }">
 								<button class="btn btn-primary m-2 as_write">과제작성</button>
 								</c:if>
-								<button class="btn m-2">돌아가기</button>
+								<button class="btn btn-outline-dark m-2">돌아가기</button>
 							</div>
 							</div>
 						</div>

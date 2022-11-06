@@ -63,7 +63,7 @@ function sendOk() {
 					<!-- 본문 -->
 					
 					<div class="card">
-			<div class="card-header text-light bg-navy bg-gradient">
+			<div class="card-header rounded text-light bg-navy bg-gradient">
 				<h5 class="d-inline ps-2"><i class="fa-solid fa-people-line fa-lg"></i> 토론의제 작성 </h5>
 			</div>
 			

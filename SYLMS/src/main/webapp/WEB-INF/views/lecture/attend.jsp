@@ -157,7 +157,7 @@ $(function(){
 						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
 						<!-- 본문 시작 -->
 						<div class="card ">
-							<div class="card-header fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
+							<div class="card-header rounded fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
 							   <h5> <i class="fas fa-clipboard-user fa-lg bg-navy"></i>&nbsp;</h5>
 							</div>
 							<div class="card-body p-4">
@@ -187,7 +187,7 @@ $(function(){
 										<div class="col-3">&nbsp;</div>
 										<div class="col-6">
 										<div class="card">
-											<div class="card-header bg-navy bg-gradient text-white">
+											<div class="card-header rounded bg-navy bg-gradient text-white">
 												<h5>출석코드 생성</h5>
 											</div>
 											<div class="card-body">
@@ -216,7 +216,7 @@ $(function(){
 									<div class="col-3">&nbsp;</div>
 									<div class="col-6">
 									<div class="card">
-										<div class="card-header bg-navy bg-gradient text-white">
+										<div class="card-header rounded bg-navy bg-gradient text-white">
 											<h5>출석하기</h5>
 										</div>
 										<div class="card-body">

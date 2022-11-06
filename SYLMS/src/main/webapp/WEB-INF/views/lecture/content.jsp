@@ -158,7 +158,7 @@ $(function(){
 						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
 						
 						<div class="card mb-3">
-							<div class="card-header fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
+							<div class="card-header rounded fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
 							   <h5> <i class="fas fa-tv fa-lg bg-navy"></i>&nbsp;</h5>
 							</div>
 							<div class="card-body p-4">
@@ -216,7 +216,7 @@ $(function(){
 							</div>
 						</div>
 						<div class="card mb-3">
-						  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
+						  <div class="card-header rounded fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
 						   <h5> <i class="fas fa-file-pen fa-lg bg-navy"></i>&nbsp;</h5>
 						  </div>
 						  <div class="card-body p-4">

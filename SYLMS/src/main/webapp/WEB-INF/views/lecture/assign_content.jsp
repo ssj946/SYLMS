@@ -93,7 +93,7 @@ $(function(){
 						<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
 						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
 						<div class="card mb-3">
-							<div class="card-header fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
+							<div class="card-header rounded fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
 							   <h4 class="d-inline"> <i class="fas fa-pen-ruler fa-lg bg-navy"></i>&nbsp;</h4>
 							</div>
 							<div class="card-body p-4">
@@ -119,7 +119,7 @@ $(function(){
 							</div>
 						</div>
 						<div class="card mb-3">
-						  <div class="card-header fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
+						  <div class="card-header rounded fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
 						   <h4 class="d-inline"> <i class="fas fa-file-pen fa-lg bg-navy"></i>&nbsp;</h4>
 						  </div>
 						  <div class="card-body p-4">
