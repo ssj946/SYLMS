@@ -90,7 +90,7 @@ function sendLogin() {
 					<div class="col-3" style="min-height: 100vh">
 						<div class="loginform" style="margin-top: 6rem;">
 						<div class="d-flex justify-content-center mb-4">
-						<img class="w-50" src="${pageContext.request.contextPath}/resources/images/s_logo.png">
+						<img class="w-50" src="${pageContext.request.contextPath}/resources/images/sy_logo.png">
 						</div>
 						<!-- 여기는 대학교 로고 넣는자리  -->
 						<div>

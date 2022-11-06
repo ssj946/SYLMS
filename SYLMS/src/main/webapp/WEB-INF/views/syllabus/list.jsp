@@ -2,6 +2,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,48 +28,30 @@ $(function(){
 
 <body>
 
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
-	
 <main>
 	<section>
 		<div class="container-fluid">
-			<div class="row" style="line-height: 1.5rem">&nbsp;</div>
 			<div class="row">
-				<div class="col-lg-1 bg-dark bg-gradient" >
-				<!-- brief 사이드바 자리 -->
-				<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
-				</div>
-				<div class="col-lg-11 ms-auto">
-				<div class="row">
-				<!-- classroom header 자리 -->
-				<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
-				</div>
-				<div class="row">
-				<!-- 강의 사이드바 자리 -->
-				<div class="col-lg-2 bg-dark bg-gradient" style="box-shadow: none; height: 150vh;">
-				<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
-				</div>
-				
-				<!-- 본문 -->
-	<div class="col-lg-10 gap-3 ms-auto">
-	
-		<div class="ms-1 me-1 pt-3 mt-3 mb-5">
-			<h3><i class="fas fa-map  fa-lg mr-3"></i> 수업계획서 </h3>			
+				<div class="col-1"></div>
+				<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-auto bg-dark bg-gradient rounded" style="min-height: 100vh">
+						<!-- 왼쪽 사이드바 자리 -->
+						<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp" />
+					</div>
+					<div class="col">
+						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
+						
+					<!-- 본문 -->
+					<div class="card mt-3">
+		<div class="card-header bg-navy bg-gradient text-white">
+			<h5 class="d-inline"><i class="fas fa-map  fa-lg "></i> 수업계획서 </h5>			
 		</div>
-			<div class="panel panel-info">
-			
-				<div class="panel-heading">
-					<h3 class="panel-title text-center"><strong>강의 전 알림사항</strong></h3>
-				</div>
-				
-				<div class="panel-body">
-					<p> 1. 학생명 수업선택시,조회됩니다.</p>
-					<p> 2. 과목명 표시됩니다.</p>
-					<p> 3. Students, please check</p>
-				</div>
-			</div>
+		<div class="card-body">
+
 			
 					<form class="form-inline" action="">
 					
@@ -135,16 +118,20 @@ $(function(){
 						<td>${dto.finalRate}%</td>						
 					</tr>
 				</table>
-        </div>								
-			<!-- 본문 끝 -->
-				
+        </div>
+        </div>
+					</div>
+					</div>
+					</div>
 				</div>
-			</div>
+				<div class="col-1"></div>
 			</div>
 		</div>
+				
+				<!-- 본문 끝 -->
 	</section>
-	
 </main>
-<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
+<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
+

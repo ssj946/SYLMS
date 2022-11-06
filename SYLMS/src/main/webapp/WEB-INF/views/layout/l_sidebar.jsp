@@ -4,9 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!-- 왼쪽 사이드바 -->
-	<div class="card mt-3 p-4">
-		<img src="${pageContext.request.contextPath}/resources/images/syuniv_logo.png" class="card-img-top">
-	</div>
+		<img src="${pageContext.request.contextPath}/resources/images/sy_logo_white.png" class="card-img-top mt-4">
 		
 	<ul class="nav navbar-nav flex-column mt-3" >
 		<li class="nav-item">
