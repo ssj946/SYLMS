@@ -107,7 +107,7 @@ $(function(){
 					<div class= "card-header fw-bold">
 						<h3><i class="fa-solid fa-landmark fa-1x"></i> 학사공지 </h3>
 				    </div>
-				<div class="card-body py-5">    
+				<div class="card-body py-3">    
 				<form name="listForm" method="post" >
 			        <div class="row board-list-header">
 			            <div class="col-auto me-auto">

@@ -42,7 +42,7 @@
 		</li>
 		<li class="nav-item">
 			<a class="nav-link text-white p-3 mb-2 current"href="${pageContext.request.contextPath}/haksa/list.do">
-			 <i class="fas fa-poo text-white fa-lg mr-3"></i>&nbsp;커뮤니티
+			 <i class="fa-solid fa-landmark text-white fa-lg mr-3"></i>&nbsp;학사공지
 			 </a>
 		</li>
 	</ul>
