@@ -135,40 +135,28 @@ $(function(){
 		
 	});
 });
-
 </script>
 </head>
 
 <body>
 
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
-	
 <main>
-<section>
-	<div class="container-fluid">
-		<div class="row" style="line-height: 1.5rem">&nbsp;</div>
-		<div class="row">
-			<div class="col-lg-1 bg-dark bg-gradient" >
-			<!-- brief 사이드바 자리 -->
-			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
-			</div>
-			<div class="col-lg-11 ms-auto">
-			
-			<!-- classroom header 자리 -->
+	<section>
+		<div class="container-fluid">
 			<div class="row">
-			<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
-			</div>
-			<div class="row">
-				<!-- 강의 사이드바 자리 -->
-				<div class="col-xl-2 col-md-2 col-lg-2 bg-black bg-gradient" style="box-shadow: none;">
-				<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
-				</div>
-				
-				<!-- 본문 -->
-				<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto">
-					<div class="ms-1 me-1 pt-3 mt-3 mb-5">
+				<div class="col-1"></div>
+				<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-auto bg-dark bg-gradient rounded" style="min-height: 100vh">
+						<!-- 왼쪽 사이드바 자리 -->
+						<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp" />
+					</div>
+					<div class="col">
+						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
+						
 						<div class="card mb-3">
 							<div class="card-header fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
 							   <h5> <i class="fas fa-tv fa-lg bg-navy"></i>&nbsp;</h5>
@@ -249,19 +237,20 @@ $(function(){
 						  
 						  </div>
 						</div>
+						
+					<!-- 본문 -->
 					</div>
 					</div>
-					<!-- 본문 끝 -->
+					</div>
+				</div>
+				<div class="col-1"></div>
 			</div>
-			</div>
-			</div>
-			</div>
-	
+		</div>
+				
+				<!-- 본문 끝 -->
 	</section>
 </main>
-
-
-<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
+<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
 

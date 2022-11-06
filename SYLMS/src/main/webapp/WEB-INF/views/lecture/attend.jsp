@@ -123,51 +123,40 @@ $(function(){
 				out += "<td>"+attend_pass+"</td></tr>";
 				page++;
 			}
+			if(data.list.length==0){
+				out = "<td colspan='5' class='attend_append'><h4><br>데이터가 없습니다.<br></h4></td>";
+			}
 			$(".attend_append").remove();
 			$(".attend_list").append(out);
 			page=0;
 		}
 		ajaxFun(url, "GET", query, "JSON", fn);
-		
-		console.log(result_data);
 	});
 	
 });
-
 </script>
 </head>
 
 <body>
 
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
-	
 <main>
-<section>
-	<div class="container-fluid">
-		<div class="row" style="line-height: 1.5rem">&nbsp;</div>
-		<div class="row">
-			<div class="col-lg-1 bg-dark bg-gradient" >
-			<!-- brief 사이드바 자리 -->
-			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
-			</div>
-			<div class="col-lg-11 ms-auto">
-			
-			<!-- classroom header 자리 -->
+	<section>
+		<div class="container-fluid">
 			<div class="row">
-			<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
-			</div>
-			<div class="row">
-				<!-- 강의 사이드바 자리 -->
-				<div class="col-xl-2 col-md-2 col-lg-2 bg-black bg-gradient" style="box-shadow: none;">
-				<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
-				</div>
-				
-				<!-- 본문 -->
-				<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto " style="min-height:100vh">
-					<div class="ms-1 me-1 pt-3 mt-3 mb-5">
-						<div class="card mb-3">
+				<div class="col-1"></div>
+				<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-auto bg-dark bg-gradient rounded" style="min-height: 100vh">
+						<!-- 왼쪽 사이드바 자리 -->
+						<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp" />
+					</div>
+					<div class="col">
+						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
+						<!-- 본문 시작 -->
+						<div class="card ">
 							<div class="card-header fw-bold fs-6 bg-navy bg-gradient text-center text-white p-2">
 							   <h5> <i class="fas fa-clipboard-user fa-lg bg-navy"></i>&nbsp;</h5>
 							</div>
@@ -192,9 +181,9 @@ $(function(){
 							</div>
 							<hr>
 							</div>
-							<div class="card-body p-4 text-center">
+							<div class="card-body ps-4 pe-4 text-center">
 							<c:if test="${fn:length(sessionScope.member.userId) !=8 }">
-								<div class="row">
+								<div class="row p-4">
 										<div class="col-3">&nbsp;</div>
 										<div class="col-6">
 										<div class="card">
@@ -223,7 +212,7 @@ $(function(){
 								<br>
 							</c:if>
 							<c:if test="${ fn:length(sessionScope.member.userId) == 8 }">
-								<div class="row">
+								<div class="row ps-4 pe-4">
 									<div class="col-3">&nbsp;</div>
 									<div class="col-6">
 									<div class="card">
@@ -255,41 +244,39 @@ $(function(){
 									</div>
 									<div class="col-2">&nbsp;</div>
 								</div>
-								<div class="row">
-									<div class="col-2">&nbsp;</div>
-									<div class="col-8">&nbsp;
+								<div class="row p-4">
+								<div class="card p-2">
 										<c:if test="${fn:length (sessionScope.member.userId) !=8}">
 										<h4>데이터가 없습니다.</h4>
 										</c:if>
 										<c:if test="${fn:length (sessionScope.member.userId) ==8}">
 										<table class="table text-center attend_list">
-											<tr>
-												<th style="width:5%">번호</th>
-												<th style="width:35%">강의명</th>
-												<th style="width:10%">학번</th>
-												<th style="width:40%">출석시간</th>
+											<tr class="bg-navy text-light bg-gradient">
+												<th style="width:10%">번호</th>
+												<th style="width:40%">강의명</th>
+												<th style="width:15%">학번</th>
+												<th style="width:25%">출석시간</th>
 												<th style="width:10%">처리</th>
 											</tr>
 										</table>
 										</c:if>
-									</div>									
-									<div class="col-2">&nbsp;</div>
+									</div>
 								</div>
-								<br>
-								<br>
 							</div>
 							</div>
+					<!-- 본문 -->
 					</div>
-					<!-- 본문 끝 -->
-			</div>
-			</div>
-			</div>
+					</div>
+					</div>
+				</div>
+				<div class="col-1"></div>
 			</div>
 		</div>
+				
+				<!-- 본문 끝 -->
 	</section>
 </main>
-
-
-<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
+<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
+
