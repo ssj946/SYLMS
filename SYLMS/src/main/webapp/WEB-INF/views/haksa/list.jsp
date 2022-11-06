@@ -7,12 +7,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>spring</title>
+<title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 
 <style type="text/css">
-.body-container {
-	max-width: 800px;
+.page-link {
+  color: #000; 
+  background-color: #fff;
+  border: 1px solid #ccc; 
+}
+
+.page-item.active .page-link {
+ z-index: 1;
+ color: #555;
+ font-weight:bold;
+ background-color: #f1f1f1;
+ border-color: #ccc;
+ 
+}
+
+.page-link:focus, .page-link:hover {
+  color: #000;
+  background-color: #fafafa; 
+  border-color: #ccc;
+}
+
+.new { height: 15px; padding-left: 3px; padding-bottom: 3px; }
+
+.table-light { text-align: center; }
+
+
+ul{
+list-style: none;
 }
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board2.css" type="text/css">
@@ -59,19 +85,30 @@ $(function(){
 </head>
 <body>
 
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
-	
 <main>
-	<div class="container">
-		<div class="body-container">	
-			<div class="body-title">
-				<h3><i class="bi bi-clipboard"></i> 공지사항 </h3>
+<section>
+	<div class="container-fluid">
+		<div class="row">
+		<div class="col-1"></div>
+		<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-2 bg-dark bg-gradient rounded" style="min-height: 100vh">
+			<!-- 왼쪽 사이드바 자리 -->
+			<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 			</div>
-			
-			<div class="body-main">
-				<form name="listForm" method="post">
+			<div class="col-10">
+				<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+				<div class="row">
+					<div class="col-12">
+			<!-- 본문 -->
+			<div class="col-lg-12">
+			<div class="card mt-3">
+					<div class= "card-header fw-bold">
+						<h3><i class="fa-solid fa-landmark fa-1x"></i> 학사공지 </h3>
+				    </div>
+				<div class="card-body py-5">    
+				<form name="listForm" method="post" >
 			        <div class="row board-list-header">
 			            <div class="col-auto me-auto">
 							<c:if test="${sessionScope.member.userId=='admin'}">
@@ -188,16 +225,19 @@ $(function(){
 						</c:if>
 					</div>
 				</div>
-
+				</div>
+			</div>
+			</div>
+			</div>
+			</div>
+			</div>
 			</div>
 		</div>
 	</div>
+	</div>
+	</div>
+	</section>
 </main>
-
-<footer>
-	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
-</footer>
-
 <jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
 </body>
 </html>
