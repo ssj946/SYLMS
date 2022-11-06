@@ -1,4 +1,4 @@
-﻿﻿<%@ page contentType="text/html; charset=UTF-8" %>
+﻿﻿﻿<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -24,5 +24,4 @@ font-family: 'Noto Sans KR', sans-serif;
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/util-jquery.js"></script>
-
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/core.js"></script>

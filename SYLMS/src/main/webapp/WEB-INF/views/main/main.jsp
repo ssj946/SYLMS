@@ -53,9 +53,9 @@
 												<br>
 											</c:if>
 											<c:if test="${not empty list}">
-												<table class="table table-hover">
-												<tr class="bg-light text-center">
-													<th class="w-50">과목명</th>
+												<table class="table table-hover ">
+												<tr class="bg-navy bg-gradient text-light text-center">
+													<th class="w-50 ">과목명</th>
 													<th>학점</th>
 													<th>년도</th>
 													<th>학기</th>	

@@ -106,7 +106,7 @@ $(function(){
 											</c:if>
 											<c:if test="${not empty list}">
 												<table class="table table-hover">
-												<tr class="bg-light text-center">
+												<tr class="bg-navy bg-gradient text-light text-center">
 													<th class="w-50">과목명</th>
 													<th>학점</th>
 													<th>년도</th>
@@ -114,7 +114,7 @@ $(function(){
 													<th>출석</th>											
 												</tr>
 												<c:forEach var="dto" items="${list}" varStatus="status">
-													<tr class="text-center">													
+													<tr class=" text-center">													
 														<td><a href="${pageContext.request.contextPath}/lecture/classroom.do?subjectNo=${dto.subjectNo}">${dto.subjectName}</a>
 														<td>${dto.credit}</td>
 														<td>${dto.syear}</td>
@@ -180,7 +180,7 @@ $(function(){
 												</c:if>
 												<c:if test="${not empty hlist}">
 												<table class="table table-hover history_list">
-												<tr class="bg-light">
+												<tr class="bg-navy bg-gradient text-light">
 													<th style="width:60%">과목명</th>
 													<th>학점</th>
 													<th>년도</th>

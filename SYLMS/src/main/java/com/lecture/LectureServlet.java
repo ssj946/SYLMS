@@ -468,6 +468,7 @@ public class LectureServlet extends MyUploadServlet {
 	}
 	
 	protected void attendForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		//출석하기 
 		req.setCharacterEncoding("UTF-8");
 		LectureDAO dao= new LectureDAO();
 		String subjectNo = req.getParameter("subjectNo");
@@ -498,6 +499,7 @@ public class LectureServlet extends MyUploadServlet {
 	}
 	
 	protected void attendGenerate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		//출석 생성
 		req.setCharacterEncoding("UTF-8");
 		LectureDAO dao= new LectureDAO();
 		String cp =req.getContextPath();
@@ -562,7 +564,6 @@ public class LectureServlet extends MyUploadServlet {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		String mode = req.getParameter("mode");
 		List<LectureDTO>list = null;
-		System.out.println(mode);
 		try {
 			if(mode.equals("attend")) {
 				list = dao.attendanceRecord_attend(info.getUserId());
