@@ -54,11 +54,6 @@ function deleteFile(fileNum) {
 </script>
 </head>
 <body>
-
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
-	
 <main>
 <section>
 	<div class="container-fluid">
