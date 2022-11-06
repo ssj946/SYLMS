@@ -1,7 +1,8 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+﻿﻿<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,8 +12,6 @@
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
 <style type="text/css">
 </style>
-
-
 <script type="text/javascript">
 	function searchList() {
 		const f = document.searchForm;
@@ -23,39 +22,35 @@
 
 <body>
 
-	<header>
-		<jsp:include page="/WEB-INF/views/layout/header.jsp" />
-	</header>
-
-	<main>
-		<section>
-			<div class="container-fluid">
-
-				<div class="row">&nbsp;</div>
-				<div class="row">
-					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1">
+<main>
+	<section>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-1"></div>
+				<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-2 bg-dark bg-gradient rounded" style="min-height: 100vh">
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 					</div>
-
+					<div class="col-10">
+						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+						<div class="row">
+							<div class="col-9">
 					<!-- 본문 -->
-					<div class="col-xl-8 col-lg-6 col-md-6">
-						<div class="row ms-3 me-1 pt-3 mt-3 mb-5 gap-3">
+						<div class="card">
 
-							<div class="body-container">
-
-								<div class="title">
-									<h3>
+								<div class="card-header bg-navy bg-gradient text-white">
+									<h5 class="d-inline">
 										<span>|</span> 쪽지
-									</h3>
+									</h5>
 								</div>
-
+								<div class="card-body">
 								<table class="table table-border table-article">
-									<thead>
-										<tr>
+										<tr class="bg-navy bg-gradient text-white">
 											<td colspan="2" align="center">${dto.sendName}님이 보낸 쪽지</td>
 										</tr>
-									</thead>
 
 									<tbody>
 										<tr>
@@ -71,7 +66,7 @@
 
 									</tbody>
 								</table>
-
+								
 								<div class="page-navigation">${dataCount == 0 ? "쪽지가 없습니다." : paging}
 								</div>
 
@@ -83,16 +78,23 @@
 											onclick="location.href='${pageContext.request.contextPath}/messege/send.do';">쪽지보내기</button>
 									</div>
 								</div>
-
-							</div>
+								</div>
+							</div>	
 						</div>
-
+							<!-- 오른쪽 사이드바 자리 -->
+						<div class="col-3 mt-3"><jsp:include page="/WEB-INF/views/layout/r_sidebar.jsp" /></div>
+					</div>
+					</div>
 					</div>
 				</div>
-				<!-- 본문 끝 -->
+				<div class="col-1"></div>
+				</div>
 			</div>
-		</section>
-	</main>
-	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
+		</div>
+				
+				<!-- 본문 끝 -->
+	</section>
+</main>
+<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>

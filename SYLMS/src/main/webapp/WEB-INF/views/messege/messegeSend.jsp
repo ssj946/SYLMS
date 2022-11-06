@@ -1,8 +1,8 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+﻿﻿<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -223,36 +223,35 @@ input[type=checkbox], input[type=radio] {
 	});
 </script>
 </head>
+
 <body>
 
-	<header>
-		<jsp:include page="/WEB-INF/views/layout/header.jsp" />
-	</header>
-
-	<main>
-		<section>
-			<div class="container-fluid">
-
-				<div class="row">&nbsp;</div>
-				<div class="row">
-					<div class="col-xl-2 col-lg-3 col-md-4 bg-dark bg-gradient pt-1">
+<main>
+	<section>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-1"></div>
+				<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-2 bg-dark bg-gradient rounded" >
 						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/l_sidebar.jsp" />
 					</div>
-
+					<div class="col-10">
+						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+						<div class="row">
+							<div class="col-9">
 					<!-- 본문 -->
-					<div class="col-xl-8 col-lg-7 col-md-7">
-						<div class="row ms-3 me-3 pt-3 mt-3 mb-5 gap-3">
+							<div class="card mt-3">
 
-							<div class="container">
-
-								<div class="title">
-									<h3>
+								<div class="card-header bg-navy bg-gradient text-white">
+									<h5 class="d-inline">
 										<span>|</span> 쪽지 보내기
-									</h3>
+									</h5>
 								</div>
 
-								<form name="noteForm" method="post" action="${pageContext.request.contextPath}/messege/send_ok.do">
+								<form class="card-body" name="noteForm" method="post" action="${pageContext.request.contextPath}/messege/send_ok.do">
 									<table class="table form-table">
 										<tr>
 											<td width="150"><span>보내는 목록</span></td>
@@ -299,14 +298,20 @@ input[type=checkbox], input[type=radio] {
 
 							</div>
 						</div>
+							<!-- 오른쪽 사이드바 자리 -->
+						<div class="col-3 mt-3"><jsp:include page="/WEB-INF/views/layout/r_sidebar.jsp" /></div>
+					</div>
+					</div>
 					</div>
 				</div>
+				<div class="col-1"></div>
+				</div>
 			</div>
-
-		</section>
-
-	</main>
-
-	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
+		</div>
+				
+				<!-- 본문 끝 -->
+	</section>
+</main>
+<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
