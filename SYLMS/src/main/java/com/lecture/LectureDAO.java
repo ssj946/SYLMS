@@ -1243,6 +1243,27 @@ public class LectureDAO {
 				pstmt.setString(2, dto.getAsNo());
 				pstmt.setString(3, dto.getContent());
 				pstmt.executeUpdate();
+				
+				pstmt.close();
+				
+				if (dto.getSaveFiles() != null) {
+					sql = " INSERT INTO assignmentuploadFile(fileNum, s_Name, o_Name, as_submitNo) "
+							+ " SELECT LPAD(ASSIGNMENTUPLOADFILE_SEQ.NEXTVAL,8,'0'), ?, ?, as_submitNo FROM assignmentsubmit asub "
+							+ " JOIN grades g ON g.gradeCode = asub.gradecode "
+							+ " WHERE studentcode = ? AND asNo = ?";
+					pstmt = conn.prepareStatement(sql);
+					for ( int i = 0; i< dto.getSaveFiles().length; i++) {
+						
+						pstmt.setString(1, dto.getSaveFiles()[i]);
+						pstmt.setString(2, dto.getOriginalFiles()[i]);
+						pstmt.setString(3, dto.getStudentcode());
+						pstmt.setString(4, dto.getAsNo());
+						pstmt.addBatch();
+					}
+					pstmt.executeBatch();
+				}
+				conn.commit();
+				conn.setAutoCommit(true);
 			}
 		} catch (Exception e) {
 			conn.rollback();

@@ -840,8 +840,14 @@ public class LectureServlet extends MyUploadServlet {
 			
 			LectureDTO dto = dao.readFile(fileNo);
 			if(dto!=null) {
-				FileManager.doFiledelete(pathname, dto.getSavefilename());
-				dao.deleteFile(fileNo);
+				boolean b = FileManager.doFiledelete(pathname, dto.getSavefilename());
+				if(b) {
+					dao.deleteFile(fileNo);
+					System.out.println("파일삭제 성공");
+				}
+				else{
+					System.out.println("파일 삭제실패");
+				}
 			}
 
 			resp.sendRedirect(cp+"/lecture/assignment_view.do?subjectNo="+subjectNo+"&asNo="+asNo);
