@@ -88,7 +88,7 @@ public class FileFolderDAO {
 			
 			
 				if ( keyword != null ) {
-					sql += " AND INSTR(s_name, ?) >= 1 ";
+					sql += " AND INSTR(o_name, ?) >= 1 ";
 	
 				} 
 
@@ -134,7 +134,7 @@ public class FileFolderDAO {
 		String sql;
 
 		try {
-			sql = " SELECT  au.o_name, s.subjectName, TO_CHAR(submit_date, 'YYYY-MM-DD') submit_date "
+			sql = " SELECT  au.o_name, s.subjectName, TO_CHAR(submit_date, 'YYYY-MM-DD') submit_date, FILENUM "
 					+ " FROM assignmentUploadFile au "
 					+ " JOIN assignmentSubmit ass "
 					+ " ON au.as_submitNo = ass.as_submitNo "
@@ -160,6 +160,7 @@ public class FileFolderDAO {
 			while (rs.next()) {
 			FileFolderDTO dto = new FileFolderDTO();
 
+		  dto.setFileNo(rs.getString("FILENUM"));	
 		  dto.setSubjectName(rs.getString("subjectName"));
 		  dto.setFname(rs.getString("o_name"));
 		  dto.setSubmitDate(rs.getString("submit_date"));
@@ -198,7 +199,7 @@ public class FileFolderDAO {
 		String sql;
 
 		try {
-			sql = "  SELECT  au.o_name, s.subjectName, TO_CHAR(submit_date, 'YYYY-MM-DD') submit_date "
+			sql = "  SELECT  au.o_name, s.subjectName, TO_CHAR(submit_date, 'YYYY-MM-DD') submit_date, FILENUM"
 					+ "	FROM assignmentUploadFile au "
 					+ "	JOIN assignmentSubmit ass "
 					+ "	ON au.as_submitNo = ass.as_submitNo "
@@ -212,7 +213,7 @@ public class FileFolderDAO {
 				
 					
 					if ( keyword != null ) {
-						sql += " >= AND INSTR(s_name, ?) 1 ";
+						sql += " AND INSTR(o_name, ?) >= 1 ";
 		
 					} 
 					
@@ -233,6 +234,7 @@ public class FileFolderDAO {
 			while (rs.next()) {
 			FileFolderDTO dto = new FileFolderDTO();
 
+		 	  dto.setFileNo(rs.getString("FILENUM"));	
 			  dto.setSubjectName(rs.getString("subjectName"));
 			  dto.setFname(rs.getString("o_name"));
 			  dto.setSubmitDate(rs.getString("submit_date"));
