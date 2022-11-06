@@ -36,8 +36,23 @@ private String score;
 
 private String enable;
 
+private String[] saveFiles;
+private String[] originalFiles;
 
 
+
+public String[] getSaveFiles() {
+	return saveFiles;
+}
+public void setSaveFiles(String[] saveFiles) {
+	this.saveFiles = saveFiles;
+}
+public String[] getOriginalFiles() {
+	return originalFiles;
+}
+public void setOriginalFiles(String[] originalFiles) {
+	this.originalFiles = originalFiles;
+}
 public String getEnable() {
 	return enable;
 }

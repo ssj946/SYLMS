@@ -1,11 +1,14 @@
 package com.lecture;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,11 +18,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.member.SessionInfo;
-import com.util.MyServlet;
+import com.util.MyUploadServlet;
 
+
+@MultipartConfig
 @WebServlet("/lecture/*")
-public class LectureServlet extends MyServlet {
+public class LectureServlet extends MyUploadServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private String pathname;
 
 	@Override
 	protected void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,6 +42,9 @@ public class LectureServlet extends MyServlet {
 			return;
 		}
 
+		String root = session.getServletContext().getRealPath("/");
+		pathname = root + "uploads" + File.separator + "lecture";
+			
 		// uri에 따른 작업 구분
 		if (uri.indexOf("main.do") != -1) {
 			lectureNavForm(req, resp);
@@ -145,6 +155,7 @@ public class LectureServlet extends MyServlet {
 	
 	protected void lectureForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 강의실
+		req.setCharacterEncoding("UTF-8");
 		LectureDAO dao= new LectureDAO();
 		String SubjectNo = req.getParameter("subjectNo");
 		
@@ -177,6 +188,7 @@ public class LectureServlet extends MyServlet {
 
 	protected void registerHistory(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 수강 기록
+		req.setCharacterEncoding("UTF-8");
 		LectureDAO dao= new LectureDAO();
 		HttpSession session =req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
@@ -210,6 +222,7 @@ public class LectureServlet extends MyServlet {
 	
 	protected void content(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 강의 하나 받아오기
+		req.setCharacterEncoding("UTF-8");
 		LectureDAO dao= new LectureDAO();	
 		
 		String subjectNo = req.getParameter("subjectNo");
@@ -242,6 +255,7 @@ public class LectureServlet extends MyServlet {
 	
 	protected void contentWrite(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 강의게시판 글쓰기 화면 띄우기
+		req.setCharacterEncoding("UTF-8");
 		LectureDAO dao= new LectureDAO();
 		
 		String cp =req.getContextPath();
@@ -284,6 +298,7 @@ public class LectureServlet extends MyServlet {
 	
 	protected void contentWriteSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 강의게시판 글쓰기
+		req.setCharacterEncoding("UTF-8");
 		LectureDAO dao= new LectureDAO();
 		String cp =req.getContextPath();
 		
@@ -330,6 +345,7 @@ public class LectureServlet extends MyServlet {
 	
 	protected void contentUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 강의게시판 글쓰기 화면 띄우기
+		req.setCharacterEncoding("UTF-8");
 		LectureDAO dao= new LectureDAO();
 		
 		String cp =req.getContextPath();
@@ -373,6 +389,7 @@ public class LectureServlet extends MyServlet {
 	
 	protected void contentUpdateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 강의게시판 수정
+		req.setCharacterEncoding("UTF-8");
 		LectureDAO dao= new LectureDAO();
 		String cp =req.getContextPath();
 		
@@ -418,6 +435,7 @@ public class LectureServlet extends MyServlet {
 	
 	protected void contentDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 강의게시판 지우기
+		req.setCharacterEncoding("UTF-8");
 		LectureDAO dao= new LectureDAO();
 		String cp =req.getContextPath();
 		
@@ -445,6 +463,7 @@ public class LectureServlet extends MyServlet {
 	}
 	
 	protected void attendForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		req.setCharacterEncoding("UTF-8");
 		LectureDAO dao= new LectureDAO();
 		String subjectNo = req.getParameter("subjectNo");
 		
@@ -474,6 +493,7 @@ public class LectureServlet extends MyServlet {
 	}
 	
 	protected void attendGenerate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		req.setCharacterEncoding("UTF-8");
 		LectureDAO dao= new LectureDAO();
 		String cp =req.getContextPath();
 		
@@ -504,6 +524,8 @@ public class LectureServlet extends MyServlet {
 	}
 	
 	protected void attend(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		req.setCharacterEncoding("UTF-8");
+		
 		LectureDAO dao= new LectureDAO();
 		String cp =req.getContextPath();
 		
@@ -528,6 +550,8 @@ public class LectureServlet extends MyServlet {
 	}
 	
 	protected void attendList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		req.setCharacterEncoding("UTF-8");
+		
 		LectureDAO dao= new LectureDAO();
 		HttpSession session =req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
@@ -559,6 +583,8 @@ public class LectureServlet extends MyServlet {
 	}
 	
 	protected void attendManager(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		req.setCharacterEncoding("UTF-8");
+		
 		LectureDAO dao= new LectureDAO();
 		String subjectNo = req.getParameter("subjectNo");
 		
@@ -586,6 +612,8 @@ public class LectureServlet extends MyServlet {
 	}
 	
 	protected void attendList_all(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		req.setCharacterEncoding("UTF-8");
+		
 		LectureDAO dao= new LectureDAO();
 		HttpSession session =req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
@@ -618,6 +646,8 @@ public class LectureServlet extends MyServlet {
 	}
 	
 	protected void modify_attendance(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		req.setCharacterEncoding("UTF-8");
+		
 		LectureDAO dao= new LectureDAO();
 		HttpSession session =req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
@@ -662,6 +692,8 @@ public class LectureServlet extends MyServlet {
 	}
 	
 	protected void assignmentList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		req.setCharacterEncoding("UTF-8");
+		
 		LectureDAO dao= new LectureDAO();
 		String subjectNo = req.getParameter("subjectNo");
 		
@@ -691,9 +723,14 @@ public class LectureServlet extends MyServlet {
 	}
 	
 	protected void assignmentContent(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		req.setCharacterEncoding("UTF-8");
+		
 		LectureDAO dao= new LectureDAO();
 		String subjectNo = req.getParameter("subjectNo");
 		String asNo = req.getParameter("asNo");
+		
+		HttpSession session =req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		LectureDTO dto = new LectureDTO();
 
@@ -708,7 +745,8 @@ public class LectureServlet extends MyServlet {
 			
 			
 			LectureDTO adto = dao.read_assignment(asNo);
-			
+			LectureDTO asdto = dao.read_assignmentSubmit(asNo, info.getUserId());
+			req.setAttribute("asdto", asdto);
 			req.setAttribute("adto", adto);
 			
 		} catch (Exception e) {
@@ -723,6 +761,8 @@ public class LectureServlet extends MyServlet {
 	
 	protected void assignmentSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 과제 제출
+		req.setCharacterEncoding("UTF-8");
+		
 		LectureDAO dao= new LectureDAO();
 		
 		String cp =req.getContextPath();
@@ -740,7 +780,16 @@ public class LectureServlet extends MyServlet {
 			dto.setAsNo(asNo);
 			dto.setContent(content);
 			dto.setStudentcode(info.getUserId());
+			Map<String, String[]> map = doFileUpload(req.getParts(), pathname);
+			if( map != null) {
+				String[] saveFiles = map.get("saveFilenames");
+				String[] originalFiles = map.get("originalFilenames");
+				dto.setSaveFiles(saveFiles);
+				dto.setOriginalFiles(originalFiles);
+			}
 			dao.insert_assignment(dto);
+			
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

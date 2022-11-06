@@ -44,6 +44,9 @@ $(function () {
 			out += "</li>";
 					
 		}
+		if(data.todo.length==0){
+			out ="<li class='text-center border rounded'><br>할 일이 없습니다.<br>&nbsp;</li>";
+		}
 		$(".todoList").append(out);		
 	}
 	ajaxFun(url, "get", query, "json", fn);
@@ -51,16 +54,15 @@ $(function () {
 
 
 </script>
-	<div class="card p-2" style="min-height: 30vh">
-				<div class="card-header bg-navy text-white text-center fw-bold fs-5 rounded">
+	<div class="card p-2">
+				<div class="card-header bg-navy bg-gradient text-light text-center fw-bold fs-5 rounded">
 				할 일
 				</div>
-				<ul class="todoList  list-group list-group-numbered list-group-item-action active" aria-current="true">
-					<c:if test="${fn:length(sessionScope.member.userId) == 8 }">	
-								
-							
-					</c:if>
+				<div class="card-body p-0">
+				<ul class="todoList list-group list-group-numbered list-group-item-action active" aria-current="true">	
+						
 				</ul>
+				</div>
 
 	</div>
 	<!-- 오른쪽 사이드바 끝 -->

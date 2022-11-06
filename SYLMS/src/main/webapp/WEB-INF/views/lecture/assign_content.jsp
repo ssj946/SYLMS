@@ -136,9 +136,9 @@ $(function(){
 						  </div>
 						  <div class="card-body p-4">
 						  <c:if test="${fn:length(sessionScope.member.userId) == 8}">
-						  <form name="assignment_submit">
+						  <form name="assignment_submit" enctype="multipart/form-data">
 						  <h4 class="mb-3 fw-bold">제출 내용</h4> 
-						  <textarea name="content" class="form-control" placeholder="내용을 입력해주세요." rows="10">${contentDTO.content}</textarea>
+						  <textarea name="content" class="form-control" placeholder="내용을 입력해주세요." rows="10">${asdto.content}</textarea>
 						  <br>
 						 <h4 class="mb-3 fw-bold">제출 파일</h4> <input name="file" type="file" class="form-control">
 						 <input type="hidden" name="subjectNo"  value="${subjectNo}">

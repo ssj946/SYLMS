@@ -64,7 +64,7 @@ public class LectureDAO {
 			
 			pstmt.clearBatch();
 			conn.commit();
-			
+			conn.setAutoCommit(true);
 			
 		} catch (Exception e) {
 			conn.rollback();
@@ -1154,13 +1154,98 @@ public class LectureDAO {
 			}
 			return dto;
 		}
+	public LectureDTO read_assignmentSubmit(String asNo, String studentcode) throws SQLException{
+		PreparedStatement pstmt = null;
+		ResultSet rs =null;
+		String sql = "";
+		LectureDTO dto = new LectureDTO();
+		try {
+			sql = "SELECT as_submitNo, content, submit_date, assignmentscore, studentcode, asNo  FROM assignmentsubmit asub "
+					+ " JOIN grades g ON g.gradecode = asub.gradecode "
+					+ " WHERE asNo = ? AND studentcode = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, asNo);
+			pstmt.setString(2, studentcode);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setAs_submitNo(rs.getString("as_submitNo"));
+				dto.setContent(rs.getString("content"));
+				dto.setSubmit_date(rs.getString("submit_date"));
+				dto.setScore(rs.getString("assignmentScore"));
+				dto.setStudentcode(rs.getString("studentcode"));
+				dto.setAsNo(rs.getString("asno"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+			} catch (Exception e2) {
+			}
+			try {
+				pstmt.close();
+			} catch (Exception e2) {
+			}
+		}
 		
+		
+		return dto;
+	}
+		//과제 제출
 	public void insert_assignment(LectureDTO dto)throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql = "";
+		
 		try {
-			sql = "INSERT INTO (SELECT as_submitNo, content, submit_date, assignmentScore, gradeCode, asNo assignmentsubmit a ";
+			conn.setAutoCommit(false);
+			if(read_assignmentSubmit(dto.getAsNo(), dto.getStudentcode()).getAs_submitNo()==null) {
+			sql = "INSERT INTO assignmentsubmit (as_submitNo, content, submit_date, assignmentScore, gradeCode, asNo) "
+					+ " SELECT LPAD(as_submitNo_seq.NEXTVAL,6,'0'), ? ,sysdate, 0, g.gradecode, ? "
+					+ " FROM grades g LEFT OUTER JOIN assignmentsubmit a ON "
+					+ " a.gradeCode =g.gradeCode WHERE Studentcode = ? ";
+			pstmt =conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getContent());
+			pstmt.setString(2, dto.getAsNo());
+			pstmt.setString(3, dto.getStudentcode());
+			
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+			if (dto.getSaveFiles() != null) {
+				sql = " INSERT INTO assignmentuploadFile(fileNum, s_Name, o_Name, as_submitNo) "
+						+ " SELECT LPAD(ASSIGNMENTUPLOADFILE_SEQ.NEXTVAL,8,'0'), ?, ?, as_submitNo FROM assignmentsubmit asub "
+						+ " JOIN grades g ON g.gradeCode = asub.gradecode "
+						+ " WHERE studentcode = ? AND asNo = ?";
+				pstmt = conn.prepareStatement(sql);
+				for ( int i = 0; i< dto.getSaveFiles().length; i++) {
+					
+					pstmt.setString(1, dto.getSaveFiles()[i]);
+					pstmt.setString(2, dto.getOriginalFiles()[i]);
+					pstmt.setString(3, dto.getStudentcode());
+					pstmt.setString(4, dto.getAsNo());
+					pstmt.addBatch();
+				}
+				pstmt.executeBatch();
+			}
+			conn.commit();
+			conn.setAutoCommit(true);
+			
+			}
+			else {
+				sql = "UPDATE (SELECT content FROM assignmentsubmit a JOIN grades g ON g.gradeCode = a.gradeCode "
+						+ " WHERE studentcode = ? AND asNo =? ) "
+						+ " SET content = ? ";
+				pstmt =conn.prepareStatement(sql);
+				pstmt.setString(1, dto.getStudentcode());
+				pstmt.setString(2, dto.getAsNo());
+				pstmt.setString(3, dto.getContent());
+				pstmt.executeUpdate();
+			}
 		} catch (Exception e) {
+			conn.rollback();
 			e.printStackTrace();
 		}
 	}
