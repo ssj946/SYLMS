@@ -59,8 +59,10 @@
 
 								</form>
 								</div>
+								
 								<!-- 검색버튼  끝 -->
-								<table class="table  mt-4">
+								<div class="card">
+								<table class="table text-center mt-4">
 										<tr class="bg-navy bg-gradient text-white text-center">
 											<th class="year">파일</th>
 											<th class="semester" >과목</th>
@@ -76,9 +78,10 @@
 											</c:forEach>
 									</table>
 
+							</div>
+							
 									<div class="page-navigation">${dataCount == 0 ? "파일이 없습니다." : paging}
 									</div>
-
 							</div>
 						</div>
 							<!-- 오른쪽 사이드바 자리 -->

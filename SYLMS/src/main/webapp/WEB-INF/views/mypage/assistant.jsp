@@ -12,6 +12,13 @@
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
 <style type="text/css">
 </style>
+<script type="text/javascript">
+$(function(){
+	const now = new Date();
+	let year = now.getFullYear()*1+1;
+	$("#syear").append("<option value="+year+">"+year+"년</option>");
+});
+</script>
 </head>
 
 <body>
@@ -41,7 +48,7 @@
 										<div class="d-flex justify-content-center align-items-center">
 											<div class="col-auto p-1">
 												<select class="form-select" name="year" id="syear">
-													<option value="2023">2023년</option>
+													
 												</select>
 										   	</div>
 
@@ -66,9 +73,9 @@
 										<table class="table table-hover board-list ho-list text-center">
 										
 												<tr class="bg-navy bg-gradient text-light">
-													<th class="year" width="10%">연도</th>
-													<th class="semester" width="10%">학기</th>
-													<th class="department" width="10%">학과</th>
+													<th class="year" width="5%">연도</th>
+													<th class="semester" width="5%">학기</th>
+													<th class="department" width="15%">학과</th>
 													<th class="subname">과목명</th>
 													<th class="prof" width="10%">교수</th>
 													<th class="apply" width="20%">조교신청</th>
@@ -129,14 +136,14 @@
 									<table class="table table-hover board-list text-center">
 									
 											<tr class="bg-navy bg-gradient text-white">
-												<th class="year" width="10%">연도</th>
-												<th class="semester" width="10%">학기</th>
-												<th class="department" width="10%">학과</th>
+												<th class="year" width="5%">연도</th>
+												<th class="semester" width="5%">학기</th>
+												<th class="department" width="15%">학과</th>
 												<th class="subname">과목명</th>
 												<th class="name" width="10%">이름</th>
 												<th class="reg_date" width="15%">신청일</th>
 												<th class="station" width="10%">상태</th>
-												<th class="apply" width="20%">조교신청</th>
+												<th class="apply" width="15">조교신청</th>
 											</tr>
 							
 										<tbody>
@@ -169,9 +176,9 @@
 									<table class="table table-hover board-list text-center">
 							
 											<tr class="bg-navy bg-gradient text-white">
-												<th class="year" width="10%">연도</th>
-												<th class="semester" width="10%">학기</th>
-												<th class="department" width="10%">학과</th>
+												<th class="year" width="5%">연도</th>
+												<th class="semester" width="5%">학기</th>
+												<th class="department" width="15%">학과</th>
 												<th class="subname">과목명</th>
 												<th class="prof" width="10%">교수</th>
 												<th class="apply" width="10%">상태</th>
@@ -235,9 +242,9 @@
 										<div class="card p-2 m-2">
 										<table class="table table-hover board-list text-center" >
 												<tr class="bg-navy bg-gradient text-light">
-													<th class="year" width="10%">연도</th>
-													<th class="semester" width="10%">학기</th>
-													<th class="department" width="10%">학과</th>
+													<th class="year" width="5%">연도</th>
+													<th class="semester" width="5%">학기</th>
+													<th class="department" width="15%">학과</th>
 													<th class="subname">과목명</th>
 													<th class="name" width="10%">이름</th>
 													<th class="station" width="10%">상태</th>
