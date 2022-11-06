@@ -263,7 +263,7 @@ public class FileFolderDAO {
 		return plist;
 	}
 	
-	public FileFolderDTO filedownload(String fileNum) {
+	public FileFolderDTO filedownload(String fileNo) {
 		FileFolderDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -275,7 +275,7 @@ public class FileFolderDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, fileNum);
+			pstmt.setString(1, fileNo);
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
