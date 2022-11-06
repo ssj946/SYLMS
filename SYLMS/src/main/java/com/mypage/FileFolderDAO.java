@@ -21,17 +21,17 @@ public class FileFolderDAO {
 		String sql;
 
 		try {  
-			sql = " SELECT NVL (COUNT(*), 0)  "
-					+ "FROM registerSubject r "
-					+ "left outer JOIN subject s "
-					+ "ON s.subjectNo = r.subjectNo "
-					+ "JOIN assignment a "
-					+ "ON s.subjectNo  = a.subjectNo "
-					+ "JOIN assignmentSubmit am "
-					+ "ON am.assignmentNum  = a.assignmentNum "
-					+ "JOIN assignmentUploadFile au "
-					+ "ON am.assignmentNum  = au.assignmentNum "
-					+ "WHERE r.studentCode = ? ";
+			sql = " SELECT NVL (COUNT(*), 0)   "
+					+ " FROM assignmentUploadFile au "
+					+ " JOIN assignmentSubmit ass "
+					+ " ON au.as_submitNo = ass.as_submitNo "
+					+ " JOIN assignment am "
+					+ " ON ass.asNo  = am.asNo "
+					+ " JOIN subject s "
+					+ " ON am.subjectNo = s.subjectNo "
+					+ " JOIN registerSubject r "
+					+ " ON r.subjectNo = s.subjectNo "
+					+ " WHERE r.studentCode = ?  ";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -75,16 +75,16 @@ public class FileFolderDAO {
 
 		try {  
 			sql = " SELECT NVL (COUNT(*), 0)  "
-					+ "FROM registerSubject r "
-					+ "left outer JOIN subject s "
-					+ "ON s.subjectNo = r.subjectNo "
-					+ "JOIN assignment a "
-					+ "ON s.subjectNo  = a.subjectNo "
-					+ "JOIN assignmentSubmit am "
-					+ "ON am.assignmentNum  = a.assignmentNum "
-					+ "JOIN assignmentUploadFile au "
-					+ "ON am.assignmentNum  = au.assignmentNum "
-					+ "WHERE r.studentCode = ? AND TO_CHAR(submitDate,'YYYY') = ?  ";
+					+ "	 FROM assignmentUploadFile au "
+					+ "	 JOIN assignmentSubmit ass "
+					+ "	 ON au.as_submitNo = ass.as_submitNo "
+					+ "	 JOIN assignment am "
+					+ "	 ON ass.asNo  = am.asNo "
+					+ "	 JOIN subject s "
+					+ "	 ON am.subjectNo = s.subjectNo "
+					+ "	 JOIN registerSubject r "
+					+ "	 ON r.subjectNo = s.subjectNo "
+					+ "	 WHERE r.studentCode = ? AND TO_CHAR(submit_date,'YYYY') = ? ";
 			
 			
 				if ( keyword != null ) {
@@ -134,17 +134,17 @@ public class FileFolderDAO {
 		String sql;
 
 		try {
-			sql = " SELECT subjectName, s_name, TO_CHAR(submitDate,'YYYY-MM-DD') submitDate, s.subjectNo "
-					+ " FROM registerSubject r "
-					+ " left outer JOIN subject s  "
-					+ " ON s.subjectNo = r.subjectNo "
-					+ " JOIN assignment a "
-					+ " ON s.subjectNo  = a.subjectNo "
-					+ " JOIN assignmentSubmit am "
-					+ " ON am.assignmentNum  = a.assignmentNum "
-					+ " JOIN assignmentUploadFile au "
-					+ " ON am.assignmentNum  = au.assignmentNum "
-					+ " WHERE r.studentCode = ? "
+			sql = " SELECT  au.o_name, s.subjectName, TO_CHAR(submit_date, 'YYYY-MM-DD') submit_date "
+					+ " FROM assignmentUploadFile au "
+					+ " JOIN assignmentSubmit ass "
+					+ " ON au.as_submitNo = ass.as_submitNo "
+					+ " JOIN assignment am  "
+					+ " ON ass.asNo  = am.asNo "
+					+ " JOIN subject s "
+					+ " ON am.subjectNo = s.subjectNo "
+					+ " JOIN registerSubject r "
+					+ " ON r.subjectNo = s.subjectNo "
+					+ " WHERE r.studentCode =  ? "
 					+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY "; 
 
 			
@@ -161,9 +161,9 @@ public class FileFolderDAO {
 			FileFolderDTO dto = new FileFolderDTO();
 
 		  dto.setSubjectName(rs.getString("subjectName"));
-		  dto.setFname(rs.getString("s_name"));
-		  dto.setSubmitDate(rs.getString("submitDate"));
-		  dto.setSubjectNo(rs.getString("subjectNo"));
+		  dto.setFname(rs.getString("o_name"));
+		  dto.setSubmitDate(rs.getString("submit_date"));
+
 			
 		  plist.add(dto);
 			}
@@ -198,17 +198,18 @@ public class FileFolderDAO {
 		String sql;
 
 		try {
-			sql = " SELECT subjectName, s_name, TO_CHAR(submitDate,'YYYY-MM-DD') submitDate, s.subjectNo "
-					+ " FROM registerSubject r "
-					+ " left outer JOIN subject s  "
-					+ " ON s.subjectNo = r.subjectNo "
-					+ " JOIN assignment a "
-					+ " ON s.subjectNo  = a.subjectNo "
-					+ " JOIN assignmentSubmit am "
-					+ " ON am.assignmentNum  = a.assignmentNum "
-					+ " JOIN assignmentUploadFile au "
-					+ " ON am.assignmentNum  = au.assignmentNum "
-					+ " WHERE r.studentCode = ? AND TO_CHAR(submitDate,'YYYY') = ? ";
+			sql = "  SELECT  au.o_name, s.subjectName, TO_CHAR(submit_date, 'YYYY-MM-DD') submit_date "
+					+ "	FROM assignmentUploadFile au "
+					+ "	JOIN assignmentSubmit ass "
+					+ "	ON au.as_submitNo = ass.as_submitNo "
+					+ "	JOIN assignment am  "
+					+ " ON ass.asNo  = am.asNo "
+					+ "	JOIN subject s "
+					+ "	ON am.subjectNo = s.subjectNo "
+					+ "	JOIN registerSubject r "
+					+ "	ON r.subjectNo = s.subjectNo "
+					+ "	WHERE r.studentCode =  ?  AND TO_CHAR(submit_date,'YYYY') = ?  ";
+				
 					
 					if ( keyword != null ) {
 						sql += " >= AND INSTR(s_name, ?) 1 ";
@@ -232,10 +233,9 @@ public class FileFolderDAO {
 			while (rs.next()) {
 			FileFolderDTO dto = new FileFolderDTO();
 
-		  dto.setSubjectName(rs.getString("subjectName"));
-		  dto.setFname(rs.getString("s_name"));
-		  dto.setSubmitDate(rs.getString("submitDate"));
-		  dto.setSubjectNo(rs.getString("subjectNo"));
+			  dto.setSubjectName(rs.getString("subjectName"));
+			  dto.setFname(rs.getString("o_name"));
+			  dto.setSubmitDate(rs.getString("submit_date"));
 			
 		  plist.add(dto);
 			}
@@ -261,7 +261,49 @@ public class FileFolderDAO {
 		return plist;
 	}
 	
-	
+	public FileFolderDTO filedownload(String fileNum) {
+		FileFolderDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+
+		try {
+			
+			sql = "SELECT fileNum, originName, saveName FROM assignmentUploadFile WHERE fileNum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, fileNum);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				dto = new FileFolderDTO();
+				
+				dto.setFileNo(rs.getString("fileNum"));
+				dto.setOriginName(rs.getString("originName"));
+				dto.setSaveName(rs.getString("saveName"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		return dto;
+
+	}
 	
 	
 }

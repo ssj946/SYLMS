@@ -63,14 +63,13 @@
 										<tr style="text-align: center;">
 											<th class="year">파일</th>
 											<th class="semester" >과목</th>
-											<th class="department" >파일용량</th>
 											<th class="subname">등록일</th>
 										</tr>
 									</thead>
 									<tbody>
 										<c:forEach var="dto" items="${flist}" varStatus="status">
 											<tr>
-												<td>${dto.fname}</td>
+												<td><a href="${pageContext.request.contextPath}/file/download.do?fileNo=${dto.fileNo}">${dto.originName}</a></td>
 												<td>${dto.subjectName}</td>
 												<td>${dto.submitDate}</td>
 											</tr>

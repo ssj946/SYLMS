@@ -3,6 +3,7 @@ package com.mypage;
 import java.io.File;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.member.SessionInfo;
+import com.util.FileManager;
 import com.util.MyUploadServlet;
 import com.util.MyUtil;
 import com.util.MyUtilBootstrap;
@@ -40,11 +42,43 @@ public class FileFolderServlet extends MyUploadServlet {
 			forward(req, resp, "/WEB-INF/views/member/login.jsp");
 			return;
 		}
+		
+		String root = session.getServletContext().getRealPath("/");
+		pathname = root + "uploads" + File.separator + "lecture";
 
 		if (uri.indexOf("file.do") != -1) {
 			filelist(req, resp);
+		} else if(uri.indexOf("download.do") != -1) {
+			download(req, resp);
 		}
 
+	}
+
+	private void download(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		FileFolderDAO dao = new FileFolderDAO();
+		boolean b = false;
+		
+		try {
+			String fileNo = req.getParameter("fileNo");
+			
+			FileFolderDTO dto = dao.filedownload(fileNo);
+			System.out.println(fileNo);
+			
+			
+			if (dto != null) {
+				b = FileManager.doFiledownload(dto.getSaveName(), dto.getOriginName(), pathname, resp);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if (!b) {
+			resp.setContentType("text/html;charset=utf-8");
+			PrintWriter out = resp.getWriter();
+			out.print("<script>alert('파일다운로드가 실패 했습니다.');history.back();</script>");
+		}
+		
 	}
 
 	private void filelist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
