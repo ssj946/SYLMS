@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.debate.DebateDAO;
+import com.debate.DebateDTO;
 import com.member.SessionInfo;
 import com.util.MyServlet;
 
@@ -48,9 +50,8 @@ public class ExamServlet extends MyServlet {
 		}
 	}
 
-
-
 	private void examForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ExamDAO dao = new ExamDAO();
 		String cp = req.getContextPath();
 
 		HttpSession session = req.getSession();
@@ -59,15 +60,24 @@ public class ExamServlet extends MyServlet {
 		if (!info.getUserId().matches("\\d{5}")) {
 			resp.sendRedirect(cp + "/");
 			return;
-		}	
-		
-		
+		}
+
 		if (info.getUserId().matches("\\d{8}")) {
 			resp.sendRedirect(cp + "/lecture/main.do");
 			return;
 		}
 
+		String subjectNo = req.getParameter("subjectNo");
+
 		try {
+			ExamDTO dto1 = new ExamDTO();
+
+			dto1 = dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto1.getProfessorname());
+			req.setAttribute("semester", dto1.getSemester());
+			req.setAttribute("subjectName", dto1.getSubjectName());
+			req.setAttribute("syear", dto1.getSyear());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -92,6 +102,15 @@ public class ExamServlet extends MyServlet {
 			String subjectNo = req.getParameter("subjectNo");
 
 			ExamDTO dto = new ExamDTO();
+
+			ExamDTO dto1 = new ExamDTO();
+
+			dto1 = dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto1.getProfessorname());
+			req.setAttribute("semester", dto1.getSemester());
+			req.setAttribute("subjectName", dto1.getSubjectName());
+			req.setAttribute("syear", dto1.getSyear());
 
 			dto.setSubjectNo(req.getParameter("subjectNo"));
 
@@ -142,8 +161,19 @@ public class ExamServlet extends MyServlet {
 
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		String subjectNo = req.getParameter("subjectNo");
 
 		try {
+			ExamDTO dto1 = new ExamDTO();
+
+			dto1 = dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto1.getProfessorname());
+			req.setAttribute("semester", dto1.getSemester());
+			req.setAttribute("subjectName", dto1.getSubjectName());
+			req.setAttribute("syear", dto1.getSyear());
+
 			List<ExamDTO> list = null;
 			list = dao.readExam(info.getUserId());
 
@@ -157,6 +187,7 @@ public class ExamServlet extends MyServlet {
 	}
 
 	private void examUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ExamDAO dao = new ExamDAO();
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
@@ -166,25 +197,47 @@ public class ExamServlet extends MyServlet {
 			resp.sendRedirect(cp + "/");
 			return;
 		}
+		
+		String subjectNo = req.getParameter("subjectNo");
 
 		try {
+			ExamDTO dto1 = new ExamDTO();
+
+			dto1 = dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto1.getProfessorname());
+			req.setAttribute("semester", dto1.getSemester());
+			req.setAttribute("subjectName", dto1.getSubjectName());
+			req.setAttribute("syear", dto1.getSyear());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		forward(req, resp, "/WEB-INF/views/exam/examUpdateCode.jsp");
 	}
-	
-	private void examUpdateScore(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+	private void examUpdateScore(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		ExamDAO dao = new ExamDAO();
 
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		String subjectNo = req.getParameter("subjectNo");
 
 		try {
 			String examType = req.getParameter("examType");
 			String gradeCode = req.getParameter("gradeCode");
-			
+
+			ExamDTO dto1 = new ExamDTO();
+
+			dto1 = dao.readSubject(subjectNo);
+			req.setAttribute("subjectNo", subjectNo);
+			req.setAttribute("professorName", dto1.getProfessorname());
+			req.setAttribute("semester", dto1.getSemester());
+			req.setAttribute("subjectName", dto1.getSubjectName());
+			req.setAttribute("syear", dto1.getSyear());
+
 			List<ExamDTO> list = null;
 			list = dao.stdExam(examType, gradeCode);
 
@@ -194,9 +247,8 @@ public class ExamServlet extends MyServlet {
 			e.printStackTrace();
 		}
 		forward(req, resp, "/WEB-INF/views/exam/examUpdate.jsp");
-		
-	}
 
+	}
 
 	private void examSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ExamDAO dao = new ExamDAO();
@@ -212,7 +264,7 @@ public class ExamServlet extends MyServlet {
 
 		try {
 			ExamDTO dto = new ExamDTO();
-			
+
 			dto.setGradeCodes(req.getParameterValues("gradeCodes"));
 			String[] ss = req.getParameterValues("scores");
 			int[] a = new int[ss.length];

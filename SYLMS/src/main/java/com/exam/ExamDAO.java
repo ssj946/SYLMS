@@ -242,5 +242,49 @@ public class ExamDAO {
 				}
 			}
 		}
+		
+		// 과목정보 불러오기
+		public ExamDTO readSubject(String subjectNo) throws SQLException{
+				
+				PreparedStatement pstmt= null;
+				String sql;
+				ResultSet rs=null;
+				ExamDTO dto = new ExamDTO();
+				try {
+					sql= "SELECT s.id, name, subjectname, credit, TO_CHAR(syear,'YYYY')syear, semester FROM subject s "
+							+ " JOIN account a ON a.id=s.id "
+							+ " WHERE subjectNo= ?";
+					pstmt = conn.prepareStatement(sql);
+					
+					pstmt.setString(1, subjectNo);
+					rs= pstmt.executeQuery();
+					if(rs.next()) {
+						dto.setProfessorname(rs.getString("name"));
+						dto.setSubjectName(rs.getString("subjectname"));
+						dto.setCredit(Integer.parseInt(rs.getString("credit")));
+						dto.setSemester(Integer.parseInt(rs.getString("semester")));
+						dto.setSyear(Integer.parseInt(rs.getString("syear")));
+					}
+			
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					if(rs!=null) {
+						try {
+							rs.close();
+						} catch (Exception e2) {
+						}
+					}
+					
+					if(pstmt!=null) {
+						try {
+							pstmt.close();
+						} catch (Exception e2) {
+						}
+					}
+				}
+				
+				return dto; 
+			}
 
 }
