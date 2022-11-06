@@ -26,70 +26,61 @@ ul {
 </head>
 
 <body>
-
-	<header>
-		<jsp:include page="/WEB-INF/views/layout/header.jsp" />
-	</header>
-
-	<main>
-		<section>
-			<div class="container-fluid">
-				<div class="row" style="line-height: 1.5rem">&nbsp;</div>
-				<div class="row">
-					<div class="col-lg-1 bg-dark bg-gradient">
-						<!-- brief 사이드바 자리 -->
+<main>
+	<section>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-1"></div>
+				<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-auto bg-dark bg-gradient rounded" style="min-height: 100vh">
+						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp" />
 					</div>
-					<div class="col-lg-11 ms-auto">
-						<div class="row">
-							<!-- classroom header 자리 -->
-							<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
-						</div>
-						<div class="row">
-							<!-- 강의 사이드바 자리 -->
-							<div class="col-lg-2 bg-dark bg-gradient"
-								style="box-shadow: none; height: 150vh;">
-								<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp" />
-							</div>
-							<!-- 본문 -->
-							<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto ">
-								<div class="ms-1 me-1 pt-3 mt-3 mb-3">
-									<div class="card mb-3">
-										<c:if test="${fn:length(sessionScope.member.userId) == 8}">
-											<div class="card-header fs-6 text-center p-2">
-												<h5 class="card-header">시험성적확인</h5>
-												<div class="card-body">
-													<form class="row" name="searchForm" 
-														action="${pageContext.request.contextPath}/exam/send.do" method="post">
-														<table class="table table-hover board-list ho-list" style="margin-top: 50px;">
-															<thead class="table-light">
-																<tr style="text-align: center;">
-																	<th class="subtp">시험종류</th>
-																	<th class="score">점수</th>
-																	<th class="gradeCode">성적코드</th>
+					<div class="col">
+						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
+						<!-- 본문 -->
+						<div class="col-xl-12 col-md-12 col-lg-12 gap-3 ms-auto ">
+							<div class="ms-1 me-1 pt-3 mt-3 mb-3">
+								<div class="card mb-3">
+									<c:if test="${fn:length(sessionScope.member.userId) == 8}">
+										<div class="card-header fs-6 text-center p-2">
+											<h5 class="card-header">시험성적확인</h5>
+											<div class="card-body">
+												<form class="row" name="searchForm" 
+													action="${pageContext.request.contextPath}/exam/send.do" method="post">
+													<table class="table table-hover board-list ho-list" style="margin-top: 50px;">
+														<thead class="table-light">
+															<tr style="text-align: center;">
+																<th class="subtp">시험종류</th>
+																<th class="score">점수</th>
+																<th class="gradeCode">성적코드</th>
+															</tr>
+														</thead>
+														<tbody>
+															<c:forEach var="dto" items="${list2}" varStatus="status">
+																<tr>
+																	<td>${dto.examType }</td>
+																	<td>${dto.score }</td>
+																	<td>${dto.gradeCode }</td>
 																</tr>
-															</thead>
-															<tbody>
-																<c:forEach var="dto" items="${list2}" varStatus="status">
-																	<tr>
-																		<td>${dto.examType }</td>
-																		<td>${dto.score }</td>
-																		<td>${dto.gradeCode }</td>
-																	</tr>
-																</c:forEach>
-															</tbody>
-														</table>
-													</form>
-												</div>
+															</c:forEach>
+														</tbody>
+													</table>
+												</form>
 											</div>
-										</c:if>
-									</div>
+										</div>
+									</c:if>
 								</div>
-								<!-- 본문 끝 -->
 							</div>
-
+							<!-- 본문 끝 -->
 						</div>
-
+						</div>
+						</div>
+						</div>
 					</div>
 				</div>
 			</div>

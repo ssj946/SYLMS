@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.debate.DebateDAO;
-import com.debate.DebateDTO;
 import com.member.SessionInfo;
 import com.util.MyServlet;
 
@@ -70,14 +68,16 @@ public class ExamServlet extends MyServlet {
 		String subjectNo = req.getParameter("subjectNo");
 
 		try {
-			ExamDTO dto1 = new ExamDTO();
+			ExamDTO dto = new ExamDTO();
 
-			dto1 = dao.readSubject(subjectNo);
+			dto = dao.readSubject(subjectNo);
 			req.setAttribute("subjectNo", subjectNo);
-			req.setAttribute("professorName", dto1.getProfessorname());
-			req.setAttribute("semester", dto1.getSemester());
-			req.setAttribute("subjectName", dto1.getSubjectName());
-			req.setAttribute("syear", dto1.getSyear());
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("syear", dto.getSyear());
+			
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -103,14 +103,13 @@ public class ExamServlet extends MyServlet {
 
 			ExamDTO dto = new ExamDTO();
 
-			ExamDTO dto1 = new ExamDTO();
 
-			dto1 = dao.readSubject(subjectNo);
+			dto = dao.readSubject(subjectNo);
 			req.setAttribute("subjectNo", subjectNo);
-			req.setAttribute("professorName", dto1.getProfessorname());
-			req.setAttribute("semester", dto1.getSemester());
-			req.setAttribute("subjectName", dto1.getSubjectName());
-			req.setAttribute("syear", dto1.getSyear());
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("syear", dto.getSyear());
 
 			dto.setSubjectNo(req.getParameter("subjectNo"));
 
@@ -165,14 +164,14 @@ public class ExamServlet extends MyServlet {
 		String subjectNo = req.getParameter("subjectNo");
 
 		try {
-			ExamDTO dto1 = new ExamDTO();
+			ExamDTO dto = new ExamDTO();
 
-			dto1 = dao.readSubject(subjectNo);
+			dto = dao.readSubject(subjectNo);
 			req.setAttribute("subjectNo", subjectNo);
-			req.setAttribute("professorName", dto1.getProfessorname());
-			req.setAttribute("semester", dto1.getSemester());
-			req.setAttribute("subjectName", dto1.getSubjectName());
-			req.setAttribute("syear", dto1.getSyear());
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("syear", dto.getSyear());
 
 			List<ExamDTO> list = null;
 			list = dao.readExam(info.getUserId());
@@ -201,14 +200,14 @@ public class ExamServlet extends MyServlet {
 		String subjectNo = req.getParameter("subjectNo");
 
 		try {
-			ExamDTO dto1 = new ExamDTO();
+			ExamDTO dto = new ExamDTO();
 
-			dto1 = dao.readSubject(subjectNo);
+			dto = dao.readSubject(subjectNo);
 			req.setAttribute("subjectNo", subjectNo);
-			req.setAttribute("professorName", dto1.getProfessorname());
-			req.setAttribute("semester", dto1.getSemester());
-			req.setAttribute("subjectName", dto1.getSubjectName());
-			req.setAttribute("syear", dto1.getSyear());
+			req.setAttribute("professorName", dto.getProfessorname());
+			req.setAttribute("semester", dto.getSemester());
+			req.setAttribute("subjectName", dto.getSubjectName());
+			req.setAttribute("syear", dto.getSyear());
 
 		} catch (Exception e) {
 			e.printStackTrace();
