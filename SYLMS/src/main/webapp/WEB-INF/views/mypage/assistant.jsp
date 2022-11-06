@@ -111,7 +111,6 @@ $(function(){
 								<div class="d-flex justify-content-center align-items-center">
 									<div class="col-auto p-1">
 										<select class="col-auto form-select" id="syear" name="year">
-											<option value="1">2023년</option>
 										</select>
 									</div>
 
@@ -220,7 +219,6 @@ $(function(){
 										<div class="d-flex justify-content-center align-items-center ">
 										<div class="col-auto p-1">
 											<select class="form-select" id="syear" name="year">
-												<option value="1">2023년</option>
 											</select>
 										</div>
 
