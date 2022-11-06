@@ -11,66 +11,42 @@
 <title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 <style type="text/css">
-
 ul{
-
 list-style: none;
 }
 </style>
 
 <script type="text/javascript">
-<c:if test="${sessionScope.member.userId==dto.userId || sessionScope.member.userId=='admin'}">
-function deleteBoard() {
-    if(confirm("게시글을 삭제 하시 겠습니까 ? ")) {
-	    let query = "articleNo=${dto.articleNo}&subjectNo=${subjectNo}";
-	    let url = "${pageContext.request.contextPath}/notice/delete.do?" + query;
-    	location.href = url;
-    }
-}
-</c:if>
-</script>
 
+</script>
 </head>
 
 <body>
 
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
-	
 <main>
-<section>
-	<div class="container-fluid">
-		<div class="row" style="line-height: 1.5rem">&nbsp;</div>
-		<div class="row">
-			<div class="col-lg-1 bg-dark bg-gradient" >
-			<!-- brief 사이드바 자리 -->
-			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
-			</div>
-			<div class="col-lg-11 ms-auto">
-			
-			<!-- classroom header 자리 -->
+	<section>
+		<div class="container-fluid">
 			<div class="row">
-			<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
-			</div>
-			<div class="row">
-			<!-- 강의 사이드바 자리 -->
-			<div class="col-xl-2 col-md-2 col-lg-2 bg-black bg-gradient" style="box-shadow: none;">
-			<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
-			</div>
-			
-			<!-- 본문 -->
-				<div class="col-lg-10 gap-3 ms-auto">
-					<div class="ms-5 me-5 pt-3 mt-4 mb-5">
-					
-				<div class="body-title">
-					<h3><i class="fas fa-microphone fa-1x"></i> 공지사항 </h3>
+				<div class="col-1"></div>
+				<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-auto bg-dark bg-gradient rounded" style="min-height: 100vh">
+						<!-- 왼쪽 사이드바 자리 -->
+						<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp" />
+					</div>
+					<div class="col">
+						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
+						
+					<!-- 본문 -->
+					<div class="card">	
+				<div class="card-header bg-navy bg-gradient text-light">
+					<h5 class="d-inline ps-2"><i class="fas fa-microphone fa-lg"></i> 공지사항 </h5>
 				</div>
-				
-				<div class="body-main">
-					
+				<div class="card-body">
 					<table class="table">
-				
 						<thead>
 							<tr>
 								<td colspan="2" align="center" style="font-weight: bold; font-size: medium;">
@@ -140,20 +116,20 @@ function deleteBoard() {
 					</table>
 					
 				</div>
-		</div>
-
+				</div>
 					
+					</div>
+					</div>
+					</div>
 				</div>
-			<!-- 본문 끝 -->
+				<div class="col-1"></div>
 			</div>
-			</div>
-
+		</div>
 				
-				</div>
-			</div>
-	
+				<!-- 본문 끝 -->
 	</section>
 </main>
-<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
+<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
+

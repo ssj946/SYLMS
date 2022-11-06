@@ -2,6 +2,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,13 +11,10 @@
 <title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 <style type="text/css">
-
 ul{
-
 list-style: none;
 }
 </style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board2.css" type="text/css">
 
 <script type="text/javascript">
 function sendOk() {
@@ -52,45 +50,35 @@ function deleteFile(fileNo) {
 }
 </c:if>
 </script>
-
 </head>
 
 <body>
 
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
-	
 <main>
-<section>
-	<div class="container-fluid">
-		<div class="row" style="line-height: 1.5rem">&nbsp;</div>
-		<div class="row">
-			<div class="col-lg-1 bg-dark bg-gradient" >
-			<!-- brief 사이드바 자리 -->
-			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
-			</div>
-			<div class="col-lg-11 ms-auto">
-			
-			<!-- classroom header 자리 -->
+	<section>
+		<div class="container-fluid">
 			<div class="row">
-			<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
-			</div>
-			<div class="row">
-			<!-- 강의 사이드바 자리 -->
-			<div class="col-xl-2 col-md-2 col-lg-2 bg-black bg-gradient" style="box-shadow: none;">
-			<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
+				<div class="col-1"></div>
+				<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-auto bg-dark bg-gradient rounded" style="min-height: 100vh">
+						<!-- 왼쪽 사이드바 자리 -->
+						<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp" />
+					</div>
+					<div class="col">
+						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
+						
+					<!-- 본문 -->
+					
+					<div class="card">
+			<div class="card-header text-light bg-navy bg-gradient">
+				<h5 class="d-inline ps-2"><i class="fas fa-microphone fa-1x"></i> 공지사항 작성 </h5>
 			</div>
 			
-			<!-- 본문 -->
-			<div class="col-lg-10 gap-3 ms-auto">
-				<div class="ms-5 me-5 pt-3 mt-4 mb-5">
-		
-			<div class="body-title">
-				<h3><i class="fas fa-microphone fa-1x"></i> 공지사항 작성 </h3>
-			</div>
-			
-			<div class="body-main">
+			<div class="card-body">
 				<form name="boardForm" method="post"  enctype="multipart/form-data">
 					<table class="table write-form mt-5">
 						<tr>
@@ -153,20 +141,19 @@ function deleteFile(fileNo) {
 					</table>
 				</form>
 			</div>
-
-					
-				</div>
-			<!-- 본문 끝 -->
 			</div>
-			</div>
-
-				
+					</div>
+					</div>
+					</div>
 				</div>
+				<div class="col-1"></div>
 			</div>
 		</div>
-	
+				
+				<!-- 본문 끝 -->
 	</section>
 </main>
-<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
+<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
+
