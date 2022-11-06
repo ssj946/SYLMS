@@ -35,7 +35,7 @@ public class NoticeDAO {
 			rs = null;
 			pstmt = null;
 
-			sql = "INSERT INTO notice(num, notice, userId, subject, content, hitCount, reg_date) "
+			sql = "INSERT INTO notice(num, notice, Id, subject, content, hitCount, reg_date) "
 					+ "  VALUES (?, ?, ?, ?, ?, 0, SYSDATE)";
 
 			pstmt = conn.prepareStatement(sql);
@@ -124,7 +124,7 @@ public class NoticeDAO {
 
 		try {
 			sql = "SELECT NVL(COUNT(*), 0) FROM notice n "
-					+ " JOIN account a ON n.userId=a.Id ";
+					+ " JOIN account a ON n.Id=a.Id ";
 			if (condition.equals("all")) {
 				sql += "  WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ";
 			} else if (condition.equals("reg_date")) {
@@ -176,10 +176,10 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT num, n.userId, a.Name, subject, ");
+			sb.append(" SELECT num, n.Id, a.Name, subject, a.name ");
 			sb.append("       hitCount, reg_date ");
 			sb.append(" FROM notice n ");
-			sb.append(" JOIN account a ON n.userId=a.Id ");
+			sb.append(" JOIN account a ON n.Id=a.Id ");
 			sb.append(" ORDER BY num DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 
@@ -232,10 +232,10 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT num, n.userId, a.Name, subject, ");
+			sb.append(" SELECT num, n.Id, a.Name, subject, a.name");
 			sb.append("       hitCount, reg_date ");
 			sb.append(" FROM notice n ");
-			sb.append(" JOIN account a ON n.userId=a.Id ");
+			sb.append(" JOIN account a ON n.Id=a.Id ");
 			if (condition.equals("all")) {
 				sb.append(" WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ");
 			} else if (condition.equals("reg_date")) {
@@ -267,7 +267,7 @@ public class NoticeDAO {
 
 				dto.setNum(rs.getLong("num"));
 				dto.setUserId(rs.getString("Id"));
-				dto.setUserName(rs.getString("userName"));
+				dto.setUserName(rs.getString("Name"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setReg_date(rs.getString("reg_date")); // yyyy-MM-dd HH:mm:ss
@@ -304,10 +304,10 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT num, n.userId, a.Name, subject, ");
+			sb.append(" SELECT num, n.Id, a.Name, subject, a.name");
 			sb.append("       hitCount, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date  ");
 			sb.append(" FROM notice n ");
-			sb.append(" JOIN account a ON n.userId=a.Id ");
+			sb.append(" JOIN account a ON n.Id=a.Id ");
 			sb.append(" WHERE notice=1  ");
 			sb.append(" ORDER BY num DESC ");
 
@@ -320,7 +320,7 @@ public class NoticeDAO {
 
 				dto.setNum(rs.getLong("num"));
 				dto.setUserId(rs.getString("Id"));
-				dto.setUserName(rs.getString("userName"));
+				dto.setUserName(rs.getString("Name"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setReg_date(rs.getString("reg_date"));
@@ -355,9 +355,9 @@ public class NoticeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT num, notice, n.userId, a.Name, subject, content, hitCount, reg_date "
+			sql = "SELECT num, notice, n.Id, a.Name, subject, content, hitCount, reg_date, a.name "
 					+ " FROM notice n "
-					+ " JOIN account a ON n.userId=a.Id "
+					+ " JOIN account a ON n.Id=a.Id "
 					+ " WHERE num = ?";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -371,7 +371,7 @@ public class NoticeDAO {
 				dto.setNum(rs.getLong("num"));
 				dto.setNotice(rs.getInt("notice"));
 				dto.setUserId(rs.getString("Id"));
-				dto.setUserName(rs.getString("userName"));
+				dto.setUserName(rs.getString("Name"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setContent(rs.getString("content"));
 				dto.setHitCount(rs.getInt("hitCount"));
@@ -410,7 +410,7 @@ public class NoticeDAO {
 			if (keyword != null && keyword.length() != 0) {
 				sb.append(" SELECT num, subject ");
 				sb.append(" FROM notice n ");
-				sb.append(" JOIN account a ON n.userId=a.Id ");
+				sb.append(" JOIN account a ON n.Id=a.Id ");
 				sb.append(" WHERE ( num > ? ) ");
 				if (condition.equals("all")) {
 					sb.append("   AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
@@ -482,7 +482,7 @@ public class NoticeDAO {
 			if (keyword != null && keyword.length() != 0) {
 				sb.append(" SELECT num, subject ");
 				sb.append(" FROM notice n ");
-				sb.append(" JOIN account a ON n.userId=a.Id ");
+				sb.append(" JOIN account a ON n.Id=a.Id ");
 				sb.append(" WHERE ( num < ? ) ");
 				if (condition.equals("all")) {
 					sb.append("   AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
