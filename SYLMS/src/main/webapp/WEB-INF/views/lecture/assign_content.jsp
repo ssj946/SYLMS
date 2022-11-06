@@ -140,7 +140,15 @@ $(function(){
 						  <h4 class="mb-3 fw-bold">제출 내용</h4> 
 						  <textarea name="content" class="form-control" placeholder="내용을 입력해주세요." rows="10">${asdto.content}</textarea>
 						  <br>
-						 <h4 class="mb-3 fw-bold">제출 파일</h4> <input name="file" type="file" class="form-control">
+						 <h4 class="mb-3 fw-bold">제출 파일</h4> 
+
+						 <c:forEach var="file" items="${filelist}">
+						 <div class="form-control mb-2">
+						 <a href="${pageContext.request.contextPath}/lecture/download.do?fileNo=${file.fileNo}&asNo=${adto.asNo}">${file.originalfilename}</a>
+						 <label class="d-inline float-end form-label"><a class="text-danger" href="${pageContext.request.contextPath}/lecture/file_delete.do?fileNo=${file.fileNo}&asNo=${adto.asNo}&subjectNo=${subjectNo}">삭제</a></label>
+						 </div>
+						 </c:forEach>
+						 <input name="file" type="file" class="form-control">
 						 <input type="hidden" name="subjectNo"  value="${subjectNo}">
 						 <input type="hidden" name="asNo"  value="${adto.asNo}">
 						 </form>

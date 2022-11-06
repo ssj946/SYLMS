@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.member.SessionInfo;
+import com.util.FileManager;
 import com.util.MyUploadServlet;
 
 
@@ -86,6 +87,10 @@ public class LectureServlet extends MyUploadServlet {
 			assignmentContent(req, resp);
 		} else if (uri.indexOf("assignment_ok.do") != -1) {
 			assignmentSubmit(req, resp);
+		} else if (uri.indexOf("download.do") != -1) {
+			download(req, resp);
+		}  else if (uri.indexOf("file_delete.do") != -1) {
+			deleteFile(req, resp);
 		}
 		
 		
@@ -681,7 +686,6 @@ public class LectureServlet extends MyUploadServlet {
 			}
 			
 			dao.attendanceRecord_updateAll(mod_list);
-			System.out.println(subjectNo+"의 출석이 수정되었습니다.");
 	       
 			return;
 		} catch (Exception e) {
@@ -722,6 +726,7 @@ public class LectureServlet extends MyUploadServlet {
 		
 	}
 	
+	//과제창 띄우기
 	protected void assignmentContent(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		req.setCharacterEncoding("UTF-8");
 		
@@ -745,9 +750,13 @@ public class LectureServlet extends MyUploadServlet {
 			
 			
 			LectureDTO adto = dao.read_assignment(asNo);
+			req.setAttribute("adto", adto);
+			
 			LectureDTO asdto = dao.read_assignmentSubmit(asNo, info.getUserId());
 			req.setAttribute("asdto", asdto);
-			req.setAttribute("adto", adto);
+			
+			List<LectureDTO> list = dao.fileList(asdto.getAs_submitNo());
+			req.setAttribute("filelist", list);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -799,6 +808,47 @@ public class LectureServlet extends MyUploadServlet {
 		
 	}
 	
+	protected void download(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 파일 다운로드
+		req.setCharacterEncoding("UTF-8");
+		
+		LectureDAO dao= new LectureDAO();		
+		
+		try {
+			String fileNo = req.getParameter("fileNo");
+			
+			LectureDTO dto = dao.readFile(fileNo);
+			FileManager.doFiledownload(dto.getSavefilename(), dto.getOriginalfilename(), pathname, resp);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected void deleteFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 파일 삭제
+		req.setCharacterEncoding("UTF-8");
+		
+		LectureDAO dao= new LectureDAO();	
+		
+		String cp = req.getContextPath();
+		String subjectNo = req.getParameter("subjectNo");
+		String asNo = req.getParameter("asNo");
+		
+		
+		try {
+			String fileNo = req.getParameter("fileNo");
+			
+			LectureDTO dto = dao.readFile(fileNo);
+			if(dto!=null) {
+				FileManager.doFiledelete(pathname, dto.getSavefilename());
+				dao.deleteFile(fileNo);
+			}
+
+			resp.sendRedirect(cp+"/lecture/assignment_view.do?subjectNo="+subjectNo+"&asNo="+asNo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
 
 

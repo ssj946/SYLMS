@@ -1194,7 +1194,7 @@ public class LectureDAO {
 		
 		return dto;
 	}
-		//과제 제출
+	//과제 제출
 	public void insert_assignment(LectureDTO dto)throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql = "";
@@ -1249,7 +1249,113 @@ public class LectureDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	//파일 읽어오기
+	public List<LectureDTO> fileList(String as_submitNo)throws SQLException {
+		List<LectureDTO> list = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
 
+		
+		try {
+			sql = "SELECT fileNum, s_name, o_name FROM ASSIGNMENTUPLOADFILE WHERE as_submitNo = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+						
+			pstmt.setString(1, as_submitNo);
+				
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				LectureDTO dto = new LectureDTO();
+				dto.setSavefilename(rs.getString("s_name"));
+				dto.setOriginalfilename(rs.getString("o_name"));
+				dto.setFileNo(rs.getString("fileNum"));
+				list.add(dto);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		
+		
+		return list;
+	}
+	
+	public LectureDTO readFile(String fileNo) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+
+		LectureDTO dto = new LectureDTO();
+		try {
+			sql = "SELECT fileNum, s_name, o_name FROM ASSIGNMENTUPLOADFILE WHERE fileNum = ?";
+			pstmt = conn.prepareStatement(sql);		
+			pstmt.setString(1, fileNo);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setSavefilename(rs.getString("s_name"));
+				dto.setOriginalfilename(rs.getString("o_name"));
+				dto.setFileNo(rs.getString("fileNum"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		return dto;
+	}
+	
+	public void deleteFile(String fileNo) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		try {
+			sql = "DELETE FROM ASSIGNMENTUPLOADFILE WHERE fileNum = ?";
+			pstmt = conn.prepareStatement(sql);		
+			pstmt.setString(1, fileNo);
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+	}
+	
 }
 
 

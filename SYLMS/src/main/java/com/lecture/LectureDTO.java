@@ -20,7 +20,9 @@ private String hitCount;
 
 private String week;
 private String part;
+private String fileNo;
 private String savefilename;
+private String originalfilename;
 private String alarmEnable;
 
 private String attendNo;
@@ -41,6 +43,18 @@ private String[] originalFiles;
 
 
 
+public String getFileNo() {
+	return fileNo;
+}
+public void setFileNo(String fileNo) {
+	this.fileNo = fileNo;
+}
+public String getOriginalfilename() {
+	return originalfilename;
+}
+public void setOriginalfilename(String originalfilename) {
+	this.originalfilename = originalfilename;
+}
 public String[] getSaveFiles() {
 	return saveFiles;
 }
