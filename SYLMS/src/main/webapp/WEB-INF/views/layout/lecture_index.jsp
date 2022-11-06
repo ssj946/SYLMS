@@ -46,19 +46,19 @@
 		</c:if>	
 		<li class="nav-item">
 		<c:if test="${fn:length(sessionScope.member.userId) == 5 }">
-			<a class="nav-link text-body  p-3 mb-2 " href="${pageContext.request.contextPath}/exam/exam.do">
+			<a class="nav-link text-body  p-3 mb-2 " href="${pageContext.request.contextPath}/exam/exam.do?subjectNo=${subjectNo}">
 			 <i class="fas fa-fire  fa-lg mr-3"></i>&nbsp;시험성적입력
 			 </a>
 			 </c:if>
 			 <c:if test="${fn:length(sessionScope.member.userId) == 8 }">
-			 <a class="nav-link text-body  p-3 mb-2 " href="${pageContext.request.contextPath}/exam/exam_check.do">
+			 <a class="nav-link text-body  p-3 mb-2 " href="${pageContext.request.contextPath}/exam/exam_check.do?subjectNo=${subjectNo}">
 			 <i class="fas fa-fire  fa-lg mr-3"></i>&nbsp;시험성적확인
 			 </a>
 			 </c:if>
 		</li>	
 		<li class="nav-item">
 		<c:if test="${fn:length(sessionScope.member.userId) == 5 }">
-			<a class="nav-link text-body  p-3 mb-2 " href="${pageContext.request.contextPath}/exam/update.do">
+			<a class="nav-link text-body  p-3 mb-2 " href="${pageContext.request.contextPath}/exam/update.do?subjectNo=${subjectNo}">
 			 <i class="fas fa-fire  fa-lg mr-3"></i>&nbsp;시험성적수정
 			 </a>
 			 </c:if>

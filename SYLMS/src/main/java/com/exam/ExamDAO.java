@@ -100,7 +100,7 @@ public class ExamDAO {
 		String sql;
 
 		try {
-			sql = " SELECT subjectNo, studentCode, gradeCode FROM grades g " + "WHERE g.subjectNo = ? ";
+			sql = " SELECT subjectNo, studentCode, gradeCode FROM grades g WHERE g.subjectNo = ? ";
 
 			pstmt = conn.prepareStatement(sql);
 
