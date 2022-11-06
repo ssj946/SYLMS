@@ -1,14 +1,15 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
-<%@ page trimDirectiveWhitespaces="true"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SYLMS</title>
-<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
+<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 <style type="text/css">
 ul {
 	list-style: none;
@@ -51,130 +52,120 @@ ul {
 	}
 	</c:if>
 </script>
-
 </head>
 
 <body>
 
-	<header>
-		<jsp:include page="/WEB-INF/views/layout/header.jsp" />
-	</header>
-
-	<main>
-		<section>
-			<div class="container-fluid">
-				<div class="row" style="line-height: 1.5rem">&nbsp;</div>
-				<div class="row">
-					<div class="col-lg-1 bg-dark bg-gradient">
-						<!-- brief 사이드바 자리 -->
+<main>
+	<section>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-1"></div>
+				<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-auto bg-dark bg-gradient rounded" style="min-height: 100vh">
+						<!-- 왼쪽 사이드바 자리 -->
 						<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp" />
 					</div>
-					<div class="col-lg-11 ms-auto">
+					<div class="col">
+						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
+						
+					<!-- 본문 -->
+					<div class="card">
+					<div class="card-header bg-navy bg-gradient">
+						<h5 class="d-inline ps-2 text-white">
+							<i class="fa-solid fa-user-group"></i> 자유게시판 작성
+						</h5>
+					</div>
 
-						<!-- classroom header 자리 -->
-						<div class="row">
-							<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
-						</div>
-						<div class="row">
-							<!-- 강의 사이드바 자리 -->
-							<div class="col-xl-2 col-md-2 col-lg-2 bg-black bg-gradient"
-								style="box-shadow: none;">
-								<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp" />
-							</div>
+					<div class="card-body">
+						<form name="boardForm" method="post"
+							enctype="multipart/form-data">
+							<table class="table write-form mt-5">
+								<tr>
+									<td class="table-light col-sm-2" scope="row">제 목</td>
+									<td><input type="text" name="title" maxlength="100"
+										class="form-control" value="${dto.title}"></td>
+								</tr>
 
-							<!-- 본문 -->
-							<div class="col-lg-10 gap-3 ms-auto">
-								<div class="ms-5 me-5 pt-3 mt-4 mb-5">
+								<tr>
+									<td class="table-light col-sm-2" scope="row">작성자명</td>
+									<td>
+										<p class="form-control-plaintext">${sessionScope.member.userName}</p>
+									</td>
+								</tr>
 
-									<div class="body-title">
-										<h3>
-											<i class="fa-solid fa-user-group"></i> 자유게시판 작성
-										</h3>
-									</div>
+								<tr>
+									<td class="table-light col-sm-2" scope="row">내 용</td>
+									<td><textarea name="content" id="content"
+											class="form-control">${dto.content}</textarea></td>
+								</tr>
 
-									<div class="body-main">
-										<form name="boardForm" method="post"
-											enctype="multipart/form-data">
-											<table class="table write-form mt-5">
-												<tr>
-													<td class="table-light col-sm-2" scope="row">제 목</td>
-													<td><input type="text" name="title" maxlength="100"
-														class="form-control" value="${dto.title}"></td>
-												</tr>
+								<tr>
+									<td class="table-light col-sm-2">첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
+									<td><input type="file" name="selectFile"
+										multiple="multiple" class="form-control"></td>
+								</tr>
+								<c:if test="${mode=='update'}">
+									<c:forEach var="vo" items="${listFile}">
+										<tr>
+											<td class="table-light col-sm-2" scope="row">첨부된파일</td>
+											<td>
+												<p class="form-control-plaintext">
+													<a href="javascript:deleteFile('${vo.fileNo}');"><i
+														class="bi bi-trash"></i></a> ${vo.originalFilename}
+												</p>
+											</td>
+										</tr>
+									</c:forEach>
+								</c:if>
 
-												<tr>
-													<td class="table-light col-sm-2" scope="row">작성자명</td>
-													<td>
-														<p class="form-control-plaintext">${sessionScope.member.userName}</p>
-													</td>
-												</tr>
+							</table>
 
-												<tr>
-													<td class="table-light col-sm-2" scope="row">내 용</td>
-													<td><textarea name="content" id="content"
-															class="form-control">${dto.content}</textarea></td>
-												</tr>
-
-												<tr>
-													<td class="table-light col-sm-2">첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
-													<td><input type="file" name="selectFile"
-														multiple="multiple" class="form-control"></td>
-												</tr>
-												<c:if test="${mode=='update'}">
-													<c:forEach var="vo" items="${listFile}">
-														<tr>
-															<td class="table-light col-sm-2" scope="row">첨부된파일</td>
-															<td>
-																<p class="form-control-plaintext">
-																	<a href="javascript:deleteFile('${vo.fileNo}');"><i
-																		class="bi bi-trash"></i></a> ${vo.originalFilename}
-																</p>
-															</td>
-														</tr>
-													</c:forEach>
-												</c:if>
-
-											</table>
-
-											<table class="table table-borderless">
-												<tr>
-													<td class="text-center">
-														<button type="button" class="btn btn-dark"
-															onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i
-																class="bi bi-check2"></i>
-														</button>
-														<button type="reset" class="btn btn-light">다시입력</button>
-														<button type="button" class="btn btn-light"
-															onclick="location.href='${pageContext.request.contextPath}/freebbs/freebbs.do?subjectNo=${subjectNo}';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i
-																class="bi bi-x"></i>
-														</button> <input type="hidden" name="subjectNo"
-														value="${subjectNo}"> <c:if
-															test="${mode=='update'}">
-															<input type="hidden" name="articleNo"
-																value="${dto.articleNo}">
-															<input type="hidden" name="subjectNo"
-																value="${dto.subjectNo}">
-															<input type="hidden" name="page" value="${page}">
-														</c:if>
-													</td>
-												</tr>
-											</table>
-										</form>
-									</div>
+							<table class="table table-borderless">
+								<tr>
+									<td class="text-center">
+										<button type="button" class="btn btn-dark"
+											onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i
+												class="bi bi-check2"></i>
+										</button>
+										<button type="reset" class="btn btn-light">다시입력</button>
+										<button type="button" class="btn btn-light"
+											onclick="location.href='${pageContext.request.contextPath}/freebbs/freebbs.do?subjectNo=${subjectNo}';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i
+												class="bi bi-x"></i>
+										</button> <input type="hidden" name="subjectNo"
+										value="${subjectNo}"> <c:if
+											test="${mode=='update'}">
+											<input type="hidden" name="articleNo"
+												value="${dto.articleNo}">
+											<input type="hidden" name="subjectNo"
+												value="${dto.subjectNo}">
+											<input type="hidden" name="page" value="${page}">
+										</c:if>
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div>
 
 
-								</div>
-								<!-- 본문 끝 -->
-							</div>
-						</div>
-
-
+				</div>
+				</div>
+					
+					</div>
+					</div>
 					</div>
 				</div>
+				<div class="col-1"></div>
 			</div>
-
-		</section>
-	</main>
-	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
+				
+				<!-- 본문 끝 -->
+	</section>
+</main>
+<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
+

@@ -11,8 +11,8 @@
 <title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 <style type="text/css">
-ul{
-list-style: none;
+ul {
+	list-style: none;
 }
 </style>
 

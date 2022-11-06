@@ -2,6 +2,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -268,164 +269,153 @@ $(function(){
 });
 
 </script>
-
 </head>
 
 <body>
 
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
-	
 <main>
-<section>
-	<div class="container-fluid">
-		<div class="row" style="line-height: 1.5rem">&nbsp;</div>
-		<div class="row">
-			<div class="col-lg-1 bg-dark bg-gradient" >
-			<!-- brief 사이드바 자리 -->
-			<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp"/>
-			</div>
-			<div class="col-lg-11 ms-auto">
-			
-			<!-- classroom header 자리 -->
+	<section>
+		<div class="container-fluid">
 			<div class="row">
-			<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp"/>
-			</div>
-			<div class="row">
-			<!-- 강의 사이드바 자리 -->
-			<div class="col-xl-2 col-md-2 col-lg-2 bg-black bg-gradient" style="box-shadow: none;">
-			<jsp:include page="/WEB-INF/views/layout/lecture_sidebar.jsp"/>
-			</div>
-			
-			<!-- 본문 -->
-				<div class="col-lg-10 gap-3 ms-auto">
-					<div class="ms-5 me-5 pt-3 mt-4 mb-5">
-					
-				<div class="body-title">
-					<h3><i class="fa-solid fa-user-group"></i>자유게시판 </h3>
-				</div>
-				
-				<div class="body-main">
-					
-					<table class="table">
-				
-						<thead>
-							<tr>
-								<td colspan="2" align="center" style="font-weight: bold; font-size: medium;">
-									${dto.title}
-								</td>
-							</tr>
-						</thead>
+				<div class="col-1"></div>
+				<div class="col-10">
+					<div class="card p-2">
+					<div class="row ps-3 pe-1">
+					<div class="col-auto bg-dark bg-gradient rounded" style="min-height: 100vh">
+						<!-- 왼쪽 사이드바 자리 -->
+						<jsp:include page="/WEB-INF/views/layout/brief_sidebar.jsp" />
+					</div>
+					<div class="col">
+						<jsp:include page="/WEB-INF/views/layout/header2.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
+						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
 						
-						<tbody>
-							<tr>
-								<td width="50%">
-									이름 : ${dto.name}
-								</td>
-								<td align="right">
-									${dto.reg_date} | 조회 ${dto.hitCount}
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2" valign="top" height="200">
-									${dto.content}
-								</td>
-							</tr>
-
-							<c:forEach var="vo" items="${listFile}">
-							<tr>
-								<td colspan="2">
-									파&nbsp;&nbsp;일 :
-									<a href="${pageContext.request.contextPath}/freebbs/download.do?fileNo=${vo.fileNo}">${vo.originalFilename}</a>
-								</td>
-							</tr>
-							</c:forEach>
-							
-							
-							<tr>
-								<td colspan="2" style="border-top-width:medium;  border-top-color: #5a5a5a;" >
-									이전글 :
-									<c:if test="${not empty preReadDto}">
-										<a href="${pageContext.request.contextPath}/freebbs/freebbsArticle.do?subjectNo=${subjectNo}&articleNo=${preReadDto.articleNo}">${preReadDto.title}</a>
-									</c:if>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									다음글 :
-									<c:if test="${not empty nextReadDto}">
-										<a href="${pageContext.request.contextPath}/freebbs/freebbsArticle.do?subjectNo=${subjectNo}&articleNo=${nextReadDto.articleNo}">${nextReadDto.title}</a>
-									</c:if>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<table class="table table-borderless">
-						<tr>
-							<td width="50%">
-								
-								<c:choose>
-									<c:when test="${sessionScope.member.userId==dto.userId}">
-										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/freebbs/update.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}';">수정</button>
-									</c:when>
-									<c:otherwise>
-										<button type="button" class="btn btn-light" disabled="disabled">수정</button>
-									</c:otherwise>
-								</c:choose>
-						    	
-								<c:choose>
-						    		<c:when test="${sessionScope.member.userId==dto.userId || sessionScope.member.userId=='admin'}">
-						    			<button type="button" class="btn btn-light" onclick="deleteBoard();">삭제</button>
-						    		</c:when>
-						    		<c:otherwise>
-						    			<button type="button" class="btn btn-light" disabled="disabled">삭제</button>
-						    		</c:otherwise>
-						    	</c:choose>
-							</td>
-							<td class="text-end">
-								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/freebbs/freebbs.do?subjectNo=${subjectNo}';">리스트</button>
-							</td>
-						</tr>
-					</table>
-					<div class="reply">
-					<form name="replyForm" method="post">
-						<div class='form-header'>
-							<span class="bold">의견</span><span> - 타인을 비방하거나 개인정보를 유출하는 글의 게시를 삼가해 주세요.</span>
-						</div>
-						
-						<table class="table table-borderless reply-form">
-							<tr>
-								<td>
-									<textarea class='form-control' name="content"></textarea>
-								</td>
-							</tr>
-							<tr>
-							   <td align='right'>
-							        <button type='button' class='btn btn-light btnSendReply'>댓글 등록</button>
-							    </td>
-							 </tr>
-						</table>
-					</form>
+					<!-- 본문 -->
 					
-					<div id="listReply"></div>
-				</div>
-					
-				</div>
+			<div class="card">
+		<div class="card-header bg-gradient bg-navy text-white">
+		
+			<h5 class="d-inline ps-2"><i class="fa-solid fa-user-group"></i>자유게시판 </h5>
 		</div>
-
-					
-				</div>
-			<!-- 본문 끝 -->
-			</div>
-			</div>
-
+		
+		<div class="card-body">
+			<table class="table">
+				<thead>
+					<tr>
+						<td colspan="2" align="center" style="font-weight: bold; font-size: medium;">
+							${dto.title}
+						</td>
+					</tr>
+				</thead>
 				
+				<tbody>
+					<tr>
+						<td width="50%">
+							이름 : ${dto.name}
+						</td>
+						<td align="right">
+							${dto.reg_date} | 조회 ${dto.hitCount}
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" valign="top" height="200">
+							${dto.content}
+						</td>
+					</tr>
+
+					<c:forEach var="vo" items="${listFile}">
+					<tr>
+						<td colspan="2">
+							파&nbsp;&nbsp;일 :
+							<a href="${pageContext.request.contextPath}/freebbs/download.do?fileNo=${vo.fileNo}">${vo.originalFilename}</a>
+						</td>
+					</tr>
+					</c:forEach>
+					
+					
+					<tr>
+						<td colspan="2" style="border-top-width:medium;  border-top-color: #5a5a5a;" >
+							이전글 :
+							<c:if test="${not empty preReadDto}">
+								<a href="${pageContext.request.contextPath}/freebbs/freebbsArticle.do?subjectNo=${subjectNo}&articleNo=${preReadDto.articleNo}">${preReadDto.title}</a>
+							</c:if>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							다음글 :
+							<c:if test="${not empty nextReadDto}">
+								<a href="${pageContext.request.contextPath}/freebbs/freebbsArticle.do?subjectNo=${subjectNo}&articleNo=${nextReadDto.articleNo}">${nextReadDto.title}</a>
+							</c:if>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-borderless">
+				<tr>
+					<td width="50%">
+						
+						<c:choose>
+							<c:when test="${sessionScope.member.userId==dto.userId}">
+								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/freebbs/update.do?subjectNo=${subjectNo}&articleNo=${dto.articleNo}';">수정</button>
+							</c:when>
+							<c:otherwise>
+								<button type="button" class="btn btn-light" disabled="disabled">수정</button>
+							</c:otherwise>
+						</c:choose>
+				    	
+						<c:choose>
+				    		<c:when test="${sessionScope.member.userId==dto.userId || sessionScope.member.userId=='admin'}">
+				    			<button type="button" class="btn btn-light" onclick="deleteBoard();">삭제</button>
+				    		</c:when>
+				    		<c:otherwise>
+				    			<button type="button" class="btn btn-light" disabled="disabled">삭제</button>
+				    		</c:otherwise>
+				    	</c:choose>
+					</td>
+					<td class="text-end">
+						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/freebbs/freebbs.do?subjectNo=${subjectNo}';">리스트</button>
+					</td>
+				</tr>
+			</table>
+			<div class="reply">
+			<form name="replyForm" method="post">
+				<div class='form-header'>
+					<span class="bold">의견</span><span> - 타인을 비방하거나 개인정보를 유출하는 글의 게시를 삼가해 주세요.</span>
 				</div>
+				
+				<table class="table table-borderless reply-form">
+					<tr>
+						<td>
+							<textarea class='form-control' name="content"></textarea>
+						</td>
+					</tr>
+					<tr>
+					   <td align='right'>
+					        <button type='button' class='btn btn-light btnSendReply'>댓글 등록</button>
+					    </td>
+					 </tr>
+				</table>
+			</form>
+			
+			<div id="listReply"></div>
+		</div>
+			
+		</div>
+		</div>
+					
+					</div>
+					</div>
+					</div>
+				</div>
+				<div class="col-1"></div>
 			</div>
-	
+		</div>
+				
+				<!-- 본문 끝 -->
 	</section>
 </main>
-<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
+<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
 </body>
 </html>
+

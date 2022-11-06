@@ -93,9 +93,9 @@ $(function(){
 							   <h5 class="d-inline ps-3"><i class="fas fa-book-skull fa-lg bg-navy"></i>&nbsp;&nbsp;과제목록</h5>
 							</div>
 							<div class= "card-body">
-							<div class="card">
+							<div class="card p-2">
 							<table class="table text-center">
-							<tr class="bg-light">
+							<tr class="bg-navy bg-gradient text-white">
 								<th style="width: 10%">번호</th>
 								<th style="width: 60%">과제명</th>
 								<th style="width: 15%">등록일</th>
