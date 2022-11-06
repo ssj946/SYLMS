@@ -725,7 +725,7 @@ public class FreebbsServlet extends MyUploadServlet {
 			req.setAttribute("syear", dto1.getSyear());
 
 			String page = req.getParameter("page");
-			System.out.println(page);
+		
 			int current_page = 1;
 			if (page != null) {
 				current_page = Integer.parseInt(page);
