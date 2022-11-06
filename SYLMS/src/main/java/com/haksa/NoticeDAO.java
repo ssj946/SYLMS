@@ -124,7 +124,7 @@ public class NoticeDAO {
 
 		try {
 			sql = "SELECT NVL(COUNT(*), 0) FROM notice n "
-					+ " JOIN member1 m ON n.userId=m.userId ";
+					+ " JOIN account a ON n.userId=a.Id ";
 			if (condition.equals("all")) {
 				sql += "  WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ";
 			} else if (condition.equals("reg_date")) {
@@ -176,10 +176,10 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT num, n.userId, userName, subject, ");
+			sb.append(" SELECT num, n.userId, a.Name, subject, ");
 			sb.append("       hitCount, reg_date ");
 			sb.append(" FROM notice n ");
-			sb.append(" JOIN member1 m ON n.userId = m.userId ");
+			sb.append(" JOIN account a ON n.userId=a.Id ");
 			sb.append(" ORDER BY num DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 
@@ -194,8 +194,8 @@ public class NoticeDAO {
 				NoticeDTO dto = new NoticeDTO();
 
 				dto.setNum(rs.getLong("num"));
-				dto.setUserId(rs.getString("userId"));
-				dto.setUserName(rs.getString("userName"));
+				dto.setUserId(rs.getString("Id"));
+				dto.setUserName(rs.getString("Name"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setReg_date(rs.getString("reg_date"));
@@ -232,10 +232,10 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT num, n.userId, userName, subject, ");
+			sb.append(" SELECT num, n.userId, a.Name, subject, ");
 			sb.append("       hitCount, reg_date ");
 			sb.append(" FROM notice n ");
-			sb.append(" JOIN member1 m ON n.userId = m.userId ");
+			sb.append(" JOIN account a ON n.userId=a.Id ");
 			if (condition.equals("all")) {
 				sb.append(" WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ");
 			} else if (condition.equals("reg_date")) {
@@ -266,7 +266,7 @@ public class NoticeDAO {
 				NoticeDTO dto = new NoticeDTO();
 
 				dto.setNum(rs.getLong("num"));
-				dto.setUserId(rs.getString("userId"));
+				dto.setUserId(rs.getString("Id"));
 				dto.setUserName(rs.getString("userName"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setHitCount(rs.getInt("hitCount"));
@@ -304,10 +304,10 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT num, n.userId, userName, subject, ");
+			sb.append(" SELECT num, n.userId, a.Name, subject, ");
 			sb.append("       hitCount, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date  ");
 			sb.append(" FROM notice n ");
-			sb.append(" JOIN member1 m ON n.userId=m.userId ");
+			sb.append(" JOIN account a ON n.userId=a.Id ");
 			sb.append(" WHERE notice=1  ");
 			sb.append(" ORDER BY num DESC ");
 
@@ -319,7 +319,7 @@ public class NoticeDAO {
 				NoticeDTO dto = new NoticeDTO();
 
 				dto.setNum(rs.getLong("num"));
-				dto.setUserId(rs.getString("userId"));
+				dto.setUserId(rs.getString("Id"));
 				dto.setUserName(rs.getString("userName"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setHitCount(rs.getInt("hitCount"));
@@ -355,9 +355,9 @@ public class NoticeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT num, notice, n.userId, userName, subject, content, hitCount, reg_date "
+			sql = "SELECT num, notice, n.userId, a.Name, subject, content, hitCount, reg_date "
 					+ " FROM notice n "
-					+ " JOIN member1 m ON n.userId=m.userId "
+					+ " JOIN account a ON n.userId=a.Id "
 					+ " WHERE num = ?";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -370,7 +370,7 @@ public class NoticeDAO {
 
 				dto.setNum(rs.getLong("num"));
 				dto.setNotice(rs.getInt("notice"));
-				dto.setUserId(rs.getString("userId"));
+				dto.setUserId(rs.getString("Id"));
 				dto.setUserName(rs.getString("userName"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setContent(rs.getString("content"));
@@ -410,7 +410,7 @@ public class NoticeDAO {
 			if (keyword != null && keyword.length() != 0) {
 				sb.append(" SELECT num, subject ");
 				sb.append(" FROM notice n ");
-				sb.append(" JOIN member1 m ON n.userId = m.userId ");
+				sb.append(" JOIN account a ON n.userId=a.Id ");
 				sb.append(" WHERE ( num > ? ) ");
 				if (condition.equals("all")) {
 					sb.append("   AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
@@ -482,7 +482,7 @@ public class NoticeDAO {
 			if (keyword != null && keyword.length() != 0) {
 				sb.append(" SELECT num, subject ");
 				sb.append(" FROM notice n ");
-				sb.append(" JOIN member1 m ON n.userId = m.userId ");
+				sb.append(" JOIN account a ON n.userId=a.Id ");
 				sb.append(" WHERE ( num < ? ) ");
 				if (condition.equals("all")) {
 					sb.append("   AND ( INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ) ");
