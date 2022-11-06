@@ -134,7 +134,7 @@ public class FileFolderDAO {
 		String sql;
 
 		try {
-			sql = " SELECT  au.o_name, s.subjectName, TO_CHAR(submit_date, 'YYYY-MM-DD') submit_date, FILENUM "
+			sql = " SELECT  au.o_name, s.subjectName, TO_CHAR(submit_date, 'YYYY-MM-DD') submit_date, fileNum "
 					+ " FROM assignmentUploadFile au "
 					+ " JOIN assignmentSubmit ass "
 					+ " ON au.as_submitNo = ass.as_submitNo "
@@ -160,7 +160,7 @@ public class FileFolderDAO {
 			while (rs.next()) {
 			FileFolderDTO dto = new FileFolderDTO();
 
-		  dto.setFileNo(rs.getString("FILENUM"));	
+		  dto.setFileNum(rs.getString("fileNum"));	
 		  dto.setSubjectName(rs.getString("subjectName"));
 		  dto.setFname(rs.getString("o_name"));
 		  dto.setSubmitDate(rs.getString("submit_date"));
@@ -199,7 +199,7 @@ public class FileFolderDAO {
 		String sql;
 
 		try {
-			sql = "  SELECT  au.o_name, s.subjectName, TO_CHAR(submit_date, 'YYYY-MM-DD') submit_date, FILENUM"
+			sql = "  SELECT  au.o_name, s.subjectName, TO_CHAR(submit_date, 'YYYY-MM-DD') submit_date, fileNum"
 					+ "	FROM assignmentUploadFile au "
 					+ "	JOIN assignmentSubmit ass "
 					+ "	ON au.as_submitNo = ass.as_submitNo "
@@ -234,7 +234,7 @@ public class FileFolderDAO {
 			while (rs.next()) {
 			FileFolderDTO dto = new FileFolderDTO();
 
-		 	  dto.setFileNo(rs.getString("FILENUM"));	
+		 	  dto.setFileNum(rs.getString("fileNum"));	
 			  dto.setSubjectName(rs.getString("subjectName"));
 			  dto.setFname(rs.getString("o_name"));
 			  dto.setSubmitDate(rs.getString("submit_date"));
@@ -263,7 +263,7 @@ public class FileFolderDAO {
 		return plist;
 	}
 	
-	public FileFolderDTO filedownload(String fileNo) {
+	public FileFolderDTO filedownload(String fileNum) {
 		FileFolderDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -275,13 +275,13 @@ public class FileFolderDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, fileNo);
+			pstmt.setString(1, fileNum);
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				dto = new FileFolderDTO();
 				
-				dto.setFileNo(rs.getString("fileNum"));
+				dto.setFileNum(rs.getString("fileNum"));
 				dto.setOriginName(rs.getString("originName"));
 				dto.setSaveName(rs.getString("saveName"));
 			}

@@ -8,7 +8,7 @@ public class FileFolderDTO {
    private String  fname; //파일이름 
    private String  submitDate; //등록일 
    private String  subjectNo; //과목번호
-   private String fileNo;
+   private String fileNum;
    private String originName;
    private String saveName;
    
@@ -55,12 +55,6 @@ public String getSubjectNo() {
 public void setSubjectNo(String subjectNo) {
 	this.subjectNo = subjectNo;
 }
-public String getFileNo() {
-	return fileNo;
-}
-public void setFileNo(String fileNo) {
-	this.fileNo = fileNo;
-}
 public String getOriginName() {
 	return originName;
 }
@@ -72,6 +66,12 @@ public String getSaveName() {
 }
 public void setSaveName(String saveName) {
 	this.saveName = saveName;
+}
+public String getFileNum() {
+	return fileNum;
+}
+public void setFileNum(String fileNum) {
+	this.fileNum = fileNum;
 }
 
    
