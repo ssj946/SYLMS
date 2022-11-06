@@ -46,12 +46,7 @@ ul {
 		if (!confirm("파일을 삭제 하시겠습니까 ?")) {
 			return;
 		}
-		let url = "${pageContext.request.contextPath}/freebbs/deleteFile.do?articleNo="
-				+ $
-		{
-			dto.articleNo
-		}
-		+"&subjectNo=${subjectNo}&fileNo=" + fileNo;
+		let url = "${pageContext.request.contextPath}/freebbs/deleteFile.do?articleNo=" + ${dto.articleNo}+"&subjectNo=${subjectNo}&fileNo="+fileNo;
 		location.href = url;
 	}
 	</c:if>
