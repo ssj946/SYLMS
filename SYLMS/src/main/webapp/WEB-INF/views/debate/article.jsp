@@ -28,6 +28,8 @@ function deleteBoard() {
 </c:if>
 </script>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board2.css" type="text/css">
+
 <script type="text/javascript">
 function login() {
 	location.href="${pageContext.request.contextPath}/member/login.do";
