@@ -14,8 +14,8 @@
 			<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/lecture/main.do"><i class="fas fa-chalkboard text-white fa-lg mr-3"></i></a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link text-white p-3 mb-2 current" href="#">
-			 <i class="fas fa-poo text-white fa-lg mr-3"></i>
+			<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/haksa/list.do">
+			 <i class="fa-solid fa-landmark text-white text-white fa-lg mr-3"></i>
 			 </a>
 		</li>
 	</ul>
