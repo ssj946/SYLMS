@@ -44,17 +44,6 @@
 			 </a>
 		</li>
 		</c:if>	
-	    </ul>
-	  </li>
-	  
-	  <li class="nav-item dropdown">
-	    <a class="nav-link text-body fs-6 dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"> <i class="fas fa-list fa-lg mr-3"></i>&nbsp;학습활동</a>
-	    <ul class="dropdown-menu">
-	      <li class="nav-item">
-		<a class="nav-link text-body p-3 mb-2 " href="${pageContext.request.contextPath}/lecture/assignment.do?subjectNo=${subjectNo}">
-	 	<i class="fas fa-pen-ruler  fa-lg mr-3"></i>&nbsp;과제게시판
-	 	</a>
-	  </li>
 		<li class="nav-item">
 		<c:if test="${fn:length(sessionScope.member.userId) == 5 }">
 			<a class="nav-link text-body  p-3 mb-2 " href="${pageContext.request.contextPath}/exam/exam.do">
@@ -74,6 +63,18 @@
 			 </a>
 			 </c:if>
 			 </li>
+	    </ul>
+	  </li>
+	  
+	  <li class="nav-item dropdown">
+	    <a class="nav-link text-body fs-6 dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"> <i class="fas fa-list fa-lg mr-3"></i>&nbsp;학습활동</a>
+	    <ul class="dropdown-menu">
+	      <li class="nav-item">
+		<a class="nav-link text-body p-3 mb-2 " href="${pageContext.request.contextPath}/lecture/assignment.do?subjectNo=${subjectNo}">
+	 	<i class="fas fa-pen-ruler  fa-lg mr-3"></i>&nbsp;과제게시판
+	 	</a>
+	  </li>
+		
 		</ul>
 	  </li>
 	  
