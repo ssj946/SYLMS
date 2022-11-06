@@ -41,7 +41,7 @@
 			<a class="nav-link text-white p-3 mb-2 current" href="${pageContext.request.contextPath}/messege/receive.do"><i class="fa-regular fa-envelope fa-lg"></i>&nbsp;메시지</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link text-white p-3 mb-2 current" href="#">
+			<a class="nav-link text-white p-3 mb-2 current"href="${pageContext.request.contextPath}/haksa/list.do">
 			 <i class="fas fa-poo text-white fa-lg mr-3"></i>&nbsp;커뮤니티
 			 </a>
 		</li>

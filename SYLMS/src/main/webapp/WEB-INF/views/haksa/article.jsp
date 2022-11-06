@@ -2,12 +2,13 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>spring</title>
+<title>SYLMS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 
 <style type="text/css">
@@ -15,6 +16,7 @@
 	max-width: 800px;
 }
 </style>
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board2.css" type="text/css">
 
 <script type="text/javascript">
@@ -31,16 +33,11 @@
 
 </head>
 <body>
-
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
-	
 <main>
 	<div class="container">
 		<div class="body-container">	
 			<div class="body-title">
-				<h3><i class="bi bi-clipboard"></i> 공지사항 </h3>
+				<h3><i class="bi bi-clipboard"></i> 학사공지 </h3>
 			</div>
 			
 			<div class="body-main">
@@ -80,7 +77,7 @@
 						</c:forEach>
 						
 						<tr>
-							<td colspan="2">
+							<td colspan="2"  style="border-top-width:medium;  border-top-color: #5a5a5a;" >
 								이전글 :
 								<c:if test="${not empty preReadDto}">
 									<a href="${pageContext.request.contextPath}/haksa/article.do?${query}&num=${preReadDto.num}">${preReadDto.subject}</a>
@@ -102,23 +99,13 @@
 				<table class="table table-borderless">
 					<tr>
 						<td width="50%">
-							<c:choose>
-								<c:when test="${sessionScope.member.userId==dto.userId}">
-									<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/haksa/update.do?num=${dto.num}&page=${page}&size=${size}';">수정</button>
-								</c:when>
-								<c:otherwise>
-									<button type="button" class="btn btn-light" disabled="disabled">수정</button>
-								</c:otherwise>
-							</c:choose>
+							<c:if test="${sessionScope.member.userId==dto.userId}">
+								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/haksa/update.do?num=${dto.num}&page=${page}&size=${size}';">수정</button>
+							</c:if>
 					    	
-							<c:choose>
-					    		<c:when test="${sessionScope.member.userId=='admin'}">
-					    			<button type="button" class="btn btn-light" onclick="deleteBoard();">삭제</button>
-					    		</c:when>
-					    		<c:otherwise>
-					    			<button type="button" class="btn btn-light" disabled="disabled">삭제</button>
-					    		</c:otherwise>
-					    	</c:choose>
+				    		<c:if test="${sessionScope.member.userId=='admin'}">
+				    			<button type="button" class="btn btn-light" onclick="deleteBoard();">삭제</button>
+				    		</c:if>
 						</td>
 						<td class="text-end">
 							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/haksa/list.do?${query}';">리스트</button>

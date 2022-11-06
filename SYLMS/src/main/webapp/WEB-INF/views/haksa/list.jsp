@@ -180,7 +180,7 @@ $(function(){
 									<td>${dataCount - (page-1) * size - status.index}</td>
 									<td class="left">
 										<a href="${articleUrl}&num=${dto.num}" class="text-reset">${dto.subject}</a>
-										<c:if test="${dto.gap<1}"><img src="${pageContext.request.contextPath}/resources/images/new.gif"></c:if>
+										<c:if test="${dto.gap<2}"><img src="${pageContext.request.contextPath}/resources/images/new.png" class="new"></c:if>
 									</td>
 									<td>${dto.userName}</td>
 									<td>${dto.reg_date}</td>

@@ -176,7 +176,7 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT num, n.Id, a.Name, subject, a.name ");
+			sb.append(" SELECT num, n.Id, a.name, subject, ");
 			sb.append("       hitCount, reg_date ");
 			sb.append(" FROM notice n ");
 			sb.append(" JOIN account a ON n.Id=a.Id ");
@@ -195,7 +195,7 @@ public class NoticeDAO {
 
 				dto.setNum(rs.getLong("num"));
 				dto.setUserId(rs.getString("Id"));
-				dto.setUserName(rs.getString("Name"));
+				dto.setUserName(rs.getString("name"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setReg_date(rs.getString("reg_date"));
@@ -232,7 +232,7 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT num, n.Id, a.Name, subject, a.name");
+			sb.append(" SELECT num, n.Id, a.name, subject, ");
 			sb.append("       hitCount, reg_date ");
 			sb.append(" FROM notice n ");
 			sb.append(" JOIN account a ON n.Id=a.Id ");
@@ -267,7 +267,7 @@ public class NoticeDAO {
 
 				dto.setNum(rs.getLong("num"));
 				dto.setUserId(rs.getString("Id"));
-				dto.setUserName(rs.getString("Name"));
+				dto.setUserName(rs.getString("name"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setReg_date(rs.getString("reg_date")); // yyyy-MM-dd HH:mm:ss
@@ -304,7 +304,7 @@ public class NoticeDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append(" SELECT num, n.Id, a.Name, subject, a.name");
+			sb.append(" SELECT num, n.Id, a.name, subject, ");
 			sb.append("       hitCount, TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date  ");
 			sb.append(" FROM notice n ");
 			sb.append(" JOIN account a ON n.Id=a.Id ");
@@ -320,7 +320,7 @@ public class NoticeDAO {
 
 				dto.setNum(rs.getLong("num"));
 				dto.setUserId(rs.getString("Id"));
-				dto.setUserName(rs.getString("Name"));
+				dto.setUserName(rs.getString("name"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setReg_date(rs.getString("reg_date"));
@@ -355,7 +355,7 @@ public class NoticeDAO {
 		String sql;
 
 		try {
-			sql = "SELECT num, notice, n.Id, a.Name, subject, content, hitCount, reg_date, a.name "
+			sql = "SELECT num, notice, n.Id, a.name, subject, content, hitCount, reg_date "
 					+ " FROM notice n "
 					+ " JOIN account a ON n.Id=a.Id "
 					+ " WHERE num = ?";
@@ -371,7 +371,7 @@ public class NoticeDAO {
 				dto.setNum(rs.getLong("num"));
 				dto.setNotice(rs.getInt("notice"));
 				dto.setUserId(rs.getString("Id"));
-				dto.setUserName(rs.getString("Name"));
+				dto.setUserName(rs.getString("name"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setContent(rs.getString("content"));
 				dto.setHitCount(rs.getInt("hitCount"));
