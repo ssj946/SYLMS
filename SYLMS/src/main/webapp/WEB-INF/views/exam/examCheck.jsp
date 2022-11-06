@@ -43,7 +43,7 @@ ul {
 						<jsp:include page="/WEB-INF/views/layout/classroom_header.jsp" />
 						<jsp:include page="/WEB-INF/views/layout/lecture_index.jsp" />
 						<!-- 본문 -->
-						<div class="col-xl-10 col-md-10 col-lg-10 gap-3 ms-auto ">
+						<div class="col-xl-12 col-md-12 col-lg-12 gap-3 ms-auto ">
 							<div class="ms-1 me-1 pt-3 mt-3 mb-3">
 								<div class="card mb-3">
 									<c:if test="${fn:length(sessionScope.member.userId) == 8}">
