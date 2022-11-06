@@ -62,7 +62,7 @@ public class FileFolderServlet extends MyUploadServlet {
 			String fileNum = req.getParameter("fileNum");
 			
 			FileFolderDTO dto = dao.filedownload(fileNum);
-			System.out.println(fileNum);
+			
 			
 			
 			if (dto != null) {

@@ -271,7 +271,7 @@ public class FileFolderDAO {
 
 		try {
 			
-			sql = "SELECT fileNum, originName, saveName FROM assignmentUploadFile WHERE fileNum = ? ";
+			sql = " SELECT fileNum, O_NAME, S_NAME FROM assignmentUploadFile WHERE fileNum = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -282,8 +282,8 @@ public class FileFolderDAO {
 				dto = new FileFolderDTO();
 				
 				dto.setFileNum(rs.getString("fileNum"));
-				dto.setOriginName(rs.getString("originName"));
-				dto.setSaveName(rs.getString("saveName"));
+				dto.setOriginName(rs.getString("O_NAME"));
+				dto.setSaveName(rs.getString("S_NAME"));
 			}
 			
 		} catch (Exception e) {
